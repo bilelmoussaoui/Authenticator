@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application>
+    <id type="desktop">two-factor.desktop</id>
+    <licence>CC0</licence>
+    <name>Two-factor Auth</name>
+    <summary>Two Factor Authentication code generator</summary>
+    <description>
+        <p>Simple application that generates two-factor authentication code, created for Gnome</p>
+    </description>
+    <screenshots>
+        <screenshot type="default" width="300" height="200">https://raw.githubusercontent.com/bil-elmoussaoui/UnitsConverter/master/screenshots/working_ui.png</screenshot>
+    </screenshots>
+    <url type="homepage">https://github.com/bil-elmoussaoui/Two-factor-gtk</url>
+    <updatecontact>bil.elmoussaoui@gmail.com</updatecontact>
+</application>

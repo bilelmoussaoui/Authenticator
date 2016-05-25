@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Exec=@PACKAGE@
+Name=@PACKAGE_NAME@
+Categories=Utility;GTK
+Icon=@PACKAGE@
+StartupNotify=true

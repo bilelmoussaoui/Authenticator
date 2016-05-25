@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.19.0 -->
+<interface>
+    <requires lib="gtk+" version="3.16" />
+    <object class="GtkAboutDialog" id="AboutDialog">
+        <property name="can_focus">False</property>
+        <property name="type">popup</property>
+        <property name="resizable">False</property>
+        <property name="window_position">center</property>
+        <property name="destroy_with_parent">True</property>
+        <property name="type_hint">menu</property>
+        <property name="program_name">Converter</property>
+        <property name="version">0.1 beta</property>
+        <property name="comments" translatable="yes">Simple application to convert between different units.</property>
+        <property name="license" translatable="yes">This program comes with absolutely no warranty.
+See the &lt;a href="http://www.gnu.org/licenses/gpl-3.0.html"&gt;GNU General Public License, version 3 or later&lt;/a&gt; for details.</property>
+        <property name="authors">Bilal Elmoussaoui</property>
+        <property name="logo_icon_name">units-converter</property>
+        <property name="wrap_license">True</property>
+        <property name="license_type">gpl-3-0</property>
+        <child internal-child="vbox">
+            <object class="GtkBox" id="aboutdialog-vbox">
+                <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
+                <property name="spacing">2</property>
+                <child internal-child="action_area">
+                    <object class="GtkButtonBox" id="aboutdialog-action_area">
+                        <property name="can_focus">False</property>
+                        <property name="layout_style">end</property>
+                        <child>
+                            <placeholder />
+                        </child>
+                        <child>
+                            <placeholder />
+                        </child>
+                    </object>
+                    <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">0</property>
+                    </packing>
+                </child>
+                <child>
+                    <placeholder />
+                </child>
+            </object>
+        </child>
+    </object>
+</interface>

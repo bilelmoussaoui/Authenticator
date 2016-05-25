@@ -1,0 +1,6 @@
+[default]
+name=Configuration par défaut
+device=local
+runtime=xdg-app:org.gnome.Platform/3.20/x86_64
+prefix=/app
+default=true
