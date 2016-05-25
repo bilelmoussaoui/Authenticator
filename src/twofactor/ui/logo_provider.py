@@ -11,6 +11,7 @@ class LogoProviderWindow(Gtk.Window):
     def __init__(self, window):
         self.window = window
         self.generate_window()
+        self.genereate_searchbar()
         self.generate_compenents()
         self.generate_headerbar()
         self.show_all()
@@ -26,15 +27,62 @@ class LogoProviderWindow(Gtk.Window):
         self.set_resizable(False)
         self.set_transient_for(self.window.parent)
         self.connect("key_press_event", self.on_key_press)
+        self.add(Gtk.Box(orientation=Gtk.Orientation.VERTICAL))
+
+    def filter_func(self, row, data, notify_destroy):
+        provider_label = row.get_children()[0].get_children()[0].get_children()
+        data = data.strip()
+        if len(data) > 0:
+            return data in provider_label[1].get_text().lower()
+        else:
+            return True
+
+    def filter_providers(self, entry):
+        data = entry.get_text()
+        self.listbox.set_filter_func(self.filter_func, data, False)
 
     def on_key_press(self, provider, keyevent):
-        if Gdk.keyval_name(keyevent.keyval) == "Escape":
+        CONTROL_MASK = Gdk.ModifierType.CONTROL_MASK
+        keypressed = Gdk.keyval_name(keyevent.keyval).lower()
+        if keypressed == "escape":
             self.destroy()
+        elif keypressed == "f":
+            if keyevent.state == CONTROL_MASK:
+                search_box = self.get_children()[0].get_children()[0]
+                is_visible = search_box.get_no_show_all()
+                search_box.set_no_show_all(not is_visible)
+                search_box.set_visible(is_visible)
+                search_box.show_all()
+                if is_visible:
+                    search_box.get_children()[1].grab_focus_without_selecting()
+                else:
+                    self.listbox.set_filter_func(lambda x,y,z : True, None, False)
+        elif keypressed == "return":
+            self.select_logo()
+
+    def genereate_searchbar(self):
+        hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        hbox.set_margin_left(40)
+
+        search_image = Gtk.Image(xalign=0)
+        search_image.set_from_icon_name("system-search-symbolic",
+                                       Gtk.IconSize.SMALL_TOOLBAR)
+        search_image.set_tooltip_text("Type to search")
+
+        search_entry = Gtk.Entry()
+        search_entry.connect("changed", self.filter_providers)
+
+        hbox.pack_start(search_image, False, True, 6)
+        hbox.pack_start(search_entry, False, True, 6)
+        hbox.set_visible(False)
+        self.get_children()[0].pack_start(hbox, False, True, 0)
+        self.get_children()[0].get_children()[0].set_no_show_all(True)
 
     def select_logo(self, *args):
         index = self.listbox.get_selected_row().get_index()
         directory = "/home/bilal/Projects/Two-factor-gtk/data/logos/"
         files = listdir(directory)
+        files.sort()
         count = len(files)
         if count > 0:
             img_path = files[index]
@@ -45,12 +93,13 @@ class LogoProviderWindow(Gtk.Window):
         box_outer = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         directory = "/home/bilal/Projects/Two-factor-gtk/data/logos/"
         files = listdir(directory)
+        files.sort()
         count = len(files)
         if count > 0:
             # Create a ScrolledWindow for installed applications
             scrolled_win = Gtk.ScrolledWindow()
             scrolled_win.add_with_viewport(box_outer)
-            self.add(scrolled_win)
+            self.get_children()[0].pack_start(scrolled_win, True, True, 0)
 
             self.listbox = Gtk.ListBox()
             self.listbox.get_style_context().add_class("applications-list")

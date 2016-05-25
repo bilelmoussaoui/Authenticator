@@ -146,8 +146,9 @@ class TwoFactorWindow(Gtk.Window):
         select_button.set_tooltip_text("Select mode")
         select_button.set_image(select_image)
         select_button.connect("clicked", self.show_checkbox)
-        right_box.add(select_button)
+        select_button.set_no_show_all(not self.app.provider.count_providers() > 0)
 
+        right_box.add(select_button)
         hb.pack_start(left_box)
         hb.pack_end(right_box)
         self.set_titlebar(hb)
@@ -340,10 +341,23 @@ class TwoFactorWindow(Gtk.Window):
     def refresh_window(self, *args):
         mainbox = self.get_children()[0]
         self.checkboxes = []
+        count = self.app.provider.count_providers()
         for widget in mainbox:
             mainbox.remove(widget)
         self.genereate_searchbar()
         self.generate_applications_list()
+
+        headerbar = self.get_children()[1]
+        left_box = headerbar.get_children()[0]
+        right_box = headerbar.get_children()[1]
+        right_box.get_children()[0].set_visible(count > 0)
+        if count == 0:
+            self.listbox.set_selection_mode(Gtk.SelectionMode.SINGLE)
+        if count > 0 and self.listbox:
+            if self.listbox.get_selection_mode() == Gtk.SelectionMode.MULTIPLE:
+                left_box.get_children()[0].set_visible(count > 0)
+        else:
+            left_box.get_children()[0].set_visible(False)
         self.get_children()[0].show_all()
 
     # TODO : add remove from database
