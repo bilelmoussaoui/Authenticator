@@ -13,7 +13,7 @@ logging.basicConfig(level=logging.DEBUG,
                 format='[%(levelname)s] %(message)s',
                 )
 
-class TwoFactorWindow(Gtk.ApplicationWindow):
+class Window(Gtk.ApplicationWindow):
     app = None
     selected_app_idx = None
 

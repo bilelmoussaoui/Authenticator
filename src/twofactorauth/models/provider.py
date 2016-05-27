@@ -1,13 +1,18 @@
 import sqlite3
 import logging
-from os import path
+from os import path, mknod
 from gi.repository import GdkPixbuf, Gtk
 logging.basicConfig(level=logging.DEBUG,
                 format='[%(levelname)s] %(message)s',
                 )
 class Provider:
     def __init__(self):
-        self.conn = sqlite3.connect('/home/bilal/Projects/Two-factor-gtk/database.db')
+        database_file = '/home/bilal/.config/TwoFactorAuth/database.db'
+        if not (path.isfile(database_file) and path.exists(database_file)):
+            mknod(database_file)
+        self.conn = sqlite3.connect(database_file)
+        if not self.is_table_exists():
+            self.create_table()
 
     def add_provider(self, name, secret_code, image):
         t = (name, secret_code, image,)
@@ -79,3 +84,28 @@ class Provider:
             logging.error("Couldn't fetch providers list")
             logging.error(str(e))
             return None
+
+    def create_table(self):
+        query = '''CREATE TABLE "providers" (
+            "id" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE ,
+            "title" VARCHAR NOT NULL ,
+            "secret_code" VARCHAR NOT NULL  UNIQUE ,
+            "image" TEXT NOT NULL
+        )'''
+        try:
+            self.conn.execute(query)
+            self.conn.commit()
+        except Exception as e:
+            logging.error("Error during the creation of the database table")
+            logging.error(str(e))
+
+    def is_table_exists(self):
+        query = "SELECT id from providers LIMIT 1"
+        c = self.conn.cursor()
+        try:
+            data = c.execute(query)
+            return True
+        except Exception as e:
+            logging.error("Coudln't check if a table exists")
+            logging.error(e)
+            return False

@@ -1,7 +1,7 @@
 from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, GLib, Gio, Gdk, GObject
-from ui.window import TwoFactorWindow
+from ui.window import Window
 import logging
 from models.provider import Provider
 
@@ -9,8 +9,7 @@ logging.basicConfig(level=logging.DEBUG,
                 format='[%(levelname)s] %(message)s',
                 )
 
-
-class TwoFactor(Gtk.Application):
+class Application(Gtk.Application):
     win = None
 
     def __init__(self, *args, **kwargs):

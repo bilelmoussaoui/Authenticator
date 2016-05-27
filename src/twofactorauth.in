@@ -19,11 +19,13 @@
  along with UnitsConverter. If not, see <http://www.gnu.org/licenses/>.
 """
 import sys
+sys.path.insert(1, '@pyexecdir@')
 sys.path.insert(1, '@pythondir@')
 from twofactorauth import application
 
 if __name__ == "__main__":
-    app = application.TwoFactor(package="@PACKAGE@",
+    app = application.Application(package="@PACKAGE@",
                           version="@VERSION@",
                           pkgdatadir="@pkgdatadir@")
-    app.run(None)
+    exit_status = app.run(sys.argv)
+    sys.exit(exit_status)

@@ -1,4 +1,4 @@
-desktopdir = $(DATADIR)/applications
+desktopdir = $(datadir)/applications
 desktop_DATA = twofactorauth.desktop
 
 UPDATE_DESKTOP = update-desktop-database $(datadir)/applications || :
@@ -15,7 +15,7 @@ logo_DATA = about.glade \
         menu.glade \
         style.css
 
-appdatadir = $(DATADIR)/appdata
+appdatadir = $(datadir)/appdata
 appdata_DATA = \
     two-factor.appdata.xml
 
