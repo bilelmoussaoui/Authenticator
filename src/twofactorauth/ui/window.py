@@ -1,19 +1,21 @@
 
 from gi import require_version
 require_version("Gtk", "3.0")
-from gi.repository import Gtk, GLib, Gio, Gdk
+from gi.repository import Gtk, GLib, Gio, Gdk, GObject
 from ui.add_provider import AddProviderWindow
 from ui.confirmation import ConfirmationMessage
-import logging
+from ui.listrow import ListBoxRow
+from threading import Thread
 
+import logging
+from math import pi
 logging.basicConfig(level=logging.DEBUG,
                 format='[%(levelname)s] %(message)s',
                 )
 
-class TwoFactorWindow(Gtk.Window):
+class TwoFactorWindow(Gtk.ApplicationWindow):
     app = None
     selected_app_idx = None
-    checkboxes = []
 
     def __init__(self, application):
         self.app = application
@@ -24,15 +26,16 @@ class TwoFactorWindow(Gtk.Window):
         self.get_children()[0].get_children()[0].set_visible(False)
 
     def generate_window(self, *args):
-        Gtk.Window.__init__(self, application=self.app)
-        self.connect("delete-event", lambda x, y: self.app.quit())
+        Gtk.ApplicationWindow.__init__(self, Gtk.WindowType.TOPLEVEL,
+                                    application=self.app)
         self.set_position(Gtk.WindowPosition.CENTER)
-        self.set_wmclass("twofactor", "Two-Factor")
+        self.set_wmclass("two_factor_auth", "Two-Factor Auth")
         self.resize(350, 500)
         self.set_size_request(350, 500)
         self.set_resizable(False)
         self.connect("key_press_event", self.on_key_press)
         self.app.win = self
+        self.connect("delete-event", lambda x, y: self.app.on_quit())
         self.add(Gtk.Box(orientation=Gtk.Orientation.VERTICAL))
 
     def on_key_press(self, provider, keyevent):
@@ -44,17 +47,20 @@ class TwoFactorWindow(Gtk.Window):
         elif keypressed == "f":
             if keyevent.state == CONTROL_MASK:
                 if self.app.provider.count_providers() > 0:
-                    search_box = self.get_children()[0].get_children()[0]
+                    search_box = self.get_children()[0].get_children()[0].get_children()[0]
                     is_visible = search_box.get_no_show_all()
                     search_box.set_no_show_all(not is_visible)
                     search_box.set_visible(is_visible)
                     search_box.show_all()
                     if is_visible:
-                        search_box.get_children()[1].grab_focus_without_selecting()
+                        search_box.get_children()[0].grab_focus_without_selecting()
                     else:
                         self.listbox.set_filter_func(lambda x,y,z : True, None, False)
+        elif keypressed == "n":
+            if keyevent.state == CONTROL_MASK:
+                self.add_provider()
         elif keypressed == "delete":
-            self.remove_application()
+            self.remove_provider()
         elif keypressed == "return":
             if self.app.provider.count_providers() > 0:
                 if self.listbox.get_selected_row():
@@ -71,40 +77,42 @@ class TwoFactorWindow(Gtk.Window):
 
     def filter_providers(self, entry):
         data = entry.get_text()
+        if len(data) != 0:
+            entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY,
+                                                "edit-clear-symbolic")
+        else:
+            entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY,
+                                            None)
         self.listbox.set_filter_func(self.filter_func, data, False)
 
     def genereate_searchbar(self):
-        hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        hbox.set_margin_left(40)
-
-        search_image = Gtk.Image(xalign=0)
-        search_image.set_from_icon_name("system-search-symbolic",
-                                       Gtk.IconSize.SMALL_TOOLBAR)
-        search_image.set_tooltip_text("Type to search")
-
+        hbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        search_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         search_entry = Gtk.Entry()
+        search_box.set_margin_left(60)
+        search_entry.set_width_chars(21)
         search_entry.connect("changed", self.filter_providers)
+        search_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY,
+                                            "system-search-symbolic")
 
-        hbox.pack_start(search_image, False, True, 6)
-        hbox.pack_start(search_entry, False, True, 6)
+        search_box.pack_start(search_entry, False, True, 0)
+        hbox.pack_start(search_box, False, True, 6)
         hbox.set_visible(False)
-        self.get_children()[0].pack_start(hbox, False, True, 6)
-        self.get_children()[0].get_children()[0].set_no_show_all(True)
-
+        self.get_children()[0].pack_start(hbox, True, True, 0)
+        search_box.set_no_show_all(True)
 
     def remove_selected(self, *args):
-        i = 0
-        confirmation = ConfirmationMessage(self, "Are you sure??")
+        message = "Do you really want to remove the two-factor auth provider?"
+        confirmation = ConfirmationMessage(self, message)
         confirmation.show()
         if confirmation.get_confirmation():
-            while i < len(self.checkboxes):
-                if self.checkboxes[i].get_active():
-                    selected_row = self.listbox.get_row_at_index(i)
-                    label_id = selected_row.get_children()[0].get_children()[2]
-                    self.app.provider.remove_from_database(int(label_id.get_text()))
-                    self.listbox.remove(selected_row)
-                    del self.checkboxes[i]
-                i += 1
+            for row in self.listbox.get_children():
+                checkbox = self.get_checkbox_from_row(row)
+                if checkbox.get_active():
+                    label_id = row.get_children()[0].get_children()[2]
+                    label_id = int(label_id.get_text())
+                    self.app.provider.remove_from_database(label_id)
+                    self.listbox.remove(row)
             self.listbox.unselect_all()
         confirmation.destroy()
         self.refresh_window()
@@ -174,14 +182,14 @@ class TwoFactorWindow(Gtk.Window):
             listrow_box = self.listbox.get_row_at_index(index)
             self.listbox.select_row(listrow_box)
 
-        while i < len(self.checkboxes):
-            visible = self.checkboxes[i].get_visible()
-            selected = self.checkboxes[i].get_active()
+        for row in self.listbox.get_children():
+            checkbox = self.get_checkbox_from_row(row)
+            visible = checkbox.get_visible()
+            selected = checkbox.get_active()
             if not button_visible:
-                self.select_application(self.checkboxes[i])
-            self.checkboxes[i].set_visible(not visible)
-            self.checkboxes[i].set_no_show_all(visible)
-            i += 1
+                self.select_application(checkbox)
+            checkbox.set_visible(not visible)
+            checkbox.set_no_show_all(visible)
 
     def select_application(self, checkbutton):
         is_active = checkbutton.get_active()
@@ -199,135 +207,84 @@ class TwoFactorWindow(Gtk.Window):
         else:
             return True
 
+    def get_checkbox_from_row(self, row):
+        if row:
+            return row.get_children()[0].get_children()[0].get_children()[0]
+        else:
+            return None
+
 
     def select_row(self, listbox, listbox_row):
         index = listbox_row.get_index()
         button_visible = self.remove_button.get_visible()
-
-        if self.checkboxes[index]:
-            if button_visible:
-                clicked = self.checkboxes[index].get_active()
-                self.checkboxes[index].set_active(not clicked)
-            else:
-                if self.selected_app_idx:
-                    listrow_box = self.listbox.get_row_at_index(
-                        self.selected_app_idx)
-                    self.listbox.unselect_row(listbox_row)
-                self.selected_app_idx = index
-                listrow_box = self.listbox.get_row_at_index(index)
-                self.listbox.select_row(listbox_row)
+        checkbox = self.get_checkbox_from_row(listbox_row)
+        if button_visible:
+            checkbox.set_active(not checkbox.get_active())
+        else:
+            if self.selected_app_idx:
+                listrow_box = self.listbox.get_row_at_index(
+                    self.selected_app_idx)
+                self.listbox.unselect_row(listbox_row)
+            self.selected_app_idx = index
+            listrow_box = self.listbox.get_row_at_index(index)
+            self.listbox.select_row(listbox_row)
 
     # TODO : show a nice message when no application is added
     def generate_applications_list(self):
-        box_outer = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        list_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         count = self.app.provider.count_providers()
-        if count > 0:
-            # Create a ScrolledWindow for installed applications
-            scrolled_win = Gtk.ScrolledWindow()
-            scrolled_win.add_with_viewport(box_outer)
-            self.get_children()[0].pack_start(scrolled_win, True, True, 0)
+        # Create a ScrolledWindow for installed applications
+        self.listbox = Gtk.ListBox()
+        self.listbox.get_style_context().add_class("applications-list")
+        self.listbox.set_adjustment()
+        self.listbox.connect("row_activated", self.select_row)
+        self.listbox.set_selection_mode(Gtk.SelectionMode.SINGLE)
+        list_box.pack_start(self.listbox, True, True, 0)
 
-            self.listbox = Gtk.ListBox()
-            self.listbox.get_style_context().add_class("applications-list")
-            self.listbox.set_adjustment()
-            self.listbox.connect("row_activated", self.select_row)
-            self.listbox.set_selection_mode(Gtk.SelectionMode.SINGLE)
-            box_outer.pack_start(self.listbox, True, True, 0)
-            providers =  self.app.provider.fetch_providers()
-            i = 0
-            while i < count:
-                row = self.generate_listrow(providers[i][0], providers[i][1],
-                                        providers[i][2], providers[i][3])
-                self.listbox.add(row)
-                i += 1
+        scrolled_win = Gtk.ScrolledWindow()
+        scrolled_win.add_with_viewport(list_box)
+        self.get_children()[0].get_children()[0].pack_start(scrolled_win, True, True, 0)
+
+        providers =  self.app.provider.fetch_providers()
+        i = 0
+        while i < len(providers):
+            row = ListBoxRow(self, providers[i][0], providers[i][1],
+                                    providers[i][2], providers[i][3])
+            self.listbox.add(row.get_listrow())
+            i += 1
+
+        nolist_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        vbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+
+        logo_image = Gtk.Image()
+        logo_image.set_from_icon_name("dialog-information-symbolic",
+                                       Gtk.IconSize.DIALOG)
+        vbox.pack_start(logo_image, False, False, 6)
+
+        no_proivders_label = Gtk.Label()
+        no_proivders_label.set_text("There's no providers at the moment")
+        vbox.pack_start(no_proivders_label, False, False, 6)
+
+        nolist_box.pack_start(vbox, True, True, 0)
+        self.get_children()[0].pack_start(nolist_box, True, True, 0)
+        if len(providers) == 0:
+            self.get_children()[0].get_children()[0].set_no_show_all(True)
+            self.get_children()[0].get_children()[0].set_visible(False)
         else:
-            vbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+            self.get_children()[0].get_children()[1].set_no_show_all(True)
+            self.get_children()[0].get_children()[1].set_visible(False)
 
-            logo_image = Gtk.Image()
-            logo_image.set_from_icon_name("dialog-information-symbolic",
-                                           Gtk.IconSize.DIALOG)
-            vbox.pack_start(logo_image, False, False, 6)
-
-            no_proivders_label = Gtk.Label()
-            no_proivders_label.set_text("There's no providers at the moment")
-            vbox.pack_start(no_proivders_label, False, False, 6)
-
-            box_outer.pack_start(vbox, True, True, 0)
-            self.get_children()[0].pack_start(box_outer, True, True, 0)
 
     def update_list(self, id, name, secret_code, image):
-        row = self.generate_listrow(id, name, secret_code, image)
-        self.listbox.add(row)
+        row = ListBoxRow(self, id, name, secret_code, image)
+        self.listbox.add(row.get_listrow())
         self.listbox.show_all()
 
 
-    def generate_listrow(self, id, name, secret_code, logo):
-        row = Gtk.ListBoxRow()
-        row.get_style_context().add_class("application-list-row")
-        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        pass_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        pass_box.set_visible(False)
-        vbox.pack_start(hbox, True, True, 6)
-        vbox.pack_start(pass_box, True, True, 6)
-
-        # ID
-        label_id = Gtk.Label()
-        label_id.set_text(str(id))
-        label_id.set_visible(False)
-        label_id.set_no_show_all(True)
-        vbox.pack_end(label_id, False, False, 0)
-
-        # Checkbox
-        checkbox = Gtk.CheckButton()
-        checkbox.set_visible(False)
-        checkbox.set_no_show_all(True)
-        checkbox.connect("toggled", self.select_application)
-        hbox.pack_start(checkbox, False, True, 6)
-        self.checkboxes.append(checkbox)
-
-        # Provider logo
-        provider_logo = self.app.provider.get_provider_image(logo)
-        hbox.pack_start(provider_logo, False, True, 6)
-
-        # Provider name
-        application_name = Gtk.Label(xalign=0)
-        application_name.get_style_context().add_class("application-name")
-        application_name.set_text(name)
-        hbox.pack_start(application_name, True, True, 6)
-        # Copy button
-        copy_event = Gtk.EventBox()
-        copy_button = Gtk.Image(xalign=0)
-        copy_button.set_from_icon_name("edit-copy-symbolic",
-                                       Gtk.IconSize.SMALL_TOOLBAR)
-        copy_button.set_tooltip_text("Copy the generated code..")
-        copy_event.connect("button-press-event", self.copy_code)
-        copy_event.add(copy_button)
-        hbox.pack_end(copy_event, False, True, 6)
-
-        # Remove button
-        remove_event = Gtk.EventBox()
-        remove_button = Gtk.Image(xalign=0)
-        remove_button.set_from_icon_name("list-remove-symbolic",
-                                         Gtk.IconSize.SMALL_TOOLBAR)
-        remove_button.set_tooltip_text("Remove the source..")
-        remove_event.add(remove_button)
-        remove_event.connect("button-press-event", self.remove_application)
-        hbox.pack_end(remove_event, False, True, 6)
-
-        code_label = Gtk.Label(xalign=0)
-        code_label.get_style_context().add_class("application-secret-code")
-        # TODO : show the real secret code
-        code_label.set_text(secret_code)
-        pass_box.set_no_show_all(True)
-
-        pass_box.pack_start(code_label, False, True, 0)
-
-        row.add(vbox)
-        return row
-
-
     def copy_code(self, *args):
+        if len(args) > 0:
+            row = args[0].get_parent().get_parent().get_parent()
+            self.listbox.select_row(row)
         selected_row = self.listbox.get_selected_row()
         label = selected_row.get_children()[0].get_children()[1].get_children()
         code = label[0].get_text()
@@ -338,40 +295,35 @@ class TwoFactorWindow(Gtk.Window):
         except Exception as e:
             logging.error(str(e))
 
-    def refresh_window(self, *args):
+    def refresh_window(self, force_refresh=False):
         mainbox = self.get_children()[0]
-        self.checkboxes = []
         count = self.app.provider.count_providers()
-        for widget in mainbox:
-            mainbox.remove(widget)
-        self.genereate_searchbar()
-        self.generate_applications_list()
+        if count == 0:
+            self.get_children()[0].get_children()[0].set_no_show_all(True)
+            self.get_children()[0].get_children()[0].set_visible(False)
 
+        else:
+            self.get_children()[0].get_children()[1].set_no_show_all(True)
+            self.get_children()[0].get_children()[1].set_visible(False)
         headerbar = self.get_children()[1]
         left_box = headerbar.get_children()[0]
         right_box = headerbar.get_children()[1]
         right_box.get_children()[0].set_visible(count > 0)
-        if count == 0:
-            self.listbox.set_selection_mode(Gtk.SelectionMode.SINGLE)
-        if count > 0 and self.listbox:
-            if self.listbox.get_selection_mode() == Gtk.SelectionMode.MULTIPLE:
-                left_box.get_children()[0].set_visible(count > 0)
-        else:
-            left_box.get_children()[0].set_visible(False)
-        self.get_children()[0].show_all()
+        self.listbox.set_selection_mode(Gtk.SelectionMode.SINGLE)
+        left_box.get_children()[0].set_visible(False)
 
-    # TODO : add remove from database
-    def remove_application(self, *args):
-        confirmation = ConfirmationMessage(self, "Are you sure??")
+
+    def remove_provider(self, *args):
+        if len(args) > 0:
+            row = args[0].get_parent().get_parent().get_parent()
+            self.listbox.select_row(row)
+
+        message = "Do you really want to remove the two-factor auth provider?"
+        confirmation = ConfirmationMessage(self, message)
         confirmation.show()
         if confirmation.get_confirmation():
             if self.listbox.get_selected_row():
                 selected_row = self.listbox.get_selected_row()
-                del self.checkboxes[selected_row.get_index()]
-                index = selected_row.get_index() + 1
-                if index > len(self.listbox.get_children()) - 1:
-                    index = selected_row.get_index() - 1
-                self.listbox.select_row(self.listbox.get_row_at_index(index))
                 self.listbox.remove(selected_row)
                 label_id = selected_row.get_children()[0].get_children()[2]
                 self.app.provider.remove_from_database(int(label_id.get_text()))

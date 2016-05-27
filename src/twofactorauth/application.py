@@ -1,6 +1,6 @@
 from gi import require_version
 require_version("Gtk", "3.0")
-from gi.repository import Gtk, GLib, Gio, Gdk
+from gi.repository import Gtk, GLib, Gio, Gdk, GObject
 from ui.window import TwoFactorWindow
 import logging
 from models.provider import Provider
@@ -9,19 +9,19 @@ logging.basicConfig(level=logging.DEBUG,
                 format='[%(levelname)s] %(message)s',
                 )
 
-# TODO : https://pypi.python.org/pypi/pyotp
-
 
 class TwoFactor(Gtk.Application):
     win = None
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
+        for key in kwargs:
+            setattr(self, key, kwargs[key])
         Gtk.Application.__init__(self,
-                                 application_id='org.gnome.twofactor',
+                                 application_id='org.gnome.twofactorauth',
                                  flags=Gio.ApplicationFlags.FLAGS_NONE)
-        GLib.set_application_name("Two-factor")
-        GLib.set_prgname('twofactor')
-
+        GLib.set_application_name("Two-Factor Auth")
+        GLib.set_prgname('two_factor_auth')
+        GObject.threads_init()
         provider = Gtk.CssProvider()
         css_file = "/home/bilal/Projects/Two-factor-gtk/data/style.css"
         try:
@@ -29,10 +29,10 @@ class TwoFactor(Gtk.Application):
             Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
                                             provider,
                                             Gtk.STYLE_PROVIDER_PRIORITY_USER)
-            logging.debug("[CSS]: Loading css file %s" % css_file)
+            logging.debug("Loading css file %s" % css_file)
         except Exception as e:
-            logging.debug("[CSS]: File not found %s" % css_file)
-            logging.debug("[CSS]: Error message %s" % str(e))
+            logging.debug("File not found %s" % css_file)
+            logging.debug("Error message %s" % str(e))
 
     def do_startup(self):
         Gtk.Application.do_startup(self)
@@ -60,6 +60,7 @@ class TwoFactor(Gtk.Application):
             TwoFactorWindow(self)
         self.win.show()
         self.add_window(self.win)
+        self.get_active_window().present()
 
     def on_shortcuts(self, *args):
         logging.debug("Shortcuts window")
@@ -70,11 +71,12 @@ class TwoFactor(Gtk.Application):
         self.win.show_about()
 
     def on_quit(self, *args):
-        Gtk.main_quit()
-        self.win.destroy()
+        # Clear the clipboard once the application is closed, for safety resasons
+        try:
+            clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
+            clipboard.clear()
+        except Exception as e:
+            logging.error(str(e))
+        for win in self.get_windows():
+            win.destroy()
         self.quit()
-
-
-
-app = TwoFactor()
-app.run(None)

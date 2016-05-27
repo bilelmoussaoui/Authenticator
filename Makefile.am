@@ -1,4 +1,2 @@
 SUBDIRS = src \
-          data \
-          plugins
-
+          data

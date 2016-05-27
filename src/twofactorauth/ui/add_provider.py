@@ -30,9 +30,9 @@ class AddProviderWindow(Gtk.Window):
         Gtk.Window.__init__(self, title="Add a new provider", modal=True,
                             destroy_with_parent=True)
         self.connect("delete-event", lambda x, y: self.destroy())
-        self.resize(350, 100)
+        self.resize(300, 100)
         self.set_border_width(18)
-        self.set_size_request(350, 100)
+        self.set_size_request(300, 100)
         self.set_position(Gtk.WindowPosition.CENTER)
         self.set_resizable(False)
         self.set_transient_for(self.parent)
@@ -55,7 +55,11 @@ class AddProviderWindow(Gtk.Window):
                                                 secret_entry,
                                                 image_entry)
             id = self.parent.app.provider.get_latest_id()
-            self.parent.refresh_window()
+            print()
+            if self.parent.app.provider.count_providers() == 1:
+                self.parent.refresh_window(True)
+            else:
+                self.parent.update_list(id, name_entry, secret_entry, image_entry)
             self.close_window()
         except Exception as e:
             logging.error("Error in adding a new provider")
@@ -82,10 +86,8 @@ class AddProviderWindow(Gtk.Window):
         hbox_two_factor.pack_end(two_factor_entry, False, True, 0)
 
         logo_event = Gtk.EventBox()
-        logo_image = Gtk.Image()
-        logo_image.set_from_icon_name("image-missing",
-                                       Gtk.IconSize.DIALOG)
-        logo_event.get_style_context().add_class("provider-logo-add")
+        logo_image = self.parent.app.provider.get_provider_image("image-missing")
+        logo_image.get_style_context().add_class("provider-logo-add")
         logo_event.add(logo_image)
         logo_event.connect("button-press-event", self.select_logo)
         logo_box.pack_start(logo_event, False, False, 6)

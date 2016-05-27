@@ -15,7 +15,6 @@ class Provider:
         try:
             self.conn.execute(query, t)
             self.conn.commit()
-            logging.debug("Proivder '%s' added to the database" % name)
         except Exception as e:
             logging.error(query)
             logging.error("Couldn't add a new provider to database")
@@ -25,7 +24,7 @@ class Provider:
         query = "DELETE FROM providers WHERE id=?"
         try:
             self.conn.execute(query, (id,))
-            self.conn.commit() 
+            self.conn.commit()
         except Exception as e:
             logging.error("Couldn't remove the application with id : %s", id)
             logging.error(str(e))
@@ -35,7 +34,6 @@ class Provider:
         query = "SELECT COUNT(id) AS count FROM providers"
         try:
             data = c.execute(query)
-            logging.debug("Providers list fetched successfully")
             return data.fetchone()[0]
         except Exception as e:
             logging.error(query)
@@ -48,7 +46,6 @@ class Provider:
         query = "SELECT * FROM providers"
         try:
             data = c.execute(query)
-            logging.debug("Providers list fetched successfully")
             return data.fetchall()
         except Exception as e:
             logging.error(query)
@@ -59,12 +56,16 @@ class Provider:
     def get_provider_image(self, image):
         img = Gtk.Image(xalign=0)
         directory = "/home/bilal/Projects/Two-factor-gtk/data/logos/"
-        image = directory + image
-        if path.exists(image):
+        theme = Gtk.IconTheme.get_default()
+        if path.isfile(directory + image) and path.exists(directory + image):
+            img.set_from_file(directory + image)
+        elif path.isfile(image) and path.exists(image):
             img.set_from_file(image)
+        elif theme.has_icon(path.splitext(image)[0]):
+            img.set_from_icon_name(path.splitext(image)[0],
+                                    Gtk.IconSize.DIALOG)
         else:
-            img.set_from_icon_name(image,
-                                       Gtk.IconSize.DIALOG)
+            img.set_from_icon_name("image-missing", Gtk.IconSize.DIALOG)
         return img
 
     def get_latest_id(self):

@@ -9,6 +9,9 @@ logging.basicConfig(level=logging.DEBUG,
 class LogoProviderWindow(Gtk.Window):
 
     def __init__(self, window):
+        directory = "/home/bilal/Projects/Two-factor-gtk/data/logos/"
+        self.logos = listdir(directory)
+        self.logos.sort()
         self.window = window
         self.generate_window()
         self.genereate_searchbar()
@@ -31,7 +34,7 @@ class LogoProviderWindow(Gtk.Window):
 
     def filter_func(self, row, data, notify_destroy):
         provider_label = row.get_children()[0].get_children()[0].get_children()
-        data = data.strip()
+        data = data.strip().lower()
         if len(data) > 0:
             return data in provider_label[1].get_text().lower()
         else:
@@ -39,6 +42,12 @@ class LogoProviderWindow(Gtk.Window):
 
     def filter_providers(self, entry):
         data = entry.get_text()
+        if len(data) != 0:
+            entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY,
+                                                "edit-clear-symbolic")
+        else:
+            entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY,
+                                            None)
         self.listbox.set_filter_func(self.filter_func, data, False)
 
     def on_key_press(self, provider, keyevent):
@@ -54,7 +63,7 @@ class LogoProviderWindow(Gtk.Window):
                 search_box.set_visible(is_visible)
                 search_box.show_all()
                 if is_visible:
-                    search_box.get_children()[1].grab_focus_without_selecting()
+                    search_box.get_children()[0].grab_focus_without_selecting()
                 else:
                     self.listbox.set_filter_func(lambda x,y,z : True, None, False)
         elif keypressed == "return":
@@ -62,40 +71,29 @@ class LogoProviderWindow(Gtk.Window):
 
     def genereate_searchbar(self):
         hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        hbox.set_margin_left(40)
-
-        search_image = Gtk.Image(xalign=0)
-        search_image.set_from_icon_name("system-search-symbolic",
-                                       Gtk.IconSize.SMALL_TOOLBAR)
-        search_image.set_tooltip_text("Type to search")
+        hbox.set_margin_left(60)
 
         search_entry = Gtk.Entry()
         search_entry.connect("changed", self.filter_providers)
+        search_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY,
+                                    "system-search-symbolic")
 
-        hbox.pack_start(search_image, False, True, 6)
         hbox.pack_start(search_entry, False, True, 6)
         hbox.set_visible(False)
-        self.get_children()[0].pack_start(hbox, False, True, 0)
+        self.get_children()[0].pack_start(hbox, False, True, 6)
         self.get_children()[0].get_children()[0].set_no_show_all(True)
 
     def select_logo(self, *args):
         index = self.listbox.get_selected_row().get_index()
-        directory = "/home/bilal/Projects/Two-factor-gtk/data/logos/"
-        files = listdir(directory)
-        files.sort()
-        count = len(files)
-        if count > 0:
-            img_path = files[index]
+        if len(self.logos) > 0:
+            img_path = self.logos[index]
             self.window.update_logo(img_path)
             self.close_window()
 
     def generate_compenents(self):
         box_outer = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         directory = "/home/bilal/Projects/Two-factor-gtk/data/logos/"
-        files = listdir(directory)
-        files.sort()
-        count = len(files)
-        if count > 0:
+        if len(self.logos) > 0:
             # Create a ScrolledWindow for installed applications
             scrolled_win = Gtk.ScrolledWindow()
             scrolled_win.add_with_viewport(box_outer)
@@ -107,8 +105,8 @@ class LogoProviderWindow(Gtk.Window):
             self.listbox.set_selection_mode(Gtk.SelectionMode.SINGLE)
             box_outer.pack_start(self.listbox, True, True, 0)
             i = 0
-            while i < count:
-                logo = files[i]
+            while i < len(self.logos):
+                logo = self.logos[i]
                 provider_name = path.splitext(logo)[0].strip(".").title()
                 row = Gtk.ListBoxRow()
                 row.get_style_context().add_class("application-list-row")
@@ -116,11 +114,8 @@ class LogoProviderWindow(Gtk.Window):
                 hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
 
                 # Provider logo
-                provider_logo = Gtk.Image(xalign=0)
-                provider_logo.set_from_file(directory + logo)
-                #provider_logo.scale_simple(Gtk.IconSize.DIALOG,
-                #                        Gtk.IconSize.DIALOG,
-                #                        GdkPixbuf.InterpType.BILINEAR)
+                provider = self.window.parent.app.provider
+                provider_logo = provider.get_provider_image(logo)
                 hbox.pack_start(provider_logo, False, True, 6)
 
                 # Provider name

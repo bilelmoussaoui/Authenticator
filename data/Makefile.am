@@ -1,15 +1,26 @@
 desktopdir = $(DATADIR)/applications
-desktop_DATA = two-factor.desktop
+desktop_DATA = twofactorauth.desktop
 
 UPDATE_DESKTOP = update-desktop-database $(datadir)/applications || :
 
 uidir = $(pkgdatadir)/data
-ui_DATA = about.glade
+ui_DATA = about.glade \
+        shortcuts.glade \
+        menu.glade \
+        style.css
+
+logodir = $(pkgdatadir)/data
+logo_DATA = about.glade \
+        shortcuts.glade \
+        menu.glade \
+        style.css
+
 appdatadir = $(DATADIR)/appdata
 appdata_DATA = \
     two-factor.appdata.xml
 
 EXTRA_DIST =  \
+        $(logo_DATA) \
         $(ui_DATA) \
         $(appdata_DATA)
 

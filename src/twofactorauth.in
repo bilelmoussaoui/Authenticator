@@ -20,10 +20,10 @@
 """
 import sys
 sys.path.insert(1, '@pythondir@')
-from twofactor import application
+from twofactorauth import application
 
 if __name__ == "__main__":
-    app = application.UnitsConverter(package="@PACKAGE@",
+    app = application.TwoFactor(package="@PACKAGE@",
                           version="@VERSION@",
                           pkgdatadir="@pkgdatadir@")
     app.run(None)
