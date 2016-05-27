@@ -1,15 +1,14 @@
-AC_INIT([Units Converter], [0.1])
+AC_INIT([Two Factor Auth], [0.1])
 
 AM_INIT_AUTOMAKE
 AM_PATH_PYTHON([3.0])
 
 AC_CONFIG_FILES([
-    Makefile 
+    Makefile
     data/Makefile
-    data/units-converter.desktop
-    plugins/Makefile
-    src/Makefile 
-    src/unitsconverter/Makefile
+    data/twofactorauth.desktop
+    src/Makefile
+    src/twofactorauth/Makefile
 ])
 
 AC_OUTPUT

@@ -9,6 +9,6 @@ do_substitution = sed -e 's,[@]pythondir[@],$(pythondir),g' \
 	-e 's,[@]PACKAGE[@],$(PACKAGE),g' \
 	-e 's,[@]VERSION[@],$(VERSION),g'
 
-units-converter: twofactorauth.in Makefile
+twofactorauth: twofactorauth.in Makefile
 	$(do_substitution) < $(srcdir)/twofactorauth.in > twofactorauth
 	chmod +x twofactorauth
