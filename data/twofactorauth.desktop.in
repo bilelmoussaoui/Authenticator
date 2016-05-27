@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 Exec=@PACKAGE@
-Name=@PACKAGE_NAME@
+Name=TwoFactorAuth
 Categories=Utility;GTK
 Icon=@PACKAGE@
 StartupNotify=true

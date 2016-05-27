@@ -1,6 +1,6 @@
 import sqlite3
 import logging
-from os import path, mknod
+from os import path, mknod,makedirs
 from gi.repository import GdkPixbuf, Gtk
 logging.basicConfig(level=logging.DEBUG,
                 format='[%(levelname)s] %(message)s',
@@ -9,6 +9,13 @@ class Provider:
     def __init__(self):
         database_file = '/home/bilal/.config/TwoFactorAuth/database.db'
         if not (path.isfile(database_file) and path.exists(database_file)):
+            dirs = database_file.split("/")
+            i = 0
+            while i < len(dirs) -1:
+                directory = "/".join(dirs[0:i+1]).strip()
+                if not path.exists(directory) and len(directory) != 0:
+                    makedirs(directory)
+                i += 1
             mknod(database_file)
         self.conn = sqlite3.connect(database_file)
         if not self.is_table_exists():
@@ -88,7 +95,7 @@ class Provider:
     def create_table(self):
         query = '''CREATE TABLE "providers" (
             "id" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE ,
-            "title" VARCHAR NOT NULL ,
+            "name" VARCHAR NOT NULL ,
             "secret_code" VARCHAR NOT NULL  UNIQUE ,
             "image" TEXT NOT NULL
         )'''

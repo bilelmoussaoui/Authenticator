@@ -2,9 +2,9 @@
 from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, GLib, Gio, Gdk, GObject
-from ui.add_provider import AddProviderWindow
-from ui.confirmation import ConfirmationMessage
-from ui.listrow import ListBoxRow
+from TwoFactorAuth.ui.add_provider import AddProviderWindow
+from TwoFactorAuth.ui.confirmation import ConfirmationMessage
+from TwoFactorAuth.ui.listrow import ListBoxRow
 from threading import Thread
 
 import logging
@@ -40,6 +40,8 @@ class Window(Gtk.ApplicationWindow):
 
     def on_key_press(self, provider, keyevent):
         CONTROL_MASK = Gdk.ModifierType.CONTROL_MASK
+        search_box = self.get_children()[0].get_children()[0].get_children()[0]
+
         keypressed = Gdk.keyval_name(keyevent.keyval).lower()
         if keypressed == "c":
             if keyevent.state == CONTROL_MASK:
@@ -47,7 +49,6 @@ class Window(Gtk.ApplicationWindow):
         elif keypressed == "f":
             if keyevent.state == CONTROL_MASK:
                 if self.app.provider.count_providers() > 0:
-                    search_box = self.get_children()[0].get_children()[0].get_children()[0]
                     is_visible = search_box.get_no_show_all()
                     search_box.set_no_show_all(not is_visible)
                     search_box.set_visible(is_visible)
@@ -59,7 +60,7 @@ class Window(Gtk.ApplicationWindow):
         elif keypressed == "n":
             if keyevent.state == CONTROL_MASK:
                 self.add_provider()
-        elif keypressed == "delete":
+        elif keypressed == "delete" and not search_box.get_visible():
             self.remove_provider()
         elif keypressed == "return":
             if self.app.provider.count_providers() > 0:
@@ -97,7 +98,6 @@ class Window(Gtk.ApplicationWindow):
 
         search_box.pack_start(search_entry, False, True, 0)
         hbox.pack_start(search_box, False, True, 6)
-        hbox.set_visible(False)
         self.get_children()[0].pack_start(hbox, True, True, 0)
         search_box.set_no_show_all(True)
 
@@ -267,12 +267,8 @@ class Window(Gtk.ApplicationWindow):
 
         nolist_box.pack_start(vbox, True, True, 0)
         self.get_children()[0].pack_start(nolist_box, True, True, 0)
-        if len(providers) == 0:
-            self.get_children()[0].get_children()[0].set_no_show_all(True)
-            self.get_children()[0].get_children()[0].set_visible(False)
-        else:
-            self.get_children()[0].get_children()[1].set_no_show_all(True)
-            self.get_children()[0].get_children()[1].set_visible(False)
+        self.get_children()[0].get_children()[0].set_no_show_all(len(providers) == 0)
+        self.get_children()[0].get_children()[1].set_no_show_all(not len(providers) == 0)
 
 
     def update_list(self, id, name, secret_code, image):
@@ -295,22 +291,26 @@ class Window(Gtk.ApplicationWindow):
         except Exception as e:
             logging.error(str(e))
 
-    def refresh_window(self, force_refresh=False):
+    def refresh_window(self):
         mainbox = self.get_children()[0]
         count = self.app.provider.count_providers()
         if count == 0:
-            self.get_children()[0].get_children()[0].set_no_show_all(True)
-            self.get_children()[0].get_children()[0].set_visible(False)
-
+            mainbox.get_children()[0].set_visible(False)
+            mainbox.get_children()[1].set_visible(True)
+            mainbox.get_children()[1].set_no_show_all(False)
+            mainbox.get_children()[1].show_all()
         else:
-            self.get_children()[0].get_children()[1].set_no_show_all(True)
-            self.get_children()[0].get_children()[1].set_visible(False)
+            mainbox.get_children()[0].set_visible(True)
+            mainbox.get_children()[0].show_all()
+            self.listbox.show_all()
+            mainbox.get_children()[1].set_visible(False)
         headerbar = self.get_children()[1]
         left_box = headerbar.get_children()[0]
         right_box = headerbar.get_children()[1]
         right_box.get_children()[0].set_visible(count > 0)
         self.listbox.set_selection_mode(Gtk.SelectionMode.SINGLE)
         left_box.get_children()[0].set_visible(False)
+
 
 
     def remove_provider(self, *args):

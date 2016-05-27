@@ -2,7 +2,7 @@ from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, GLib, Gio, Gdk
 import logging
-from ui.logo_provider import LogoProviderWindow
+from TwoFactorAuth.ui.logo_provider import LogoProviderWindow
 
 logging.basicConfig(level=logging.DEBUG,
                 format='[%(levelname)s] %(message)s',
@@ -55,11 +55,8 @@ class AddProviderWindow(Gtk.Window):
                                                 secret_entry,
                                                 image_entry)
             id = self.parent.app.provider.get_latest_id()
-            print()
-            if self.parent.app.provider.count_providers() == 1:
-                self.parent.refresh_window(True)
-            else:
-                self.parent.update_list(id, name_entry, secret_entry, image_entry)
+            self.parent.update_list(id, name_entry, secret_entry, image_entry)
+            self.parent.refresh_window()
             self.close_window()
         except Exception as e:
             logging.error("Error in adding a new provider")

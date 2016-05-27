@@ -1,13 +1,35 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+ Copyright © 2016 Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>
+
+ This file is part of TwoFactorAuth.
+
+ TwoFactorAuth is free software: you can redistribute it and/or
+ modify it under the terms of the GNU General Public License as published
+ by the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ TwoFactorAuth is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with TwoFactorAuth. If not, see <http://www.gnu.org/licenses/>.
+"""
+
 from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, GLib, Gio, Gdk, GObject
-from ui.window import Window
+from TwoFactorAuth.ui.window import Window
 import logging
-from models.provider import Provider
 
 logging.basicConfig(level=logging.DEBUG,
                 format='[%(levelname)s] %(message)s',
                 )
+from TwoFactorAuth.models.provider import Provider
+
 
 class Application(Gtk.Application):
     win = None
@@ -56,7 +78,7 @@ class Application(Gtk.Application):
     def do_activate(self, *args):
         self.provider = Provider()
         if not self.win:
-            TwoFactorWindow(self)
+            Window(self)
         self.win.show()
         self.add_window(self.win)
         self.get_active_window().present()

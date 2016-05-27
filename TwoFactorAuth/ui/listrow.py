@@ -2,7 +2,7 @@
 from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, GLib, Gio, Gdk, GObject
-from models.code import Code
+from TwoFactorAuth.models.code import Code
 from threading import Thread
 import time
 
@@ -130,7 +130,11 @@ class ListBoxRow(Thread):
 
     def update_code(self, label):
         try:
-            label.set_text(self.code.get_secret_code())
+            code = self.code.get_secret_code()
+            if code != None:
+                label.set_text(code)
+            else:
+                raise TypeError
         except TypeError as e:
             logging.error("Canno't generate secret code")
             logging.error(str(e))

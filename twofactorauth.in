@@ -21,7 +21,8 @@
 import sys
 sys.path.insert(1, '@pyexecdir@')
 sys.path.insert(1, '@pythondir@')
-from twofactorauth import application
+from TwoFactorAuth import application
+
 
 if __name__ == "__main__":
     app = application.Application(package="@PACKAGE@",
