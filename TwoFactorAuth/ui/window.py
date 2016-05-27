@@ -333,7 +333,7 @@ class Window(Gtk.ApplicationWindow):
 
     def show_about(self, *args):
         builder = Gtk.Builder()
-        builder.add_from_file(self.app.kgdatadir + "/data/about.glade")
+        builder.add_from_file(self.app.pkgdatadir + "/data/about.glade")
 
         dialog = builder.get_object("AboutDialog")
         dialog.set_transient_for(self)
@@ -342,7 +342,7 @@ class Window(Gtk.ApplicationWindow):
 
     def show_shortcuts(self, *args):
         builder = Gtk.Builder()
-        builder.add_from_file(self.app.kgdatadir + "/data/shortcuts.glade")
+        builder.add_from_file(self.app.pkgdatadir + "/data/shortcuts.glade")
 
         shortcuts = builder.get_object("shortcuts")
         shortcuts.set_transient_for(self)
