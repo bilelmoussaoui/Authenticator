@@ -41,7 +41,7 @@ class Application(Gtk.Application):
                                  application_id='org.gnome.twofactorauth',
                                  flags=Gio.ApplicationFlags.FLAGS_NONE)
         GLib.set_application_name("Two-Factor Auth")
-        GLib.set_prgname('two_factor_auth')
+        GLib.set_prgname(self.package)
         GObject.threads_init()
         provider = Gtk.CssProvider()
         css_file = self.pkgdatadir + "/data/style.css"

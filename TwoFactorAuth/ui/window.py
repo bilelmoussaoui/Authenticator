@@ -29,7 +29,7 @@ class Window(Gtk.ApplicationWindow):
         Gtk.ApplicationWindow.__init__(self, Gtk.WindowType.TOPLEVEL,
                                     application=self.app)
         self.set_position(Gtk.WindowPosition.CENTER)
-        self.set_wmclass("two_factor_auth", "Two-Factor Auth")
+        self.set_wmclass(self.app.package, "TwoFactorAuth")
         self.resize(350, 500)
         self.set_size_request(350, 500)
         self.set_resizable(False)
