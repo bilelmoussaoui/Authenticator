@@ -17,7 +17,7 @@ logo_DATA = about.glade \
 
 appdatadir = $(datadir)/appdata
 appdata_DATA = \
-    two-factor.appdata.xml
+    twofactorauth.appdata.xml
 
 EXTRA_DIST =  \
         $(logo_DATA) \

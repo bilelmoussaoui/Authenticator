@@ -9,6 +9,8 @@ AC_CONFIG_FILES([
     data/twofactorauth.desktop
     src/Makefile
     src/twofactorauth/Makefile
+    src/twofactorauth/models/Makefile
+    src/twofactorauth/ui/Makefile
 ])
 
 AC_OUTPUT
