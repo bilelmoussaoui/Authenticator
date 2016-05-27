@@ -17,9 +17,9 @@ class AddProviderWindow(Gtk.Window):
         self.generate_headerbar()
         self.show_all()
         Gtk.main()
-
+        # TODO : add the possiblity to use external icons or icon names
     def update_logo(self, image):
-        directory = "/home/bilal/Projects/Two-factor-gtk/data/logos/"
+        directory = self.parent.app.pkgdatadir + "/data/logos/"
         self.selected_image = image
         image = directory + image
         img_box = self.get_children()[0].get_children()[0].get_children()
