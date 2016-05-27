@@ -12,6 +12,7 @@ from math import pi
 class ListBoxRow(Thread):
     counter_max = 30
     counter = 30
+    timer = 0
     code = None
     code_generated = True
 
@@ -32,6 +33,25 @@ class ListBoxRow(Thread):
         if event.button == Gdk.EventType._2BUTTON_PRESS:
             #data = widget.get_path_at_pos(int(event.x), int(event.y))
             print("helloooo")
+
+
+    def copy_code(self, eventbox, box):
+        self.timer = 0
+        self.parent.copy_code(eventbox)
+        code_box = self.row.get_children()[0].get_children()[1] 
+        code_box.set_visible(True)
+        code_box.set_no_show_all(False)
+        code_box.show_all()
+        GObject.timeout_add_seconds(1, self.update_timer)
+
+
+    def update_timer(self, *args):
+        self.timer += 1
+        if self.timer > 10:
+            code_box = self.row.get_children()[0].get_children()[1] 
+            code_box.set_visible(False)
+            code_box.set_no_show_all(True)
+        return self.timer <= 10
 
     def create_row(self):
         self.row = Gtk.ListBoxRow()
@@ -73,7 +93,7 @@ class ListBoxRow(Thread):
         copy_button.set_from_icon_name("edit-copy-symbolic",
                                        Gtk.IconSize.SMALL_TOOLBAR)
         copy_button.set_tooltip_text("Copy the generated code..")
-        copy_event.connect("button-press-event", self.parent.copy_code)
+        copy_event.connect("button-press-event", self.copy_code)
         copy_event.add(copy_button)
         hbox.pack_end(copy_event, False, True, 6)
 
