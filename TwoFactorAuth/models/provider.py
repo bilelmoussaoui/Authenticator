@@ -1,13 +1,14 @@
 import sqlite3
 import logging
-from os import path, mknod,makedirs
+from os import path, mknod, makedirs
 from gi.repository import GdkPixbuf, Gtk
 logging.basicConfig(level=logging.DEBUG,
                 format='[%(levelname)s] %(message)s',
                 )
 class Provider:
     def __init__(self):
-        database_file = '/home/bilal/.config/TwoFactorAuth/database.db'
+        home = path.expanduser("~")
+        database_file = home + '/.config/TwoFactorAuth/database.db'
         if not (path.isfile(database_file) and path.exists(database_file)):
             dirs = database_file.split("/")
             i = 0

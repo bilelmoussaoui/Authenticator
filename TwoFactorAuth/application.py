@@ -44,9 +44,9 @@ class Application(Gtk.Application):
         GLib.set_prgname('two_factor_auth')
         GObject.threads_init()
         provider = Gtk.CssProvider()
-        css_file = "/home/bilal/Projects/Two-factor-gtk/data/style.css"
+        css_file = self.pkgdatadir + "/data/style.css"
         try:
-            provider.load_from_path(css_file) #load css file
+            provider.load_from_path(css_file)
             Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
                                             provider,
                                             Gtk.STYLE_PROVIDER_PRIORITY_USER)
@@ -71,7 +71,7 @@ class Application(Gtk.Application):
         self.add_action(action)
 
         builder = Gtk.Builder()
-        builder.add_from_file("/home/bilal/Projects/Two-factor-gtk/data/menu.glade")
+        builder.add_from_file(self.pkgdatadir + "/data/menu.glade")
         logging.debug("[APP MENU] : adding gnome shell menu")
         self.set_app_menu(builder.get_object("app-menu"))
 

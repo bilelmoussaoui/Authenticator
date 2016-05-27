@@ -6,6 +6,7 @@ AM_PATH_PYTHON([3.0])
 AC_CONFIG_FILES([
     Makefile
     data/Makefile
+    data/logos/Makefile
     data/twofactorauth.desktop
     TwoFactorAuth/Makefile
     TwoFactorAuth/models/Makefile

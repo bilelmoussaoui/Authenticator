@@ -1,3 +1,5 @@
+SUBDIRS = logos
+
 desktopdir = $(datadir)/applications
 desktop_DATA = twofactorauth.desktop
 
@@ -9,18 +11,11 @@ ui_DATA = about.glade \
         menu.glade \
         style.css
 
-logodir = $(pkgdatadir)/data
-logo_DATA = about.glade \
-        shortcuts.glade \
-        menu.glade \
-        style.css
-
 appdatadir = $(datadir)/appdata
 appdata_DATA = \
     twofactorauth.appdata.xml
 
 EXTRA_DIST =  \
-        $(logo_DATA) \
         $(ui_DATA) \
         $(appdata_DATA)
 

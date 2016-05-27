@@ -9,7 +9,7 @@ logging.basicConfig(level=logging.DEBUG,
 class LogoProviderWindow(Gtk.Window):
 
     def __init__(self, window):
-        directory = "/home/bilal/Projects/Two-factor-gtk/data/logos/"
+        directory = window.parent.app.pkgdatadir + "/data/logos/"
         self.logos = listdir(directory)
         self.logos.sort()
         self.window = window
