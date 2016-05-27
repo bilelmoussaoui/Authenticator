@@ -27,6 +27,7 @@ Two-factor authentication generator for Gnome
 ```bash
     sudo pip install pyotp
 ```
+<sub>PS : In some distributions you will need to use `pip3` instead of `pip` to install the compatible version of the package with Python 3.</sub> <br>
 3 - Afterwards
 ```bash
 ./autogen.sh
