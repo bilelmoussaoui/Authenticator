@@ -28,11 +28,12 @@ class ListBoxRow(Thread):
         self.start()
         GObject.timeout_add_seconds(1, self.refresh_listbox)
 
-
-    def on_button_press_event(self, widget, event) :
-        if event.button == Gdk.EventType._2BUTTON_PRESS:
-            # TODO : add double click event
-            pass
+    def toggle_code_box(self, *args):
+        code_box = self.row.get_children()[0].get_children()[1]
+        is_visible = code_box.get_visible()
+        code_box.set_visible(not is_visible)
+        code_box.set_no_show_all(is_visible)
+        code_box.show_all()
 
 
     def copy_code(self, eventbox, box):
@@ -56,8 +57,8 @@ class ListBoxRow(Thread):
     def create_row(self):
         self.row = Gtk.ListBoxRow()
         self.row.get_style_context().add_class("application-list-row")
-        self.row.connect("button-press-event", self.on_button_press_event)
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+       
         hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         pass_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         pass_box.set_visible(False)
@@ -83,10 +84,13 @@ class ListBoxRow(Thread):
         hbox.pack_start(provider_logo, False, True, 6)
 
         # Provider name
+        name_event = Gtk.EventBox()
         application_name = Gtk.Label(xalign=0)
         application_name.get_style_context().add_class("application-name")
         application_name.set_text(self.name)
-        hbox.pack_start(application_name, True, True, 6)
+        name_event.connect("button-press-event", self.toggle_code_box)
+        name_event.add(application_name)
+        hbox.pack_start(name_event, True, True, 6)
         # Copy button
         copy_event = Gtk.EventBox()
         copy_button = Gtk.Image(xalign=0)
