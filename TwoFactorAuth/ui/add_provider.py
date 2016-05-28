@@ -16,7 +16,7 @@ class AddProviderWindow(Gtk.Window):
         self.generate_compenents()
         self.generate_headerbar()
         self.show_all()
-        Gtk.main()
+        
         # TODO : add the possiblity to use external icons or icon names
     def update_logo(self, image):
         directory = self.parent.app.pkgdatadir + "/data/logos/"

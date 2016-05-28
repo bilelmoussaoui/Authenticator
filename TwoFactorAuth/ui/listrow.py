@@ -125,7 +125,7 @@ class ListBoxRow(Thread):
         return self.counter
 
     def run(self):
-        while self.code_generated:
+        while self.code_generated and self.parent.app.alive:
             self.counter -= 1
             if self.counter < 0:
                 self.counter = self.counter_max

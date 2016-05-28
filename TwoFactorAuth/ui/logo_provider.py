@@ -18,7 +18,6 @@ class LogoProviderWindow(Gtk.Window):
         self.generate_compenents()
         self.generate_headerbar()
         self.show_all()
-        Gtk.main()
 
     def generate_window(self):
         Gtk.Window.__init__(self, title="Add a new provider", modal=True,

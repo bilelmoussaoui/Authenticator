@@ -9,7 +9,7 @@
         <property name="window_position">center</property>
         <property name="destroy_with_parent">True</property>
         <property name="type_hint">menu</property>
-        <property name="program_name">Converter</property>
+        <property name="program_name">TwoFactorAuth</property>
         <property name="version">0.1 beta</property>
         <property name="comments" translatable="yes">Simple application to generate two-factor authentication code</property>
         <property name="license" translatable="yes">This program comes with absolutely no warranty.

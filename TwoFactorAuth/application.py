@@ -24,6 +24,7 @@ require_version("Gtk", "3.0")
 from gi.repository import Gtk, GLib, Gio, Gdk, GObject
 from TwoFactorAuth.ui.window import Window
 import logging
+import signal
 
 logging.basicConfig(level=logging.DEBUG,
                 format='[%(levelname)s] %(message)s',
@@ -33,6 +34,7 @@ from TwoFactorAuth.models.provider import Provider
 
 class Application(Gtk.Application):
     win = None
+    alive = True
 
     def __init__(self, *args, **kwargs):
         for key in kwargs:
@@ -77,11 +79,9 @@ class Application(Gtk.Application):
 
     def do_activate(self, *args):
         self.provider = Provider()
-        if not self.win:
-            Window(self)
-        self.win.show()
+        self.win = Window(self)
+        self.win.show_all()
         self.add_window(self.win)
-        self.get_active_window().present()
 
     def on_shortcuts(self, *args):
         logging.debug("Shortcuts window")
@@ -98,6 +98,7 @@ class Application(Gtk.Application):
             clipboard.clear()
         except Exception as e:
             logging.error(str(e))
-        for win in self.get_windows():
-            win.destroy()
+        self.alive = False
+        signal.signal(signal.SIGINT, lambda x,y: self.alive)
+        self.win.destroy()
         self.quit()

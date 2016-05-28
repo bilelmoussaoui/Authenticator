@@ -34,7 +34,6 @@ class Window(Gtk.ApplicationWindow):
         self.set_size_request(350, 500)
         self.set_resizable(False)
         self.connect("key_press_event", self.on_key_press)
-        self.app.win = self
         self.connect("delete-event", lambda x, y: self.app.on_quit())
         self.add(Gtk.Box(orientation=Gtk.Orientation.VERTICAL))
 
@@ -49,6 +48,9 @@ class Window(Gtk.ApplicationWindow):
         elif keypressed == "f":
             if keyevent.state == CONTROL_MASK:
                 self.toggle_searchobox()
+        elif keypressed == "s":
+            if keyevent.state == CONTROL_MASK:
+                self.toggle_select()
         elif keypressed == "n":
             if keyevent.state == CONTROL_MASK:
                 self.add_provider()
@@ -149,7 +151,7 @@ class Window(Gtk.ApplicationWindow):
         select_button.connect("clicked", self.toggle_select)
         select_button.set_no_show_all(not self.app.provider.count_providers() > 0)
 
-        search_button = Gtk.Button()
+        search_button = Gtk.ToggleButton()
         search_icon = Gio.ThemedIcon(name="system-search-symbolic")
         search_image = Gtk.Image.new_from_gicon(search_icon,
                                                 Gtk.IconSize.BUTTON)
@@ -178,12 +180,17 @@ class Window(Gtk.ApplicationWindow):
         if self.app.provider.count_providers() > 0:
             search_box = self.get_children()[0].get_children()[0].get_children()[0]
             is_visible = search_box.get_no_show_all()
+
+            headerbar = self.get_children()[1]
+            search_button = headerbar.get_children()[0].get_children()[0]
             search_box.set_no_show_all(not is_visible)
             search_box.set_visible(is_visible)
             search_box.show_all()
             if is_visible:
+                search_button.get_style_context().add_class("toggle")
                 search_box.get_children()[0].grab_focus_without_selecting()
             else:
+                search_button.get_style_context().remove_class("toggle")
                 self.listbox.set_filter_func(lambda x,y,z : True, None, False)
 
 
@@ -324,15 +331,20 @@ class Window(Gtk.ApplicationWindow):
     def refresh_window(self):
         mainbox = self.get_children()[0]
         count = self.app.provider.count_providers()
+        headerbar = self.get_children()[1]
         if count == 0:
             mainbox.get_children()[0].set_visible(False)
             mainbox.get_children()[1].set_visible(True)
             mainbox.get_children()[1].set_no_show_all(False)
             mainbox.get_children()[1].show_all()
+            headerbar.get_children()[0].get_children()[1].set_visible(True)
+            headerbar.get_children()[1].get_children()[1].set_visible(True)
+            headerbar.get_children()[1].get_children()[2].set_visible(False)
+            headerbar.set_show_close_button(True)
+            headerbar.get_style_context().remove_class("selection-mode")
         else:
-            mainbox.get_children()[0].set_visible(True)
+            mainbox.get_children()[0].get_children()[1].set_visible(True)
             mainbox.get_children()[0].show_all()
-            self.listbox.show_all()
             mainbox.get_children()[1].set_visible(False)
         headerbar = self.get_children()[1]
         left_box = headerbar.get_children()[0]
@@ -377,7 +389,3 @@ class Window(Gtk.ApplicationWindow):
         shortcuts = builder.get_object("shortcuts")
         shortcuts.set_transient_for(self)
         shortcuts.show()
-
-    def show(self):
-        self.show_all()
-        Gtk.main()
