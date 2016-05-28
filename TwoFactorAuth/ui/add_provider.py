@@ -3,6 +3,7 @@ require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gdk
 import logging
 from TwoFactorAuth.ui.logo_provider import LogoProviderWindow
+from TwoFactorAuth.models.code import Code
 
 logging.basicConfig(level=logging.DEBUG,
                     format='[%(levelname)s] %(message)s',
@@ -102,7 +103,7 @@ class AddProviderWindow(Gtk.Window):
 
     def validate_ascii_code(self, entry):
         ascii_code = entry.get_text().strip()
-        is_valid = self.is_valid_ascii(ascii_code)
+        is_valid = Code.is_valid(ascii_code)
         self.hb.get_children()[1].get_children()[0].set_sensitive(is_valid)
         if not is_valid and len(ascii_code) != 0:
             entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY,
@@ -110,14 +111,6 @@ class AddProviderWindow(Gtk.Window):
         else:
             entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY,
                                             "")
-
-    def is_valid_ascii(self, value):
-        try:
-            int(value, 16)
-            return True
-        except ValueError:
-            return False
-
 
     def generate_headerbar(self):
         self.hb = Gtk.HeaderBar()

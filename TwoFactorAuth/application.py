@@ -59,7 +59,7 @@ class Application(Gtk.Application):
         self.set_app_menu(builder.get_object("app-menu"))
 
     def do_activate(self, *args):
-        self.provider = Provider()
+        self.provider = Provider(self.pkgdatadir)
         self.win = Window(self)
         self.win.show_all()
         self.add_window(self.win)

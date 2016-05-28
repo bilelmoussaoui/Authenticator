@@ -162,8 +162,7 @@ class ListBoxRow(Thread):
             else:
                 raise TypeError
         except TypeError as e:
-            logging.error("Canno't generate secret code")
-            logging.error(str(e))
+            logging.error("Couldn't generate the secret code : %s" % str(e))
             label.set_text("Couldn't generate the secret code")
             self.code_generated = False
 

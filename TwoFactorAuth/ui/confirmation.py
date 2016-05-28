@@ -6,7 +6,6 @@ logging.basicConfig(level=logging.DEBUG,
                 format='[%(levelname)s] %(message)s',
                 )
 
-
 class ConfirmationMessage(Gtk.Window):
     def __init__(self, parent, message):
         try:
@@ -15,6 +14,7 @@ class ConfirmationMessage(Gtk.Window):
                                 flags=Gtk.DialogFlags.MODAL,
                                 message_format=message,
                                 buttons=Gtk.ButtonsType.OK_CANCEL)
+            logging.debug("Confirmation message created successfully")
         except Exception as e:
             logging.error(str(e))
 

@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
-Exec=@PACKAGE@
+Exec=twofactorauth
 Name=TwoFactorAuth
 Categories=Utility;GTK
-Icon=@PACKAGE@
+Icon=twofactorauth
 StartupNotify=true

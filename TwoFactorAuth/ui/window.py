@@ -338,13 +338,14 @@ class Window(Gtk.ApplicationWindow):
             mainbox.get_children()[1].set_no_show_all(False)
             mainbox.get_children()[1].show_all()
             headerbar.get_children()[0].get_children()[1].set_visible(True)
-            headerbar.get_children()[1].get_children()[1].set_visible(True)
+            headerbar.get_children()[1].get_children()[1].set_visible(False)
             headerbar.get_children()[1].get_children()[2].set_visible(False)
             headerbar.set_show_close_button(True)
             headerbar.get_style_context().remove_class("selection-mode")
         else:
-            mainbox.get_children()[0].get_children()[1].set_visible(True)
-            mainbox.get_children()[0].show_all()
+            self.get_children()[0].get_children()[0].set_no_show_all(False)
+            self.get_children()[0].get_children()[0].set_visible(True)
+            self.get_children()[0].get_children()[0].show_all()
             mainbox.get_children()[1].set_visible(False)
         headerbar = self.get_children()[1]
         left_box = headerbar.get_children()[0]

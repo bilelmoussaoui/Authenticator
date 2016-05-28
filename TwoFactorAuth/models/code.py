@@ -1,4 +1,6 @@
 import logging
+import binascii
+from base64 import b32decode
 logging.basicConfig(level=logging.DEBUG,
                 format='[%(levelname)s] %(message)s',
                 )
@@ -6,6 +8,7 @@ try:
     from pyotp import TOTP
 except ImportError:
     logging.error("Impossible to import TOTP, please install PyOTP first")
+
 
 
 class Code:
@@ -16,6 +19,14 @@ class Code:
     def __init__(self, secret_code):
         self.secret_code = secret_code
         self.create()
+
+    @staticmethod
+    def is_valid(code):
+        try:
+            b32decode(code, casefold=True)
+            return True
+        except binascii.Error:
+            return False
 
 
     def create(self):
