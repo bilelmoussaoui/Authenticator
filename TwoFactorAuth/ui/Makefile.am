@@ -5,4 +5,5 @@ app_PYTHON = \
 	confirmation.py \
 	listrow.py \
 	logo_provider.py \
+	icon_finder.py \
 	window.py

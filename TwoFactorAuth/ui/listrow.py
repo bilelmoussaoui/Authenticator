@@ -3,6 +3,7 @@ from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, GLib, Gio, Gdk, GObject
 from TwoFactorAuth.models.code import Code
+from TwoFactorAuth.models.provider import Provider
 from threading import Thread
 import time
 
@@ -80,7 +81,9 @@ class ListBoxRow(Thread):
         hbox.pack_start(checkbox, False, True, 6)
 
         # Provider logo
-        provider_logo = self.parent.app.provider.get_provider_image(self.logo)
+        provider_icon = Provider.get_provider_image(self.logo, self.parent.app.pkgdatadir)
+        provider_logo = Gtk.Image(xalign=0)
+        provider_logo.set_from_pixbuf(provider_icon)
         hbox.pack_start(provider_logo, False, True, 6)
 
         # Provider name

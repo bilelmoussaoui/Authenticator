@@ -4,11 +4,13 @@ from gi.repository import Gtk, Gdk
 import logging
 from TwoFactorAuth.ui.logo_provider import LogoProviderWindow
 from TwoFactorAuth.models.code import Code
-
+from TwoFactorAuth.models.provider import Provider
+from TwoFactorAuth.ui.icon_finder import IconFinderWindow
+from inspect import getmembers
+from pprint import pprint
 logging.basicConfig(level=logging.DEBUG,
                     format='[%(levelname)s] %(message)s',
                     )
-
 
 class AddProviderWindow(Gtk.Window):
     selected_image = None
@@ -25,17 +27,17 @@ class AddProviderWindow(Gtk.Window):
         # TODO : add the possiblity to use external icons or icon names
         directory = self.parent.app.pkgdatadir + "/data/logos/"
         self.selected_image = image
-        image = directory + image
+        provider_icon = Provider.get_provider_image(image, self.parent.app.pkgdatadir)
         img_box = self.get_children()[0].get_children()[0].get_children()
         img_box[0].get_children()[0].clear()
-        img_box[0].get_children()[0].set_from_file(image)
+        img_box[0].get_children()[0].set_from_pixbuf(provider_icon)
 
     def generate_window(self):
         Gtk.Window.__init__(self, title="Add a new provider", modal=True,
                             destroy_with_parent=True)
         self.connect("delete-event", lambda x, y: self.destroy())
         self.resize(300, 100)
-        self.set_border_width(18)
+        self.set_border_width(12)
         self.set_size_request(300, 100)
         self.set_position(Gtk.WindowPosition.CENTER)
         self.set_resizable(False)
@@ -46,8 +48,15 @@ class AddProviderWindow(Gtk.Window):
         if Gdk.keyval_name(keyevent.keyval) == "Escape":
             self.destroy()
 
-    def select_logo(self, *args):
-        LogoProviderWindow(self)
+    def select_logo(self, eventbox, event_button):
+        # Right click handling
+        if event_button.button == 3:
+            if self.popover.get_visible():
+                self.popover.hide()
+            else:
+                self.popover.show_all()
+        else:
+            LogoProviderWindow(self)
 
     def add_provider(self, *args):
         entries_box = self.get_children()[0].get_children()[1].get_children()
@@ -89,11 +98,35 @@ class AddProviderWindow(Gtk.Window):
         hbox_two_factor.pack_end(two_factor_entry, False, True, 0)
 
         logo_event = Gtk.EventBox()
-        logo_image = self.parent.app.provider.get_provider_image("image-missing")
+        provider_icon = Provider.get_provider_image("image-missing", self.parent.app.pkgdatadir)
+        logo_image = Gtk.Image(xalign=0)
+        logo_image.set_from_pixbuf(provider_icon)
         logo_image.get_style_context().add_class("provider-logo-add")
         logo_event.add(logo_image)
         logo_event.connect("button-press-event", self.select_logo)
         logo_box.pack_start(logo_event, False, False, 6)
+
+        self.popover = Gtk.PopoverMenu.new()
+        self.popover.get_style_context().add_class("choose-popover")
+        self.popover.set_relative_to(logo_image)
+         
+        pbox = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
+        self.popover.add(pbox)
+         
+        provided = Gtk.ModelButton.new()
+        provided.set_label("Select from provided icons")
+        provided.connect("clicked", self.on_provided_click)
+        pbox.pack_start(provided, False, False, 6)
+         
+        file = Gtk.ModelButton.new()
+        file.set_label("Select a file")
+        file.connect("clicked", self.on_file_clicked)
+        pbox.pack_start(file, False, False, 6)
+         
+        icon_name = Gtk.ModelButton.new()
+        icon_name.set_label("Select an icon name")
+        icon_name.connect("clicked", self.on_icon_clicked)
+        pbox.pack_start(icon_name, False, False, 6)
 
         vbox.add(hbox_title)
         vbox.add(hbox_two_factor)
@@ -111,6 +144,40 @@ class AddProviderWindow(Gtk.Window):
         else:
             entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY,
                                             "")
+
+    def on_provided_click(self, *args):
+         LogoProviderWindow(self)
+
+    def on_file_clicked(self, *args):
+        dialog = Gtk.FileChooserDialog("Please choose a file", self,
+                    Gtk.FileChooserAction.OPEN,
+                    (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+                        Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
+
+        self.add_filters(dialog)
+
+        response = dialog.run()
+        if response == Gtk.ResponseType.OK:
+            print("File selected: " + dialog.get_filename())
+            self.update_logo(dialog.get_filename())
+        dialog.destroy()
+
+
+    def on_icon_clicked(self, *args):
+        IconFinderWindow(self)
+
+
+    def add_filters(self, dialog):
+        filter_png = Gtk.FileFilter()
+        filter_png.set_name("PNG")
+        filter_png.add_mime_type("image/png")
+        dialog.add_filter(filter_png)
+
+        filter_svg = Gtk.FileFilter()
+        filter_svg.set_name("SVG")
+        filter_svg.add_mime_type("image/svg+xml")
+        dialog.add_filter(filter_svg)
+
 
     def generate_headerbar(self):
         self.hb = Gtk.HeaderBar()

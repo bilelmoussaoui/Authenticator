@@ -2,6 +2,8 @@ from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, GLib, Gio, Gdk
 import logging
+
+from TwoFactorAuth.models.provider import Provider
 from os import path, listdir
 logging.basicConfig(level=logging.DEBUG,
                 format='[%(levelname)s] %(message)s',
@@ -113,8 +115,9 @@ class LogoProviderWindow(Gtk.Window):
                 hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
 
                 # Provider logo
-                provider = self.window.parent.app.provider
-                provider_logo = provider.get_provider_image(logo)
+                provider_icon = Provider.get_provider_image(logo, self.window.parent.app.pkgdatadir)
+                provider_logo = Gtk.Image(xalign=0)
+                provider_logo.set_from_pixbuf(provider_icon)
                 hbox.pack_start(provider_logo, False, True, 6)
 
                 # Provider name

@@ -5,6 +5,7 @@ from gi.repository import GdkPixbuf, Gtk
 logging.basicConfig(level=logging.DEBUG,
                 format='[%(levelname)s] %(message)s',
                 )
+
 class Provider:
 
 
@@ -69,20 +70,22 @@ class Provider:
             logging.error(str(e))
             return None
 
-    def get_provider_image(self, image):
-        img = Gtk.Image(xalign=0)
-        directory = self.pkgdatadir + "/data/logos/"
+    @staticmethod
+    def get_provider_image(image, pkgdatadir):
+        directory = pkgdatadir + "/data/logos/"
         theme = Gtk.IconTheme.get_default()
         if path.isfile(directory + image) and path.exists(directory + image):
-            img.set_from_file(directory + image)
+            icon = GdkPixbuf.Pixbuf.new_from_file(directory + image)
         elif path.isfile(image) and path.exists(image):
-            img.set_from_file(image)
+            icon = GdkPixbuf.Pixbuf.new_from_file(image)
         elif theme.has_icon(path.splitext(image)[0]):
-            img.set_from_icon_name(path.splitext(image)[0],
-                                    Gtk.IconSize.DIALOG)
+            icon = theme.load_icon(path.splitext(image)[0], 48, 0)
         else:
-            img.set_from_icon_name("image-missing", Gtk.IconSize.DIALOG)
-        return img
+            icon = theme.load_icon("image-missing", 48, 0)
+        if icon.get_width() != 48 or icon.get_height() != 48:
+            icon = icon.scale_simple(48, 48,
+                                     GdkPixbuf.InterpType.BILINEAR)
+        return icon
 
     def get_latest_id(self):
         c = self.conn.cursor()
