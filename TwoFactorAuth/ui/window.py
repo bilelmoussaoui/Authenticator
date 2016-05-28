@@ -48,15 +48,7 @@ class Window(Gtk.ApplicationWindow):
                 self.copy_code()
         elif keypressed == "f":
             if keyevent.state == CONTROL_MASK:
-                if self.app.provider.count_providers() > 0:
-                    is_visible = search_box.get_no_show_all()
-                    search_box.set_no_show_all(not is_visible)
-                    search_box.set_visible(is_visible)
-                    search_box.show_all()
-                    if is_visible:
-                        search_box.get_children()[0].grab_focus_without_selecting()
-                    else:
-                        self.listbox.set_filter_func(lambda x,y,z : True, None, False)
+                self.toggle_searchobox()
         elif keypressed == "n":
             if keyevent.state == CONTROL_MASK:
                 self.add_provider()
@@ -75,6 +67,7 @@ class Window(Gtk.ApplicationWindow):
                 code_box.set_no_show_all(not is_visible)
                 code_box.set_visible(is_visible)
                 code_box.show_all()
+
 
     def filter_providers(self, entry):
         data = entry.get_text()
@@ -127,7 +120,7 @@ class Window(Gtk.ApplicationWindow):
         Gtk.StyleContext.add_class(left_box.get_style_context(), "linked")
         Gtk.StyleContext.add_class(right_box.get_style_context(), "linked")
         self.remove_button = Gtk.Button()
-        remove_icon = Gio.ThemedIcon(name="list-remove-symbolic")
+        remove_icon = Gio.ThemedIcon(name="user-trash-symbolic")
         remove_image = Gtk.Image.new_from_gicon(remove_icon,
                                                 Gtk.IconSize.BUTTON)
         self.remove_button.set_tooltip_text("Remove selected two factor auth "
@@ -153,10 +146,27 @@ class Window(Gtk.ApplicationWindow):
                                                 Gtk.IconSize.BUTTON)
         select_button.set_tooltip_text("Select mode")
         select_button.set_image(select_image)
-        select_button.connect("clicked", self.show_checkbox)
+        select_button.connect("clicked", self.toggle_select)
         select_button.set_no_show_all(not self.app.provider.count_providers() > 0)
 
+        search_button = Gtk.Button()
+        search_icon = Gio.ThemedIcon(name="system-search-symbolic")
+        search_image = Gtk.Image.new_from_gicon(search_icon,
+                                                Gtk.IconSize.BUTTON)
+        search_button.set_tooltip_text("Select mode")
+        search_button.set_image(search_image)
+        search_button.connect("clicked", self.toggle_searchobox)
+        search_button.set_no_show_all(not self.app.provider.count_providers() > 0)
+
+        cancel_buton = Gtk.Button()
+        cancel_buton.set_label("Cancel")
+        cancel_buton.connect("clicked", self.toggle_select)
+        cancel_buton.set_no_show_all(True)
+
+        right_box.add(search_button)
         right_box.add(select_button)
+        right_box.add(cancel_buton)
+
         hb.pack_start(left_box)
         hb.pack_end(right_box)
         self.set_titlebar(hb)
@@ -164,17 +174,38 @@ class Window(Gtk.ApplicationWindow):
     def add_provider(self, *args):
         AddProviderWindow(self)
 
-    def show_checkbox(self, *args):
+    def toggle_searchobox(self, *args):
+        if self.app.provider.count_providers() > 0:
+            search_box = self.get_children()[0].get_children()[0].get_children()[0]
+            is_visible = search_box.get_no_show_all()
+            search_box.set_no_show_all(not is_visible)
+            search_box.set_visible(is_visible)
+            search_box.show_all()
+            if is_visible:
+                search_box.get_children()[0].grab_focus_without_selecting()
+            else:
+                self.listbox.set_filter_func(lambda x,y,z : True, None, False)
+
+
+    def toggle_select(self, *args):
         i = 0
         button_visible = self.remove_button.get_visible()
-
+        headerbar = self.get_children()[1]
+        headerbar.set_show_close_button(button_visible)
+        headerbar.get_children()[0].get_children()[1].set_visible(button_visible)
+        headerbar.get_children()[1].get_children()[1].set_visible(button_visible)
+        headerbar.get_children()[1].get_children()[2].set_visible(not button_visible)
         self.remove_button.set_visible(not button_visible)
         self.remove_button.set_no_show_all(button_visible)
 
+
         if not button_visible:
             self.listbox.set_selection_mode(Gtk.SelectionMode.MULTIPLE)
+            headerbar.get_style_context().add_class("selection-mode")
         else:
             self.listbox.set_selection_mode(Gtk.SelectionMode.SINGLE)
+            headerbar.get_style_context().remove_class("selection-mode")
+
             if self.selected_app_idx:
                 index = self.selected_app_idx
             else:
@@ -212,7 +243,6 @@ class Window(Gtk.ApplicationWindow):
             return row.get_children()[0].get_children()[0].get_children()[0]
         else:
             return None
-
 
     def select_row(self, listbox, listbox_row):
         index = listbox_row.get_index()

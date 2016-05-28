@@ -32,7 +32,7 @@ class ListBoxRow(Thread):
     def on_button_press_event(self, widget, event) :
         if event.button == Gdk.EventType._2BUTTON_PRESS:
             # TODO : add double click event
-            pass 
+            pass
 
 
     def copy_code(self, eventbox, box):
@@ -100,7 +100,7 @@ class ListBoxRow(Thread):
         # Remove button
         remove_event = Gtk.EventBox()
         remove_button = Gtk.Image(xalign=0)
-        remove_button.set_from_icon_name("list-remove-symbolic",
+        remove_button.set_from_icon_name("user-trash-symbolic",
                                          Gtk.IconSize.SMALL_TOOLBAR)
         remove_button.set_tooltip_text("Remove the source..")
         remove_event.add(remove_button)
