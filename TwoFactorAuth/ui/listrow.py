@@ -31,14 +31,14 @@ class ListBoxRow(Thread):
 
     def on_button_press_event(self, widget, event) :
         if event.button == Gdk.EventType._2BUTTON_PRESS:
-            #data = widget.get_path_at_pos(int(event.x), int(event.y))
-            print("helloooo")
+            # TODO : add double click event
+            pass 
 
 
     def copy_code(self, eventbox, box):
         self.timer = 0
         self.parent.copy_code(eventbox)
-        code_box = self.row.get_children()[0].get_children()[1] 
+        code_box = self.row.get_children()[0].get_children()[1]
         code_box.set_visible(True)
         code_box.set_no_show_all(False)
         code_box.show_all()
@@ -48,7 +48,7 @@ class ListBoxRow(Thread):
     def update_timer(self, *args):
         self.timer += 1
         if self.timer > 10:
-            code_box = self.row.get_children()[0].get_children()[1] 
+            code_box = self.row.get_children()[0].get_children()[1]
             code_box.set_visible(False)
             code_box.set_no_show_all(True)
         return self.timer <= 10
@@ -130,6 +130,8 @@ class ListBoxRow(Thread):
             if self.counter < 0:
                 self.counter = self.counter_max
                 self.regenerate_code()
+                if self.timer != 0:
+                    self.timer = 0
             self.darea.connect("draw", self.expose)
             self.row.changed()
             time.sleep(1)
@@ -173,7 +175,6 @@ class ListBoxRow(Thread):
                     cairo.set_source_rgb(1, 1, 1)
                 cairo.move_to(8, 15)
                 cairo.show_text(str(self.counter))
-                # self.draw(cairo)
         except Exception as e:
             logging.error(str(e))
         return False
