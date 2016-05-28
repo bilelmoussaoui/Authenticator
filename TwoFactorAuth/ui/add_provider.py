@@ -1,12 +1,14 @@
 from gi import require_version
 require_version("Gtk", "3.0")
-from gi.repository import Gtk, GLib, Gio, Gdk
+from gi.repository import Gtk, Gdk
 import logging
 from TwoFactorAuth.ui.logo_provider import LogoProviderWindow
 
 logging.basicConfig(level=logging.DEBUG,
-                format='[%(levelname)s] %(message)s',
-                )
+                    format='[%(levelname)s] %(message)s',
+                    )
+
+
 class AddProviderWindow(Gtk.Window):
     selected_image = None
 
@@ -16,9 +18,10 @@ class AddProviderWindow(Gtk.Window):
         self.generate_compenents()
         self.generate_headerbar()
         self.show_all()
+
         
-        # TODO : add the possiblity to use external icons or icon names
     def update_logo(self, image):
+        # TODO : add the possiblity to use external icons or icon names
         directory = self.parent.app.pkgdatadir + "/data/logos/"
         self.selected_image = image
         image = directory + image
@@ -52,8 +55,9 @@ class AddProviderWindow(Gtk.Window):
         image_entry = self.selected_image if self.selected_image else "image-missing"
         try:
             self.parent.app.provider.add_provider(name_entry,
-                                                secret_entry,
-                                                image_entry)
+                                                    secret_entry,
+                                                    image_entry
+                                                )
             id = self.parent.app.provider.get_latest_id()
             self.parent.update_list(id, name_entry, secret_entry, image_entry)
             self.parent.refresh_window()
@@ -79,6 +83,7 @@ class AddProviderWindow(Gtk.Window):
         two_factor_label = Gtk.Label()
         two_factor_label.set_text("Two-factor secret : ")
         two_factor_entry = Gtk.Entry()
+        two_factor_entry.connect("changed", self.validate_ascii_code)
         hbox_two_factor.pack_start(two_factor_label, False, True, 0)
         hbox_two_factor.pack_end(two_factor_entry, False, True, 0)
 
@@ -95,6 +100,25 @@ class AddProviderWindow(Gtk.Window):
         mainbox.pack_start(vbox, False, True, 6)
         self.add(mainbox)
 
+    def validate_ascii_code(self, entry):
+        ascii_code = entry.get_text().strip()
+        is_valid = self.is_valid_ascii(ascii_code)
+        self.hb.get_children()[1].get_children()[0].set_sensitive(is_valid)
+        if not is_valid and len(ascii_code) != 0:
+            entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY,
+                                            "dialog-error-symbolic")
+        else:
+            entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY,
+                                            "")
+
+    def is_valid_ascii(self, value):
+        try:
+            int(value, 16)
+            return True
+        except ValueError:
+            return False
+
+
     def generate_headerbar(self):
         self.hb = Gtk.HeaderBar()
 
@@ -109,6 +133,7 @@ class AddProviderWindow(Gtk.Window):
         apply_button = Gtk.Button.new_with_label("Add")
         apply_button.get_style_context().add_class("suggested-action")
         apply_button.connect("clicked", self.add_provider)
+        apply_button.set_sensitive(False)
         right_box.add(apply_button)
 
         self.hb.pack_start(left_box)

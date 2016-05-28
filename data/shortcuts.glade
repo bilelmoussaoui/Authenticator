@@ -58,6 +58,14 @@
                 <property name="accelerator">Down</property>
               </object>
             </child>
+
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">True</property>
+                <property name="title" translatable="yes" context="shortcut window">Multiselect</property>
+                <property name="accelerator">&lt;érimary&gt;S</property>
+              </object>
+            </child>
             </object>
         </child>
 

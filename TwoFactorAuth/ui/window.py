@@ -21,7 +21,7 @@ class Window(Gtk.ApplicationWindow):
         self.app = application
         self.generate_window()
         self.generate_headerbar()
-        self.genereate_searchbar()
+        self.generate_searchbar()
         self.generate_applications_list()
         self.get_children()[0].get_children()[0].set_visible(False)
 
@@ -81,7 +81,7 @@ class Window(Gtk.ApplicationWindow):
                                             None)
         self.listbox.set_filter_func(self.filter_func, data, False)
 
-    def genereate_searchbar(self):
+    def generate_searchbar(self):
         hbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         search_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         search_entry = Gtk.Entry()
