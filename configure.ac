@@ -1,4 +1,4 @@
-AC_INIT([TwoFactorAuth], [0.1], [https://github.com/bil-elmoussaoui/TwoFactorAuth)]
+AC_INIT([TwoFactorAuth], [0.1], [https://github.com/bil-elmoussaoui/TwoFactorAuth])
 
 AM_INIT_AUTOMAKE
 AM_PATH_PYTHON([3.0])
