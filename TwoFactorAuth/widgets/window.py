@@ -295,10 +295,12 @@ class Window(Gtk.ApplicationWindow):
         listbox_row = checkbutton.get_parent().get_parent().get_parent()
         if is_active:
             self.listbox.select_row(listbox_row)
-            self.selected_count += 1
+            if is_visible:
+                self.selected_count += 1
         else:
             self.listbox.unselect_row(listbox_row)
-            self.selected_count -= 1
+            if is_visible:
+                self.selected_count -= 1
         self.remove_button.set_sensitive(self.selected_count > 0)
 
     def filter_func(self, row, data, notify_destroy):
