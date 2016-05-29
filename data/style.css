@@ -1,29 +1,23 @@
-.applications-list{
+.applications-list {
     background-color: @theme_bg_color;
 }
-
 .application-list-row:selected GtkImage {
     color: @theme_fg_selected_color;
 }
-
 .application-name {
     font-weight: bold;
     font-size: 12px;
 }
-
 .application-logo-add {
     margin-right: 5px;
     margin-bottom: 10px;
 }
-
 .application-secret-code {
     font-size: 10px;
     margin-top: 0;
     margin-bottom: 5px;
     margin-left: 65px;
 }
-
-
-.choose-popover GtkLabel{
+.choose-popover GtkLabel {
     padding: 10px;
 }

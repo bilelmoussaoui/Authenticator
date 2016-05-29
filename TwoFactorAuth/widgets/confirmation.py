@@ -5,13 +5,14 @@ import logging
 
 
 class ConfirmationMessage(Gtk.Window):
+
     def __init__(self, parent, message):
         try:
             self.dialog = Gtk.MessageDialog(
-                                parent=parent,
-                                flags=Gtk.DialogFlags.MODAL,
-                                message_format=message,
-                                buttons=Gtk.ButtonsType.OK_CANCEL)
+                parent=parent,
+                flags=Gtk.DialogFlags.MODAL,
+                message_format=message,
+                buttons=Gtk.ButtonsType.OK_CANCEL)
             logging.debug("Confirmation message created successfully")
         except Exception as e:
             logging.error(str(e))
@@ -25,7 +26,7 @@ class ConfirmationMessage(Gtk.Window):
             return None
 
     def get_confirmation(self):
-        return self.result ==  Gtk.ResponseType.OK
+        return self.result == Gtk.ResponseType.OK
 
     def destroy(self):
         self.dialog.destroy()

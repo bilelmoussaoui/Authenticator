@@ -3,6 +3,7 @@ import logging
 from os import path, mknod, makedirs
 from gi.repository import GdkPixbuf, Gtk
 
+
 class Authenticator:
 
     def __init__(self):
@@ -11,20 +12,20 @@ class Authenticator:
         if not (path.isfile(database_file) and path.exists(database_file)):
             dirs = database_file.split("/")
             i = 0
-            while i < len(dirs) -1:
-                directory = "/".join(dirs[0:i+1]).strip()
+            while i < len(dirs) - 1:
+                directory = "/".join(dirs[0:i + 1]).strip()
                 if not path.exists(directory) and len(directory) != 0:
                     makedirs(directory)
-                    logging.debug("Creating directory %s " %directory)
+                    logging.debug("Creating directory %s " % directory)
                 i += 1
             mknod(database_file)
             logging.debug("Creating database file %s " % database_file)
         self.conn = sqlite3.connect(database_file)
         if not self.is_table_exists():
-            logging.debug("Table 'applciations' does not exists, creating it now...")
+            logging.debug(
+                "Table 'applciations' does not exists, creating it now...")
             self.create_table()
             logging.debug("Table 'applications' created successfully")
-
 
     def add_application(self, name, secret_code, image):
         t = (name, secret_code, image,)
@@ -41,7 +42,8 @@ class Authenticator:
             self.conn.execute(query, (id,))
             self.conn.commit()
         except Exception as e:
-            logging.error("Couldn't remove application by id : %s with error : %s" % (id,str(e)))
+            logging.error(
+                "Couldn't remove application by id : %s with error : %s" % (id, str(e)))
 
     def count(self):
         c = self.conn.cursor()
@@ -103,7 +105,8 @@ class Authenticator:
             self.conn.execute(query)
             self.conn.commit()
         except Exception as e:
-            logging.error("SQL : imossibile to create table 'applications' %s " % str(err))
+            logging.error(
+                "SQL : imossibile to create table 'applications' %s " % str(err))
 
     def is_table_exists(self):
         query = "SELECT id from applications LIMIT 1"

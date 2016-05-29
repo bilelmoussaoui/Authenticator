@@ -7,7 +7,6 @@ import logging
 from gettext import gettext as _
 
 
-
 class AuthenticatorLogoChooser(Gtk.Window):
 
     def __init__(self, window):
@@ -16,7 +15,7 @@ class AuthenticatorLogoChooser(Gtk.Window):
         self.logos.sort()
         self.window = window
         self.generate_window()
-        self.genereate_searchbar()
+        self.generate_searchbar()
         self.generate_compenents()
         self.generate_headerbar()
         self.show_all()
@@ -45,10 +44,10 @@ class AuthenticatorLogoChooser(Gtk.Window):
         data = entry.get_text()
         if len(data) != 0:
             entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY,
-                                                "edit-clear-symbolic")
+                                          "edit-clear-symbolic")
         else:
             entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY,
-                                            None)
+                                          None)
         self.listbox.set_filter_func(self.filter_func, data, False)
 
     def on_key_press(self, label, keyevent):
@@ -66,18 +65,19 @@ class AuthenticatorLogoChooser(Gtk.Window):
                 if is_visible:
                     search_box.get_children()[0].grab_focus_without_selecting()
                 else:
-                    self.listbox.set_filter_func(lambda x,y,z : True, None, False)
+                    self.listbox.set_filter_func(
+                        lambda x, y, z: True, None, False)
         elif keypressed == "return":
             self.select_logo()
 
-    def genereate_searchbar(self):
+    def generate_searchbar(self):
         hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         hbox.set_margin_left(60)
 
         search_entry = Gtk.Entry()
         search_entry.connect("changed", self.filter_logos)
         search_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY,
-                                    "system-search-symbolic")
+                                             "system-search-symbolic")
 
         hbox.pack_start(search_entry, False, True, 6)
         hbox.set_visible(False)
@@ -115,7 +115,7 @@ class AuthenticatorLogoChooser(Gtk.Window):
 
                 # Application logo
                 auth_icon = Authenticator.get_auth_icon(img_path,
-                                            self.window.parent.app.pkgdatadir)
+                                                        self.window.parent.app.pkgdatadir)
                 auth_img = Gtk.Image(xalign=0)
                 auth_img.set_from_pixbuf(auth_icon)
                 hbox.pack_start(auth_img, False, True, 6)

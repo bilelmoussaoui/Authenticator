@@ -11,6 +11,7 @@ class Code:
     password = None
 
     label = None
+
     def __init__(self, secret_code):
         self.secret_code = secret_code
         self.create()
@@ -20,9 +21,8 @@ class Code:
         try:
             b32decode(code, casefold=True)
             return True
-        except binascii.Error:
+        except (binascii.Error, ValueError):
             return False
-
 
     def create(self):
         try:
@@ -32,10 +32,8 @@ class Code:
             logging.error("Couldn't generate two factor code")
             logging.error(str(e))
 
-
     def update(self):
         self.password = self.totp.now()
-
 
     def get_secret_code(self):
         try:

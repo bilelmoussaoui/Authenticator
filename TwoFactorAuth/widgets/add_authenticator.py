@@ -8,6 +8,7 @@ from TwoFactorAuth.models.code import Code
 from TwoFactorAuth.models.authenticator import Authenticator
 from gettext import gettext as _
 
+
 class AddAuthenticator(Gtk.Window):
     selected_image = None
 
@@ -18,12 +19,12 @@ class AddAuthenticator(Gtk.Window):
         self.generate_headerbar()
         self.show_all()
 
-
     def update_logo(self, image):
         # TODO : add the possiblity to use external icons or icon names
         directory = self.parent.app.pkgdatadir + "/data/logos/"
         self.selected_image = image
-        auth_icon = Authenticator.get_auth_icon(image, self.parent.app.pkgdatadir)
+        auth_icon = Authenticator.get_auth_icon(
+            image, self.parent.app.pkgdatadir)
         img_box = self.get_children()[0].get_children()[0].get_children()
         img_box[0].get_children()[0].clear()
         img_box[0].get_children()[0].set_from_pixbuf(auth_icon)
@@ -60,8 +61,8 @@ class AddAuthenticator(Gtk.Window):
         secret_entry = entries_box[1].get_children()[1].get_text()
         image_entry = self.selected_image if self.selected_image else "image-missing"
         try:
-            self.parent.app.auth.add_application(name_entry,secret_entry,
-                                                image_entry)
+            self.parent.app.auth.add_application(name_entry, secret_entry,
+                                                 image_entry)
             id = self.parent.app.auth.get_latest_id()
             self.parent.update_list(id, name_entry, secret_entry, image_entry)
             self.parent.refresh_window()
@@ -105,7 +106,7 @@ class AddAuthenticator(Gtk.Window):
         self.popover.get_style_context().add_class("choose-popover")
         self.popover.set_relative_to(logo_image)
 
-        pbox = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
+        pbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         self.popover.add(pbox)
 
         provided = Gtk.ModelButton.new()
@@ -135,19 +136,19 @@ class AddAuthenticator(Gtk.Window):
         self.hb.get_children()[1].get_children()[0].set_sensitive(is_valid)
         if not is_valid and len(ascii_code) != 0:
             entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY,
-                                            "dialog-error-symbolic")
+                                          "dialog-error-symbolic")
         else:
             entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY,
-                                            "")
+                                          "")
 
     def on_provided_click(self, *args):
-         AuthenticatorLogoChooser(self)
+        AuthenticatorLogoChooser(self)
 
     def on_file_clicked(self, *args):
         dialog = Gtk.FileChooserDialog(_("Please choose a file"), self,
-                    Gtk.FileChooserAction.OPEN,
-                    (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-                        Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
+                                       Gtk.FileChooserAction.OPEN,
+                                       (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+                                        Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
 
         self.add_filters(dialog)
 
@@ -156,10 +157,8 @@ class AddAuthenticator(Gtk.Window):
             self.update_logo(dialog.get_filename())
         dialog.destroy()
 
-
     def on_icon_clicked(self, *args):
         IconFinderWindow(self)
-
 
     def add_filters(self, dialog):
         filter_png = Gtk.FileFilter()
@@ -171,7 +170,6 @@ class AddAuthenticator(Gtk.Window):
         filter_svg.set_name("SVG")
         filter_svg.add_mime_type("image/svg+xml")
         dialog.add_filter(filter_svg)
-
 
     def generate_headerbar(self):
         self.hb = Gtk.HeaderBar()

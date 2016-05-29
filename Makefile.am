@@ -1,3 +1,6 @@
+ACLOCAL_AMFLAGS = -I m4
+NULL =
+
 bin_SCRIPTS = twofactorauth
 CLEANFILES = $(bin_SCRIPTS)
 EXTRA_DIST = twofactorauth.in
@@ -15,4 +18,5 @@ twofactorauth: twofactorauth.in Makefile
 
 SUBDIRS = TwoFactorAuth \
           data \
-          po
+          po \
+		  schemas

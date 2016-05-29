@@ -18,7 +18,6 @@ class IconFinderWindow(Gtk.Window):
         self.generate_headerbar()
         self.show_all()
 
-
     def generate_window(self):
         Gtk.Window.__init__(self, modal=True,
                             destroy_with_parent=True)
@@ -35,7 +34,7 @@ class IconFinderWindow(Gtk.Window):
 
         logo_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         auth_icon = Authenticator.get_auth_icon("image-missing",
-                                            self.parent.parent.app.pkgdatadir)
+                                                self.parent.parent.app.pkgdatadir)
         logo_image = Gtk.Image(xalign=0)
         logo_image.set_from_pixbuf(auth_icon)
         logo_image.get_style_context().add_class("application-logo-add")
@@ -52,7 +51,6 @@ class IconFinderWindow(Gtk.Window):
 
         self.add(mainbox)
 
-
     def update_icon(self, entry):
         icon_name = entry.get_text()
         theme = Gtk.IconTheme.get_default()
@@ -63,7 +61,7 @@ class IconFinderWindow(Gtk.Window):
         else:
             icon = theme.load_icon("image-missing", 48, 0)
             apply_button.set_sensitive(False)
-        icon_image =  self.get_children()[0].get_children()[0].get_children()[0]
+        icon_image = self.get_children()[0].get_children()[0].get_children()[0]
         icon_image.clear()
         icon_image.set_from_pixbuf(icon)
 

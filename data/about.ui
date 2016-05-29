@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Generated with glade 3.19.0 -->
 <interface>
-    <requires lib="gtk+" version="3.16" />
+    <requires lib="gtk+" version="3.16"/>
     <object class="GtkAboutDialog" id="AboutDialog">
         <property name="can_focus">False</property>
         <property name="type">popup</property>
@@ -12,8 +12,7 @@
         <property name="program_name">TwoFactorAuth</property>
         <property name="version">0.1 beta</property>
         <property name="comments" translatable="yes">Simple application to generate two-factor authentication code</property>
-        <property name="license" translatable="yes">This program comes with absolutely no warranty.
-See the &lt;a href="http://www.gnu.org/licenses/gpl-3.0.html"&gt;GNU General Public License, version 3 or later&lt;/a&gt; for details.</property>
+        <property name="license" translatable="yes">This program comes with absolutely no warranty. See the &lt;a href="http://www.gnu.org/licenses/gpl-3.0.html"&gt;GNU General Public License, version 3 or later&lt;/a&gt; for details.</property>
         <property name="authors">Bilal Elmoussaoui</property>
         <property name="logo_icon_name">two-factor-auth</property>
         <property name="wrap_license">True</property>
@@ -28,10 +27,10 @@ See the &lt;a href="http://www.gnu.org/licenses/gpl-3.0.html"&gt;GNU General Pub
                         <property name="can_focus">False</property>
                         <property name="layout_style">end</property>
                         <child>
-                            <placeholder />
+                            <placeholder/>
                         </child>
                         <child>
-                            <placeholder />
+                            <placeholder/>
                         </child>
                     </object>
                     <packing>
@@ -41,7 +40,7 @@ See the &lt;a href="http://www.gnu.org/licenses/gpl-3.0.html"&gt;GNU General Pub
                     </packing>
                 </child>
                 <child>
-                    <placeholder />
+                    <placeholder/>
                 </child>
             </object>
         </child>

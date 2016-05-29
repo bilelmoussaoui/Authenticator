@@ -1,17 +1,19 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, GLib, Gio, Gdk, GObject
 from TwoFactorAuth.widgets.window import Window
 from TwoFactorAuth.models.authenticator import Authenticator
+from TwoFactorAuth.widgets.settings import SettingsWindow
+from TwoFactorAuth.models.settings import SettingsReader
 import logging
 import signal
+
 
 class Application(Gtk.Application):
     win = None
     alive = True
-
+    locked = False
 
     def __init__(self, *args, **kwargs):
         for key in kwargs:
@@ -21,14 +23,17 @@ class Application(Gtk.Application):
                                  flags=Gio.ApplicationFlags.FLAGS_NONE)
         GLib.set_application_name("TwoFactorAuth")
         GLib.set_prgname(self.package)
+        self.cfg = SettingsReader()
+        if self.cfg.read("state", "login"):
+            self.locked = True
         GObject.threads_init()
         provider = Gtk.CssProvider()
         css_file = self.pkgdatadir + "/data/style.css"
         try:
             provider.load_from_path(css_file)
             Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
-                                            provider,
-                                            Gtk.STYLE_PROVIDER_PRIORITY_USER)
+                                                     provider,
+                                                     Gtk.STYLE_PROVIDER_PRIORITY_USER)
             logging.debug("Loading css file %s" % css_file)
         except Exception as e:
             logging.debug("File not found %s" % css_file)
@@ -36,6 +41,10 @@ class Application(Gtk.Application):
 
     def do_startup(self):
         Gtk.Application.do_startup(self)
+
+        action = Gio.SimpleAction.new("settings", None)
+        action.connect("activate", self.on_settings)
+        self.add_action(action)
 
         action = Gio.SimpleAction.new("shortcuts", None)
         action.connect("activate", self.on_shortcuts)
@@ -51,8 +60,10 @@ class Application(Gtk.Application):
 
         builder = Gtk.Builder()
         builder.add_from_file(self.pkgdatadir + "/data/menu.ui")
+        self.app_menu = builder.get_object("app-menu")
+
         logging.debug("Adding gnome shell menu")
-        self.set_app_menu(builder.get_object("app-menu"))
+        self.set_app_menu(self.app_menu)
 
     def do_activate(self, *args):
         self.auth = Authenticator()
@@ -65,6 +76,10 @@ class Application(Gtk.Application):
 
     def on_about(self, *args):
         self.win.show_about()
+
+    def on_settings(self, *args):
+        if not self.locked:
+            SettingsWindow(self.win)
 
     def on_quit(self, *args):
         """

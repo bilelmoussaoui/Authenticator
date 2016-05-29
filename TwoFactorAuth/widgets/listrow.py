@@ -3,6 +3,7 @@ require_version("Gtk", "3.0")
 from gi.repository import Gtk, GLib, Gio, Gdk, GObject
 from TwoFactorAuth.models.code import Code
 from TwoFactorAuth.models.authenticator import Authenticator
+from TwoFactorAuth.models.settings import SettingsReader
 from threading import Thread
 import time
 import logging
@@ -19,6 +20,9 @@ class ListBoxRow(Thread):
 
     def __init__(self, parent, id, name, secret_code, logo):
         Thread.__init__(self)
+        cfg = SettingsReader()
+        self.counter_max = cfg.read("refresh-time", "preferences")
+        self.counter = self.counter_max
         self.parent = parent
         self.id = id
         self.name = name
@@ -36,7 +40,6 @@ class ListBoxRow(Thread):
         code_box.set_no_show_all(is_visible)
         code_box.show_all()
 
-
     def copy_code(self, eventbox, box):
         self.timer = 0
         self.parent.copy_code(eventbox)
@@ -45,7 +48,6 @@ class ListBoxRow(Thread):
         code_box.set_no_show_all(False)
         code_box.show_all()
         GObject.timeout_add_seconds(1, self.update_timer)
-
 
     def update_timer(self, *args):
         self.timer += 1
@@ -112,7 +114,8 @@ class ListBoxRow(Thread):
                                          Gtk.IconSize.SMALL_TOOLBAR)
         remove_button.set_tooltip_text(_("Remove the source.."))
         remove_event.add(remove_button)
-        remove_event.connect("button-press-event", self.parent.remove_application)
+        remove_event.connect("button-press-event",
+                             self.parent.remove_application)
         hbox.pack_end(remove_event, False, True, 6)
 
         self.darea = Gtk.DrawingArea()
@@ -127,7 +130,6 @@ class ListBoxRow(Thread):
         pass_box.pack_start(code_label, False, True, 6)
 
         self.row.add(vbox)
-
 
     def get_counter(self):
         return self.counter
@@ -173,10 +175,11 @@ class ListBoxRow(Thread):
     def expose(self, darea, cairo):
         try:
             if self.code_generated:
-                cairo.arc(12, 12, 12, 0, (self.counter*2*pi/self.counter_max))
+                cairo.arc(12, 12, 12, 0, (self.counter *
+                                          2 * pi / self.counter_max))
                 cairo.set_source_rgba(0, 0, 0, 0.4)
                 cairo.fill_preserve()
-                if self.counter < self.counter_max/2:
+                if self.counter < self.counter_max / 2:
                     cairo.set_source_rgb(0, 0, 0)
                 else:
                     cairo.set_source_rgb(1, 1, 1)
