@@ -1,4 +1,4 @@
-![Status](https://img.shields.io/badge/status-alpha-red.svg) ![Python version](https://img.shields.io/badge/python-3.4%2C%203.5-blue.svg)
+![Status](https://img.shields.io/badge/version-alpha-red.svg) ![Python version](https://img.shields.io/badge/python-3.4%2C%203.5-blue.svg)
 
 # TwoFactorAuth
 Two-factor authentication generator for Gnome <br>
@@ -10,8 +10,7 @@ For translators : https://www.transifex.com/twofactorauth/twofactorauth/
 
 ### Screenshots
 
-![Screenshot](screenshots/screenshot1.png) ![Screenshot](screenshots/screenshot2.png)![Screenshot](screenshots/screenshot7.png)
-
+<img src="screenshots/screenshot7.png" width="280" /> <img src="screenshots/screenshot1.png" width="280" /> <img src="screenshots/screenshot2.png" width="280" />
 
 ### Credits
 - Websites and application icons are from Paper theme, created by [Sam Hewitt](https://github.com/snwh)
