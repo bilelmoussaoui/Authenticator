@@ -39,7 +39,7 @@ class Window(Gtk.ApplicationWindow):
     def on_key_press(self, provider, keyevent):
         CONTROL_MASK = Gdk.ModifierType.CONTROL_MASK
         search_box = self.get_children()[0].get_children()[0].get_children()[0]
-
+        count = self.app.provider.count_providers() 
         keypressed = Gdk.keyval_name(keyevent.keyval).lower()
         if keypressed == "c":
             if keyevent.state == CONTROL_MASK:
@@ -56,7 +56,7 @@ class Window(Gtk.ApplicationWindow):
         elif keypressed == "delete" and not search_box.get_visible():
             self.remove_provider()
         elif keypressed == "return":
-            if self.app.provider.count_providers() > 0:
+            if count > 0:
                 if self.listbox.get_selected_row():
                     index = self.listbox.get_selected_row().get_index()
                 else:
@@ -68,6 +68,12 @@ class Window(Gtk.ApplicationWindow):
                 code_box.set_no_show_all(not is_visible)
                 code_box.set_visible(is_visible)
                 code_box.show_all()
+        elif keypressed == "backspace":
+            search_box = self.get_children()[0].get_children()[0].get_children()[0]
+            search_entry = search_box.get_children()[0] 
+            if len(search_entry.get_text())  == 0:
+                search_box.set_visible(False)
+                self.listbox.set_filter_func(lambda x,y,z : True, None, False)
 
 
     def filter_providers(self, entry):
@@ -110,7 +116,6 @@ class Window(Gtk.ApplicationWindow):
             self.listbox.unselect_all()
         confirmation.destroy()
         self.refresh_window()
-
 
     def generate_headerbar(self):
         hb = Gtk.HeaderBar()
@@ -176,12 +181,12 @@ class Window(Gtk.ApplicationWindow):
         AddProviderWindow(self)
 
     def toggle_searchobox(self, *args):
-        if self.app.provider.count_providers() > 0:
+        if self.app.provider.count_providers() > 0: 
             search_box = self.get_children()[0].get_children()[0].get_children()[0]
             is_visible = search_box.get_no_show_all()
 
             headerbar = self.get_children()[1]
-            search_button = headerbar.get_children()[0].get_children()[0]
+            search_button = headerbar.get_children()[1].get_children()[0]
             search_box.set_no_show_all(not is_visible)
             search_box.set_visible(is_visible)
             search_box.show_all()
@@ -324,6 +329,7 @@ class Window(Gtk.ApplicationWindow):
             clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
             clipboard.clear()
             clipboard.set_text(code, len(code))
+            logging.debug("Secret code copied to clipboard")
         except Exception as e:
             logging.error(str(e))
 

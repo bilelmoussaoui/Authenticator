@@ -1,0 +1,162 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-05-29 03:05+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: data/menu.ui:7
+msgid "Keyboard shortcuts"
+msgstr ""
+
+#: data/menu.ui:13
+msgid "About"
+msgstr ""
+
+#: data/menu.ui:17
+msgid "Quit"
+msgstr ""
+
+#: data/shortcuts.ui:13
+msgctxt "shortcut window"
+msgid "General"
+msgstr ""
+
+#: data/shortcuts.ui:17
+msgctxt "shortcut window"
+msgid "Search"
+msgstr ""
+
+#: data/shortcuts.ui:24
+msgctxt "shortcut window"
+msgid "Copy"
+msgstr ""
+
+#: data/shortcuts.ui:31
+msgctxt "shortcut window"
+msgid "Add a new provider"
+msgstr ""
+
+#: data/shortcuts.ui:38
+msgctxt "shortcut window"
+msgid "Delete"
+msgstr ""
+
+#: data/shortcuts.ui:50
+msgctxt "shortcut window"
+msgid "Select next application"
+msgstr ""
+
+#: data/shortcuts.ui:57
+msgctxt "shortcut window"
+msgid "Select previous application"
+msgstr ""
+
+#: data/shortcuts.ui:65
+msgctxt "shortcut window"
+msgid "Multiselect"
+msgstr ""
+
+#: data/about.ui:14
+msgid "Simple application to generate two-factor authentication code"
+msgstr ""
+
+#: data/about.ui:15
+msgid ""
+"This program comes with absolutely no warranty.\n"
+"See the <a href=\"http://www.gnu.org/licenses/gpl-3.0.html\">GNU General "
+"Public License, version 3 or later</a> for details."
+msgstr ""
+
+#: TwoFactorAuth/ui/window.py:101 TwoFactorAuth/ui/window.py:365
+msgid "Do you really want to remove the two-factor auth provider?"
+msgstr ""
+
+#: TwoFactorAuth/ui/window.py:129
+msgid "Remove selected two factor auth sources"
+msgstr ""
+
+#: TwoFactorAuth/ui/window.py:141
+msgid "Add a new Two factor provider"
+msgstr ""
+
+#: TwoFactorAuth/ui/window.py:150
+msgid "Select mode"
+msgstr ""
+
+#: TwoFactorAuth/ui/window.py:159
+msgid "Search"
+msgstr ""
+
+#: TwoFactorAuth/ui/window.py:165 TwoFactorAuth/ui/icon_finder.py:84
+#: TwoFactorAuth/ui/logo_provider.py:143 TwoFactorAuth/ui/add_provider.py:188
+msgid "Cancel"
+msgstr ""
+
+#: TwoFactorAuth/ui/window.py:303
+msgid "There's no providers at the moment"
+msgstr ""
+
+#: TwoFactorAuth/ui/icon_finder.py:89
+msgid "Select"
+msgstr ""
+
+#: TwoFactorAuth/ui/listrow.py:105
+msgid "Copy the generated code.."
+msgstr ""
+
+#: TwoFactorAuth/ui/listrow.py:115
+msgid "Remove the source.."
+msgstr ""
+
+#: TwoFactorAuth/ui/listrow.py:172
+msgid "Couldn't generate the secret code"
+msgstr ""
+
+#: TwoFactorAuth/ui/logo_provider.py:148
+msgid "Choose"
+msgstr ""
+
+#: TwoFactorAuth/ui/add_provider.py:37
+msgid "Add a new provider"
+msgstr ""
+
+#: TwoFactorAuth/ui/add_provider.py:87
+msgid "Provider name : "
+msgstr ""
+
+#: TwoFactorAuth/ui/add_provider.py:95
+msgid "Two-factor secret : "
+msgstr ""
+
+#: TwoFactorAuth/ui/add_provider.py:118
+msgid "Select from provided icons"
+msgstr ""
+
+#: TwoFactorAuth/ui/add_provider.py:123
+msgid "Select a file"
+msgstr ""
+
+#: TwoFactorAuth/ui/add_provider.py:128
+msgid "Select an icon name"
+msgstr ""
+
+#: TwoFactorAuth/ui/add_provider.py:153
+msgid "Please choose a file"
+msgstr ""
+
+#: TwoFactorAuth/ui/add_provider.py:193
+msgid "Add"
+msgstr ""
