@@ -31,7 +31,7 @@ For translators : https://www.transifex.com/twofactorauth/twofactorauth/
 make
 sudo make install
 ```
-4 - You can run the application from your terminal using 
+4 - You can run the application from the desktop file or from terminal using 
 ```bash
 twofactorauth
 ```
