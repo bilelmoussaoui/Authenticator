@@ -1,17 +1,14 @@
 from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, GLib, Gio, Gdk
-from TwoFactorAuth.models.provider import Provider
+from TwoFactorAuth.models.authenticator import Authenticator
 from os import path, listdir
 import logging
 from gettext import gettext as _
-logging.basicConfig(level=logging.DEBUG,
-                format='[%(levelname)s] %(message)s',
-                )
 
 
 
-class LogoProviderWindow(Gtk.Window):
+class AuthenticatorLogoChooser(Gtk.Window):
 
     def __init__(self, window):
         directory = window.parent.app.pkgdatadir + "/data/logos/"
@@ -37,14 +34,14 @@ class LogoProviderWindow(Gtk.Window):
         self.add(Gtk.Box(orientation=Gtk.Orientation.VERTICAL))
 
     def filter_func(self, row, data, notify_destroy):
-        provider_label = row.get_children()[0].get_children()[0].get_children()
+        app_label = row.get_children()[0].get_children()[0].get_children()
         data = data.strip().lower()
         if len(data) > 0:
-            return data in provider_label[1].get_text().lower()
+            return data in app_label[1].get_text().lower()
         else:
             return True
 
-    def filter_providers(self, entry):
+    def filter_logos(self, entry):
         data = entry.get_text()
         if len(data) != 0:
             entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY,
@@ -54,7 +51,7 @@ class LogoProviderWindow(Gtk.Window):
                                             None)
         self.listbox.set_filter_func(self.filter_func, data, False)
 
-    def on_key_press(self, provider, keyevent):
+    def on_key_press(self, label, keyevent):
         CONTROL_MASK = Gdk.ModifierType.CONTROL_MASK
         keypressed = Gdk.keyval_name(keyevent.keyval).lower()
         if keypressed == "escape":
@@ -78,7 +75,7 @@ class LogoProviderWindow(Gtk.Window):
         hbox.set_margin_left(60)
 
         search_entry = Gtk.Entry()
-        search_entry.connect("changed", self.filter_providers)
+        search_entry.connect("changed", self.filter_logos)
         search_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY,
                                     "system-search-symbolic")
 
@@ -109,23 +106,24 @@ class LogoProviderWindow(Gtk.Window):
             box_outer.pack_start(self.listbox, True, True, 0)
             i = 0
             while i < len(self.logos):
-                logo = self.logos[i]
-                provider_name = path.splitext(logo)[0].strip(".").title()
+                img_path = self.logos[i]
+                app_name = path.splitext(img_path)[0].strip(".").title()
                 row = Gtk.ListBoxRow()
                 row.get_style_context().add_class("application-list-row")
                 vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
                 hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
 
-                # Provider logo
-                provider_icon = Provider.get_provider_image(logo, self.window.parent.app.pkgdatadir)
-                provider_logo = Gtk.Image(xalign=0)
-                provider_logo.set_from_pixbuf(provider_icon)
-                hbox.pack_start(provider_logo, False, True, 6)
+                # Application logo
+                auth_icon = Authenticator.get_auth_icon(img_path,
+                                            self.window.parent.app.pkgdatadir)
+                auth_img = Gtk.Image(xalign=0)
+                auth_img.set_from_pixbuf(auth_icon)
+                hbox.pack_start(auth_img, False, True, 6)
 
-                # Provider name
+                # Application name
                 application_name = Gtk.Label(xalign=0)
                 application_name.get_style_context().add_class("application-name")
-                application_name.set_text(provider_name)
+                application_name.set_text(app_name)
                 hbox.pack_start(application_name, True, True, 6)
 
                 vbox.pack_start(hbox, True, True, 6)

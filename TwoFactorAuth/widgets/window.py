@@ -1,15 +1,12 @@
 from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, GLib, Gio, Gdk, GObject
-from TwoFactorAuth.ui.add_provider import AddProviderWindow
-from TwoFactorAuth.ui.confirmation import ConfirmationMessage
-from TwoFactorAuth.ui.listrow import ListBoxRow
+from TwoFactorAuth.widgets.add_authenticator import AddAuthenticator
+from TwoFactorAuth.widgets.confirmation import ConfirmationMessage
+from TwoFactorAuth.widgets.listrow import ListBoxRow
 from threading import Thread
 import logging
 from gettext import gettext as _
-logging.basicConfig(level=logging.DEBUG,
-                format='[%(levelname)s] %(message)s',
-                )
 
 
 class Window(Gtk.ApplicationWindow):
@@ -36,10 +33,10 @@ class Window(Gtk.ApplicationWindow):
         self.connect("delete-event", lambda x, y: self.app.on_quit())
         self.add(Gtk.Box(orientation=Gtk.Orientation.VERTICAL))
 
-    def on_key_press(self, provider, keyevent):
+    def on_key_press(self, app, keyevent):
         CONTROL_MASK = Gdk.ModifierType.CONTROL_MASK
         search_box = self.get_children()[0].get_children()[0].get_children()[0]
-        count = self.app.provider.count_providers() 
+        count = self.app.auth.count()
         keypressed = Gdk.keyval_name(keyevent.keyval).lower()
         if keypressed == "c":
             if keyevent.state == CONTROL_MASK:
@@ -52,9 +49,9 @@ class Window(Gtk.ApplicationWindow):
                 self.toggle_select()
         elif keypressed == "n":
             if keyevent.state == CONTROL_MASK:
-                self.add_provider()
+                self.add_application()
         elif keypressed == "delete" and not search_box.get_visible():
-            self.remove_provider()
+            self.remove_application()
         elif keypressed == "return":
             if count > 0:
                 if self.listbox.get_selected_row():
@@ -70,13 +67,13 @@ class Window(Gtk.ApplicationWindow):
                 code_box.show_all()
         elif keypressed == "backspace":
             search_box = self.get_children()[0].get_children()[0].get_children()[0]
-            search_entry = search_box.get_children()[0] 
+            search_entry = search_box.get_children()[0]
             if len(search_entry.get_text())  == 0:
                 search_box.set_visible(False)
                 self.listbox.set_filter_func(lambda x,y,z : True, None, False)
 
 
-    def filter_providers(self, entry):
+    def filter_applications(self, entry):
         data = entry.get_text()
         if len(data) != 0:
             entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY,
@@ -92,7 +89,7 @@ class Window(Gtk.ApplicationWindow):
         search_entry = Gtk.Entry()
         search_box.set_margin_left(60)
         search_entry.set_width_chars(21)
-        search_entry.connect("changed", self.filter_providers)
+        search_entry.connect("changed", self.filter_applications)
         search_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY,
                                             "system-search-symbolic")
 
@@ -102,7 +99,7 @@ class Window(Gtk.ApplicationWindow):
         search_box.set_no_show_all(True)
 
     def remove_selected(self, *args):
-        message = _("Do you really want to remove the two-factor auth provider?")
+        message = _("Do you really want to remove this application?")
         confirmation = ConfirmationMessage(self, message)
         confirmation.show()
         if confirmation.get_confirmation():
@@ -111,7 +108,7 @@ class Window(Gtk.ApplicationWindow):
                 if checkbox.get_active():
                     label_id = row.get_children()[0].get_children()[2]
                     label_id = int(label_id.get_text())
-                    self.app.provider.remove_from_database(label_id)
+                    self.app.auth.remove_by_id(label_id)
                     self.listbox.remove(row)
             self.listbox.unselect_all()
         confirmation.destroy()
@@ -141,9 +138,9 @@ class Window(Gtk.ApplicationWindow):
         add_icon = Gio.ThemedIcon(name="list-add-symbolic")
         add_image = Gtk.Image.new_from_gicon(add_icon,
                                              Gtk.IconSize.BUTTON)
-        add_button.set_tooltip_text(_("Add a new Two factor provider"))
+        add_button.set_tooltip_text(_("Add a new application"))
         add_button.set_image(add_image)
-        add_button.connect("clicked", self.add_provider)
+        add_button.connect("clicked", self.add_application)
         left_box.add(add_button)
 
         select_button = Gtk.Button()
@@ -153,7 +150,7 @@ class Window(Gtk.ApplicationWindow):
         select_button.set_tooltip_text(_("Select mode"))
         select_button.set_image(select_image)
         select_button.connect("clicked", self.toggle_select)
-        select_button.set_no_show_all(not self.app.provider.count_providers() > 0)
+        select_button.set_no_show_all(not self.app.auth.count() > 0)
 
         search_button = Gtk.ToggleButton()
         search_icon = Gio.ThemedIcon(name="system-search-symbolic")
@@ -162,7 +159,7 @@ class Window(Gtk.ApplicationWindow):
         search_button.set_tooltip_text(_("Search"))
         search_button.set_image(search_image)
         search_button.connect("clicked", self.toggle_searchobox)
-        search_button.set_no_show_all(not self.app.provider.count_providers() > 0)
+        search_button.set_no_show_all(not self.app.auth.count() > 0)
 
         cancel_buton = Gtk.Button()
         cancel_buton.set_label(_("Cancel"))
@@ -177,11 +174,11 @@ class Window(Gtk.ApplicationWindow):
         hb.pack_end(right_box)
         self.set_titlebar(hb)
 
-    def add_provider(self, *args):
-        AddProviderWindow(self)
+    def add_application(self, *args):
+        AddAuthenticator(self)
 
     def toggle_searchobox(self, *args):
-        if self.app.provider.count_providers() > 0: 
+        if self.app.auth.count() > 0:
             search_box = self.get_children()[0].get_children()[0].get_children()[0]
             is_visible = search_box.get_no_show_all()
 
@@ -242,10 +239,10 @@ class Window(Gtk.ApplicationWindow):
             self.listbox.unselect_row(listbox_row)
 
     def filter_func(self, row, data, notify_destroy):
-        provider_label = row.get_children()[0].get_children()[0].get_children()
+        app_label = row.get_children()[0].get_children()[0].get_children()
         data = data.strip()
         if len(data) > 0:
-            return data in provider_label[2].get_children()[0].get_text().lower()
+            return data in app_label[2].get_children()[0].get_text().lower()
         else:
             return True
 
@@ -273,7 +270,7 @@ class Window(Gtk.ApplicationWindow):
     # TODO : show a nice message when no application is added
     def generate_applications_list(self):
         list_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-        count = self.app.provider.count_providers()
+        count = self.app.auth.count()
         # Create a ScrolledWindow for installed applications
         self.listbox = Gtk.ListBox()
         self.listbox.get_style_context().add_class("applications-list")
@@ -286,11 +283,12 @@ class Window(Gtk.ApplicationWindow):
         scrolled_win.add_with_viewport(list_box)
         self.get_children()[0].get_children()[0].pack_start(scrolled_win, True, True, 0)
 
-        providers =  self.app.provider.fetch_providers()
+        apps =  self.app.auth.fetch_apps()
         i = 0
-        while i < len(providers):
-            row = ListBoxRow(self, providers[i][0], providers[i][1],
-                                    providers[i][2], providers[i][3])
+        count = len(apps)
+        while i < count:
+            row = ListBoxRow(self, apps[i][0], apps[i][1], apps[i][2],
+                            apps[i][3])
             self.listbox.add(row.get_listrow())
             i += 1
 
@@ -303,13 +301,13 @@ class Window(Gtk.ApplicationWindow):
         vbox.pack_start(logo_image, False, False, 6)
 
         no_proivders_label = Gtk.Label()
-        no_proivders_label.set_text(_("There's no providers at the moment"))
+        no_proivders_label.set_text(_("There's no application at the moment"))
         vbox.pack_start(no_proivders_label, False, False, 6)
 
         nolist_box.pack_start(vbox, True, True, 0)
         self.get_children()[0].pack_start(nolist_box, True, True, 0)
-        self.get_children()[0].get_children()[0].set_no_show_all(len(providers) == 0)
-        self.get_children()[0].get_children()[1].set_no_show_all(not len(providers) == 0)
+        self.get_children()[0].get_children()[0].set_no_show_all(count == 0)
+        self.get_children()[0].get_children()[1].set_no_show_all(not count == 0)
 
 
     def update_list(self, id, name, secret_code, image):
@@ -335,7 +333,7 @@ class Window(Gtk.ApplicationWindow):
 
     def refresh_window(self):
         mainbox = self.get_children()[0]
-        count = self.app.provider.count_providers()
+        count = self.app.auth.count()
         headerbar = self.get_children()[1]
         if count == 0:
             mainbox.get_children()[0].set_visible(False)
@@ -351,6 +349,9 @@ class Window(Gtk.ApplicationWindow):
             self.get_children()[0].get_children()[0].set_no_show_all(False)
             self.get_children()[0].get_children()[0].set_visible(True)
             self.get_children()[0].get_children()[0].show_all()
+            headerbar.get_children()[0].get_children()[1].set_visible(False)
+            headerbar.get_children()[1].get_children()[1].set_visible(True)
+            headerbar.get_children()[1].get_children()[2].set_visible(True)
             mainbox.get_children()[1].set_visible(False)
         headerbar = self.get_children()[1]
         left_box = headerbar.get_children()[0]
@@ -361,12 +362,12 @@ class Window(Gtk.ApplicationWindow):
 
 
 
-    def remove_provider(self, *args):
+    def remove_application(self, *args):
         if len(args) > 0:
             row = args[0].get_parent().get_parent().get_parent()
             self.listbox.select_row(row)
 
-        message = _("Do you really want to remove the two-factor auth provider?")
+        message = _("Do you really want to remove the application?")
         confirmation = ConfirmationMessage(self, message)
         confirmation.show()
         if confirmation.get_confirmation():
@@ -374,7 +375,7 @@ class Window(Gtk.ApplicationWindow):
                 selected_row = self.listbox.get_selected_row()
                 self.listbox.remove(selected_row)
                 label_id = selected_row.get_children()[0].get_children()[2]
-                self.app.provider.remove_from_database(int(label_id.get_text()))
+                self.app.auth.remove_by_id(int(label_id.get_text()))
         confirmation.destroy()
         self.refresh_window()
 

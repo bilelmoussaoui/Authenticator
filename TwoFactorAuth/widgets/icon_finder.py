@@ -2,13 +2,11 @@ from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gdk
 import logging
-from TwoFactorAuth.ui.logo_provider import LogoProviderWindow
+from TwoFactorAuth.widgets.authenticator_logo import AuthenticatorLogoChooser
 from TwoFactorAuth.models.code import Code
-from TwoFactorAuth.models.provider import Provider
+from TwoFactorAuth.models.authenticator import Authenticator
 from gettext import gettext as _
-logging.basicConfig(level=logging.DEBUG,
-                    format='[%(levelname)s] %(message)s',
-                    )
+
 
 class IconFinderWindow(Gtk.Window):
     selected_image = None
@@ -34,12 +32,13 @@ class IconFinderWindow(Gtk.Window):
 
     def generate_compenents(self):
         mainbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-      
+
         logo_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        provider_icon = Provider.get_provider_image("image-missing", self.parent.parent.app.pkgdatadir)
+        auth_icon = Authenticator.get_auth_icon("image-missing",
+                                            self.parent.parent.app.pkgdatadir)
         logo_image = Gtk.Image(xalign=0)
-        logo_image.set_from_pixbuf(provider_icon)
-        logo_image.get_style_context().add_class("provider-logo-add")
+        logo_image.set_from_pixbuf(auth_icon)
+        logo_image.get_style_context().add_class("application-logo-add")
         logo_box.pack_start(logo_image, False, False, 0)
 
         box_entry = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
@@ -50,7 +49,7 @@ class IconFinderWindow(Gtk.Window):
 
         mainbox.pack_start(logo_box, False, True, 6)
         mainbox.pack_end(box_entry, False, True, 6)
-        
+
         self.add(mainbox)
 
 

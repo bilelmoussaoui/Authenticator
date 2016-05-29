@@ -1,9 +1,8 @@
-
 from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, GLib, Gio, Gdk, GObject
 from TwoFactorAuth.models.code import Code
-from TwoFactorAuth.models.provider import Provider
+from TwoFactorAuth.models.authenticator import Authenticator
 from threading import Thread
 import time
 import logging
@@ -60,7 +59,7 @@ class ListBoxRow(Thread):
         self.row = Gtk.ListBoxRow()
         self.row.get_style_context().add_class("application-list-row")
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-       
+
         hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         pass_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         pass_box.set_visible(False)
@@ -81,13 +80,14 @@ class ListBoxRow(Thread):
         checkbox.connect("toggled", self.parent.select_application)
         hbox.pack_start(checkbox, False, True, 6)
 
-        # Provider logo
-        provider_icon = Provider.get_provider_image(self.logo, self.parent.app.pkgdatadir)
-        provider_logo = Gtk.Image(xalign=0)
-        provider_logo.set_from_pixbuf(provider_icon)
-        hbox.pack_start(provider_logo, False, True, 6)
+        # Application logo
+        auth_icon = Authenticator.get_auth_icon(self.logo,
+                                                self.parent.app.pkgdatadir)
+        auth_logo = Gtk.Image(xalign=0)
+        auth_logo.set_from_pixbuf(auth_icon)
+        hbox.pack_start(auth_logo, False, True, 6)
 
-        # Provider name
+        # Application name
         name_event = Gtk.EventBox()
         application_name = Gtk.Label(xalign=0)
         application_name.get_style_context().add_class("application-name")
@@ -112,7 +112,7 @@ class ListBoxRow(Thread):
                                          Gtk.IconSize.SMALL_TOOLBAR)
         remove_button.set_tooltip_text(_("Remove the source.."))
         remove_event.add(remove_button)
-        remove_event.connect("button-press-event", self.parent.remove_provider)
+        remove_event.connect("button-press-event", self.parent.remove_application)
         hbox.pack_end(remove_event, False, True, 6)
 
         self.darea = Gtk.DrawingArea()

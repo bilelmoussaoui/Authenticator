@@ -3,13 +3,10 @@
 from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, GLib, Gio, Gdk, GObject
-from TwoFactorAuth.ui.window import Window
-from TwoFactorAuth.models.provider import Provider
+from TwoFactorAuth.widgets.window import Window
+from TwoFactorAuth.models.authenticator import Authenticator
 import logging
 import signal
-
-logging.basicConfig(level=logging.DEBUG, format='[%(levelname)s] %(message)s',)
-
 
 class Application(Gtk.Application):
     win = None
@@ -58,7 +55,7 @@ class Application(Gtk.Application):
         self.set_app_menu(builder.get_object("app-menu"))
 
     def do_activate(self, *args):
-        self.provider = Provider(self.pkgdatadir)
+        self.auth = Authenticator()
         self.win = Window(self)
         self.win.show_all()
         self.add_window(self.win)

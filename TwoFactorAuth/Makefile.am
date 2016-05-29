@@ -5,4 +5,4 @@ app_PYTHON = \
 appdir = $(pythondir)/TwoFactorAuth
 
 SUBDIRS = models \
-          ui
+          widgets

@@ -2,16 +2,13 @@ from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gdk
 import logging
-from TwoFactorAuth.ui.logo_provider import LogoProviderWindow
+from TwoFactorAuth.widgets.authenticator_logo import AuthenticatorLogoChooser
+from TwoFactorAuth.widgets.icon_finder import IconFinderWindow
 from TwoFactorAuth.models.code import Code
-from TwoFactorAuth.models.provider import Provider
-from TwoFactorAuth.ui.icon_finder import IconFinderWindow
+from TwoFactorAuth.models.authenticator import Authenticator
 from gettext import gettext as _
-logging.basicConfig(level=logging.DEBUG,
-                    format='[%(levelname)s] %(message)s',
-                    )
 
-class AddProviderWindow(Gtk.Window):
+class AddAuthenticator(Gtk.Window):
     selected_image = None
 
     def __init__(self, window):
@@ -21,18 +18,18 @@ class AddProviderWindow(Gtk.Window):
         self.generate_headerbar()
         self.show_all()
 
-        
+
     def update_logo(self, image):
         # TODO : add the possiblity to use external icons or icon names
         directory = self.parent.app.pkgdatadir + "/data/logos/"
         self.selected_image = image
-        provider_icon = Provider.get_provider_image(image, self.parent.app.pkgdatadir)
+        auth_icon = Authenticator.get_auth_icon(image, self.parent.app.pkgdatadir)
         img_box = self.get_children()[0].get_children()[0].get_children()
         img_box[0].get_children()[0].clear()
-        img_box[0].get_children()[0].set_from_pixbuf(provider_icon)
+        img_box[0].get_children()[0].set_from_pixbuf(auth_icon)
 
     def generate_window(self):
-        Gtk.Window.__init__(self, title=_("Add a new provider"), modal=True,
+        Gtk.Window.__init__(self, title=_("Add a new application"), modal=True,
                             destroy_with_parent=True)
         self.connect("delete-event", lambda x, y: self.destroy())
         self.resize(300, 100)
@@ -43,7 +40,7 @@ class AddProviderWindow(Gtk.Window):
         self.set_transient_for(self.parent)
         self.connect("key_press_event", self.on_key_press)
 
-    def on_key_press(self, provider, keyevent):
+    def on_key_press(self, key, keyevent):
         if Gdk.keyval_name(keyevent.keyval) == "Escape":
             self.destroy()
 
@@ -55,24 +52,22 @@ class AddProviderWindow(Gtk.Window):
             else:
                 self.popover.show_all()
         else:
-            LogoProviderWindow(self)
+            AuthenticatorLogoChooser(self)
 
-    def add_provider(self, *args):
+    def add_application(self, *args):
         entries_box = self.get_children()[0].get_children()[1].get_children()
         name_entry = entries_box[0].get_children()[1].get_text()
         secret_entry = entries_box[1].get_children()[1].get_text()
         image_entry = self.selected_image if self.selected_image else "image-missing"
         try:
-            self.parent.app.provider.add_provider(name_entry,
-                                                    secret_entry,
-                                                    image_entry
-                                                )
-            id = self.parent.app.provider.get_latest_id()
+            self.parent.app.auth.add_application(name_entry,secret_entry,
+                                                image_entry)
+            id = self.parent.app.auth.get_latest_id()
             self.parent.update_list(id, name_entry, secret_entry, image_entry)
             self.parent.refresh_window()
             self.close_window()
         except Exception as e:
-            logging.error("Error in adding a new provider")
+            logging.error("Error in adding a new application")
             logging.error(str(e))
 
     def generate_compenents(self):
@@ -82,7 +77,7 @@ class AddProviderWindow(Gtk.Window):
         hbox_title = Gtk.Box(
             orientation=Gtk.Orientation.HORIZONTAL, spacing=18)
         title_label = Gtk.Label()
-        title_label.set_text(_("Provider name : "))
+        title_label.set_text(_("Application name : "))
         title_entry = Gtk.Entry()
         hbox_title.pack_start(title_label, False, True, 0)
         hbox_title.pack_end(title_entry, False, True, 0)
@@ -97,10 +92,11 @@ class AddProviderWindow(Gtk.Window):
         hbox_two_factor.pack_end(two_factor_entry, False, True, 0)
 
         logo_event = Gtk.EventBox()
-        provider_icon = Provider.get_provider_image("image-missing", self.parent.app.pkgdatadir)
+        auth_icon = Authenticator.get_auth_icon("image-missing",
+                                                self.parent.app.pkgdatadir)
         logo_image = Gtk.Image(xalign=0)
-        logo_image.set_from_pixbuf(provider_icon)
-        logo_image.get_style_context().add_class("provider-logo-add")
+        logo_image.set_from_pixbuf(auth_icon)
+        logo_image.get_style_context().add_class("application-logo-add")
         logo_event.add(logo_image)
         logo_event.connect("button-press-event", self.select_logo)
         logo_box.pack_start(logo_event, False, False, 6)
@@ -108,20 +104,20 @@ class AddProviderWindow(Gtk.Window):
         self.popover = Gtk.PopoverMenu.new()
         self.popover.get_style_context().add_class("choose-popover")
         self.popover.set_relative_to(logo_image)
-         
+
         pbox = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.popover.add(pbox)
-         
+
         provided = Gtk.ModelButton.new()
         provided.set_label(_("Select from provided icons"))
         provided.connect("clicked", self.on_provided_click)
         pbox.pack_start(provided, False, False, 6)
-         
+
         file = Gtk.ModelButton.new()
         file.set_label(_("Select a file"))
         file.connect("clicked", self.on_file_clicked)
         pbox.pack_start(file, False, False, 6)
-         
+
         icon_name = Gtk.ModelButton.new()
         icon_name.set_label(_("Select an icon name"))
         icon_name.connect("clicked", self.on_icon_clicked)
@@ -145,7 +141,7 @@ class AddProviderWindow(Gtk.Window):
                                             "")
 
     def on_provided_click(self, *args):
-         LogoProviderWindow(self)
+         AuthenticatorLogoChooser(self)
 
     def on_file_clicked(self, *args):
         dialog = Gtk.FileChooserDialog(_("Please choose a file"), self,
@@ -190,7 +186,7 @@ class AddProviderWindow(Gtk.Window):
 
         apply_button = Gtk.Button.new_with_label(_("Add"))
         apply_button.get_style_context().add_class("suggested-action")
-        apply_button.connect("clicked", self.add_provider)
+        apply_button.connect("clicked", self.add_application)
         apply_button.set_sensitive(False)
         right_box.add(apply_button)
 

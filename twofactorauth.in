@@ -22,20 +22,36 @@ import sys
 sys.path.insert(1, '@pyexecdir@')
 sys.path.insert(1, '@pythondir@')
 from TwoFactorAuth import application
-
+import logging
 import locale
 import gettext
+_ = gettext.gettext
+import argparse
 
 if __name__ == "__main__":
+	locale.bindtextdomain('TwoFactorAuth', "@localedir@")
+	locale.textdomain('TwoFactorAuth')
+	gettext.bindtextdomain('TwoFactorAuth', "@localedir@")
+	gettext.textdomain('TwoFactorAuth')
 
+	parser = argparse.ArgumentParser(prog="TwoFactorAuth")
+	parser.add_argument("--debug", "-d", action="store_true",
+						help=_("start in debug mode"))
+	parser.add_argument("--version", "-v", action="store_true",
+						help=_("TwoFactorAuth version number"))
+	args = parser.parse_args()
 
-    locale.bindtextdomain('TwoFactorAuth', "@localedir@")
-    locale.textdomain('TwoFactorAuth')
-    gettext.bindtextdomain('TwoFactorAuth', "@localedir@")
-    gettext.textdomain('TwoFactorAuth')
+	level = logging.ERROR
+	if args.debug:
+		level = logging.DEBUG
+	logging.basicConfig(level=level,
+						format='[%(levelname)s] %(message)s',
+						)
+	if args.version:
+		sys.exit("Version : @VERSION@")
 
-    app = application.Application(package="@PACKAGE@",
-                          version="@VERSION@",
-                          pkgdatadir="@pkgdatadir@")
-    exit_status = app.run(sys.argv)
-    sys.exit(exit_status)
+	app = application.Application(package="@PACKAGE@",
+								version="@VERSION@",
+								pkgdatadir="@pkgdatadir@")
+	exit_status = app.run(None)
+	sys.exit(exit_status)

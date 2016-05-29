@@ -8,7 +8,7 @@
         <p>Simple application that generates two-factor authentication code, created for Gnome</p>
     </description>
     <screenshots>
-        <screenshot type="default" width="300" height="200">https://raw.githubusercontent.com/bil-elmoussaoui/UnitsConverter/master/screenshots/working_ui.png</screenshot>
+        <screenshot type="default" width="350" height="500">https://raw.githubusercontent.com/bil-elmoussaoui/TwoFactorAuth/master/screenshots/screenshot1.png</screenshot>
     </screenshots>
     <url type="homepage">https://github.com/bil-elmoussaoui/Two-factor-gtk</url>
     <updatecontact>bil.elmoussaoui@gmail.com</updatecontact>

@@ -2,9 +2,7 @@ from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, GLib, Gio, Gdk
 import logging
-logging.basicConfig(level=logging.DEBUG,
-                format='[%(levelname)s] %(message)s',
-                )
+
 
 class ConfirmationMessage(Gtk.Window):
     def __init__(self, parent, message):

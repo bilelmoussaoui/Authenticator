@@ -22,7 +22,7 @@ AC_CONFIG_FILES([
     data/twofactorauth.desktop
     TwoFactorAuth/Makefile
     TwoFactorAuth/models/Makefile
-    TwoFactorAuth/ui/Makefile
+    TwoFactorAuth/widgets/Makefile
 	po/Makefile.in
 ])
 

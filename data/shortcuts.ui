@@ -28,7 +28,7 @@
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
-                <property name="title" translatable="yes" context="shortcut window">Add a new provider</property>
+                <property name="title" translatable="yes" context="shortcut window">Add a new application</property>
                 <property name="accelerator">&lt;Primary&gt;N</property>
               </object>
             </child>

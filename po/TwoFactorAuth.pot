@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-29 03:05+0200\n"
+"POT-Creation-Date: 2016-05-29 16:01+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,7 +46,7 @@ msgstr ""
 
 #: data/shortcuts.ui:31
 msgctxt "shortcut window"
-msgid "Add a new provider"
+msgid "Add a new application"
 msgstr ""
 
 #: data/shortcuts.ui:38
@@ -80,83 +80,85 @@ msgid ""
 "Public License, version 3 or later</a> for details."
 msgstr ""
 
-#: TwoFactorAuth/ui/window.py:101 TwoFactorAuth/ui/window.py:365
-msgid "Do you really want to remove the two-factor auth provider?"
+#: TwoFactorAuth/widgets/window.py:102
+msgid "Do you really want to remove this application?"
 msgstr ""
 
-#: TwoFactorAuth/ui/window.py:129
+#: TwoFactorAuth/widgets/window.py:129
 msgid "Remove selected two factor auth sources"
 msgstr ""
 
-#: TwoFactorAuth/ui/window.py:141
-msgid "Add a new Two factor provider"
+#: TwoFactorAuth/widgets/window.py:141
+#: TwoFactorAuth/widgets/add_authenticator.py:32
+msgid "Add a new application"
 msgstr ""
 
-#: TwoFactorAuth/ui/window.py:150
+#: TwoFactorAuth/widgets/window.py:150
 msgid "Select mode"
 msgstr ""
 
-#: TwoFactorAuth/ui/window.py:159
+#: TwoFactorAuth/widgets/window.py:159
 msgid "Search"
 msgstr ""
 
-#: TwoFactorAuth/ui/window.py:165 TwoFactorAuth/ui/icon_finder.py:84
-#: TwoFactorAuth/ui/logo_provider.py:143 TwoFactorAuth/ui/add_provider.py:188
+#: TwoFactorAuth/widgets/window.py:165 TwoFactorAuth/widgets/icon_finder.py:81
+#: TwoFactorAuth/widgets/authenticator_logo.py:140
+#: TwoFactorAuth/widgets/add_authenticator.py:182
 msgid "Cancel"
 msgstr ""
 
-#: TwoFactorAuth/ui/window.py:303
-msgid "There's no providers at the moment"
+#: TwoFactorAuth/widgets/window.py:304
+msgid "There's no application at the moment"
 msgstr ""
 
-#: TwoFactorAuth/ui/icon_finder.py:89
+#: TwoFactorAuth/widgets/window.py:367
+msgid "Do you really want to remove the application?"
+msgstr ""
+
+#: TwoFactorAuth/widgets/icon_finder.py:86
 msgid "Select"
 msgstr ""
 
-#: TwoFactorAuth/ui/listrow.py:105
-msgid "Copy the generated code.."
-msgstr ""
-
-#: TwoFactorAuth/ui/listrow.py:115
-msgid "Remove the source.."
-msgstr ""
-
-#: TwoFactorAuth/ui/listrow.py:172
-msgid "Couldn't generate the secret code"
-msgstr ""
-
-#: TwoFactorAuth/ui/logo_provider.py:148
+#: TwoFactorAuth/widgets/authenticator_logo.py:145
 msgid "Choose"
 msgstr ""
 
-#: TwoFactorAuth/ui/add_provider.py:37
-msgid "Add a new provider"
+#: TwoFactorAuth/widgets/listrow.py:103
+msgid "Copy the generated code.."
 msgstr ""
 
-#: TwoFactorAuth/ui/add_provider.py:87
-msgid "Provider name : "
+#: TwoFactorAuth/widgets/listrow.py:113
+msgid "Remove the source.."
 msgstr ""
 
-#: TwoFactorAuth/ui/add_provider.py:95
+#: TwoFactorAuth/widgets/listrow.py:170
+msgid "Couldn't generate the secret code"
+msgstr ""
+
+#: TwoFactorAuth/widgets/add_authenticator.py:80
+msgid "Application name : "
+msgstr ""
+
+#: TwoFactorAuth/widgets/add_authenticator.py:88
 msgid "Two-factor secret : "
 msgstr ""
 
-#: TwoFactorAuth/ui/add_provider.py:118
+#: TwoFactorAuth/widgets/add_authenticator.py:112
 msgid "Select from provided icons"
 msgstr ""
 
-#: TwoFactorAuth/ui/add_provider.py:123
+#: TwoFactorAuth/widgets/add_authenticator.py:117
 msgid "Select a file"
 msgstr ""
 
-#: TwoFactorAuth/ui/add_provider.py:128
+#: TwoFactorAuth/widgets/add_authenticator.py:122
 msgid "Select an icon name"
 msgstr ""
 
-#: TwoFactorAuth/ui/add_provider.py:153
+#: TwoFactorAuth/widgets/add_authenticator.py:147
 msgid "Please choose a file"
 msgstr ""
 
-#: TwoFactorAuth/ui/add_provider.py:193
+#: TwoFactorAuth/widgets/add_authenticator.py:187
 msgid "Add"
 msgstr ""
