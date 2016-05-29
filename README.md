@@ -2,18 +2,16 @@
 
 # TwoFactorAuth
 Two-factor authentication generator for Gnome
-
+For translators : https://www.transifex.com/twofactorauth/twofactorauth/
 ### Dependecies 
 - `Python 3.3+`
 - `Gtk 3.18+`
 - `PyOTP`
 
-### Features
-- To complete later..
-
 ### Screenshots
 
-![Screenshot](screenshots/screenshot1.png) ![Screenshot](screenshots/screenshot2.png)
+![Screenshot](screenshots/screenshot1.png) ![Screenshot](screenshots/screenshot2.png)![Screenshot](screenshots/screenshot3.png) 
+![Screenshot](screenshots/screenshot4.png)![Screenshot](screenshots/screenshot5.png) ![Screenshot](screenshots/screenshot6.png)
 
 ### Credits
 - Websites and application icons are from Paper theme, created by [Sam Hewitt](https://github.com/snwh)
