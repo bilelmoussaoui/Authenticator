@@ -13,6 +13,7 @@ from gettext import gettext as _
 class Window(Gtk.ApplicationWindow):
     app = None
     selected_app_idx = None
+    selected_count = 0
 
     def __init__(self, application):
         self.app = application
@@ -185,7 +186,7 @@ class Window(Gtk.ApplicationWindow):
                                                 Gtk.IconSize.BUTTON)
         self.remove_button.set_tooltip_text(_("Remove selected two factor auth "
                                               "sources"))
-
+        self.remove_button.set_sensitive(False)
         self.remove_button.set_image(remove_image)
         self.remove_button.set_no_show_all(True)
         self.remove_button.connect("clicked", self.remove_selected)
@@ -294,8 +295,11 @@ class Window(Gtk.ApplicationWindow):
         listbox_row = checkbutton.get_parent().get_parent().get_parent()
         if is_active:
             self.listbox.select_row(listbox_row)
+            self.selected_count += 1
         else:
             self.listbox.unselect_row(listbox_row)
+            self.selected_count -= 1
+        self.remove_button.set_sensitive(self.selected_count > 0)
 
     def filter_func(self, row, data, notify_destroy):
         app_label = row.get_children()[0].get_children()[0].get_children()
