@@ -6,9 +6,10 @@ from TwoFactorAuth.models.code import Code
 from TwoFactorAuth.models.provider import Provider
 from threading import Thread
 import time
-
 import logging
 from math import pi
+from gettext import gettext as _
+
 
 class ListBoxRow(Thread):
     counter_max = 30
@@ -99,7 +100,7 @@ class ListBoxRow(Thread):
         copy_button = Gtk.Image(xalign=0)
         copy_button.set_from_icon_name("edit-copy-symbolic",
                                        Gtk.IconSize.SMALL_TOOLBAR)
-        copy_button.set_tooltip_text("Copy the generated code..")
+        copy_button.set_tooltip_text(_("Copy the generated code.."))
         copy_event.connect("button-press-event", self.copy_code)
         copy_event.add(copy_button)
         hbox.pack_end(copy_event, False, True, 6)
@@ -109,7 +110,7 @@ class ListBoxRow(Thread):
         remove_button = Gtk.Image(xalign=0)
         remove_button.set_from_icon_name("user-trash-symbolic",
                                          Gtk.IconSize.SMALL_TOOLBAR)
-        remove_button.set_tooltip_text("Remove the source..")
+        remove_button.set_tooltip_text(_("Remove the source.."))
         remove_event.add(remove_button)
         remove_event.connect("button-press-event", self.parent.remove_provider)
         hbox.pack_end(remove_event, False, True, 6)
@@ -166,7 +167,7 @@ class ListBoxRow(Thread):
                 raise TypeError
         except TypeError as e:
             logging.error("Couldn't generate the secret code : %s" % str(e))
-            label.set_text("Couldn't generate the secret code")
+            label.set_text(_("Couldn't generate the secret code"))
             self.code_generated = False
 
     def expose(self, darea, cairo):

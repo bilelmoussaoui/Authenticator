@@ -6,8 +6,7 @@ from TwoFactorAuth.ui.logo_provider import LogoProviderWindow
 from TwoFactorAuth.models.code import Code
 from TwoFactorAuth.models.provider import Provider
 from TwoFactorAuth.ui.icon_finder import IconFinderWindow
-from inspect import getmembers
-from pprint import pprint
+from gettext import gettext as _
 logging.basicConfig(level=logging.DEBUG,
                     format='[%(levelname)s] %(message)s',
                     )
@@ -33,7 +32,7 @@ class AddProviderWindow(Gtk.Window):
         img_box[0].get_children()[0].set_from_pixbuf(provider_icon)
 
     def generate_window(self):
-        Gtk.Window.__init__(self, title="Add a new provider", modal=True,
+        Gtk.Window.__init__(self, title=_("Add a new provider"), modal=True,
                             destroy_with_parent=True)
         self.connect("delete-event", lambda x, y: self.destroy())
         self.resize(300, 100)
@@ -83,7 +82,7 @@ class AddProviderWindow(Gtk.Window):
         hbox_title = Gtk.Box(
             orientation=Gtk.Orientation.HORIZONTAL, spacing=18)
         title_label = Gtk.Label()
-        title_label.set_text("Provider name : ")
+        title_label.set_text(_("Provider name : "))
         title_entry = Gtk.Entry()
         hbox_title.pack_start(title_label, False, True, 0)
         hbox_title.pack_end(title_entry, False, True, 0)
@@ -91,7 +90,7 @@ class AddProviderWindow(Gtk.Window):
         hbox_two_factor = Gtk.Box(
             orientation=Gtk.Orientation.HORIZONTAL, spacing=18)
         two_factor_label = Gtk.Label()
-        two_factor_label.set_text("Two-factor secret : ")
+        two_factor_label.set_text(_("Two-factor secret : "))
         two_factor_entry = Gtk.Entry()
         two_factor_entry.connect("changed", self.validate_ascii_code)
         hbox_two_factor.pack_start(two_factor_label, False, True, 0)
@@ -114,17 +113,17 @@ class AddProviderWindow(Gtk.Window):
         self.popover.add(pbox)
          
         provided = Gtk.ModelButton.new()
-        provided.set_label("Select from provided icons")
+        provided.set_label(_("Select from provided icons"))
         provided.connect("clicked", self.on_provided_click)
         pbox.pack_start(provided, False, False, 6)
          
         file = Gtk.ModelButton.new()
-        file.set_label("Select a file")
+        file.set_label(_("Select a file"))
         file.connect("clicked", self.on_file_clicked)
         pbox.pack_start(file, False, False, 6)
          
         icon_name = Gtk.ModelButton.new()
-        icon_name.set_label("Select an icon name")
+        icon_name.set_label(_("Select an icon name"))
         icon_name.connect("clicked", self.on_icon_clicked)
         pbox.pack_start(icon_name, False, False, 6)
 
@@ -149,7 +148,7 @@ class AddProviderWindow(Gtk.Window):
          LogoProviderWindow(self)
 
     def on_file_clicked(self, *args):
-        dialog = Gtk.FileChooserDialog("Please choose a file", self,
+        dialog = Gtk.FileChooserDialog(_("Please choose a file"), self,
                     Gtk.FileChooserAction.OPEN,
                     (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
                         Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
@@ -158,7 +157,6 @@ class AddProviderWindow(Gtk.Window):
 
         response = dialog.run()
         if response == Gtk.ResponseType.OK:
-            print("File selected: " + dialog.get_filename())
             self.update_logo(dialog.get_filename())
         dialog.destroy()
 
@@ -185,12 +183,12 @@ class AddProviderWindow(Gtk.Window):
         left_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         right_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
 
-        cancel_button = Gtk.Button.new_with_label("Cancel")
+        cancel_button = Gtk.Button.new_with_label(_("Cancel"))
         cancel_button.connect("clicked", self.close_window)
         cancel_button.get_style_context().add_class("destructive-action")
         left_box.add(cancel_button)
 
-        apply_button = Gtk.Button.new_with_label("Add")
+        apply_button = Gtk.Button.new_with_label(_("Add"))
         apply_button.get_style_context().add_class("suggested-action")
         apply_button.connect("clicked", self.add_provider)
         apply_button.set_sensitive(False)

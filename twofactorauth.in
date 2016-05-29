@@ -23,8 +23,17 @@ sys.path.insert(1, '@pyexecdir@')
 sys.path.insert(1, '@pythondir@')
 from TwoFactorAuth import application
 
+import locale
+import gettext
 
 if __name__ == "__main__":
+
+
+    locale.bindtextdomain('TwoFactorAuth', "@localedir@")
+    locale.textdomain('TwoFactorAuth')
+    gettext.bindtextdomain('TwoFactorAuth', "@localedir@")
+    gettext.textdomain('TwoFactorAuth')
+
     app = application.Application(package="@PACKAGE@",
                           version="@VERSION@",
                           pkgdatadir="@pkgdatadir@")

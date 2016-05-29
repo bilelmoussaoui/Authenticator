@@ -1,13 +1,16 @@
 from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, GLib, Gio, Gdk
-import logging
-
 from TwoFactorAuth.models.provider import Provider
 from os import path, listdir
+import logging
+from gettext import gettext as _
 logging.basicConfig(level=logging.DEBUG,
                 format='[%(levelname)s] %(message)s',
                 )
+
+
+
 class LogoProviderWindow(Gtk.Window):
 
     def __init__(self, window):
@@ -22,7 +25,7 @@ class LogoProviderWindow(Gtk.Window):
         self.show_all()
 
     def generate_window(self):
-        Gtk.Window.__init__(self, title="Add a new provider", modal=True,
+        Gtk.Window.__init__(self, modal=True,
                             destroy_with_parent=True)
         self.connect("delete-event", lambda x, y: self.destroy())
         self.resize(350, 400)
@@ -93,7 +96,6 @@ class LogoProviderWindow(Gtk.Window):
 
     def generate_compenents(self):
         box_outer = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-        directory = "/home/bilal/Projects/Two-factor-gtk/data/logos/"
         if len(self.logos) > 0:
             # Create a ScrolledWindow for installed applications
             scrolled_win = Gtk.ScrolledWindow()
@@ -137,12 +139,12 @@ class LogoProviderWindow(Gtk.Window):
         left_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         right_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
 
-        cancel_button = Gtk.Button.new_with_label("Cancel")
+        cancel_button = Gtk.Button.new_with_label(_("Cancel"))
         cancel_button.connect("clicked", self.close_window)
         cancel_button.get_style_context().add_class("destructive-action")
         left_box.add(cancel_button)
 
-        apply_button = Gtk.Button.new_with_label("Choose")
+        apply_button = Gtk.Button.new_with_label(_("Choose"))
         apply_button.get_style_context().add_class("suggested-action")
         apply_button.connect("clicked", self.select_logo)
         right_box.add(apply_button)

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, GLib, Gio, Gdk, GObject
@@ -23,7 +22,7 @@ class Application(Gtk.Application):
         Gtk.Application.__init__(self,
                                  application_id='org.gnome.twofactorauth',
                                  flags=Gio.ApplicationFlags.FLAGS_NONE)
-        GLib.set_application_name("Two-Factor Auth")
+        GLib.set_application_name("TwoFactorAuth")
         GLib.set_prgname(self.package)
         GObject.threads_init()
         provider = Gtk.CssProvider()
@@ -54,8 +53,8 @@ class Application(Gtk.Application):
         self.add_action(action)
 
         builder = Gtk.Builder()
-        builder.add_from_file(self.pkgdatadir + "/data/menu.glade")
-        logging.debug("[APP MENU] : adding gnome shell menu")
+        builder.add_from_file(self.pkgdatadir + "/data/menu.ui")
+        logging.debug("Adding gnome shell menu")
         self.set_app_menu(builder.get_object("app-menu"))
 
     def do_activate(self, *args):

@@ -5,8 +5,7 @@ import logging
 from TwoFactorAuth.ui.logo_provider import LogoProviderWindow
 from TwoFactorAuth.models.code import Code
 from TwoFactorAuth.models.provider import Provider
-from inspect import getmembers
-from pprint import pprint
+from gettext import gettext as _
 logging.basicConfig(level=logging.DEBUG,
                     format='[%(levelname)s] %(message)s',
                     )
@@ -23,7 +22,7 @@ class IconFinderWindow(Gtk.Window):
 
 
     def generate_window(self):
-        Gtk.Window.__init__(self, title="Add a new provider", modal=True,
+        Gtk.Window.__init__(self, modal=True,
                             destroy_with_parent=True)
         self.connect("delete-event", lambda x, y: self.destroy())
         self.resize(200, 100)
@@ -80,12 +79,12 @@ class IconFinderWindow(Gtk.Window):
         left_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         right_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
 
-        cancel_button = Gtk.Button.new_with_label("Cancel")
+        cancel_button = Gtk.Button.new_with_label(_("Cancel"))
         cancel_button.connect("clicked", self.close_window)
         cancel_button.get_style_context().add_class("destructive-action")
         left_box.add(cancel_button)
 
-        apply_button = Gtk.Button.new_with_label("Add")
+        apply_button = Gtk.Button.new_with_label(_("Select"))
         apply_button.get_style_context().add_class("suggested-action")
         apply_button.connect("clicked", self.update_logo)
         apply_button.set_sensitive(False)

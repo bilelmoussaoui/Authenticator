@@ -1,4 +1,3 @@
-
 from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, GLib, Gio, Gdk, GObject
@@ -6,12 +5,12 @@ from TwoFactorAuth.ui.add_provider import AddProviderWindow
 from TwoFactorAuth.ui.confirmation import ConfirmationMessage
 from TwoFactorAuth.ui.listrow import ListBoxRow
 from threading import Thread
-
 import logging
-from math import pi
+from gettext import gettext as _
 logging.basicConfig(level=logging.DEBUG,
                 format='[%(levelname)s] %(message)s',
                 )
+
 
 class Window(Gtk.ApplicationWindow):
     app = None
@@ -97,7 +96,7 @@ class Window(Gtk.ApplicationWindow):
         search_box.set_no_show_all(True)
 
     def remove_selected(self, *args):
-        message = "Do you really want to remove the two-factor auth provider?"
+        message = _("Do you really want to remove the two-factor auth provider?")
         confirmation = ConfirmationMessage(self, message)
         confirmation.show()
         if confirmation.get_confirmation():
@@ -125,8 +124,8 @@ class Window(Gtk.ApplicationWindow):
         remove_icon = Gio.ThemedIcon(name="user-trash-symbolic")
         remove_image = Gtk.Image.new_from_gicon(remove_icon,
                                                 Gtk.IconSize.BUTTON)
-        self.remove_button.set_tooltip_text("Remove selected two factor auth "
-                                            "sources")
+        self.remove_button.set_tooltip_text(_("Remove selected two factor auth "
+                                            "sources"))
 
         self.remove_button.set_image(remove_image)
         self.remove_button.set_no_show_all(True)
@@ -137,7 +136,7 @@ class Window(Gtk.ApplicationWindow):
         add_icon = Gio.ThemedIcon(name="list-add-symbolic")
         add_image = Gtk.Image.new_from_gicon(add_icon,
                                              Gtk.IconSize.BUTTON)
-        add_button.set_tooltip_text("Add a new Two factor website")
+        add_button.set_tooltip_text(_("Add a new Two factor provider"))
         add_button.set_image(add_image)
         add_button.connect("clicked", self.add_provider)
         left_box.add(add_button)
@@ -146,7 +145,7 @@ class Window(Gtk.ApplicationWindow):
         select_icon = Gio.ThemedIcon(name="object-select-symbolic")
         select_image = Gtk.Image.new_from_gicon(select_icon,
                                                 Gtk.IconSize.BUTTON)
-        select_button.set_tooltip_text("Select mode")
+        select_button.set_tooltip_text(_("Select mode"))
         select_button.set_image(select_image)
         select_button.connect("clicked", self.toggle_select)
         select_button.set_no_show_all(not self.app.provider.count_providers() > 0)
@@ -155,13 +154,13 @@ class Window(Gtk.ApplicationWindow):
         search_icon = Gio.ThemedIcon(name="system-search-symbolic")
         search_image = Gtk.Image.new_from_gicon(search_icon,
                                                 Gtk.IconSize.BUTTON)
-        search_button.set_tooltip_text("Select mode")
+        search_button.set_tooltip_text(_("Search"))
         search_button.set_image(search_image)
         search_button.connect("clicked", self.toggle_searchobox)
         search_button.set_no_show_all(not self.app.provider.count_providers() > 0)
 
         cancel_buton = Gtk.Button()
-        cancel_buton.set_label("Cancel")
+        cancel_buton.set_label(_("Cancel"))
         cancel_buton.connect("clicked", self.toggle_select)
         cancel_buton.set_no_show_all(True)
 
@@ -299,7 +298,7 @@ class Window(Gtk.ApplicationWindow):
         vbox.pack_start(logo_image, False, False, 6)
 
         no_proivders_label = Gtk.Label()
-        no_proivders_label.set_text("There's no providers at the moment")
+        no_proivders_label.set_text(_("There's no providers at the moment"))
         vbox.pack_start(no_proivders_label, False, False, 6)
 
         nolist_box.pack_start(vbox, True, True, 0)
@@ -361,7 +360,7 @@ class Window(Gtk.ApplicationWindow):
             row = args[0].get_parent().get_parent().get_parent()
             self.listbox.select_row(row)
 
-        message = "Do you really want to remove the two-factor auth provider?"
+        message = _("Do you really want to remove the two-factor auth provider?")
         confirmation = ConfirmationMessage(self, message)
         confirmation.show()
         if confirmation.get_confirmation():
@@ -376,7 +375,7 @@ class Window(Gtk.ApplicationWindow):
 
     def show_about(self, *args):
         builder = Gtk.Builder()
-        builder.add_from_file(self.app.pkgdatadir + "/data/about.glade")
+        builder.add_from_file(self.app.pkgdatadir + "/data/about.ui")
 
         dialog = builder.get_object("AboutDialog")
         dialog.set_transient_for(self)
@@ -385,7 +384,7 @@ class Window(Gtk.ApplicationWindow):
 
     def show_shortcuts(self, *args):
         builder = Gtk.Builder()
-        builder.add_from_file(self.app.pkgdatadir + "/data/shortcuts.glade")
+        builder.add_from_file(self.app.pkgdatadir + "/data/shortcuts.ui")
 
         shortcuts = builder.get_object("shortcuts")
         shortcuts.set_transient_for(self)
