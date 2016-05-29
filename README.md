@@ -10,8 +10,9 @@ For translators : https://www.transifex.com/twofactorauth/twofactorauth/
 
 ### Screenshots
 
-![Screenshot](screenshots/screenshot1.png) ![Screenshot](screenshots/screenshot2.png)![Screenshot](screenshots/screenshot3.png) 
-![Screenshot](screenshots/screenshot4.png)![Screenshot](screenshots/screenshot5.png) ![Screenshot](screenshots/screenshot6.png)
+![Screenshot](screenshots/screenshot1.png) ![Screenshot](screenshots/screenshot2.png)
+![Screenshot](screenshots/screenshot3.png) ![Screenshot](screenshots/screenshot4.png) 
+
 
 ### Credits
 - Websites and application icons are from Paper theme, created by [Sam Hewitt](https://github.com/snwh)
