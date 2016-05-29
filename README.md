@@ -10,8 +10,7 @@ For translators : https://www.transifex.com/twofactorauth/twofactorauth/
 
 ### Screenshots
 
-![Screenshot](screenshots/screenshot1.png) ![Screenshot](screenshots/screenshot2.png)
-![Screenshot](screenshots/screenshot3.png) ![Screenshot](screenshots/screenshot4.png) 
+![Screenshot](screenshots/screenshot1.png) ![Screenshot](screenshots/screenshot2.png)![Screenshot](screenshots/screenshot7.png)
 
 
 ### Credits
