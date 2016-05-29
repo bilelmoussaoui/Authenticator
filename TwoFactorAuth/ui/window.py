@@ -241,7 +241,7 @@ class Window(Gtk.ApplicationWindow):
         provider_label = row.get_children()[0].get_children()[0].get_children()
         data = data.strip()
         if len(data) > 0:
-            return data in provider_label[2].get_text().lower()
+            return data in provider_label[2].get_children()[0].get_text().lower()
         else:
             return True
 
