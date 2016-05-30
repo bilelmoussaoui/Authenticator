@@ -112,7 +112,7 @@ class Window(Gtk.ApplicationWindow):
         box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         box.set_margin_left(60)
 
-        self.search_entry.set_width_chars(22)
+        self.search_entry.set_width_chars(28)
         self.search_entry.connect("changed", self.filter_applications)
         self.search_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY, "system-search-symbolic")
 
@@ -308,10 +308,15 @@ class Window(Gtk.ApplicationWindow):
 
         for row in self.list_box.get_children():
             checkbox = ListBoxRow.get_checkbox(row)
+            code_label = ListBoxRow.get_code_label(row)
             visible = checkbox.get_visible()
             selected = checkbox.get_active()
             if not is_visible:
                 self.select_application(checkbox)
+                code_label.get_style_context().add_class("application-secret-code-select-mode")
+            else:
+                code_label.get_style_context().remove_class("application-secret-code-select-mode")
+
             checkbox.set_visible(not visible)
             checkbox.set_no_show_all(visible)
 
@@ -410,6 +415,7 @@ class Window(Gtk.ApplicationWindow):
             :param secret_code: application secret code
             :param image: application image path or icon name
         """
+        secret_code = md5(secret_code.encode('utf-8')).hexdigest()
         row = ListBoxRow(self, uid, name, secret_code, image)
         self.list_box.add(row.get_list_row())
         self.list_box.show_all()

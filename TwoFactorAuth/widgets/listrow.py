@@ -23,18 +23,18 @@ class ListBoxRow(Thread):
     code_box = None
     code_label = None
 
-    def __init__(self, parent, id, name, secret_code, logo):
+    def __init__(self, parent, uid, name, secret_code, logo):
         Thread.__init__(self)
         # Read default values
         cfg = SettingsReader()
         self.counter_max = cfg.read("refresh-time", "preferences")
         self.counter = self.counter_max
         self.parent = parent
-        self.id = id
+        self.id = uid
         self.name = name
         self.secret_code = Authenticator.fetch_secret_code(secret_code)
         if self.secret_code:
-            self.code = Code(secret_code)
+            self.code = Code(self.secret_code)
         else:
             self.code_generated = False
             logging.error("Could not read the secret code from, the keyring keys were reset manually")
@@ -68,6 +68,11 @@ class ListBoxRow(Thread):
     def get_code(row):
         code_box = ListBoxRow.get_code_box(row)
         return code_box.get_children()[0].get_text()
+
+    @staticmethod
+    def get_code_label(row):
+        code_box = ListBoxRow.get_code_box(row)
+        return code_box.get_children()[0]
 
     @staticmethod
     def get_checkbox(row):
@@ -255,7 +260,7 @@ class ListBoxRow(Thread):
                 # TODO : get colors from default theme
 
                 cairo.select_font_face("Lato, Roboto, Cantarell, Sans-Serif")
-                if self.counter < self.counter_max / 2:
+                if self.counter < self.counter_max / 3:
                     if not is_dark_mode:
                         cairo.set_source_rgb(0, 0, 0)
                     else:

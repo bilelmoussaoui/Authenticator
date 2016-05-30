@@ -3,7 +3,6 @@ import logging
 from os import path, mknod, makedirs
 from gi.repository import GdkPixbuf, Gtk
 from gi.repository import GnomeKeyring as GK
-from TwoFactorAuth.models.settings import SettingsReader
 from hashlib import md5
 
 class Authenticator:
@@ -25,7 +24,6 @@ class Authenticator:
             mknod(database_file)
             logging.debug("Creating database file %s " % database_file)
         # Connect to database
-        self.cfg = SettingsReader()
         self.conn = sqlite3.connect(database_file)
         if not self.is_table_exists():
             logging.debug("SQL: Table 'applications' does not exists, creating it now...")
@@ -34,9 +32,8 @@ class Authenticator:
 
     @staticmethod
     def fetch_secret_code(secret_code):
-        encrypted_secret = md5(secret_code.encode('utf-8')).hexdigest()
         attr = GK.Attribute.list_new()
-        GK.Attribute.list_append_string(attr, 'id', encrypted_secret)
+        GK.Attribute.list_append_string(attr, 'id', secret_code)
         result, value = GK.find_items_sync(GK.ItemType.GENERIC_SECRET, attr)
         if result == GK.Result.OK:
             return value[0].secret
@@ -57,7 +54,6 @@ class Authenticator:
         try:
             GK.create_sync("TwoFactorAuth", None)
             attr = GK.Attribute.list_new()
-            user_password = self.cfg.read("password", "login")
             GK.Attribute.list_append_string(attr, 'id', encrypted_secret)
             GK.Attribute.list_append_string(attr, 'secret_code', secret_code)
             GK.item_create_sync("TwoFactorAuth", GK.ItemType.GENERIC_SECRET, repr(encrypted_secret), attr,

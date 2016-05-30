@@ -30,7 +30,7 @@ class Application(Gtk.Application):
         GLib.set_prgname(self.package)
         result = GK.unlock_sync("TwoFactorAuth", None)
         if result == GK.Result.CANCELLED:
-            self.on_quit()
+            self.quit()
 
         self.cfg = SettingsReader()
         if self.cfg.read("state", "login"):

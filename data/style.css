@@ -18,6 +18,10 @@
     margin-bottom: 5px;
     margin-left: 65px;
 }
+
+.application-secret-code-select-mode{
+    margin-left: 105px;
+}
 .choose-popover GtkLabel {
     padding: 10px;
 }
