@@ -52,7 +52,7 @@ class Authenticator:
             :return:
         """
         encrypted_secret = md5(secret_code.encode('utf-8')).hexdigest()
-        t = (name, secret_code, image,)
+        t = (name, encrypted_secret, image,)
         query = "INSERT INTO applications (name, secret_code, image) VALUES (?, ?, ?)"
         try:
             GK.create_sync("TwoFactorAuth", None)
@@ -89,7 +89,6 @@ class Authenticator:
         """
         secret_code = self.get_secret_code(uid)
         if secret_code:
-            secret_code = md5(secret_code.encode("utf-8")).hexdigest()
             found = False
             (result, ids) = GK.list_item_ids_sync("TwoFactorAuth")
             for gid in ids:
