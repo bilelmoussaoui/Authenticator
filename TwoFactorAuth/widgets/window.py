@@ -1,31 +1,50 @@
 from gi import require_version
 require_version("Gtk", "3.0")
-from gi.repository import Gtk, GLib, Gio, Gdk, GObject
+from gi.repository import Gtk, Gio, Gdk
 from TwoFactorAuth.widgets.add_authenticator import AddAuthenticator
 from TwoFactorAuth.widgets.confirmation import ConfirmationMessage
 from TwoFactorAuth.widgets.listrow import ListBoxRow
-from threading import Thread
 import logging
 from hashlib import md5
 from gettext import gettext as _
-
 
 class Window(Gtk.ApplicationWindow):
     app = None
     selected_app_idx = None
     selected_count = 0
 
+    hb = Gtk.HeaderBar()
+    main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+    search_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+    login_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+    no_apps_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+    apps_list_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+    apps_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+
+    list_box = Gtk.ListBox()
+    search_button = Gtk.ToggleButton()
+    add_button = Gtk.Button()
+    remove_button = Gtk.Button()
+    cancel_button = Gtk.Button()
+    select_button = Gtk.Button()
+
+    password_entry = Gtk.Entry()
+    search_entry = Gtk.Entry()
+
     def __init__(self, application):
         self.app = application
         self.generate_window()
-        self.generate_headerbar()
-        self.generate_searchbar()
+        self.generate_header_bar()
+        self.generate_search_bar()
         self.generate_applications_list()
-        if self.app.locked:
-            self.generate_login_form()
-        self.get_children()[0].get_children()[0].set_visible(False)
+        self.generate_no_apps_box()
+        self.generate_login_form()
+        self.refresh_window()
 
     def generate_window(self, *args):
+        """
+            Generate application window (Gtk.Window)
+        """
         Gtk.ApplicationWindow.__init__(self, Gtk.WindowType.TOPLEVEL,
                                        application=self.app)
         self.set_position(Gtk.WindowPosition.CENTER)
@@ -35,319 +54,332 @@ class Window(Gtk.ApplicationWindow):
         self.set_resizable(False)
         self.connect("key_press_event", self.on_key_press)
         self.connect("delete-event", lambda x, y: self.app.on_quit())
-        self.add(Gtk.Box(orientation=Gtk.Orientation.VERTICAL))
+        self.add(self.main_box)
 
-    def on_key_press(self, app, keyevent):
-        keypressed = Gdk.keyval_name(keyevent.keyval).lower()
+    def on_key_press(self, app, key_event):
+        """
+            Keyboard Listener handling
+        """
+        keypress = Gdk.keyval_name(key_event.keyval).lower()
         if not self.app.locked:
-            CONTROL_MASK = Gdk.ModifierType.CONTROL_MASK
-            search_box = self.get_children()[0].get_children()[
-                0].get_children()[0]
+            control_mask = Gdk.ModifierType.CONTROL_MASK
             count = self.app.auth.count()
-            if keypressed == "c":
-                if keyevent.state == CONTROL_MASK:
+            if keypress == "c":
+                if key_event.state == control_mask:
                     self.copy_code()
-            elif keypressed == "f":
-                if keyevent.state == CONTROL_MASK:
-                    self.toggle_searchobox()
-            elif keypressed == "s":
-                if keyevent.state == CONTROL_MASK:
+            elif keypress == "f":
+                if key_event.state == control_mask:
+                    self.toggle_search_box()
+            elif keypress == "s":
+                if key_event.state == control_mask:
                     self.toggle_select()
-            elif keypressed == "n":
-                if keyevent.state == CONTROL_MASK:
+            elif keypress == "n":
+                if key_event.state == control_mask:
                     self.add_application()
-            elif keypressed == "delete" and not search_box.get_visible():
+            elif keypress == "delete" and not self.search_box.get_visible():
                 self.remove_application()
-            elif keypressed == "return":
+            elif keypress == "return":
                 if count > 0:
-                    if self.listbox.get_selected_row():
-                        index = self.listbox.get_selected_row().get_index()
+                    if self.list_box.get_selected_row():
+                        index = self.list_box.get_selected_row().get_index()
                     else:
                         index = 0
-                    listrow_box = self.listbox.get_row_at_index(index)
-                    listbox = listrow_box.get_children()[0]
-                    code_box = listbox.get_children()[1]
-                    is_visible = code_box.get_no_show_all()
-                    code_box.set_no_show_all(not is_visible)
-                    code_box.set_visible(is_visible)
-                    code_box.show_all()
-            elif keypressed == "backspace":
-                search_box = self.get_children()[0].get_children()[
-                    0].get_children()[0]
-                search_entry = search_box.get_children()[0]
-                if len(search_entry.get_text()) == 0:
-                    search_box.set_visible(False)
-                    self.listbox.set_filter_func(lambda x, y, z: True, None,
-                                                 False)
+                    ListBoxRow.toggle_code_box(self.list_box.get_row_at_index(index))
+            elif keypress == "backspace":
+                if len(self.search_entry.get_text()) == 0:
+                    self.hide_searchbar()
         else:
-            if keypressed == "return":
-                self.on_login_clicked()
+            if keypress == "return":
+                self.on_unlock_clicked()
 
     def filter_applications(self, entry):
         data = entry.get_text()
         if len(data) != 0:
-            entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY,
-                                          "edit-clear-symbolic")
+            entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, "edit-clear-symbolic")
         else:
-            entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY,
-                                          None)
-        self.listbox.set_filter_func(self.filter_func, data, False)
+            entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, None)
+        self.list_box.set_filter_func(self.filter_func, data, False)
 
-    def generate_searchbar(self):
-        hbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        search_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        search_entry = Gtk.Entry()
-        search_box.set_margin_left(60)
-        search_entry.set_width_chars(21)
-        search_entry.connect("changed", self.filter_applications)
-        search_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY,
-                                             "system-search-symbolic")
+    def hide_search_bar(self):
+        """
+            Hide search bar
+        """
+        self.search_box.set_visible(False)
+        self.list_box.set_filter_func(lambda x, y, z: True, None, False)
 
-        search_box.pack_start(search_entry, False, True, 0)
-        hbox.pack_start(search_box, False, True, 6)
-        self.get_children()[0].pack_start(hbox, True, True, 0)
-        search_box.set_no_show_all(True)
+    def generate_search_bar(self):
+        """
+            Generate search bar box and entry
+        """
+        box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        box.set_margin_left(60)
+
+        self.search_entry.set_width_chars(22)
+        self.search_entry.connect("changed", self.filter_applications)
+        self.search_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY, "system-search-symbolic")
+
+        box.pack_start(self.search_entry, False, True, 0)
+        self.search_box.pack_start(box, False, True, 6)
+        self.search_box.set_no_show_all(True)
+        self.apps_box.pack_start(self.search_box, False, True, 0)
+        self.main_box.pack_start(self.apps_box, True, True, 0)
 
     def remove_selected(self, *args):
-        message = _("Do you really want to remove this application?")
+        """
+            Remove selected applications
+        """
+        message = _("Do you really want to remove selected applications?")
         confirmation = ConfirmationMessage(self, message)
         confirmation.show()
         if confirmation.get_confirmation():
-            for row in self.listbox.get_children():
-                checkbox = self.get_checkbox_from_row(row)
+            for row in self.list_box.get_children():
+                checkbox = ListBoxRow.get_checkbox(row)
                 if checkbox.get_active():
-                    label_id = row.get_children()[0].get_children()[2]
-                    label_id = int(label_id.get_text())
+                    label_id = ListBoxRow.get_id(row)
                     self.app.auth.remove_by_id(label_id)
-                    self.listbox.remove(row)
-            self.listbox.unselect_all()
+                    self.list_box.remove(row)
+            self.list_box.unselect_all()
         confirmation.destroy()
         self.refresh_window()
 
     def generate_login_form(self):
-        mainbox = self.get_children()[0]
-
-        login_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        """
+            Generate login form
+        """
         password_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        password_entry = Gtk.Entry()
-        password_entry.set_visibility(False)
-        password_entry.set_placeholder_text(_("Enter your password"))
-        password_box.pack_start(password_entry, False, False, 6)
 
-        login_button = Gtk.Button()
-        login_button.set_label(_("Login"))
-        login_button.connect("clicked", self.on_login_clicked)
-        password_box.pack_start(login_button, False, False, 6)
-        login_box.pack_start(password_box, True, False, 6)
+        self.password_entry.set_visibility(False)
+        self.password_entry.set_placeholder_text(_("Enter your password"))
+        password_box.pack_start(self.password_entry, False, False, 6)
 
-        mainbox.pack_start(login_box, True, False, 0)
-        mainbox.get_children()[0].set_no_show_all(self.app.locked)
-        mainbox.get_children()[1].set_no_show_all(self.app.locked)
-        mainbox.get_children()[2].set_no_show_all(not self.app.locked)
-        self.hide_headerbar()
+        unlock_button = Gtk.Button()
+        unlock_button.set_label(_("Unlock"))
+        unlock_button.connect("clicked", self.on_unlock_clicked)
 
-    def on_login_clicked(self, *args):
-        login_box = self.get_children()[0].get_children()[2]
-        entry = login_box.get_children()[0].get_children()[0]
-        password = md5(entry.get_text().encode("utf-8")).hexdigest()
+        password_box.pack_start(unlock_button, False, False, 6)
+        self.login_box.pack_start(password_box, True, False, 6)
+
+        self.main_box.pack_start(self.login_box, True, False, 0)
+
+    def on_unlock_clicked(self, *args):
+        """
+            Password check and unlock
+        """
+        password = self.password_entry.get_text()
+        password = md5(password.encode("utf-8")).hexdigest()
         if password == self.app.cfg.read("password", "login"):
-            entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, "")
+            self.password_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, None)
             self.toggle_app_lock()
+            self.app.locked = False
+            self.app.toggle_settings_menu()
+            self.password_entry.set_text("")
+            self.app.toggle_app_lock_menu()
         else:
-            entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY,
-                                          "dialog-error-symbolic")
+            self.password_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, "dialog-error-symbolic")
 
     def toggle_app_lock(self):
+        """
+            Lock/unlock the application
+        """
         self.app.locked = not self.app.locked
-        mainbox = self.get_children()[0]
-        mainbox.get_children()[2].set_visible(self.app.locked)
-        mainbox.get_children()[2].set_no_show_all(not self.app.locked)
+        self.app.toggle_app_lock_menu()
         self.refresh_window()
 
-    def hide_headerbar(self):
-        hb = self.get_children()[1]
-        hb.get_children()[0].get_children()[0].set_no_show_all(True)
-        hb.get_children()[0].get_children()[1].set_no_show_all(True)
-        hb.get_children()[1].get_children()[0].set_no_show_all(True)
-        hb.get_children()[1].get_children()[1].set_no_show_all(True)
-        hb.get_children()[1].get_children()[2].set_no_show_all(True)
+    def toggle_boxes(self, apps_box, no_apps_box, login_box):
+        """
+            Change the status of all the boxes in one time
+            :param apps_box: bool
+            :param no_apps_box: bool
+            :param login_box: bool
+            :return:
+        """
+        self.login_box.set_visible(login_box)
+        self.login_box.set_no_show_all(not login_box)
+        self.apps_box.set_visible(apps_box)
+        self.apps_box.set_no_show_all(not apps_box)
+        self.no_apps_box.set_visible(no_apps_box)
+        self.no_apps_box.set_no_show_all(not no_apps_box)
 
-    def generate_headerbar(self):
-        hb = Gtk.HeaderBar()
-        hb.set_show_close_button(True)
+    def hide_header_bar(self):
+        """
+            Hide all buttons on the header bar
+        """
+        self.toggle_hb_buttons(False, False, False, False, False)
+
+    def generate_header_bar(self):
+        """
+            Generate a header bar box
+        """
+        self.hb.set_show_close_button(True)
 
         left_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         right_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        Gtk.StyleContext.add_class(left_box.get_style_context(), "linked")
-        Gtk.StyleContext.add_class(right_box.get_style_context(), "linked")
-        self.remove_button = Gtk.Button()
+
         remove_icon = Gio.ThemedIcon(name="user-trash-symbolic")
-        remove_image = Gtk.Image.new_from_gicon(remove_icon,
-                                                Gtk.IconSize.BUTTON)
-        self.remove_button.set_tooltip_text(_("Remove selected two factor auth "
-                                              "sources"))
-        self.remove_button.set_sensitive(False)
+        remove_image = Gtk.Image.new_from_gicon(remove_icon, Gtk.IconSize.BUTTON)
+        self.remove_button.set_tooltip_text(_("Remove selected two factor auth sources"))
         self.remove_button.set_image(remove_image)
+        self.remove_button.set_sensitive(False)
         self.remove_button.set_no_show_all(True)
         self.remove_button.connect("clicked", self.remove_selected)
-        left_box.add(self.remove_button)
 
-        add_button = Gtk.Button()
         add_icon = Gio.ThemedIcon(name="list-add-symbolic")
-        add_image = Gtk.Image.new_from_gicon(add_icon,
-                                             Gtk.IconSize.BUTTON)
-        add_button.set_tooltip_text(_("Add a new application"))
-        add_button.set_image(add_image)
-        add_button.connect("clicked", self.add_application)
-        left_box.add(add_button)
+        add_image = Gtk.Image.new_from_gicon(add_icon, Gtk.IconSize.BUTTON)
+        self.add_button.set_tooltip_text(_("Add a new application"))
+        self.add_button.set_image(add_image)
+        self.add_button.connect("clicked", self.add_application)
 
-        select_button = Gtk.Button()
+        left_box.add(self.remove_button)
+        left_box.add(self.add_button)
+
         select_icon = Gio.ThemedIcon(name="object-select-symbolic")
-        select_image = Gtk.Image.new_from_gicon(select_icon,
-                                                Gtk.IconSize.BUTTON)
-        select_button.set_tooltip_text(_("Select mode"))
-        select_button.set_image(select_image)
-        select_button.connect("clicked", self.toggle_select)
-        select_button.set_no_show_all(not self.app.auth.count() > 0)
+        select_image = Gtk.Image.new_from_gicon(select_icon, Gtk.IconSize.BUTTON)
+        self.select_button.set_tooltip_text(_("Select mode"))
+        self.select_button.set_image(select_image)
+        self.select_button.connect("clicked", self.toggle_select)
+        self.select_button.set_no_show_all(not self.app.auth.count() > 0)
 
-        search_button = Gtk.ToggleButton()
         search_icon = Gio.ThemedIcon(name="system-search-symbolic")
-        search_image = Gtk.Image.new_from_gicon(search_icon,
-                                                Gtk.IconSize.BUTTON)
-        search_button.set_tooltip_text(_("Search"))
-        search_button.set_image(search_image)
-        search_button.connect("clicked", self.toggle_searchobox)
-        search_button.set_no_show_all(not self.app.auth.count() > 0)
+        search_image = Gtk.Image.new_from_gicon(search_icon, Gtk.IconSize.BUTTON)
+        self.search_button.set_tooltip_text(_("Search"))
+        self.search_button.set_image(search_image)
+        self.search_button.connect("clicked", self.toggle_search_box)
+        self.search_button.set_no_show_all(not self.app.auth.count() > 0)
 
-        cancel_buton = Gtk.Button()
-        cancel_buton.set_label(_("Cancel"))
-        cancel_buton.connect("clicked", self.toggle_select)
-        cancel_buton.set_no_show_all(True)
+        self.cancel_button.set_label(_("Cancel"))
+        self.cancel_button.connect("clicked", self.toggle_select)
+        self.cancel_button.set_no_show_all(True)
 
-        right_box.add(search_button)
-        right_box.add(select_button)
-        right_box.add(cancel_buton)
+        right_box.add(self.search_button)
+        right_box.add(self.select_button)
+        right_box.add(self.cancel_button)
 
-        hb.pack_start(left_box)
-        hb.pack_end(right_box)
-        self.set_titlebar(hb)
+        self.hb.pack_start(left_box)
+        self.hb.pack_end(right_box)
+        self.set_titlebar(self.hb)
 
     def add_application(self, *args):
+        """
+            Create add application window
+        """
         AddAuthenticator(self)
 
-    def toggle_searchobox(self, *args):
+    def toggle_search_box(self, *args):
+        """
+            Toggle search box, only if there's an application
+        """
         if self.app.auth.count() > 0:
-            search_box = self.get_children()[0].get_children()[
-                0].get_children()[0]
-            is_visible = search_box.get_no_show_all()
+            is_visible = self.search_box.get_no_show_all()
 
-            headerbar = self.get_children()[1]
-            search_button = headerbar.get_children()[1].get_children()[0]
-            search_box.set_no_show_all(not is_visible)
-            search_box.set_visible(is_visible)
-            search_box.show_all()
+            self.search_box.set_no_show_all(not is_visible)
+            self.search_box.set_visible(is_visible)
+            self.search_box.show_all()
+
             if is_visible:
-                search_button.get_style_context().add_class("toggle")
-                search_box.get_children()[0].grab_focus_without_selecting()
+                self.search_button.get_style_context().add_class("toggle")
+                self.search_entry.grab_focus_without_selecting()
             else:
-                search_button.get_style_context().remove_class("toggle")
-                self.listbox.set_filter_func(lambda x, y, z: True, None, False)
+                self.search_button.get_style_context().remove_class("toggle")
+                self.list_box.set_filter_func(lambda x, y, z: True, None, False)
 
     def toggle_select(self, *args):
-        i = 0
-        button_visible = self.remove_button.get_visible()
-        headerbar = self.get_children()[1]
-        headerbar.set_show_close_button(button_visible)
-        headerbar.get_children()[0].get_children()[
-            1].set_visible(button_visible)
-        headerbar.get_children()[1].get_children()[
-            1].set_visible(button_visible)
-        headerbar.get_children()[1].get_children()[
-            2].set_visible(not button_visible)
-        self.remove_button.set_visible(not button_visible)
-        self.remove_button.set_no_show_all(button_visible)
+        """
+            Toggle select mode
+        """
+        is_visible = self.remove_button.get_visible()
 
-        if not button_visible:
-            self.listbox.set_selection_mode(Gtk.SelectionMode.MULTIPLE)
-            headerbar.get_style_context().add_class("selection-mode")
+        self.remove_button.set_visible(not is_visible)
+        self.remove_button.set_no_show_all(is_visible)
+
+        self.hb.set_show_close_button(is_visible)
+        self.cancel_button.set_visible(not is_visible)
+        self.remove_button.set_visible(not is_visible)
+        self.add_button.set_visible(is_visible)
+        self.select_button.set_visible(is_visible)
+
+        if not is_visible:
+            self.list_box.set_selection_mode(Gtk.SelectionMode.MULTIPLE)
+            self.hb.get_style_context().add_class("selection-mode")
         else:
-            self.listbox.set_selection_mode(Gtk.SelectionMode.SINGLE)
-            headerbar.get_style_context().remove_class("selection-mode")
+            self.list_box.set_selection_mode(Gtk.SelectionMode.SINGLE)
+            self.hb.get_style_context().remove_class("selection-mode")
 
             if self.selected_app_idx:
                 index = self.selected_app_idx
             else:
                 index = 0
-            listrow_box = self.listbox.get_row_at_index(index)
-            self.listbox.select_row(listrow_box)
+            list_row_box = self.list_box.get_row_at_index(index)
+            self.list_box.select_row(list_row_box)
 
-        for row in self.listbox.get_children():
-            checkbox = self.get_checkbox_from_row(row)
+        for row in self.list_box.get_children():
+            checkbox = ListBoxRow.get_checkbox(row)
             visible = checkbox.get_visible()
             selected = checkbox.get_active()
-            if not button_visible:
+            if not is_visible:
                 self.select_application(checkbox)
             checkbox.set_visible(not visible)
             checkbox.set_no_show_all(visible)
 
     def select_application(self, checkbutton):
+        """
+            Select an application in the application ListBox
+            :param checkbutton:
+        """
         is_active = checkbutton.get_active()
+        is_visible = checkbutton.get_visible()
         listbox_row = checkbutton.get_parent().get_parent().get_parent()
         if is_active:
-            self.listbox.select_row(listbox_row)
+            self.list_box.select_row(listbox_row)
             if is_visible:
                 self.selected_count += 1
         else:
-            self.listbox.unselect_row(listbox_row)
+            self.list_box.unselect_row(listbox_row)
             if is_visible:
                 self.selected_count -= 1
         self.remove_button.set_sensitive(self.selected_count > 0)
 
     def filter_func(self, row, data, notify_destroy):
-        app_label = row.get_children()[0].get_children()[0].get_children()
+        """
+            Filter function, used to check if the entered data exists on the application ListBox
+        """
+        app_label = ListBoxRow.get_label(row)
         data = data.strip()
         if len(data) > 0:
-            return data in app_label[2].get_children()[0].get_text().lower()
+            return data in app_label
         else:
             return True
 
-    def get_checkbox_from_row(self, row):
-        if row:
-            return row.get_children()[0].get_children()[0].get_children()[0]
-        else:
-            return None
-
-    def select_row(self, listbox, listbox_row):
+    def select_row(self, list_box, listbox_row):
+        """
+            Select row @override the clicked event by default for ListBoxRow
+        """
         index = listbox_row.get_index()
         button_visible = self.remove_button.get_visible()
-        checkbox = self.get_checkbox_from_row(listbox_row)
+        checkbox = ListBoxRow.get_checkbox(listbox_row)
         if button_visible:
             checkbox.set_active(not checkbox.get_active())
         else:
             if self.selected_app_idx:
-                listrow_box = self.listbox.get_row_at_index(
-                    self.selected_app_idx)
-                self.listbox.unselect_row(listbox_row)
+                self.list_box.unselect_row(self.list_box.get_row_at_index(self.selected_app_idx))
             self.selected_app_idx = index
-            listrow_box = self.listbox.get_row_at_index(index)
-            self.listbox.select_row(listbox_row)
+            self.list_box.select_row(self.list_box.get_row_at_index(index))
 
-    # TODO : show a nice message when no application is added
     def generate_applications_list(self):
-        list_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        """
+            Generate an application ListBox inside of a ScrolledWindow
+        """
         count = self.app.auth.count()
+
         # Create a ScrolledWindow for installed applications
-        self.listbox = Gtk.ListBox()
-        self.listbox.get_style_context().add_class("applications-list")
-        self.listbox.set_adjustment()
-        self.listbox.connect("row_activated", self.select_row)
-        self.listbox.set_selection_mode(Gtk.SelectionMode.SINGLE)
-        list_box.pack_start(self.listbox, True, True, 0)
+        self.list_box.get_style_context().add_class("applications-list")
+        self.list_box.set_adjustment()
+        self.list_box.connect("row_activated", self.select_row)
+        self.list_box.set_selection_mode(Gtk.SelectionMode.SINGLE)
+        self.apps_list_box.pack_start(self.list_box, True, True, 0)
 
         scrolled_win = Gtk.ScrolledWindow()
-        scrolled_win.add_with_viewport(list_box)
-        self.get_children()[0].get_children()[0].pack_start(
-            scrolled_win, True, True, 0)
+        scrolled_win.add_with_viewport(self.apps_list_box)
+        self.apps_box.pack_start(scrolled_win, True, True, 0)
 
         apps = self.app.auth.fetch_apps()
         i = 0
@@ -355,39 +387,46 @@ class Window(Gtk.ApplicationWindow):
         while i < count:
             row = ListBoxRow(self, apps[i][0], apps[i][1], apps[i][2],
                              apps[i][3])
-            self.listbox.add(row.get_listrow())
+            self.list_box.add(row.get_list_row())
             i += 1
 
-        nolist_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-        vbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-
+    def generate_no_apps_box(self):
+        """
+            Generate a box with no applications message
+        """
         logo_image = Gtk.Image()
         logo_image.set_from_icon_name("dialog-information-symbolic",
                                       Gtk.IconSize.DIALOG)
-        vbox.pack_start(logo_image, False, False, 6)
 
-        no_proivders_label = Gtk.Label()
-        no_proivders_label.set_text(_("There's no application at the moment"))
-        vbox.pack_start(no_proivders_label, False, False, 6)
+        no_apps_label = Gtk.Label()
+        no_apps_label.set_text(_("There's no application at the moment"))
 
-        nolist_box.pack_start(vbox, True, True, 0)
-        self.get_children()[0].pack_start(nolist_box, True, True, 0)
-        self.get_children()[0].get_children()[0].set_no_show_all(count == 0)
-        self.get_children()[0].get_children()[
-            1].set_no_show_all(not count == 0)
+        self.no_apps_box.pack_start(logo_image, False, False, 6)
+        self.no_apps_box.pack_start(no_apps_label, False, False, 6)
+        self.main_box.pack_start(self.no_apps_box, True, False, 0)
 
-    def update_list(self, id, name, secret_code, image):
-        row = ListBoxRow(self, id, name, secret_code, image)
-        self.listbox.add(row.get_listrow())
-        self.listbox.show_all()
+    def append(self, uid, name, secret_code, image):
+        """
+            Add an element to the ListBox
+            :param uid: application id
+            :param name: application name
+            :param secret_code: application secret code
+            :param image: application image path or icon name
+        """
+        row = ListBoxRow(self, uid, name, secret_code, image)
+        self.list_box.add(row.get_list_row())
+        self.list_box.show_all()
 
     def copy_code(self, *args):
+        """
+            Copy the secret code to clipboard
+        """
         if len(args) > 0:
+            # if the code is called by clicking on copy button, select the right ListBowRow
             row = args[0].get_parent().get_parent().get_parent()
-            self.listbox.select_row(row)
-        selected_row = self.listbox.get_selected_row()
-        label = selected_row.get_children()[0].get_children()[1].get_children()
-        code = label[0].get_text()
+            self.list_box.select_row(row)
+        selected_row = self.list_box.get_selected_row()
+        code = ListBoxRow.get_label(selected_row)
         try:
             clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
             clipboard.clear()
@@ -397,56 +436,70 @@ class Window(Gtk.ApplicationWindow):
             logging.error(str(e))
 
     def refresh_window(self):
-        mainbox = self.get_children()[0]
+        """
+            Refresh windows components
+        """
         count = self.app.auth.count()
-        headerbar = self.get_children()[1]
-        if count == 0:
-            mainbox.get_children()[0].set_visible(False)
-            mainbox.get_children()[1].set_visible(True)
-            mainbox.get_children()[1].set_no_show_all(False)
-            mainbox.get_children()[1].show_all()
-            headerbar.get_children()[0].get_children()[1].set_visible(True)
-            headerbar.get_children()[1].get_children()[1].set_visible(False)
-            headerbar.get_children()[1].get_children()[2].set_visible(False)
-            headerbar.set_show_close_button(True)
-            headerbar.get_style_context().remove_class("selection-mode")
+        is_locked = self.app.locked
+
+        if is_locked:
+            self.toggle_boxes(False, False, True)
+            self.hide_header_bar()
         else:
-            self.get_children()[0].get_children()[0].set_no_show_all(False)
-            self.get_children()[0].get_children()[0].set_visible(True)
-            self.get_children()[0].get_children()[0].show_all()
-            headerbar.get_children()[0].get_children()[0].set_visible(False)
-            headerbar.get_children()[1].get_children()[0].set_visible(True)
-            headerbar.get_children()[1].get_children()[1].set_visible(True)
-            mainbox.get_children()[1].set_visible(False)
+            if count == 0:
+                self.toggle_boxes(False, True, False)
+                self.toggle_hb_buttons(False, True, False, False, False)
+            else:
+                self.toggle_boxes(True, False, False)
+                self.toggle_hb_buttons(False, True, True, True, False)
 
-        headerbar.get_children()[0].get_children()[1].set_no_show_all(False)
-        headerbar.get_children()[0].get_children()[1].set_visible(True)
+        self.main_box.show_all()
+        self.list_box.set_selection_mode(Gtk.SelectionMode.SINGLE)
 
-        headerbar = self.get_children()[1]
-        left_box = headerbar.get_children()[0]
-        right_box = headerbar.get_children()[1]
-        right_box.get_children()[0].set_visible(count > 0)
-        self.listbox.set_selection_mode(Gtk.SelectionMode.SINGLE)
-        left_box.get_children()[0].set_visible(False)
+    def toggle_hb_buttons(self, remove, add, search, select, cancel):
+        """
+            Toggle header bar buttons visibilty
+            :param remove: (bool)
+            :param add: (bool)
+            :param search: (bool)
+            :param select: (bool)
+            :param cancel: (bool)
+        """
+        self.add_button.set_visible(add)
+        self.add_button.set_no_show_all(not add)
+        self.remove_button.set_visible(remove)
+        self.remove_button.set_no_show_all(not remove)
+        self.cancel_button.set_visible(cancel)
+        self.cancel_button.set_no_show_all(not cancel)
+        self.select_button.set_visible(select)
+        self.select_button.set_no_show_all(not select)
+        self.search_button.set_visible(search)
+        self.search_button.set_no_show_all(not search)
 
     def remove_application(self, *args):
+        """
+            Remove an application
+        """
         if len(args) > 0:
             row = args[0].get_parent().get_parent().get_parent()
-            self.listbox.select_row(row)
+            self.list_box.select_row(row)
 
         message = _("Do you really want to remove the application?")
         confirmation = ConfirmationMessage(self, message)
         confirmation.show()
         if confirmation.get_confirmation():
-            if self.listbox.get_selected_row():
-                selected_row = self.listbox.get_selected_row()
-                self.listbox.remove(selected_row)
-                label_id = selected_row.get_children()[0].get_children()[2]
-                self.app.auth.remove_by_id(int(label_id.get_text()))
+            if self.list_box.get_selected_row():
+                selected_row = self.list_box.get_selected_row()
+                self.list_box.remove(selected_row)
+                app_id = ListBoxRow.get_id(selected_row)
+                self.app.auth.remove_by_id(app_id)
         confirmation.destroy()
         self.refresh_window()
 
     def show_about(self, *args):
+        """
+            Shows about dialog
+        """
         builder = Gtk.Builder()
         builder.add_from_file(self.app.pkgdatadir + "/data/about.ui")
 
@@ -456,9 +509,13 @@ class Window(Gtk.ApplicationWindow):
         dialog.destroy()
 
     def show_shortcuts(self, *args):
-        builder = Gtk.Builder()
-        builder.add_from_file(self.app.pkgdatadir + "/data/shortcuts.ui")
+        """
+            Shows keyboard shortcuts
+        """
+        if Gtk.get_major_version() >= 3 and Gtk.get_minor_version() >= 20:
+            builder = Gtk.Builder()
+            builder.add_from_file(self.app.pkgdatadir + "/data/shortcuts.ui")
 
-        shortcuts = builder.get_object("shortcuts")
-        shortcuts.set_transient_for(self)
-        shortcuts.show()
+            shortcuts = builder.get_object("shortcuts")
+            shortcuts.set_transient_for(self)
+            shortcuts.show()

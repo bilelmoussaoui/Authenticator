@@ -5,6 +5,7 @@ import logging
 
 
 class ConfirmationMessage(Gtk.Window):
+    result = None
 
     def __init__(self, parent, message):
         try:
@@ -18,6 +19,9 @@ class ConfirmationMessage(Gtk.Window):
             logging.error(str(e))
 
     def show(self):
+        """
+            Show confirmation dialog
+        """
         try:
             self.result = self.dialog.run()
             self.dialog.hide()
@@ -26,7 +30,13 @@ class ConfirmationMessage(Gtk.Window):
             return None
 
     def get_confirmation(self):
+        """
+            get confirmation
+        """
         return self.result == Gtk.ResponseType.OK
 
     def destroy(self):
+        """
+            Destroy the message
+        """
         self.dialog.destroy()

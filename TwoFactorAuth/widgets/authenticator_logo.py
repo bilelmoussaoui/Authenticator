@@ -21,9 +21,8 @@ class AuthenticatorLogoChooser(Gtk.Window):
         self.show_all()
 
     def generate_window(self):
-        Gtk.Window.__init__(self, modal=True,
-                            destroy_with_parent=True)
-        self.connect("delete-event", lambda x, y: self.destroy())
+        Gtk.Window.__init__(self, modal=True, destroy_with_parent=True)
+        self.connect("delete-event", self.close_window)
         self.resize(350, 400)
         self.set_size_request(350, 400)
         self.set_position(Gtk.WindowPosition.CENTER)

@@ -8,18 +8,21 @@ from TwoFactorAuth.widgets.settings import SettingsWindow
 from TwoFactorAuth.models.settings import SettingsReader
 import logging
 import signal
+from gettext import gettext as _
 
 
 class Application(Gtk.Application):
     win = None
     alive = True
     locked = False
+    menu = Gio.Menu()
+    auth = Authenticator()
 
     def __init__(self, *args, **kwargs):
         for key in kwargs:
             setattr(self, key, kwargs[key])
         Gtk.Application.__init__(self,
-                                 application_id='org.gnome.twofactorauth',
+                                 application_id='org.gnome.TwoFactorAuth',
                                  flags=Gio.ApplicationFlags.FLAGS_NONE)
         GLib.set_application_name("TwoFactorAuth")
         GLib.set_prgname(self.package)
@@ -41,35 +44,67 @@ class Application(Gtk.Application):
 
     def do_startup(self):
         Gtk.Application.do_startup(self)
+        if self.locked:
+            self.menu.append(_("Unlock the Application"), "app.lock")
+        else:
+            self.menu.append(_("Lock the Application"), "app.lock")
+
+        self.menu.append(_("Settings"), "app.settings")
+        if Gtk.get_major_version() >= 3 and Gtk.get_minor_version() >= 20:
+            self.menu.append(_("Shortcuts"), "app.shortcuts")
+        self.menu.append(_("About"), "app.about")
+        self.menu.append(_("Quit"), "app.quit")
+        self.set_app_menu(self.menu)
 
         action = Gio.SimpleAction.new("settings", None)
         action.connect("activate", self.on_settings)
         self.add_action(action)
 
-        action = Gio.SimpleAction.new("shortcuts", None)
-        action.connect("activate", self.on_shortcuts)
-        self.add_action(action)
+        if Gtk.get_major_version() >= 3 and Gtk.get_minor_version() >= 20:
+            action = Gio.SimpleAction.new("shortcuts", None)
+            action.connect("activate", self.on_shortcuts)
+            self.add_action(action)
 
         action = Gio.SimpleAction.new("about", None)
         action.connect("activate", self.on_about)
+        self.add_action(action)
+
+        action = Gio.SimpleAction.new("lock", None)
+        action.connect("activate", self.on_toggle_lock)
         self.add_action(action)
 
         action = Gio.SimpleAction.new("quit", None)
         action.connect("activate", self.on_quit)
         self.add_action(action)
 
-        builder = Gtk.Builder()
-        builder.add_from_file(self.pkgdatadir + "/data/menu.ui")
-        self.app_menu = builder.get_object("app-menu")
-
+        self.toggle_settings_menu()
         logging.debug("Adding gnome shell menu")
-        self.set_app_menu(self.app_menu)
 
     def do_activate(self, *args):
-        self.auth = Authenticator()
         self.win = Window(self)
         self.win.show_all()
         self.add_window(self.win)
+
+    def toggle_settings_menu(self):
+        if self.locked:
+            self.menu.remove(1)
+        else:
+            self.menu.insert(1, _("Settings"), "app.settings")
+
+    def on_toggle_lock(self, *args):
+        if not self.locked:
+            self.locked = not self.locked
+            self.toggle_app_lock_menu()
+            self.toggle_settings_menu()
+            self.win.refresh_window()
+
+    def toggle_app_lock_menu(self):
+        if self.locked:
+            label = _("Unlock the Application")
+        else:
+            label = _("Lock the Application")
+        self.menu.remove(0)
+        self.menu.insert(0, label, "app.lock")
 
     def on_shortcuts(self, *args):
         self.win.show_shortcuts()
@@ -78,8 +113,10 @@ class Application(Gtk.Application):
         self.win.show_about()
 
     def on_settings(self, *args):
-        if not self.locked:
-            SettingsWindow(self.win)
+        """
+            Shows settings window
+        """
+        SettingsWindow(self.win)
 
     def on_quit(self, *args):
         """

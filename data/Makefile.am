@@ -6,7 +6,6 @@ desktop_DATA = twofactorauth.desktop
 uidir = $(pkgdatadir)/data
 ui_DATA = about.ui \
 		shortcuts.ui \
-		menu.ui \
 		style.css
 
 appdatadir = $(pkgdatadir)/appdata
