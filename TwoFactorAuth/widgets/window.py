@@ -50,8 +50,8 @@ class Window(Gtk.ApplicationWindow):
                                        application=self.app)
         self.set_position(Gtk.WindowPosition.CENTER)
         self.set_wmclass(self.app.package, "TwoFactorAuth")
-        self.resize(350, 500)
-        self.set_size_request(350, 500)
+        self.resize(380, 500)
+        self.set_size_request(380, 500)
         self.set_resizable(False)
         self.connect("key_press_event", self.on_key_press)
         self.connect("delete-event", lambda x, y: self.app.on_quit())
@@ -355,7 +355,9 @@ class Window(Gtk.ApplicationWindow):
             checkbox.set_active(not checkbox.get_active())
         else:
             if self.selected_app_idx:
-                self.list_box.unselect_row(self.list_box.get_row_at_index(self.selected_app_idx))
+                selected_row = self.list_box.get_row_at_index(self.selected_app_idx)
+                if selected_row:
+                    self.list_box.unselect_row(selected_row)
             self.selected_app_idx = index
             self.list_box.select_row(self.list_box.get_row_at_index(index))
 

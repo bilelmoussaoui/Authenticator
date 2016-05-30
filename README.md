@@ -7,6 +7,7 @@ For translators : https://www.transifex.com/twofactorauth/twofactorauth/
 - `Python 3.3+`
 - `Gtk 3.18+`
 - `PyOTP`
+- ``
 
 ### Screenshots
 

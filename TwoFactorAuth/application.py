@@ -28,7 +28,11 @@ class Application(Gtk.Application):
                                  flags=Gio.ApplicationFlags.FLAGS_NONE)
         GLib.set_application_name("TwoFactorAuth")
         GLib.set_prgname(self.package)
-        self.keyrings = GK.get_info_sync()
+        self.keyring = GK
+        result = self.keyring.unlock_sync("TwoFactorAuth", None)
+        if result == self.keyring.Result.CANCELLED:
+            self.on_quit()
+
         self.cfg = SettingsReader()
         if self.cfg.read("state", "login"):
             self.locked = True
@@ -145,6 +149,8 @@ class Application(Gtk.Application):
         except Exception as e:
             logging.error(str(e))
         self.alive = False
+        GK.lock_all_sync()
         signal.signal(signal.SIGINT, lambda x, y: self.alive)
-        self.win.destroy()
+        if self.win:
+            self.win.destroy()
         self.quit()

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-30 15:27+0200\n"
+"POT-Creation-Date: 2016-05-30 18:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -105,11 +105,11 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:398
+#: TwoFactorAuth/widgets/window.py:399
 msgid "There's no application at the moment"
 msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:483
+#: TwoFactorAuth/widgets/window.py:484
 msgid "Do you really want to remove the application?"
 msgstr ""
 
@@ -137,7 +137,8 @@ msgstr ""
 msgid "Choose"
 msgstr ""
 
-#: TwoFactorAuth/widgets/settings.py:23 TwoFactorAuth/application.py:91
+#: TwoFactorAuth/widgets/settings.py:23 TwoFactorAuth/application.py:62
+#: TwoFactorAuth/application.py:102 TwoFactorAuth/application.py:119
 msgid "Settings"
 msgstr ""
 
@@ -161,15 +162,19 @@ msgstr ""
 msgid "Password generation time (s): "
 msgstr ""
 
-#: TwoFactorAuth/widgets/listrow.py:165
+#: TwoFactorAuth/widgets/listrow.py:169
 msgid "Copy the generated code.."
 msgstr ""
 
-#: TwoFactorAuth/widgets/listrow.py:174
+#: TwoFactorAuth/widgets/listrow.py:178
 msgid "Remove the source.."
 msgstr ""
 
-#: TwoFactorAuth/widgets/listrow.py:233
+#: TwoFactorAuth/widgets/listrow.py:190
+msgid "Error during the generation of code"
+msgstr ""
+
+#: TwoFactorAuth/widgets/listrow.py:239
 msgid "Couldn't generate the secret code"
 msgstr ""
 
@@ -201,22 +206,25 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
-#: TwoFactorAuth/application.py:48 TwoFactorAuth/application.py:102
+#: TwoFactorAuth/application.py:57 TwoFactorAuth/application.py:109
 msgid "Unlock the Application"
 msgstr ""
 
-#: TwoFactorAuth/application.py:50 TwoFactorAuth/application.py:104
+#: TwoFactorAuth/application.py:59 TwoFactorAuth/application.py:116
 msgid "Lock the Application"
 msgstr ""
 
-#: TwoFactorAuth/application.py:53
+#: TwoFactorAuth/application.py:65 TwoFactorAuth/application.py:111
+#: TwoFactorAuth/application.py:118
 msgid "Shortcuts"
 msgstr ""
 
-#: TwoFactorAuth/application.py:54
+#: TwoFactorAuth/application.py:66 TwoFactorAuth/application.py:112
+#: TwoFactorAuth/application.py:120
 msgid "About"
 msgstr ""
 
-#: TwoFactorAuth/application.py:55
+#: TwoFactorAuth/application.py:67 TwoFactorAuth/application.py:113
+#: TwoFactorAuth/application.py:121
 msgid "Quit"
 msgstr ""

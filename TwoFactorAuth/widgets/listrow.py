@@ -32,8 +32,12 @@ class ListBoxRow(Thread):
         self.parent = parent
         self.id = id
         self.name = name
-        self.secret_code = secret_code
-        self.code = Code(secret_code)
+        self.secret_code = Authenticator.fetch_secret_code(secret_code)
+        if self.secret_code:
+            self.code = Code(secret_code)
+        else:
+            self.code_generated = False
+            logging.error("Could not read the secret code from, the keyring keys were reset manually")
         self.logo = logo
         self.create_row()
         self.start()
@@ -180,8 +184,10 @@ class ListBoxRow(Thread):
         self.drawing_area.set_size_request(30, 30)
         self.code_label = Gtk.Label(xalign=0)
         self.code_label.get_style_context().add_class("application-secret-code")
-
-        self.update_code(self.code_label)
+        if self.code_generated:
+            self.update_code(self.code_label)
+        else:
+            self.code_label.set_text(_("Error during the generation of code"))
         self.code_box.set_no_show_all(True)
         self.code_box.set_visible(False)
         self.code_box.pack_end(self.drawing_area, False, True, 6)

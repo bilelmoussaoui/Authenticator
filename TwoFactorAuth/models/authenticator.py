@@ -2,7 +2,9 @@ import sqlite3
 import logging
 from os import path, mknod, makedirs
 from gi.repository import GdkPixbuf, Gtk
-
+from gi.repository import GnomeKeyring as GK
+from TwoFactorAuth.models.settings import SettingsReader
+from hashlib import md5
 
 class Authenticator:
 
@@ -23,11 +25,23 @@ class Authenticator:
             mknod(database_file)
             logging.debug("Creating database file %s " % database_file)
         # Connect to database
+        self.cfg = SettingsReader()
         self.conn = sqlite3.connect(database_file)
         if not self.is_table_exists():
             logging.debug("SQL: Table 'applications' does not exists, creating it now...")
             self.create_table()
             logging.debug("SQL: Table 'applications' created successfully")
+
+    @staticmethod
+    def fetch_secret_code(secret_code):
+        encrypted_secret = md5(secret_code.encode('utf-8')).hexdigest()
+        attr = GK.Attribute.list_new()
+        GK.Attribute.list_append_string(attr, 'id', encrypted_secret)
+        result, value = GK.find_items_sync(GK.ItemType.GENERIC_SECRET, attr)
+        if result == GK.Result.OK:
+            return value[0].secret
+        else:
+            return None
 
     def add_application(self, name, secret_code, image):
         """
@@ -37,13 +51,35 @@ class Authenticator:
             :param image: image path or icon name
             :return:
         """
+        encrypted_secret = md5(secret_code.encode('utf-8')).hexdigest()
         t = (name, secret_code, image,)
         query = "INSERT INTO applications (name, secret_code, image) VALUES (?, ?, ?)"
         try:
+            GK.create_sync("TwoFactorAuth", None)
+            attr = GK.Attribute.list_new()
+            user_password = self.cfg.read("password", "login")
+            GK.Attribute.list_append_string(attr, 'id', encrypted_secret)
+            GK.Attribute.list_append_string(attr, 'secret_code', secret_code)
+            GK.item_create_sync("TwoFactorAuth", GK.ItemType.GENERIC_SECRET, repr(encrypted_secret), attr,
+                                secret_code, False)
             self.conn.execute(query, t)
             self.conn.commit()
         except Exception as e:
             logging.error("SQL: Couldn't add a new application : %s ", str(e))
+
+    def get_secret_code(self, uid):
+        """
+            Count number of applications
+           :return: (int) count
+        """
+        c = self.conn.cursor()
+        query = "SELECT secret_code FROM applications WHERE uid=?"
+        try:
+            data = c.execute(query, (uid,))
+            return data.fetchone()[0]
+        except Exception as e:
+            logging.error("SQL: Couldn't get application secret code : %s " % str(e))
+            return None
 
     def remove_by_id(self, uid):
         """
@@ -51,6 +87,19 @@ class Authenticator:
             :param uid: (int) application uid
             :return:
         """
+        secret_code = self.get_secret_code(uid)
+        if secret_code:
+            secret_code = md5(secret_code.encode("utf-8")).hexdigest()
+            found = False
+            (result, ids) = GK.list_item_ids_sync("TwoFactorAuth")
+            for gid in ids:
+                (result, item) = GK.item_get_info_sync("TwoFactorAuth", gid)
+                if result == GK.Result.OK:
+                    if item.get_display_name().strip("'") == secret_code:
+                        found = True
+                        break;
+            if found:
+                GK.item_delete_sync("TwoFactorAuth", gid)
         query = "DELETE FROM applications WHERE uid=?"
         try:
             self.conn.execute(query, (uid,))
