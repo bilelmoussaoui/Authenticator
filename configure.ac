@@ -1,5 +1,9 @@
 AC_INIT([TwoFactorAuth], [0.1], [https://github.com/bil-elmoussaoui/TwoFactorAuth])
 
+AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_SRCDIR([Makefile.am])
+AC_CONFIG_HEADERS(config.h)
+
 AM_INIT_AUTOMAKE
 AM_PATH_PYTHON([3.0])
 AM_MAINTAINER_MODE([enable])
