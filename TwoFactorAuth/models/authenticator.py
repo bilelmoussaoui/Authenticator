@@ -104,7 +104,7 @@ class Authenticator:
             icon = theme.load_icon(path.splitext(image)[0], 48, 0)
         else:
             icon = theme.load_icon("image-missing", 48, 0)
-        if icon.get_wuidth() != 48 or icon.get_height() != 48:
+        if icon.get_width() != 48 or icon.get_height() != 48:
             icon = icon.scale_simple(48, 48,
                                      GdkPixbuf.InterpType.BILINEAR)
         return icon
