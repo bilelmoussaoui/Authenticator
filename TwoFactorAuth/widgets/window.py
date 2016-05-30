@@ -8,6 +8,7 @@ import logging
 from hashlib import md5
 from gettext import gettext as _
 
+
 class Window(Gtk.ApplicationWindow):
     app = None
     selected_app_idx = None
@@ -70,6 +71,7 @@ class Window(Gtk.ApplicationWindow):
             elif keypress == "f":
                 if key_event.state == control_mask:
                     self.toggle_search_box()
+
             elif keypress == "s":
                 if key_event.state == control_mask:
                     self.toggle_select()
@@ -87,25 +89,21 @@ class Window(Gtk.ApplicationWindow):
                     ListBoxRow.toggle_code_box(self.list_box.get_row_at_index(index))
             elif keypress == "backspace":
                 if len(self.search_entry.get_text()) == 0:
-                    self.hide_searchbar()
+                    self.toggle_search_box()
+            elif keypress == "escape":
+                if self.search_box.get_no_show_all():
+                    self.toggle_search_box()
         else:
             if keypress == "return":
                 self.on_unlock_clicked()
 
     def filter_applications(self, entry):
-        data = entry.get_text()
+        data = entry.get_text().strip()
         if len(data) != 0:
             entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, "edit-clear-symbolic")
         else:
             entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, None)
         self.list_box.set_filter_func(self.filter_func, data, False)
-
-    def hide_search_bar(self):
-        """
-            Hide search bar
-        """
-        self.search_box.set_visible(False)
-        self.list_box.set_filter_func(lambda x, y, z: True, None, False)
 
     def generate_search_bar(self):
         """
@@ -270,17 +268,15 @@ class Window(Gtk.ApplicationWindow):
         """
         if self.app.auth.count() > 0:
             is_visible = self.search_box.get_no_show_all()
-
             self.search_box.set_no_show_all(not is_visible)
             self.search_box.set_visible(is_visible)
             self.search_box.show_all()
 
             if is_visible:
-                self.search_button.get_style_context().add_class("toggle")
                 self.search_entry.grab_focus_without_selecting()
             else:
-                self.search_button.get_style_context().remove_class("toggle")
                 self.list_box.set_filter_func(lambda x, y, z: True, None, False)
+
 
     def toggle_select(self, *args):
         """
@@ -343,9 +339,9 @@ class Window(Gtk.ApplicationWindow):
             Filter function, used to check if the entered data exists on the application ListBox
         """
         app_label = ListBoxRow.get_label(row)
-        data = data.strip()
+        data = data.lower()
         if len(data) > 0:
-            return data in app_label
+            return data in app_label.lower()
         else:
             return True
 
@@ -405,7 +401,7 @@ class Window(Gtk.ApplicationWindow):
         self.no_apps_box.pack_start(no_apps_label, False, False, 6)
         self.main_box.pack_start(self.no_apps_box, True, False, 0)
 
-    def append(self, uid, name, secret_code, image):
+    def append_list_box(self, uid, name, secret_code, image):
         """
             Add an element to the ListBox
             :param uid: application id
@@ -426,7 +422,7 @@ class Window(Gtk.ApplicationWindow):
             row = args[0].get_parent().get_parent().get_parent()
             self.list_box.select_row(row)
         selected_row = self.list_box.get_selected_row()
-        code = ListBoxRow.get_label(selected_row)
+        code = ListBoxRow.get_code(selected_row)
         try:
             clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
             clipboard.clear()
@@ -490,8 +486,8 @@ class Window(Gtk.ApplicationWindow):
         if confirmation.get_confirmation():
             if self.list_box.get_selected_row():
                 selected_row = self.list_box.get_selected_row()
-                self.list_box.remove(selected_row)
                 app_id = ListBoxRow.get_id(selected_row)
+                self.list_box.remove(selected_row)
                 self.app.auth.remove_by_id(app_id)
         confirmation.destroy()
         self.refresh_window()

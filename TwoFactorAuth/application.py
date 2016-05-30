@@ -49,7 +49,6 @@ class Application(Gtk.Application):
         else:
             self.menu.append(_("Lock the Application"), "app.lock")
 
-        self.menu.append(_("Settings"), "app.settings")
         if Gtk.get_major_version() >= 3 and Gtk.get_minor_version() >= 20:
             self.menu.append(_("Shortcuts"), "app.shortcuts")
         self.menu.append(_("About"), "app.about")

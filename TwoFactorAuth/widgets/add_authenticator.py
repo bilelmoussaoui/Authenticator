@@ -21,7 +21,7 @@ class AddAuthenticator(Gtk.Window):
         self.parent = window
         self.generate_window()
         self.generate_components()
-        self.generate_headerbar()
+        self.generate_header_bar()
         self.show_all()
 
     def generate_window(self):
@@ -76,8 +76,8 @@ class AddAuthenticator(Gtk.Window):
         try:
             self.parent.app.auth.add_application(name_entry, secret_entry,
                                                  image_entry)
-            id = self.parent.app.auth.get_latest_id()
-            self.parent.append(id, name_entry, secret_entry, image_entry)
+            uid = self.parent.app.auth.get_latest_id()
+            self.parent.append_list_box(uid, name_entry, secret_entry, image_entry)
             self.parent.refresh_window()
             self.close_window()
         except Exception as e:

@@ -45,7 +45,7 @@ class Authenticator:
         except Exception as e:
             logging.error("SQL: Couldn't add a new application : %s ", str(e))
 
-    def remove_by_uid(self, uid):
+    def remove_by_id(self, uid):
         """
             Remove an application by uid
             :param uid: (int) application uid
@@ -109,7 +109,7 @@ class Authenticator:
                                      GdkPixbuf.InterpType.BILINEAR)
         return icon
 
-    def get_latest_uid(self):
+    def get_latest_id(self):
         """
             Get the latest uid on applications table
             :return: (int) latest uid

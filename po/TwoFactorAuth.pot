@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-30 05:45+0200\n"
+"POT-Creation-Date: 2016-05-30 15:27+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,23 +16,6 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: data/menu.ui:7 TwoFactorAuth/widgets/settings.py:23
-#: TwoFactorAuth/application.py:52 TwoFactorAuth/application.py:92
-msgid "Settings"
-msgstr ""
-
-#: data/menu.ui:13
-msgid "Keyboard shortcuts"
-msgstr ""
-
-#: data/menu.ui:19 TwoFactorAuth/application.py:55
-msgid "About"
-msgstr ""
-
-#: data/menu.ui:23 TwoFactorAuth/application.py:56
-msgid "Quit"
-msgstr ""
 
 #: data/shortcuts.ui:13
 msgctxt "shortcut window"
@@ -85,36 +68,36 @@ msgid ""
 "later</a> for details."
 msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:131
+#: TwoFactorAuth/widgets/window.py:129
 msgid "Do you really want to remove selected applications?"
 msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:152
+#: TwoFactorAuth/widgets/window.py:150
 msgid "Enter your password"
 msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:156
+#: TwoFactorAuth/widgets/window.py:154
 msgid "Unlock"
 msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:220
+#: TwoFactorAuth/widgets/window.py:218
 msgid "Remove selected two factor auth sources"
 msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:228
+#: TwoFactorAuth/widgets/window.py:226
 #: TwoFactorAuth/widgets/add_authenticator.py:28
 msgid "Add a new application"
 msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:237
+#: TwoFactorAuth/widgets/window.py:235
 msgid "Select mode"
 msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:244
+#: TwoFactorAuth/widgets/window.py:242
 msgid "Search"
 msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:249
+#: TwoFactorAuth/widgets/window.py:247
 #: TwoFactorAuth/widgets/change_password.py:137
 #: TwoFactorAuth/widgets/icon_finder.py:85
 #: TwoFactorAuth/widgets/authenticator_logo.py:139
@@ -122,11 +105,11 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:402
+#: TwoFactorAuth/widgets/window.py:398
 msgid "There's no application at the moment"
 msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:487
+#: TwoFactorAuth/widgets/window.py:483
 msgid "Do you really want to remove the application?"
 msgstr ""
 
@@ -154,6 +137,10 @@ msgstr ""
 msgid "Choose"
 msgstr ""
 
+#: TwoFactorAuth/widgets/settings.py:23 TwoFactorAuth/application.py:91
+msgid "Settings"
+msgstr ""
+
 #: TwoFactorAuth/widgets/settings.py:39
 msgid "Preferences"
 msgstr ""
@@ -174,15 +161,15 @@ msgstr ""
 msgid "Password generation time (s): "
 msgstr ""
 
-#: TwoFactorAuth/widgets/listrow.py:156
+#: TwoFactorAuth/widgets/listrow.py:165
 msgid "Copy the generated code.."
 msgstr ""
 
-#: TwoFactorAuth/widgets/listrow.py:165
+#: TwoFactorAuth/widgets/listrow.py:174
 msgid "Remove the source.."
 msgstr ""
 
-#: TwoFactorAuth/widgets/listrow.py:220
+#: TwoFactorAuth/widgets/listrow.py:233
 msgid "Couldn't generate the secret code"
 msgstr ""
 
@@ -214,14 +201,22 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
-#: TwoFactorAuth/application.py:48 TwoFactorAuth/application.py:103
+#: TwoFactorAuth/application.py:48 TwoFactorAuth/application.py:102
 msgid "Unlock the Application"
 msgstr ""
 
-#: TwoFactorAuth/application.py:50 TwoFactorAuth/application.py:105
+#: TwoFactorAuth/application.py:50 TwoFactorAuth/application.py:104
 msgid "Lock the Application"
 msgstr ""
 
-#: TwoFactorAuth/application.py:54
+#: TwoFactorAuth/application.py:53
 msgid "Shortcuts"
+msgstr ""
+
+#: TwoFactorAuth/application.py:54
+msgid "About"
+msgstr ""
+
+#: TwoFactorAuth/application.py:55
+msgid "Quit"
 msgstr ""

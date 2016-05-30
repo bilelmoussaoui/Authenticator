@@ -18,9 +18,10 @@ class ListBoxRow(Thread):
     code = None
     code_generated = True
 
-    row = Gtk.ListBoxRow()
-    drawing_area = Gtk.DrawingArea()
-    code_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+    row = None
+    drawing_area = None
+    code_box = None
+    code_label = None
 
     def __init__(self, parent, id, name, secret_code, logo):
         Thread.__init__(self)
@@ -60,6 +61,11 @@ class ListBoxRow(Thread):
         return label.strip()
 
     @staticmethod
+    def get_code(row):
+        code_box = ListBoxRow.get_code_box(row)
+        return code_box.get_children()[0].get_text()
+
+    @staticmethod
     def get_checkbox(row):
         """
             Get ListBowRow's checkbox
@@ -77,14 +83,16 @@ class ListBoxRow(Thread):
         """
         return row.get_children()[0].get_children()[1]
 
-    def toggle_code_box(self, *args):
+    @staticmethod
+    def toggle_code_box(row):
         """
             Toggle code box
         """
-        is_visible = self.code_box.get_visible()
-        self.code_box.set_visible(not is_visible)
-        self.code_box.set_no_show_all(is_visible)
-        self.code_box.show_all()
+        code_box = ListBoxRow.get_code_box(row)
+        is_visible = code_box.get_visible()
+        code_box.set_visible(not is_visible)
+        code_box.set_no_show_all(is_visible)
+        code_box.show_all()
 
     def copy_code(self, event_box, box):
         """
@@ -92,10 +100,9 @@ class ListBoxRow(Thread):
         """
         self.timer = 0
         self.parent.copy_code(event_box)
-        code_box = self.row.get_children()[0].get_children()[1]
-        code_box.set_visible(True)
-        code_box.set_no_show_all(False)
-        code_box.show_all()
+        self.code_box.set_visible(True)
+        self.code_box.set_no_show_all(False)
+        self.code_box.show_all()
         GObject.timeout_add_seconds(1, self.update_timer)
 
     def update_timer(self, *args):
@@ -104,28 +111,30 @@ class ListBoxRow(Thread):
         """
         self.timer += 1
         if self.timer > 10:
-            code_box = self.row.get_children()[0].get_children()[1]
-            code_box.set_visible(False)
-            code_box.set_no_show_all(True)
+            self.code_box.set_visible(False)
+            self.code_box.set_no_show_all(True)
         return self.timer <= 10
 
     def create_row(self):
         """
             Create ListBoxRow
         """
+        self.row = Gtk.ListBoxRow()
         self.row.get_style_context().add_class("application-list-row")
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
         h_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        self.code_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         self.code_box.set_visible(False)
-        box.pack_start(h_box, True, True, 6)
-        box.pack_start(self.code_box, True, True, 6)
 
         # ID
         label_id = Gtk.Label()
         label_id.set_text(str(self.id))
         label_id.set_visible(False)
         label_id.set_no_show_all(True)
+
+        box.pack_start(h_box, True, True, 0)
+        box.pack_start(self.code_box, True, True, 0)
         box.pack_end(label_id, False, False, 0)
 
         # Checkbox
@@ -146,7 +155,7 @@ class ListBoxRow(Thread):
         application_name = Gtk.Label(xalign=0)
         application_name.get_style_context().add_class("application-name")
         application_name.set_text(self.name)
-        name_event.connect("button-press-event", self.toggle_code_box)
+        name_event.connect("button-press-event", self.toggle_code)
         name_event.add(application_name)
         h_box.pack_start(name_event, True, True, 6)
         # Copy button
@@ -167,20 +176,24 @@ class ListBoxRow(Thread):
         remove_event.connect("button-press-event", self.parent.remove_application)
         h_box.pack_end(remove_event, False, True, 6)
 
-        self.drawing_area.set_size_request(24, 24)
+        self.drawing_area = Gtk.DrawingArea()
+        self.drawing_area.set_size_request(30, 30)
+        self.code_label = Gtk.Label(xalign=0)
+        self.code_label.get_style_context().add_class("application-secret-code")
 
-        code_label = Gtk.Label(xalign=0)
-        code_label.get_style_context().add_class("application-secret-code")
-        # TODO : show the real secret code
-        self.update_code(code_label)
+        self.update_code(self.code_label)
         self.code_box.set_no_show_all(True)
+        self.code_box.set_visible(False)
         self.code_box.pack_end(self.drawing_area, False, True, 6)
-        self.code_box.pack_start(code_label, False, True, 6)
+        self.code_box.pack_start(self.code_label, False, True, 6)
 
         self.row.add(box)
 
     def get_counter(self):
         return self.counter
+
+    def toggle_code(self, *args):
+        ListBoxRow.toggle_code_box(self.row)
 
     def run(self):
         while self.code_generated and self.parent.app.alive:
@@ -203,7 +216,7 @@ class ListBoxRow(Thread):
         return self.code_generated
 
     def regenerate_code(self):
-        label = self.row.get_children()[0].get_children()[1].get_children()[0]
+        label = self.code_label
         if label:
             self.code.update()
             self.update_code(label)
@@ -223,15 +236,30 @@ class ListBoxRow(Thread):
     def expose(self, drawing_area, cairo):
         try:
             if self.code_generated:
-                cairo.arc(12, 12, 12, 0, (self.counter * 2 * pi / self.counter_max))
-                cairo.set_source_rgba(0, 0, 0, 0.4)
-                cairo.fill_preserve()
-                # TODO : get colors from default theme
-                if self.counter < self.counter_max / 2:
+                is_dark_mode = Gtk.Settings.get_default().get_property("gtk-application-prefer-dark-theme")
+
+                cairo.set_line_width(0.1)
+
+                cairo.arc(15, 15, 12, 0, (self.counter * 2 * pi / self.counter_max))
+                if not is_dark_mode:
                     cairo.set_source_rgb(0, 0, 0)
                 else:
                     cairo.set_source_rgb(1, 1, 1)
-                cairo.move_to(8, 15)
+                cairo.fill_preserve()
+                # TODO : get colors from default theme
+
+                cairo.select_font_face("Lato, Roboto, Cantarell, Sans-Serif")
+                if self.counter < self.counter_max / 2:
+                    if not is_dark_mode:
+                        cairo.set_source_rgb(0, 0, 0)
+                    else:
+                        cairo.set_source_rgb(1, 1, 1)
+                else:
+                    if not is_dark_mode:
+                        cairo.set_source_rgb(1, 1, 1)
+                    else:
+                        cairo.set_source_rgb(0, 0, 0)
+                cairo.move_to(12 - len(str(self.counter)), 18)
                 cairo.show_text(str(self.counter))
         except Exception as e:
             logging.error(str(e))
