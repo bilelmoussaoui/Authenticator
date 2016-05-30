@@ -171,7 +171,7 @@ class Window(Gtk.ApplicationWindow):
             self.app.locked = False
             self.app.toggle_settings_menu()
             self.password_entry.set_text("")
-            self.app.toggle_app_lock_menu()
+            self.app.refresh_menu()
         else:
             self.password_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, "dialog-error-symbolic")
 
@@ -180,7 +180,7 @@ class Window(Gtk.ApplicationWindow):
             Lock/unlock the application
         """
         self.app.locked = not self.app.locked
-        self.app.toggle_app_lock_menu()
+        self.app.refresh_menu()
         self.refresh_window()
 
     def toggle_boxes(self, apps_box, no_apps_box, login_box):
@@ -276,7 +276,6 @@ class Window(Gtk.ApplicationWindow):
                 self.search_entry.grab_focus_without_selecting()
             else:
                 self.list_box.set_filter_func(lambda x, y, z: True, None, False)
-
 
     def toggle_select(self, *args):
         """

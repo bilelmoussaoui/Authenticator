@@ -25,7 +25,7 @@ class Authenticator:
         # Connect to database
         self.conn = sqlite3.connect(database_file)
         if not self.is_table_exists():
-            logging.debug("SQL: Table 'applciations' does not exists, creating it now...")
+            logging.debug("SQL: Table 'applications' does not exists, creating it now...")
             self.create_table()
             logging.debug("SQL: Table 'applications' created successfully")
 
@@ -137,7 +137,7 @@ class Authenticator:
             self.conn.execute(query)
             self.conn.commit()
         except Exception as e:
-            logging.error( "SQL: imossibile to create table 'applications' %s " % str(e))
+            logging.error( "SQL: impossible to create table 'applications' %s " % str(e))
 
     def is_table_exists(self):
         """

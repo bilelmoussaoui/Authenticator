@@ -113,6 +113,7 @@ class SettingsWindow(Gtk.Window):
         """
         self.password_button.set_sensitive(switch.get_active())
         self.cfg.update("state", switch.get_active(), "login")
+        self.parent.app.refresh_menu()
 
 
     def close_window(self, *args):

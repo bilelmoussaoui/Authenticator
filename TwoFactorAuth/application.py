@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 from gi import require_version
 require_version("Gtk", "3.0")
+require_version("GnomeKeyring", "1.0")
 from gi.repository import Gtk, GLib, Gio, Gdk, GObject
 from TwoFactorAuth.widgets.window import Window
 from TwoFactorAuth.models.authenticator import Authenticator
 from TwoFactorAuth.widgets.settings import SettingsWindow
 from TwoFactorAuth.models.settings import SettingsReader
+from gi.repository import GnomeKeyring as GK
 import logging
 import signal
 from gettext import gettext as _
@@ -26,6 +28,7 @@ class Application(Gtk.Application):
                                  flags=Gio.ApplicationFlags.FLAGS_NONE)
         GLib.set_application_name("TwoFactorAuth")
         GLib.set_prgname(self.package)
+        self.keyrings = GK.get_info_sync()
         self.cfg = SettingsReader()
         if self.cfg.read("state", "login"):
             self.locked = True
@@ -44,10 +47,15 @@ class Application(Gtk.Application):
 
     def do_startup(self):
         Gtk.Application.do_startup(self)
-        if self.locked:
-            self.menu.append(_("Unlock the Application"), "app.lock")
-        else:
-            self.menu.append(_("Lock the Application"), "app.lock")
+        pass_enabled = self.cfg.read("state", "login")
+        if pass_enabled:
+            if self.locked:
+                self.menu.append(_("Unlock the Application"), "app.lock")
+            else:
+                self.menu.append(_("Lock the Application"), "app.lock")
+
+        if not self.locked:
+            self.menu.append(_("Settings"), "app.settings")
 
         if Gtk.get_major_version() >= 3 and Gtk.get_minor_version() >= 20:
             self.menu.append(_("Shortcuts"), "app.shortcuts")
@@ -76,7 +84,6 @@ class Application(Gtk.Application):
         action.connect("activate", self.on_quit)
         self.add_action(action)
 
-        self.toggle_settings_menu()
         logging.debug("Adding gnome shell menu")
 
     def do_activate(self, *args):
@@ -90,20 +97,30 @@ class Application(Gtk.Application):
         else:
             self.menu.insert(1, _("Settings"), "app.settings")
 
+    def refresh_menu(self):
+        self.menu.remove_all()
+        shortcuts_enabled = Gtk.get_major_version() >= 3 and Gtk.get_minor_version() >= 20
+        pass_enabled = self.cfg.read("state", "login")
+        if self.locked:
+            self.menu.append(_("Unlock the Application"), "app.lock")
+            if shortcuts_enabled:
+                self.menu.append(_("Shortcuts"), "app.shortcuts")
+            self.menu.append(_("About"), "app.about")
+            self.menu.append(_("Quit"), "app.quit")
+        else:
+            if pass_enabled:
+                self.menu.append(_("Lock the Application"), "app.lock")
+            if shortcuts_enabled:
+                self.menu.append(_("Shortcuts"), "app.shortcuts")
+            self.menu.insert(1, _("Settings"), "app.settings")
+            self.menu.append(_("About"), "app.about")
+            self.menu.append(_("Quit"), "app.quit")
+
     def on_toggle_lock(self, *args):
         if not self.locked:
             self.locked = not self.locked
-            self.toggle_app_lock_menu()
-            self.toggle_settings_menu()
+            self.refresh_menu()
             self.win.refresh_window()
-
-    def toggle_app_lock_menu(self):
-        if self.locked:
-            label = _("Unlock the Application")
-        else:
-            label = _("Lock the Application")
-        self.menu.remove(0)
-        self.menu.insert(0, label, "app.lock")
 
     def on_shortcuts(self, *args):
         self.win.show_shortcuts()
