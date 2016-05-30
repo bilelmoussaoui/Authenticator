@@ -5,9 +5,11 @@ Two-factor authentication generator for Gnome <br>
 For translators : https://www.transifex.com/twofactorauth/twofactorauth/
 ### Dependecies 
 - `Python 3.3+`
-- `Gtk 3.18+`
+- `Gtk 3.14+`
 - `PyOTP`
 - `GnomeKeyring`
+
+<sub>PS: The application was only tested on Arch with Gtk 3.20+, but it should work nicely with older versions too. Keyboard shortcuts widget won't be shown for older versions.</sub>
 
 ### Screenshots
 
