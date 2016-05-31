@@ -17,9 +17,10 @@ For translators : https://www.transifex.com/twofactorauth/twofactorauth/
 
 
 ### Installation
-- On Arch : <br/>
-    `yaourt -S gnome-twofactorauth-git`<br/>
-    <sub>A stable package will be added once the application is stable enough</sub>
+- On Arch :
+```bash
+    yaourt -S gnome-twofactourauth
+``` 
 
 ### Credits
 - Websites and application icons are from Paper theme, created by [Sam Hewitt](https://github.com/snwh)
@@ -36,11 +37,15 @@ For translators : https://www.transifex.com/twofactorauth/twofactorauth/
 <sub>PS : In some distributions you will need to use `pip3` instead of `pip` to install the compatible version of the package with Python 3.</sub> <br>
 3 - Afterwards
 ```bash
-./autogen.sh
-make
-sudo make install
+    ./autogen.sh
+    make
+    sudo make install
 ```
 4 - You can run the application from the desktop file or from terminal using 
 ```bash
-twofactorauth
+    twofactorauth
+```
+<sub>Arch users can build from source directly using AUR <br/></sub> 
+```bash
+    yaourt -S gnome-twofactorauth
 ```
