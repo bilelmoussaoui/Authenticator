@@ -15,10 +15,16 @@ For translators : https://www.transifex.com/twofactorauth/twofactorauth/
 
 <img src="screenshots/screenshot7.png" width="280" /> <img src="screenshots/screenshot1.png" width="280" /> <img src="screenshots/screenshot2.png" width="280" />
 
+
+### Installation
+- On Arch : <br/>
+    `yaourt -S gnome-twofactorauth-git`<br/>
+    <sub>A stable package will be added once the application is stable enough</sub>
+
 ### Credits
 - Websites and application icons are from Paper theme, created by [Sam Hewitt](https://github.com/snwh)
 
-### Installation
+### How to build from source
 1 - Clone the repository
 ```bash
     git clone https://github.com/bil-elmoussaoui/TwoFactorAuth && cd ./TwoFactorAuth
