@@ -1,6 +1,6 @@
 from gi import require_version
 require_version("Gtk", "3.0")
-from gi.repository import Gtk
+from gi.repository import Gtk, Gdk
 from TwoFactorAuth.models.settings import SettingsReader
 from TwoFactorAuth.widgets.change_password import PasswordWindow
 from gettext import gettext as _
@@ -9,8 +9,12 @@ from gettext import gettext as _
 class SettingsWindow(Gtk.Window):
     notebook = Gtk.Notebook()
     time_spin_button = Gtk.SpinButton()
+    auto_lock_time = Gtk.SpinButton()
     enable_switch = Gtk.Switch()
+    auto_lock_switch = Gtk.Switch()
     password_button = Gtk.Button()
+
+    password_window = None
 
     def __init__(self, parent):
         self.parent = parent
@@ -20,14 +24,22 @@ class SettingsWindow(Gtk.Window):
         self.show_all()
 
     def generate_window(self):
-        Gtk.Window.__init__(self, title=_("Settings"), modal=True,
+        Gtk.Window.__init__(self, title=_("Settings"),
                             destroy_with_parent=True)
         self.connect("delete-event", self.close_window)
-        self.resize(300, 300)
-        self.set_size_request(300, 300)
+        self.resize(400, 300)
+        self.set_size_request(400, 300)
         self.set_resizable(False)
         self.set_position(Gtk.WindowPosition.CENTER)
         self.set_transient_for(self.parent)
+        self.connect("key_press_event", self.on_key_press)
+
+    def on_key_press(self, key, key_event):
+        """
+            Keyboard Listener handler
+        """
+        if Gdk.keyval_name(key_event.keyval) == "Escape":
+            self.close_window()
 
     def generate_components(self):
         """
@@ -91,21 +103,53 @@ class SettingsWindow(Gtk.Window):
         time_box.pack_start(time_label, False, True, 0)
         time_box.pack_end(self.time_spin_button, False, True, 0)
 
+        is_auto_lock_active = bool(self.cfg.read("auto-lock", "preferences"))
+        auto_lock_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        auto_lock_label = Gtk.Label(_("Auto-lock the Application"))
+        self.auto_lock_switch.set_active(is_auto_lock_active)
+        self.auto_lock_switch.connect("notify::active", self.on_auto_lock_activated)
+        auto_lock_box.pack_start(auto_lock_label, False, True, 0)
+        auto_lock_box.pack_end(self.auto_lock_switch, False, True, 0)
+
+        auto_lock_time_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        auto_lock_time_label = Gtk.Label(_("Auto-lock time (m): "))
+        default_value = self.cfg.read("auto-lock-time", "preferences")
+        if default_value < 1 or default_value > 10:
+            default_value = 3
+        adjustment = Gtk.Adjustment(default_value, 1, 10, 1, 1, 0)
+        self.auto_lock_time.connect("value-changed", self.on_auto_lock_time_changed)
+        self.auto_lock_time.set_adjustment(adjustment)
+        self.auto_lock_time.set_sensitive(is_auto_lock_active)
+        self.auto_lock_time.set_value(default_value)
+
+        auto_lock_time_box.pack_start(auto_lock_time_label, False, True, 0)
+        auto_lock_time_box.pack_end(self.auto_lock_time, False, True, 0)
+
         main_box.pack_start(time_box, False, True, 6)
+        main_box.pack_start(auto_lock_box, False, True, 6)
+        main_box.pack_start(auto_lock_time_box, False, True, 6)
         return main_box
 
     def new_password_window(self, *args):
         """
             Show a new password window
         """
-        PasswordWindow(self)
+        if not self.password_window:
+            self.password_window = PasswordWindow(self)
+        else:
+            self.password_window.show()
 
     def on_time_changed(self, spin_button):
         """
             Update time tog generate a new secret code
         """
-        self.cfg.update("refresh-time", spin_button.get_value_as_int(),
-                        "preferences")
+        self.cfg.update("refresh-time", spin_button.get_value_as_int(), "preferences")
+
+    def on_auto_lock_time_changed(self, spin_button):
+        """
+            Update time tog generate a new secret code
+        """
+        self.cfg.update("auto-lock-time", spin_button.get_value_as_int(), "preferences")
 
     def on_switch_activated(self, switch, *args):
         """
@@ -113,11 +157,19 @@ class SettingsWindow(Gtk.Window):
         """
         self.password_button.set_sensitive(switch.get_active())
         self.cfg.update("state", switch.get_active(), "login")
-        self.parent.app.refresh_menu()
-        self.parent.refresh_menu_popover()
+
+        self.parent.refresh_window()
+
+    def on_auto_lock_activated(self, switch, *args):
+        """
+            Update auto-lock state : enabled/disabled
+        """
+        self.auto_lock_time.set_sensitive(switch.get_active())
+        self.cfg.update("auto-lock", switch.get_active(), "preferences")
 
     def close_window(self, *args):
         """
             Close the window
         """
-        self.destroy()
+        self.hide()
+        return True

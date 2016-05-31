@@ -1,6 +1,6 @@
 from gi import require_version
 require_version("Gtk", "3.0")
-from gi.repository import Gtk, Gio, Gdk
+from gi.repository import Gtk, Gio, Gdk, GObject
 from TwoFactorAuth.widgets.add_authenticator import AddAuthenticator
 from TwoFactorAuth.widgets.confirmation import ConfirmationMessage
 from TwoFactorAuth.widgets.listrow import ListBoxRow
@@ -13,6 +13,7 @@ class Window(Gtk.ApplicationWindow):
     app = None
     selected_app_idx = None
     selected_count = 0
+    counter = 0
 
     hb = Gtk.HeaderBar()
     main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
@@ -29,12 +30,11 @@ class Window(Gtk.ApplicationWindow):
     remove_button = Gtk.Button()
     cancel_button = Gtk.Button()
     select_button = Gtk.Button()
+    lock_button = Gtk.Button()
 
     popover = Gtk.PopoverMenu().new()
-    pop_unlock = Gtk.ModelButton.new()
     settings_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-    unlock_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-
+    pop_settings = Gtk.ModelButton.new()
     password_entry = Gtk.Entry()
     search_entry = Gtk.Entry()
 
@@ -47,6 +47,7 @@ class Window(Gtk.ApplicationWindow):
         self.generate_no_apps_box()
         self.generate_login_form()
         self.refresh_window()
+        GObject.timeout_add_seconds(60, self.refresh_counter)
 
     def generate_window(self, *args):
         """
@@ -99,9 +100,24 @@ class Window(Gtk.ApplicationWindow):
             elif keypress == "escape":
                 if self.search_box.get_visible():
                     self.toggle_search_box()
+                if not self.select_button.get_visible():
+                    self.toggle_select()
         else:
             if keypress == "return":
                 self.on_unlock_clicked()
+
+    def refresh_counter(self):
+        """
+            Add a value to the counter each 60 seconds
+        """
+        print(self.counter)
+        if not self.app.locked:
+            self.counter += 1
+        if self.app.cfg.read("auto-lock", "preferences"):
+            if self.counter == self.app.cfg.read("auto-lock-time", "preferences") - 1:
+                self.counter = 0
+                self.toggle_app_lock()
+        return True
 
     def filter_applications(self, entry):
         data = entry.get_text().strip()
@@ -174,11 +190,7 @@ class Window(Gtk.ApplicationWindow):
         if password == self.app.cfg.read("password", "login"):
             self.password_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, None)
             self.toggle_app_lock()
-            self.app.locked = False
-            self.app.toggle_settings_menu()
             self.password_entry.set_text("")
-            self.app.refresh_menu()
-
         else:
             self.password_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, "dialog-error-symbolic")
 
@@ -209,7 +221,7 @@ class Window(Gtk.ApplicationWindow):
         """
             Hide all buttons on the header bar
         """
-        self.toggle_hb_buttons(False, False, False, False, False, False)
+        self.toggle_hb_buttons(False, False, False, False, False, False, False)
 
     def generate_header_bar(self):
         """
@@ -254,9 +266,21 @@ class Window(Gtk.ApplicationWindow):
         self.cancel_button.set_label(_("Cancel"))
         self.cancel_button.connect("clicked", self.toggle_select)
         self.cancel_button.set_no_show_all(True)
+
+        pass_enabled = self.app.cfg.read("state", "login")
+        can_be_locked = not self.app.locked and pass_enabled
+        lock_icon = Gio.ThemedIcon(name="changes-prevent-symbolic")
+        lock_image = Gtk.Image.new_from_gicon(lock_icon, Gtk.IconSize.BUTTON)
+        self.lock_button.set_tooltip_text(_("Lock the Application"))
+        self.lock_button.set_image(lock_image)
+        self.lock_button.connect("clicked", self.app.on_toggle_lock)
+        self.lock_button.set_no_show_all(not can_be_locked)
+        self.lock_button.set_visible(can_be_locked)
+
         right_box.add(self.search_button)
         right_box.add(self.select_button)
         right_box.add(self.cancel_button)
+        right_box.add(self.lock_button)
 
         if not self.app.use_GMenu:
             self.generate_popover(right_box)
@@ -281,32 +305,16 @@ class Window(Gtk.ApplicationWindow):
         self.popover.add(popover_box)
 
         shortcuts_enabled = Gtk.get_major_version() >= 3 and Gtk.get_minor_version() >= 20
-        pass_enabled = self.app.cfg.read("state", "login")
-        unlock_section_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        self.pop_unlock.connect("clicked", self.app.on_toggle_lock)
-        self.pop_unlock.get_style_context().add_class("flat")
 
-        self.pop_unlock.set_label(_("Lock the Application"))
-        unlock_section_box.pack_start(self.pop_unlock, False, False, 0)
-        unlock_section_box.pack_start(Gtk.Separator(), False, False, 0)
-
-        can_be_locked = not self.app.locked and pass_enabled
-        self.unlock_box.set_no_show_all(not can_be_locked)
-        self.unlock_box.set_visible(can_be_locked)
-        self.unlock_box.pack_start(unlock_section_box, True, True, 0)
-        popover_box.pack_start(self.unlock_box, True, True, 0)
-
-        settings = Gtk.ModelButton.new()
-        settings.set_label(_("Settings"))
-        settings.get_style_context().add_class("flat")
-        settings.connect("clicked", self.app.on_settings)
+        self.pop_settings.set_label(_("Settings"))
+        self.pop_settings.get_style_context().add_class("flat")
+        self.pop_settings.connect("clicked", self.app.on_settings)
+        self.pop_settings.set_sensitive(not self.app.locked)
 
         settings_section_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        settings_section_box.pack_start(settings, False, False, 0)
+        settings_section_box.pack_start(self.pop_settings, False, False, 0)
         settings_section_box.pack_start(Gtk.Separator(), False, False, 0)
 
-        self.settings_box.set_visible(not self.app.locked)
-        self.settings_box.set_no_show_all(self.app.locked)
         self.settings_box.pack_start(settings_section_box, True, True, 0)
         popover_box.pack_start(self.settings_box, True, True, 0)
 
@@ -331,17 +339,6 @@ class Window(Gtk.ApplicationWindow):
         popover_box.pack_start(quit, False, False, 0)
 
         box.add(self.settings_button)
-
-    def refresh_menu_popover(self):
-        if not self.app.use_GMenu:
-            pass_enabled = self.app.cfg.read("state", "login")
-            can_be_locked = not self.app.locked and pass_enabled
-            self.settings_box.set_visible(not self.app.locked)
-            self.unlock_box.set_visible(can_be_locked)
-            self.unlock_box.set_no_show_all(not can_be_locked)
-            self.settings_box.set_no_show_all(self.app.locked)
-            self.unlock_box.show_all()
-            self.settings_box.show_all()
 
     def toggle_popover(self, *args):
         if self.popover:
@@ -385,6 +382,9 @@ class Window(Gtk.ApplicationWindow):
         self.remove_button.set_visible(not is_visible)
         if not self.app.use_GMenu:
             self.settings_button.set_visible(is_visible)
+
+        pass_enabled = self.app.cfg.read("state", "login")
+        self.lock_button.set_visible( is_visible and pass_enabled)
         self.add_button.set_visible(is_visible)
         self.select_button.set_visible(is_visible)
 
@@ -540,30 +540,33 @@ class Window(Gtk.ApplicationWindow):
         """
         count = self.app.auth.count()
         is_locked = self.app.locked
-
+        pass_enabled = self.app.cfg.read("state", "login")
+        can_be_locked = not is_locked and pass_enabled
         if is_locked:
             self.toggle_boxes(False, False, True)
             self.hide_header_bar()
         else:
             if count == 0:
                 self.toggle_boxes(False, True, False)
-                self.toggle_hb_buttons(False, True, False, False, False, True)
+                self.toggle_hb_buttons(False, True, False, False, False, True, can_be_locked)
             else:
                 self.toggle_boxes(True, False, False)
-                self.toggle_hb_buttons(False, True, True, True, False, True)
+                self.toggle_hb_buttons(False, True, True, True, False, True, can_be_locked)
 
+        self.pop_settings.set_sensitive(not is_locked)
         self.main_box.show_all()
-        self.refresh_menu_popover()
         self.list_box.set_selection_mode(Gtk.SelectionMode.SINGLE)
 
-    def toggle_hb_buttons(self, remove, add, search, select, cancel, settings):
+    def toggle_hb_buttons(self, remove, add, search, select, cancel, settings, lock):
         """
-            Toggle header bar buttons visibilty
+            Toggle header bar buttons visibility
             :param remove: (bool)
             :param add: (bool)
             :param search: (bool)
             :param select: (bool)
             :param cancel: (bool)
+            :param settings: (bool)
+            :param lock: (bool)
         """
         self.add_button.set_visible(add)
         self.add_button.set_no_show_all(not add)
@@ -575,6 +578,8 @@ class Window(Gtk.ApplicationWindow):
         self.select_button.set_no_show_all(not select)
         self.search_button.set_visible(search)
         self.search_button.set_no_show_all(not search)
+        self.lock_button.set_visible(lock)
+        self.lock_button.set_no_show_all(not lock)
         if not self.app.use_GMenu:
             self.search_button.set_visible(settings)
             self.search_button.set_no_show_all(not settings)

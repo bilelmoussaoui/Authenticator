@@ -28,6 +28,14 @@ class IconFinderWindow(Gtk.Window):
         self.set_position(Gtk.WindowPosition.CENTER)
         self.set_resizable(False)
         self.set_transient_for(self.parent)
+        self.connect("key_press_event", self.on_key_press)
+
+    def on_key_press(self, key, key_event):
+        """
+            Keyboard Listener handler
+        """
+        if Gdk.keyval_name(key_event.keyval) == "Escape":
+            self.close_window()
 
     def generate_components(self):
         """
@@ -100,4 +108,5 @@ class IconFinderWindow(Gtk.Window):
         """
             Close the window
         """
-        self.destroy()
+        self.hide()
+        return True

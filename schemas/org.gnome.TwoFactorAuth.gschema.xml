@@ -8,6 +8,20 @@
                 Time on seconds to generate a new password
             </description>
         </key>
+        <key name="auto-lock" type="b">
+            <default>false</default>
+            <summary>Auto lock the application</summary>
+            <description>
+                Auto lock the application after a (auto-lock-time)s
+            </description>
+        </key>
+        <key name="auto-lock-time" type="i">
+            <default>3</default>
+            <summary>Auto lock the application after x seconds</summary>
+            <description>
+                Auto lock the application after a x seconds
+            </description>
+        </key>
     </schema>
     <schema path="/org/gnome/TwoFactorAuth/login/" id="org.gnome.TwoFactorAuth.login" gettext-domain="TwoFactorAuth">
         <key name="password" type="s">

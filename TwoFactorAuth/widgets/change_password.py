@@ -152,4 +152,5 @@ class PasswordWindow(Gtk.Window):
         """
             Close the window
         """
-        self.destroy()
+        self.hide()
+        return True

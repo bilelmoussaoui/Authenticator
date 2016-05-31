@@ -12,13 +12,17 @@ import signal
 from gettext import gettext as _
 from os import environ as env
 
+
 class Application(Gtk.Application):
     win = None
     alive = True
     locked = False
     menu = Gio.Menu()
     auth = Authenticator()
-    use_GMenu = None
+    use_GMenu = True
+
+    settings_window = None
+    settings_action = None
 
     def __init__(self, *args, **kwargs):
         for key in kwargs:
@@ -61,25 +65,28 @@ class Application(Gtk.Application):
             logging.debug("Adding gnome shell menu")
 
     def generate_menu(self):
-        pass_enabled = self.cfg.read("state", "login")
-        if pass_enabled:
-            if self.locked:
-                self.menu.append(_("Unlock the Application"), "app.lock")
-            else:
-                self.menu.append(_("Lock the Application"), "app.lock")
+        # Settings section
+        settings_content = Gio.Menu.new()
+        settings_content.append_item(Gio.MenuItem.new(_("Settings"), "app.settings"))
+        settings_section = Gio.MenuItem.new_section(None, settings_content)
+        self.menu.append_item(settings_section)
 
-        if not self.locked:
-            self.menu.append(_("Settings"), "app.settings")
-
+        # Help section
+        help_content = Gio.Menu.new()
         if Gtk.get_major_version() >= 3 and Gtk.get_minor_version() >= 20:
-            self.menu.append(_("Shortcuts"), "app.shortcuts")
-        self.menu.append(_("About"), "app.about")
-        self.menu.append(_("Quit"), "app.quit")
+            help_content.append_item(Gio.MenuItem.new(_("Shortcuts"), "app.shortcuts"))
+
+        help_content.append_item(Gio.MenuItem.new(_("About"), "app.about"))
+        help_content.append_item(Gio.MenuItem.new(_("Quit"), "app.quit"))
+        help_section = Gio.MenuItem.new_section(None, help_content)
+        self.menu.append_item(help_section)
+
         self.set_app_menu(self.menu)
 
-        action = Gio.SimpleAction.new("settings", None)
-        action.connect("activate", self.on_settings)
-        self.add_action(action)
+        self.settings_action = Gio.SimpleAction.new("settings", None)
+        self.settings_action.connect("activate", self.on_settings)
+        self.settings_action.set_enabled(not self.locked)
+        self.add_action(self.settings_action)
 
         if Gtk.get_major_version() >= 3 and Gtk.get_minor_version() >= 20:
             action = Gio.SimpleAction.new("shortcuts", None)
@@ -88,10 +95,6 @@ class Application(Gtk.Application):
 
         action = Gio.SimpleAction.new("about", None)
         action.connect("activate", self.on_about)
-        self.add_action(action)
-
-        action = Gio.SimpleAction.new("lock", None)
-        action.connect("activate", self.on_toggle_lock)
         self.add_action(action)
 
         action = Gio.SimpleAction.new("quit", None)
@@ -103,29 +106,9 @@ class Application(Gtk.Application):
         self.win.show_all()
         self.add_window(self.win)
 
-    def toggle_settings_menu(self):
-        if self.locked:
-            self.menu.remove(1)
-        else:
-            self.menu.insert(1, _("Settings"), "app.settings")
-
     def refresh_menu(self):
         if self.use_GMenu:
-            self.menu.remove_all()
-            shortcuts_enabled = Gtk.get_major_version() >= 3 and Gtk.get_minor_version() >= 20
-            pass_enabled = self.cfg.read("state", "login")
-            can_be_locked = not self.app.locked and pass_enabled
-            if can_be_locked:
-                self.menu.append(_("Lock the Application"), "app.lock")
-
-            if shortcuts_enabled:
-                self.menu.append(_("Shortcuts"), "app.shortcuts")
-
-            if not self.locked:
-                self.menu.insert(1, _("Settings"), "app.settings")
-
-            self.menu.append(_("About"), "app.about")
-            self.menu.append(_("Quit"), "app.quit")
+            self.settings_action.set_enabled(not self.settings_action.get_enabled())
 
     def on_toggle_lock(self, *args):
         if not self.locked:
@@ -144,7 +127,10 @@ class Application(Gtk.Application):
         """
             Shows settings window
         """
-        SettingsWindow(self.win)
+        if not self.settings_window:
+            self.settings_window = SettingsWindow(self.win)
+        else:
+            self.settings_window.show()
 
     def on_quit(self, *args):
         """

@@ -18,6 +18,8 @@ class AddAuthenticator(Gtk.Window):
     secret_code = Gtk.Entry()
     name_entry = Gtk.Entry()
 
+    logo_finder_window = None
+
     def __init__(self, window):
         self.parent = window
         self.generate_window()
@@ -42,7 +44,7 @@ class AddAuthenticator(Gtk.Window):
             Keyboard Listener handler
         """
         if Gdk.keyval_name(key_event.keyval) == "Escape":
-            self.destroy()
+            self.close_window()
 
     def update_logo(self, image):
         """
@@ -179,7 +181,10 @@ class AddAuthenticator(Gtk.Window):
             Shows icon finder window
             select icon by icon name
         """
-        IconFinderWindow(self)
+        if not self.logo_finder_window:
+            self.logo_finder_window = IconFinderWindow(self)
+        else:
+            self.logo_finder_window.show()
 
     def add_filters(self, dialog):
         """
