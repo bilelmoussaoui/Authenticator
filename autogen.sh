@@ -30,4 +30,4 @@ echo "Running automake..."
 automake --add-missing || return 1
 
 echo "Running configure..."
-./configure || return 1
+./configure "$@" || return 1
