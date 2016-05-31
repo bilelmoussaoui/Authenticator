@@ -45,7 +45,4 @@ For translators : https://www.transifex.com/twofactorauth/twofactorauth/
 ```bash
     twofactorauth
 ```
-<sub>Arch users can build from source directly using AUR <br/></sub> 
-```bash
-    yaourt -S gnome-twofactorauth
-```
+<sub>Arch users can build from source directly using AUR `yaourt -S gnome-twofactorauth`</sub> 
