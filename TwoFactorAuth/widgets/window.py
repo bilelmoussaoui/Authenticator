@@ -5,7 +5,7 @@ from TwoFactorAuth.widgets.add_authenticator import AddAuthenticator
 from TwoFactorAuth.widgets.confirmation import ConfirmationMessage
 from TwoFactorAuth.widgets.listrow import ListBoxRow
 import logging
-from hashlib import md5
+from hashlib import sha256
 from gettext import gettext as _
 
 
@@ -186,7 +186,7 @@ class Window(Gtk.ApplicationWindow):
             Password check and unlock
         """
         password = self.password_entry.get_text()
-        password = md5(password.encode("utf-8")).hexdigest()
+        password = sha256(password.encode("utf-8")).hexdigest()
         if password == self.app.cfg.read("password", "login"):
             self.password_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, None)
             self.toggle_app_lock()
@@ -511,7 +511,7 @@ class Window(Gtk.ApplicationWindow):
             :param secret_code: application secret code
             :param image: application image path or icon name
         """
-        secret_code = md5(secret_code.encode('utf-8')).hexdigest()
+        secret_code = sha256(secret_code.encode('utf-8')).hexdigest()
         row = ListBoxRow(self, uid, name, secret_code, image)
         self.list_box.add(row.get_list_row())
         self.list_box.show_all()

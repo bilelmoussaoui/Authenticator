@@ -3,7 +3,7 @@ import logging
 from os import path, mknod, makedirs
 from gi.repository import GdkPixbuf, Gtk
 from gi.repository import GnomeKeyring as GK
-from hashlib import md5
+from hashlib import sha256
 
 class Authenticator:
 
@@ -48,7 +48,7 @@ class Authenticator:
             :param image: image path or icon name
             :return:
         """
-        encrypted_secret = md5(secret_code.encode('utf-8')).hexdigest()
+        encrypted_secret = sha256(secret_code.encode('utf-8')).hexdigest()
         t = (name, encrypted_secret, image,)
         query = "INSERT INTO applications (name, secret_code, image) VALUES (?, ?, ?)"
         try:

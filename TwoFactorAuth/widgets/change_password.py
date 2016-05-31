@@ -3,7 +3,7 @@ require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gdk
 import logging
 from gettext import gettext as _
-from hashlib import md5
+from hashlib import sha256
 from TwoFactorAuth.models.settings import SettingsReader
 
 
@@ -87,7 +87,7 @@ class PasswordWindow(Gtk.Window):
         """
             Update user password
         """
-        password = md5(self.new_entry.get_text().encode("utf-8")).hexdigest()
+        password = sha256(self.new_entry.get_text().encode("utf-8")).hexdigest()
         self.cfg.update("password", password, "login")
         logging.debug("Password changed successfully")
         self.destroy()
@@ -111,7 +111,7 @@ class PasswordWindow(Gtk.Window):
         else:
             are_diff = False
         if len(pwd) != 0:
-            if md5(self.old_entry.get_text().encode('utf-8')).hexdigest() != pwd:
+            if sha256(self.old_entry.get_text().encode('utf-8')).hexdigest() != pwd:
                 self.old_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY,
                                                        "dialog-error-symbolic")
                 old_is_ok = False
