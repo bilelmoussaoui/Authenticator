@@ -5,7 +5,7 @@ Two-factor authentication generator for Gnome <br>
 For translators : https://www.transifex.com/twofactorauth/twofactorauth/
 ### Dependecies 
 - `Python 3.3+`
-- `Gtk 3.14+`
+- `Gtk 3.16+`
 - `PyOTP`
 - `GnomeKeyring`
 

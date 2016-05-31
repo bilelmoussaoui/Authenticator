@@ -12,6 +12,7 @@ from gettext import gettext as _
 class AddAuthenticator(Gtk.Window):
     selected_image = None
     hb = Gtk.HeaderBar()
+
     popover = Gtk.PopoverMenu.new()
     logo_image = Gtk.Image(xalign=0)
     secret_code = Gtk.Entry()
