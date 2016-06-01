@@ -26,7 +26,7 @@ class PasswordWindow(Gtk.Window):
         Gtk.Window.__init__(self, title=_("Change password"), modal=True, destroy_with_parent=True)
         self.connect("delete-event", self.close_window)
         self.resize(300, 100)
-        self.set_border_width(12)
+        self.set_border_width(18)
         self.set_size_request(300, 100)
         self.set_position(Gtk.WindowPosition.CENTER)
         self.set_resizable(False)
@@ -38,7 +38,7 @@ class PasswordWindow(Gtk.Window):
             Keyboard listener handler
         """
         if Gdk.keyval_name(key_event.keyval) == "Escape":
-            self.destroy()
+            self.close_window()
 
     def generate_components(self):
         """

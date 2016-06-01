@@ -57,8 +57,8 @@ class Window(Gtk.ApplicationWindow):
                                        application=self.app)
         self.set_position(Gtk.WindowPosition.CENTER)
         self.set_wmclass(self.app.package, "TwoFactorAuth")
-        self.resize(430, 500)
-        self.set_size_request(430, 500)
+        self.resize(430, 550)
+        self.set_size_request(430, 550)
         self.set_resizable(False)
         self.connect("key_press_event", self.on_key_press)
         self.connect("delete-event", lambda x, y: self.app.on_quit())
@@ -77,7 +77,7 @@ class Window(Gtk.ApplicationWindow):
                     self.copy_code()
             elif keypress == "f":
                 if key_event.state == control_mask:
-                    self.toggle_search_box()
+                    self.search_button.set_active(not self.search_button.get_active())
 
             elif keypress == "s":
                 if key_event.state == control_mask:
@@ -96,10 +96,10 @@ class Window(Gtk.ApplicationWindow):
                     ListBoxRow.toggle_code_box(self.list_box.get_row_at_index(index))
             elif keypress == "backspace":
                 if len(self.search_entry.get_text()) == 0:
-                    self.toggle_search_box()
+                    self.search_button.set_active(False)
             elif keypress == "escape":
                 if self.search_box.get_visible():
-                    self.toggle_search_box()
+                    self.search_button.set_active(False)
                 if not self.select_button.get_visible():
                     self.toggle_select()
         else:
@@ -122,9 +122,15 @@ class Window(Gtk.ApplicationWindow):
         data = entry.get_text().strip()
         if len(data) != 0:
             entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, "edit-clear-symbolic")
+            entry.connect("icon-press", self.on_icon_pressed)
         else:
             entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, None)
         self.list_box.set_filter_func(self.filter_func, data, False)
+
+
+    def on_icon_pressed(self, entry, icon_pos, event):
+        if icon_pos == Gtk.EntryIconPosition.SECONDARY:
+            self.search_entry.set_text("")
 
     def generate_search_bar(self):
         """
@@ -271,7 +277,7 @@ class Window(Gtk.ApplicationWindow):
         search_image = Gtk.Image.new_from_gicon(search_icon, Gtk.IconSize.BUTTON)
         self.search_button.set_tooltip_text(_("Search"))
         self.search_button.set_image(search_image)
-        self.search_button.connect("clicked", self.toggle_search_box)
+        self.search_button.connect("toggled", self.toggle_search_box)
         self.search_button.set_no_show_all(not self.app.auth.count() > 0)
 
         self.cancel_button.set_label(_("Cancel"))
@@ -363,11 +369,12 @@ class Window(Gtk.ApplicationWindow):
             self.search_box.set_no_show_all(not is_visible)
             self.search_box.set_visible(is_visible)
             self.search_box.show_all()
-
+            self.search_button.get_style_context().remove_class("toggled")
             if is_visible:
                 self.search_entry.grab_focus_without_selecting()
             else:
                 self.list_box.set_filter_func(lambda x, y, z: True, None, False)
+
 
     def toggle_select(self, *args):
         """

@@ -32,7 +32,7 @@ class AddAuthenticator(Gtk.Window):
                             modal=True, destroy_with_parent=True)
         self.connect("delete-event", self.close_window)
         self.resize(300, 100)
-        self.set_border_width(12)
+        self.set_border_width(18)
         self.set_size_request(300, 100)
         self.set_position(Gtk.WindowPosition.CENTER)
         self.set_resizable(False)

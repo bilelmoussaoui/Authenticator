@@ -9,6 +9,8 @@ from gettext import gettext as _
 
 class AuthenticatorLogoChooser(Gtk.Window):
 
+    main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+
     def __init__(self, window):
         directory = window.parent.app.pkgdatadir + "/data/logos/"
         self.logos = listdir(directory)
@@ -23,13 +25,13 @@ class AuthenticatorLogoChooser(Gtk.Window):
     def generate_window(self):
         Gtk.Window.__init__(self, modal=True, destroy_with_parent=True)
         self.connect("delete-event", self.close_window)
-        self.resize(350, 400)
-        self.set_size_request(350, 400)
+        self.resize(380, 450)
+        self.set_size_request(380, 450)
         self.set_position(Gtk.WindowPosition.CENTER)
         self.set_resizable(False)
         self.set_transient_for(self.window.parent)
         self.connect("key_press_event", self.on_key_press)
-        self.add(Gtk.Box(orientation=Gtk.Orientation.VERTICAL))
+        self.add(self.main_box)
 
     def filter_func(self, row, data, notify_destroy):
         app_label = row.get_children()[0].get_children()[0].get_children()
@@ -44,44 +46,55 @@ class AuthenticatorLogoChooser(Gtk.Window):
         if len(data) != 0:
             entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY,
                                           "edit-clear-symbolic")
+            entry.connect("icon-press", self.on_icon_pressed)
         else:
             entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY,
                                           None)
         self.listbox.set_filter_func(self.filter_func, data, False)
 
+    def on_icon_pressed(self, entry, icon_pos, event):
+        if icon_pos == Gtk.EntryIconPosition.SECONDARY:
+            entry.set_text("")
+
     def on_key_press(self, label, keyevent):
         CONTROL_MASK = Gdk.ModifierType.CONTROL_MASK
         keypressed = Gdk.keyval_name(keyevent.keyval).lower()
         if keypressed == "escape":
-            self.destroy()
+            search_box = self.get_children()[0].get_children()[0]
+            if search_box.get_visible():
+                self.toggle_search_box()
+            else:
+                self.close_window()
         elif keypressed == "f":
             if keyevent.state == CONTROL_MASK:
-                search_box = self.get_children()[0].get_children()[0]
-                is_visible = search_box.get_no_show_all()
-                search_box.set_no_show_all(not is_visible)
-                search_box.set_visible(is_visible)
-                search_box.show_all()
-                if is_visible:
-                    search_box.get_children()[0].grab_focus_without_selecting()
-                else:
-                    self.listbox.set_filter_func(
-                        lambda x, y, z: True, None, False)
+                self.toggle_search_box()
         elif keypressed == "return":
             self.select_logo()
 
-    def generate_searchbar(self):
-        hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        hbox.set_margin_left(60)
+    def toggle_search_box(self):
+        is_visible = self.search_box.get_no_show_all()
+        self.search_box.set_no_show_all(not is_visible)
+        self.search_box.set_visible(is_visible)
+        self.search_box.show_all()
+        if is_visible:
+            self.search_entry.grab_focus_without_selecting()
+        else:
+            self.listbox.set_filter_func(
+                lambda x, y, z: True, None, False)
 
-        search_entry = Gtk.Entry()
-        search_entry.connect("changed", self.filter_logos)
-        search_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY,
+    def generate_searchbar(self):
+        self.search_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        self.search_box.set_margin_left(60)
+
+        self.search_entry = Gtk.Entry()
+        self.search_entry.connect("changed", self.filter_logos)
+        self.search_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY,
                                              "system-search-symbolic")
 
-        hbox.pack_start(search_entry, False, True, 6)
-        hbox.set_visible(False)
-        self.get_children()[0].pack_start(hbox, False, True, 6)
-        self.get_children()[0].get_children()[0].set_no_show_all(True)
+        self.search_box.pack_start(self.search_entry, False, True, 6)
+        self.search_box.set_visible(False)
+        self.search_box.set_no_show_all(True)
+        self.main_box.pack_start(self.search_box, False, False, 6)
 
     def select_logo(self, *args):
         index = self.listbox.get_selected_row().get_index()
@@ -96,7 +109,7 @@ class AuthenticatorLogoChooser(Gtk.Window):
             # Create a ScrolledWindow for installed applications
             scrolled_win = Gtk.ScrolledWindow()
             scrolled_win.add_with_viewport(box_outer)
-            self.get_children()[0].pack_start(scrolled_win, True, True, 0)
+            self.main_box.pack_start(scrolled_win, True, True, 0)
 
             self.listbox = Gtk.ListBox()
             self.listbox.get_style_context().add_class("applications-list")
@@ -151,4 +164,5 @@ class AuthenticatorLogoChooser(Gtk.Window):
         self.set_titlebar(self.hb)
 
     def close_window(self, *args):
-        self.destroy()
+        self.hide()
+        return True
