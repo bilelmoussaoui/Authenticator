@@ -233,7 +233,7 @@ class Window(Gtk.ApplicationWindow):
 
         remove_icon = Gio.ThemedIcon(name="user-trash-symbolic")
         remove_image = Gtk.Image.new_from_gicon(remove_icon, Gtk.IconSize.BUTTON)
-        self.remove_button.set_tooltip_text(_("Remove selected two factor auth sources"))
+        self.remove_button.set_tooltip_text(_("Remove selected applications"))
         self.remove_button.set_image(remove_image)
         self.remove_button.set_sensitive(False)
         self.remove_button.set_no_show_all(True)
@@ -250,7 +250,7 @@ class Window(Gtk.ApplicationWindow):
 
         select_icon = Gio.ThemedIcon(name="object-select-symbolic")
         select_image = Gtk.Image.new_from_gicon(select_icon, Gtk.IconSize.BUTTON)
-        self.select_button.set_tooltip_text(_("Select mode"))
+        self.select_button.set_tooltip_text(_("Selection mode"))
         self.select_button.set_image(select_image)
         self.select_button.connect("clicked", self.toggle_select)
         self.select_button.set_no_show_all(not self.app.auth.count() > 0)

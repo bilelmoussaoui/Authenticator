@@ -91,7 +91,7 @@ class SettingsWindow(Gtk.Window):
         main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
         time_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        time_label = Gtk.Label(_("Password generation time (s): "))
+        time_label = Gtk.Label(_("Secret code generation time (s)"))
         default_value = self.cfg.read("refresh-time", "preferences")
         if default_value < 30 or default_value > 120:
             default_value = 30
@@ -105,14 +105,14 @@ class SettingsWindow(Gtk.Window):
 
         is_auto_lock_active = bool(self.cfg.read("auto-lock", "preferences"))
         auto_lock_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        auto_lock_label = Gtk.Label(_("Auto-lock the Application"))
+        auto_lock_label = Gtk.Label(_("Auto-lock the application"))
         self.auto_lock_switch.set_active(is_auto_lock_active)
         self.auto_lock_switch.connect("notify::active", self.on_auto_lock_activated)
         auto_lock_box.pack_start(auto_lock_label, False, True, 0)
         auto_lock_box.pack_end(self.auto_lock_switch, False, True, 0)
 
         auto_lock_time_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        auto_lock_time_label = Gtk.Label(_("Auto-lock time (m): "))
+        auto_lock_time_label = Gtk.Label(_("Auto-lock time (m)"))
         default_value = self.cfg.read("auto-lock-time", "preferences")
         if default_value < 1 or default_value > 10:
             default_value = 3

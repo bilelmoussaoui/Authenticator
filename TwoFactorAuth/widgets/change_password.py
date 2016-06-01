@@ -9,7 +9,7 @@ from TwoFactorAuth.models.settings import SettingsReader
 
 class PasswordWindow(Gtk.Window):
     hb = Gtk.HeaderBar()
-    apply_button = Gtk.Button.new_with_label(_("Modifier"))
+    apply_button = Gtk.Button.new_with_label(_("Apply"))
     new_entry = Gtk.Entry()
     new2_entry = Gtk.Entry()
     old_entry = Gtk.Entry()
@@ -23,7 +23,7 @@ class PasswordWindow(Gtk.Window):
         self.show_all()
 
     def generate_window(self):
-        Gtk.Window.__init__(self, modal=True, destroy_with_parent=True)
+        Gtk.Window.__init__(self, title=_("Change password") modal=True, destroy_with_parent=True)
         self.connect("delete-event", self.close_window)
         self.resize(300, 100)
         self.set_border_width(12)
