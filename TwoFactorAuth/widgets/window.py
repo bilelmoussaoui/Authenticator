@@ -110,7 +110,6 @@ class Window(Gtk.ApplicationWindow):
         """
             Add a value to the counter each 60 seconds
         """
-        print(self.counter)
         if not self.app.locked:
             self.counter += 1
         if self.app.cfg.read("auto-lock", "preferences"):
