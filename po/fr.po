@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TwoFactorAuth\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-01 04:44+0200\n"
-"PO-Revision-Date: 2016-06-01 02:51+0000\n"
+"POT-Creation-Date: 2016-06-01 12:15+0200\n"
+"PO-Revision-Date: 2016-06-01 10:19+0000\n"
 "Last-Translator: Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>\n"
 "Language-Team: French (http://www.transifex.com/twofactorauth/twofactorauth/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -56,7 +56,7 @@ msgstr "Sélectionner l'application précédente"
 #: data/shortcuts.ui:65
 msgctxt "shortcut window"
 msgid "Selection mode"
-msgstr "Mode de séléction"
+msgstr "Mode de sélection "
 
 #: data/about.ui:14
 msgid "Simple application to generate two-factor authentication code"
@@ -92,7 +92,7 @@ msgstr "Ajouter une nouvelle application"
 
 #: TwoFactorAuth/widgets/window.py:253
 msgid "Selection mode"
-msgstr "Mode de séléction"
+msgstr "Mode de sélection "
 
 #: TwoFactorAuth/widgets/window.py:260
 msgid "Search"
@@ -189,7 +189,7 @@ msgstr "Auto-verrouillage de l'application"
 
 #: TwoFactorAuth/widgets/settings.py:115
 msgid "Auto-lock time (m)"
-msgstr "Temps de l'auto-verrouillage (m)"
+msgstr "Temps d'auto-verrouillage (m)"
 
 #: TwoFactorAuth/widgets/listrow.py:174
 msgid "Copy the generated code"
@@ -198,6 +198,11 @@ msgstr "Copier le code généré"
 #: TwoFactorAuth/widgets/listrow.py:183
 msgid "Remove the application"
 msgstr "Supprimer l'application"
+
+#: TwoFactorAuth/widgets/listrow.py:189 TwoFactorAuth/widgets/listrow.py:248
+#, python-format
+msgid "Expires in %s seconds"
+msgstr "Expire en %s secondes"
 
 #: TwoFactorAuth/widgets/listrow.py:195
 msgid "Error during the generation of code"

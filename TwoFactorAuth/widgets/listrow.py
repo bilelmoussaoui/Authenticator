@@ -19,9 +19,9 @@ class ListBoxRow(Thread):
     code_generated = True
 
     row = None
-    drawing_area = None
     code_box = None
     code_label = None
+    timer_label = None
 
     def __init__(self, parent, uid, name, secret_code, logo):
         Thread.__init__(self)
@@ -185,8 +185,8 @@ class ListBoxRow(Thread):
         remove_event.connect("button-press-event", self.parent.remove_application)
         h_box.pack_end(remove_event, False, True, 6)
 
-        self.drawing_area = Gtk.DrawingArea()
-        self.drawing_area.set_size_request(30, 30)
+        self.timer_label = Gtk.Label(xalign=0)
+        self.timer_label.set_label(_("Expires in %s seconds") % self.counter)
         self.code_label = Gtk.Label(xalign=0)
         self.code_label.get_style_context().add_class("application-secret-code")
         if self.code_generated:
@@ -195,7 +195,7 @@ class ListBoxRow(Thread):
             self.code_label.set_text(_("Error during the generation of code"))
         self.code_box.set_no_show_all(True)
         self.code_box.set_visible(False)
-        self.code_box.pack_end(self.drawing_area, False, True, 6)
+        self.code_box.pack_end(self.timer_label, False, True, 6)
         self.code_box.pack_start(self.code_label, False, True, 6)
 
         self.row.add(box)
@@ -214,7 +214,7 @@ class ListBoxRow(Thread):
                 self.regenerate_code()
                 if self.timer != 0:
                     self.timer = 0
-            self.drawing_area.connect("draw", self.expose)
+            self.update_timer_label()
             self.row.changed()
             sleep(1)
 
@@ -244,34 +244,6 @@ class ListBoxRow(Thread):
             label.set_text(_("Couldn't generate the secret code"))
             self.code_generated = False
 
-    def expose(self, drawing_area, cairo):
-        try:
-            if self.code_generated:
-                is_dark_mode = Gtk.Settings.get_default().get_property("gtk-application-prefer-dark-theme")
+    def update_timer_label(self):
+        self.timer_label.set_label(_("Expires in %s seconds") % self.counter)
 
-                cairo.set_line_width(0.1)
-
-                cairo.arc(15, 15, 12, 0, (self.counter * 2 * pi / self.counter_max))
-                if not is_dark_mode:
-                    cairo.set_source_rgb(0, 0, 0)
-                else:
-                    cairo.set_source_rgb(1, 1, 1)
-                cairo.fill_preserve()
-                # TODO : get colors from default theme
-
-                cairo.select_font_face("Lato, Roboto, Cantarell, Sans-Serif")
-                if self.counter < self.counter_max / 3:
-                    if not is_dark_mode:
-                        cairo.set_source_rgb(0, 0, 0)
-                    else:
-                        cairo.set_source_rgb(1, 1, 1)
-                else:
-                    if not is_dark_mode:
-                        cairo.set_source_rgb(1, 1, 1)
-                    else:
-                        cairo.set_source_rgb(0, 0, 0)
-                cairo.move_to(12 - len(str(self.counter)), 18)
-                cairo.show_text(str(self.counter))
-        except Exception as e:
-            logging.error(str(e))
-        return False

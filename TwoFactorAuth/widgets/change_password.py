@@ -23,7 +23,7 @@ class PasswordWindow(Gtk.Window):
         self.show_all()
 
     def generate_window(self):
-        Gtk.Window.__init__(self, title=_("Change password") modal=True, destroy_with_parent=True)
+        Gtk.Window.__init__(self, title=_("Change password"), modal=True, destroy_with_parent=True)
         self.connect("delete-event", self.close_window)
         self.resize(300, 100)
         self.set_border_width(12)
