@@ -167,6 +167,8 @@ class Window(Gtk.ApplicationWindow):
                     self.list_box.remove(row)
             self.list_box.unselect_all()
         confirmation.destroy()
+        if self.app.auth.count() == 0:
+            self.toggle_select()
         self.refresh_window()
 
     def generate_login_form(self):
@@ -235,6 +237,7 @@ class Window(Gtk.ApplicationWindow):
         """
             Generate a header bar box
         """
+        count =  self.app.auth.count() 
         self.hb.set_show_close_button(True)
 
         left_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
@@ -273,14 +276,16 @@ class Window(Gtk.ApplicationWindow):
         self.select_button.set_tooltip_text(_("Selection mode"))
         self.select_button.set_image(select_image)
         self.select_button.connect("clicked", self.toggle_select)
-        self.select_button.set_no_show_all(not self.app.auth.count() > 0)
+        self.select_button.set_no_show_all(not count > 0)
+        self.select_button.set_visible(count > 0)
 
         search_icon = Gio.ThemedIcon(name="system-search-symbolic")
         search_image = Gtk.Image.new_from_gicon(search_icon, Gtk.IconSize.BUTTON)
         self.search_button.set_tooltip_text(_("Search"))
         self.search_button.set_image(search_image)
         self.search_button.connect("toggled", self.toggle_search_box)
-        self.search_button.set_no_show_all(not self.app.auth.count() > 0)
+        self.search_button.set_no_show_all(not count > 0)
+        self.search_button.set_visible(count > 0)
 
         self.cancel_button.set_label(_("Cancel"))
         self.cancel_button.connect("clicked", self.toggle_select)
@@ -581,6 +586,7 @@ class Window(Gtk.ApplicationWindow):
             :param settings: (bool)
             :param lock: (bool)
         """
+
         self.add_button.set_visible(add)
         self.add_button.set_no_show_all(not add)
         self.remove_button.set_visible(remove)
@@ -594,8 +600,8 @@ class Window(Gtk.ApplicationWindow):
         self.lock_button.set_visible(lock)
         self.lock_button.set_no_show_all(not lock)
         if not self.app.use_GMenu:
-            self.search_button.set_visible(settings)
-            self.search_button.set_no_show_all(not settings)
+            self.settings_button.set_visible(settings)
+            self.settings_button.set_no_show_all(not settings)
 
     def remove_application(self, *args):
         """
