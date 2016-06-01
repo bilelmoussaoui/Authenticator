@@ -57,8 +57,8 @@ class Window(Gtk.ApplicationWindow):
                                        application=self.app)
         self.set_position(Gtk.WindowPosition.CENTER)
         self.set_wmclass(self.app.package, "TwoFactorAuth")
-        self.resize(390, 500)
-        self.set_size_request(390, 500)
+        self.resize(430, 500)
+        self.set_size_request(430, 500)
         self.set_resizable(False)
         self.connect("key_press_event", self.on_key_press)
         self.connect("delete-event", lambda x, y: self.app.on_quit())
@@ -245,8 +245,19 @@ class Window(Gtk.ApplicationWindow):
         self.add_button.set_image(add_image)
         self.add_button.connect("clicked", self.add_application)
 
+
+        pass_enabled = self.app.cfg.read("state", "login")
+        can_be_locked = not self.app.locked and pass_enabled
+        lock_icon = Gio.ThemedIcon(name="changes-prevent-symbolic")
+        lock_image = Gtk.Image.new_from_gicon(lock_icon, Gtk.IconSize.BUTTON)
+        self.lock_button.set_tooltip_text(_("Lock the Application"))
+        self.lock_button.set_image(lock_image)
+        self.lock_button.connect("clicked", self.app.on_toggle_lock)
+        self.lock_button.set_no_show_all(not can_be_locked)
+        self.lock_button.set_visible(can_be_locked)
         left_box.add(self.remove_button)
         left_box.add(self.add_button)
+        left_box.add(self.lock_button)
 
         select_icon = Gio.ThemedIcon(name="object-select-symbolic")
         select_image = Gtk.Image.new_from_gicon(select_icon, Gtk.IconSize.BUTTON)
@@ -266,20 +277,10 @@ class Window(Gtk.ApplicationWindow):
         self.cancel_button.connect("clicked", self.toggle_select)
         self.cancel_button.set_no_show_all(True)
 
-        pass_enabled = self.app.cfg.read("state", "login")
-        can_be_locked = not self.app.locked and pass_enabled
-        lock_icon = Gio.ThemedIcon(name="changes-prevent-symbolic")
-        lock_image = Gtk.Image.new_from_gicon(lock_icon, Gtk.IconSize.BUTTON)
-        self.lock_button.set_tooltip_text(_("Lock the Application"))
-        self.lock_button.set_image(lock_image)
-        self.lock_button.connect("clicked", self.app.on_toggle_lock)
-        self.lock_button.set_no_show_all(not can_be_locked)
-        self.lock_button.set_visible(can_be_locked)
 
         right_box.add(self.search_button)
         right_box.add(self.select_button)
         right_box.add(self.cancel_button)
-        right_box.add(self.lock_button)
 
         if not self.app.use_GMenu:
             self.generate_popover(right_box)
