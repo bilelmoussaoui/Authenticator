@@ -23,6 +23,8 @@ class Window(Gtk.ApplicationWindow):
     apps_list_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
     apps_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
+    add_application_window = None
+
     list_box = Gtk.ListBox()
     search_button = Gtk.ToggleButton()
     add_button = Gtk.Button()
@@ -358,7 +360,10 @@ class Window(Gtk.ApplicationWindow):
         """
             Create add application window
         """
-        AddAuthenticator(self)
+        if self.add_application_window:
+            self.add_application_window.show()
+        else:
+            self.add_application_window = AddAuthenticator(self)
 
     def toggle_search_box(self, *args):
         """

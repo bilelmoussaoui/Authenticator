@@ -3,7 +3,6 @@ require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gdk
 import logging
 from TwoFactorAuth.widgets.authenticator_logo import AuthenticatorLogoChooser
-from TwoFactorAuth.widgets.icon_finder import IconFinderWindow
 from TwoFactorAuth.models.code import Code
 from TwoFactorAuth.models.authenticator import Authenticator
 from gettext import gettext as _
@@ -19,6 +18,7 @@ class AddAuthenticator(Gtk.Window):
     name_entry = Gtk.Entry()
 
     logo_finder_window = None
+    provided_icons_window = None
 
     def __init__(self, window):
         self.parent = window
@@ -31,9 +31,9 @@ class AddAuthenticator(Gtk.Window):
         Gtk.Window.__init__(self, title=_("Add a new application"),
                             modal=True, destroy_with_parent=True)
         self.connect("delete-event", self.close_window)
-        self.resize(300, 100)
+        self.resize(430, 350)
         self.set_border_width(18)
-        self.set_size_request(300, 100)
+        self.set_size_request(430, 350)
         self.set_position(Gtk.WindowPosition.CENTER)
         self.set_resizable(False)
         self.set_transient_for(self.parent)
@@ -91,7 +91,7 @@ class AddAuthenticator(Gtk.Window):
         """
             Generate window components
         """
-        main_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         logo_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
         hbox_title = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=18)
@@ -108,13 +108,25 @@ class AddAuthenticator(Gtk.Window):
         hbox_two_factor.pack_start(two_factor_label, False, True, 0)
         hbox_two_factor.pack_end(self.secret_code, False, True, 0)
 
+
+        self.hbox_icon_name = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=18)
+        icon_name_label = Gtk.Label()
+        self.icon_name_entry = Gtk.Entry()
+        icon_name_label.set_text(_("Icon name"))
+        self.icon_name_entry.connect("changed", self.validate_icon_name)
+        self.hbox_icon_name.pack_start(icon_name_label, False, True, 0)
+        self.hbox_icon_name.pack_end(self.icon_name_entry, False, True, 0)
+        self.hbox_icon_name.set_visible(False)
+        self.hbox_icon_name.set_no_show_all(True)
+
         logo_event = Gtk.EventBox()
         auth_icon = Authenticator.get_auth_icon("image-missing", self.parent.app.pkgdatadir)
         self.logo_image.set_from_pixbuf(auth_icon)
         self.logo_image.get_style_context().add_class("application-logo-add")
         logo_event.add(self.logo_image)
         logo_event.connect("button-press-event", self.select_logo)
-        logo_box.pack_start(logo_event, False, False, 6)
+        logo_box.pack_start(logo_event, True, False, 6)
+        logo_box.set_property("margin-bottom", 20)
 
         self.popover.get_style_context().add_class("choose-popover")
         self.popover.set_relative_to(self.logo_image)
@@ -139,9 +151,21 @@ class AddAuthenticator(Gtk.Window):
 
         vbox.add(hbox_title)
         vbox.add(hbox_two_factor)
+        vbox.add(self.hbox_icon_name)
         main_box.pack_start(logo_box, False, True, 6)
         main_box.pack_start(vbox, False, True, 6)
         self.add(main_box)
+
+    def validate_icon_name(self, entry):
+        icon_name = entry.get_text()
+        theme = Gtk.IconTheme.get_default()
+        if theme.has_icon(icon_name):
+            icon = theme.load_icon(icon_name, 48, 0)
+            self.selected_image = icon_name
+        else:
+            icon = theme.load_icon("image-missing", 48, 0)
+        self.logo_image.clear()
+        self.logo_image.set_from_pixbuf(icon)
 
     def validate_ascii_code(self, entry):
         """
@@ -159,7 +183,10 @@ class AddAuthenticator(Gtk.Window):
         """
             Select an icon from provided ones
         """
-        AuthenticatorLogoChooser(self)
+        if self.provided_icons_window:
+            self.provided_icons_window.show()
+        else:
+            self.provided_icons_window = AuthenticatorLogoChooser(self)
 
     def on_file_clicked(self, *args):
         """"
@@ -181,10 +208,10 @@ class AddAuthenticator(Gtk.Window):
             Shows icon finder window
             select icon by icon name
         """
-        if not self.logo_finder_window:
-            self.logo_finder_window = IconFinderWindow(self)
-        else:
-            self.logo_finder_window.show()
+        is_visible = self.hbox_icon_name.get_no_show_all()
+        self.hbox_icon_name.set_visible(is_visible)
+        self.hbox_icon_name.set_no_show_all(not is_visible)
+        self.hbox_icon_name.show_all()
 
     def add_filters(self, dialog):
         """
@@ -226,4 +253,5 @@ class AddAuthenticator(Gtk.Window):
         """
             Close the window
         """
-        self.destroy()
+        self.hide()
+        return True

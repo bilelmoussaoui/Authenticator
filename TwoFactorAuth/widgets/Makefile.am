@@ -5,7 +5,6 @@ app_PYTHON = \
 	confirmation.py \
 	listrow.py \
 	authenticator_logo.py \
-	change_password.py \ 
-	icon_finder.py \
+	change_password.py \
 	settings.py \
 	window.py
