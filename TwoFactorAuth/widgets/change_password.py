@@ -54,8 +54,8 @@ class PasswordWindow(Gtk.Window):
             old_label.set_text(_("Old password"))
             self.old_entry.connect("changed", self.on_type_password)
             self.old_entry.set_visibility(False)
-            box_old.pack_start(old_label, False, True, 0)
             box_old.pack_end(self.old_entry, False, True, 0)
+            box_old.pack_end(old_label, False, True, 0)
             box.add(box_old)
 
         box_new = Gtk.Box(
@@ -65,8 +65,8 @@ class PasswordWindow(Gtk.Window):
 
         self.new_entry.connect("changed", self.on_type_password)
         self.new_entry.set_visibility(False)
-        box_new.pack_start(new_label, False, True, 0)
         box_new.pack_end(self.new_entry, False, True, 0)
+        box_new.pack_end(new_label, False, True, 0)
 
         box_new2 = Gtk.Box(
             orientation=Gtk.Orientation.HORIZONTAL, spacing=18)
@@ -74,8 +74,8 @@ class PasswordWindow(Gtk.Window):
         new2_label.set_text(_("Repeat new password"))
         self.new2_entry.connect("changed", self.on_type_password)
         self.new2_entry.set_visibility(False)
-        box_new2.pack_start(new2_label, False, True, 0)
         box_new2.pack_end(self.new2_entry, False, True, 0)
+        box_new2.pack_end(new2_label, False, True, 0)
 
         box.add(box_new)
         box.add(box_new2)

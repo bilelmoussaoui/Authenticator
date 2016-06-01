@@ -98,15 +98,16 @@ class AddAuthenticator(Gtk.Window):
         title_label = Gtk.Label()
         title_label.set_text(_("Application Name"))
 
-        hbox_title.pack_start(title_label, False, True, 0)
         hbox_title.pack_end(self.name_entry, False, True, 0)
+        hbox_title.pack_end(title_label, False, True, 0)
 
         hbox_two_factor = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=18)
         two_factor_label = Gtk.Label()
         two_factor_label.set_text(_("Secret Code"))
         self.secret_code.connect("changed", self.validate_ascii_code)
-        hbox_two_factor.pack_start(two_factor_label, False, True, 0)
+
         hbox_two_factor.pack_end(self.secret_code, False, True, 0)
+        hbox_two_factor.pack_end(two_factor_label, False, True, 0)
 
 
         self.hbox_icon_name = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=18)
@@ -114,8 +115,8 @@ class AddAuthenticator(Gtk.Window):
         self.icon_name_entry = Gtk.Entry()
         icon_name_label.set_text(_("Icon name"))
         self.icon_name_entry.connect("changed", self.validate_icon_name)
-        self.hbox_icon_name.pack_start(icon_name_label, False, True, 0)
         self.hbox_icon_name.pack_end(self.icon_name_entry, False, True, 0)
+        self.hbox_icon_name.pack_end(icon_name_label, False, True, 0)
         self.hbox_icon_name.set_visible(False)
         self.hbox_icon_name.set_no_show_all(True)
 
@@ -132,22 +133,24 @@ class AddAuthenticator(Gtk.Window):
         self.popover.set_relative_to(self.logo_image)
 
         pbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        pbox.set_property('margin', 12)
+        pbox.set_property('width-request', 150)
         self.popover.add(pbox)
 
         provided = Gtk.ModelButton.new()
         provided.set_label(_("Select from provided icons"))
         provided.connect("clicked", self.on_provided_click)
-        pbox.pack_start(provided, False, False, 6)
+        pbox.pack_start(provided, False, False, 0)
 
         file = Gtk.ModelButton.new()
         file.set_label(_("Select a file"))
         file.connect("clicked", self.on_file_clicked)
-        pbox.pack_start(file, False, False, 6)
+        pbox.pack_start(file, False, False, 0)
 
         icon_name = Gtk.ModelButton.new()
         icon_name.set_label(_("Select an icon name"))
         icon_name.connect("clicked", self.on_icon_clicked)
-        pbox.pack_start(icon_name, False, False, 6)
+        pbox.pack_start(icon_name, False, False, 0)
 
         vbox.add(hbox_title)
         vbox.add(hbox_two_factor)

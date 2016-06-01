@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-01 12:15+0200\n"
+"POT-Creation-Date: 2016-06-01 21:15+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -68,69 +68,68 @@ msgid ""
 "later</a> for details."
 msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:150
+#: TwoFactorAuth/widgets/window.py:158
 msgid "Do you really want to remove selected applications?"
 msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:171
+#: TwoFactorAuth/widgets/window.py:181
 msgid "Enter your password"
 msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:175
+#: TwoFactorAuth/widgets/window.py:185
 msgid "Unlock"
 msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:236
+#: TwoFactorAuth/widgets/window.py:248
 msgid "Remove selected applications"
 msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:244
+#: TwoFactorAuth/widgets/window.py:256
 #: TwoFactorAuth/widgets/add_authenticator.py:31
 msgid "Add a new application"
 msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:253
-msgid "Selection mode"
-msgstr ""
-
-#: TwoFactorAuth/widgets/window.py:260
-msgid "Search"
-msgstr ""
-
 #: TwoFactorAuth/widgets/window.py:265
-#: TwoFactorAuth/widgets/change_password.py:137
-#: TwoFactorAuth/widgets/icon_finder.py:93
-#: TwoFactorAuth/widgets/authenticator_logo.py:139
-#: TwoFactorAuth/widgets/add_authenticator.py:210
-msgid "Cancel"
-msgstr ""
-
-#: TwoFactorAuth/widgets/window.py:273
 msgid "Lock the Application"
 msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:294 TwoFactorAuth/widgets/window.py:308
+#: TwoFactorAuth/widgets/window.py:276
+msgid "Selection mode"
+msgstr ""
+
+#: TwoFactorAuth/widgets/window.py:284
+msgid "Search"
+msgstr ""
+
+#: TwoFactorAuth/widgets/window.py:290
+#: TwoFactorAuth/widgets/change_password.py:137
+#: TwoFactorAuth/widgets/authenticator_logo.py:152
+#: TwoFactorAuth/widgets/add_authenticator.py:240
+msgid "Cancel"
+msgstr ""
+
+#: TwoFactorAuth/widgets/window.py:309 TwoFactorAuth/widgets/window.py:323
 #: TwoFactorAuth/widgets/settings.py:27 TwoFactorAuth/application.py:70
 msgid "Settings"
 msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:322 TwoFactorAuth/application.py:77
+#: TwoFactorAuth/widgets/window.py:337 TwoFactorAuth/application.py:77
 msgid "Shortcuts"
 msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:330 TwoFactorAuth/application.py:79
+#: TwoFactorAuth/widgets/window.py:345 TwoFactorAuth/application.py:79
 msgid "About"
 msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:335 TwoFactorAuth/application.py:80
+#: TwoFactorAuth/widgets/window.py:350 TwoFactorAuth/application.py:80
 msgid "Quit"
 msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:499
+#: TwoFactorAuth/widgets/window.py:518
 msgid "There's no application at the moment"
 msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:594
+#: TwoFactorAuth/widgets/window.py:614
 msgid "Do you really want to remove the application?"
 msgstr ""
 
@@ -154,40 +153,28 @@ msgstr ""
 msgid "Repeat new password"
 msgstr ""
 
-#: TwoFactorAuth/widgets/icon_finder.py:11
-msgid "Select"
-msgstr ""
-
-#: TwoFactorAuth/widgets/authenticator_logo.py:144
+#: TwoFactorAuth/widgets/authenticator_logo.py:157
 msgid "Choose"
 msgstr ""
 
 #: TwoFactorAuth/widgets/settings.py:51
-msgid "Preferences"
+msgid "Behavior"
 msgstr ""
 
 #: TwoFactorAuth/widgets/settings.py:55
 msgid "Account"
 msgstr ""
 
-#: TwoFactorAuth/widgets/settings.py:65
-msgid "Enable password: "
+#: TwoFactorAuth/widgets/settings.py:69
+msgid "Password protection"
 msgstr ""
 
-#: TwoFactorAuth/widgets/settings.py:73
-msgid "Password: "
+#: TwoFactorAuth/widgets/settings.py:92
+msgid "Auto-lock the application (m):"
 msgstr ""
 
-#: TwoFactorAuth/widgets/settings.py:94
-msgid "Secret code generation time (s)"
-msgstr ""
-
-#: TwoFactorAuth/widgets/settings.py:108
-msgid "Auto-lock the application"
-msgstr ""
-
-#: TwoFactorAuth/widgets/settings.py:115
-msgid "Auto-lock time (m)"
+#: TwoFactorAuth/widgets/settings.py:110
+msgid "Secret code generation time (s) :"
 msgstr ""
 
 #: TwoFactorAuth/widgets/listrow.py:174
@@ -219,22 +206,26 @@ msgstr ""
 msgid "Secret Code"
 msgstr ""
 
-#: TwoFactorAuth/widgets/add_authenticator.py:126
+#: TwoFactorAuth/widgets/add_authenticator.py:116
+msgid "Icon name"
+msgstr ""
+
+#: TwoFactorAuth/widgets/add_authenticator.py:141
 msgid "Select from provided icons"
 msgstr ""
 
-#: TwoFactorAuth/widgets/add_authenticator.py:131
+#: TwoFactorAuth/widgets/add_authenticator.py:146
 msgid "Select a file"
 msgstr ""
 
-#: TwoFactorAuth/widgets/add_authenticator.py:136
+#: TwoFactorAuth/widgets/add_authenticator.py:151
 msgid "Select an icon name"
 msgstr ""
 
-#: TwoFactorAuth/widgets/add_authenticator.py:168
+#: TwoFactorAuth/widgets/add_authenticator.py:198
 msgid "Please choose a file"
 msgstr ""
 
-#: TwoFactorAuth/widgets/add_authenticator.py:215
+#: TwoFactorAuth/widgets/add_authenticator.py:245
 msgid "Add"
 msgstr ""
