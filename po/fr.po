@@ -1,0 +1,236 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>, 2016
+msgid ""
+msgstr ""
+"Project-Id-Version: TwoFactorAuth\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-06-01 04:44+0200\n"
+"PO-Revision-Date: 2016-06-01 02:51+0000\n"
+"Last-Translator: Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>\n"
+"Language-Team: French (http://www.transifex.com/twofactorauth/twofactorauth/language/fr/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: fr\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: data/shortcuts.ui:13
+msgctxt "shortcut window"
+msgid "General"
+msgstr "Général"
+
+#: data/shortcuts.ui:17
+msgctxt "shortcut window"
+msgid "Search"
+msgstr "Rechercher"
+
+#: data/shortcuts.ui:24
+msgctxt "shortcut window"
+msgid "Copy"
+msgstr "Copier"
+
+#: data/shortcuts.ui:31
+msgctxt "shortcut window"
+msgid "Add a new application"
+msgstr "Ajouter une nouvelle application"
+
+#: data/shortcuts.ui:38
+msgctxt "shortcut window"
+msgid "Delete"
+msgstr "Supprimer"
+
+#: data/shortcuts.ui:50
+msgctxt "shortcut window"
+msgid "Select next application"
+msgstr "Sélectionner l'application suivante"
+
+#: data/shortcuts.ui:57
+msgctxt "shortcut window"
+msgid "Select previous application"
+msgstr "Sélectionner l'application précédente"
+
+#: data/shortcuts.ui:65
+msgctxt "shortcut window"
+msgid "Selection mode"
+msgstr "Mode de séléction"
+
+#: data/about.ui:14
+msgid "Simple application to generate two-factor authentication code"
+msgstr "Une simple application pour générer les codes de validation en 2 étapes "
+
+#: data/about.ui:15
+msgid ""
+"This program comes with absolutely no warranty. See the <a "
+"href=\"http://www.gnu.org/licenses/gpl-3.0.html\">GNU General Public "
+"License, version 3 or later</a> for details."
+msgstr "Ce programme est fourni sans aucune garantie. Pour plus de détails, visitez  <a href=\"http://www.gnu.org/licenses/gpl-3.0.html\">Licence publique générale limitée GNU, version 2.1 ou ultérieure.</a> "
+
+#: TwoFactorAuth/widgets/window.py:150
+msgid "Do you really want to remove selected applications?"
+msgstr "Vouliez-vous vraiment supprimer les applications sélectionnées? "
+
+#: TwoFactorAuth/widgets/window.py:171
+msgid "Enter your password"
+msgstr "Entrez votre mot de passe"
+
+#: TwoFactorAuth/widgets/window.py:175
+msgid "Unlock"
+msgstr "Déverrouiller "
+
+#: TwoFactorAuth/widgets/window.py:236
+msgid "Remove selected applications"
+msgstr "Supprimer les applications sélectionnées "
+
+#: TwoFactorAuth/widgets/window.py:244
+#: TwoFactorAuth/widgets/add_authenticator.py:31
+msgid "Add a new application"
+msgstr "Ajouter une nouvelle application"
+
+#: TwoFactorAuth/widgets/window.py:253
+msgid "Selection mode"
+msgstr "Mode de séléction"
+
+#: TwoFactorAuth/widgets/window.py:260
+msgid "Search"
+msgstr "Chercher"
+
+#: TwoFactorAuth/widgets/window.py:265
+#: TwoFactorAuth/widgets/change_password.py:137
+#: TwoFactorAuth/widgets/icon_finder.py:93
+#: TwoFactorAuth/widgets/authenticator_logo.py:139
+#: TwoFactorAuth/widgets/add_authenticator.py:210
+msgid "Cancel"
+msgstr "Annuler"
+
+#: TwoFactorAuth/widgets/window.py:273
+msgid "Lock the Application"
+msgstr "Verrouiller l'application"
+
+#: TwoFactorAuth/widgets/window.py:294 TwoFactorAuth/widgets/window.py:308
+#: TwoFactorAuth/widgets/settings.py:27 TwoFactorAuth/application.py:70
+msgid "Settings"
+msgstr "Préférenes"
+
+#: TwoFactorAuth/widgets/window.py:322 TwoFactorAuth/application.py:77
+msgid "Shortcuts"
+msgstr "Raccourcis clavier "
+
+#: TwoFactorAuth/widgets/window.py:330 TwoFactorAuth/application.py:79
+msgid "About"
+msgstr "A propos"
+
+#: TwoFactorAuth/widgets/window.py:335 TwoFactorAuth/application.py:80
+msgid "Quit"
+msgstr "Quitter"
+
+#: TwoFactorAuth/widgets/window.py:499
+msgid "There's no application at the moment"
+msgstr "Y a aucune application pour le moment"
+
+#: TwoFactorAuth/widgets/window.py:594
+msgid "Do you really want to remove the application?"
+msgstr "Vouliez-vous vraiment supprimer cet application?"
+
+#: TwoFactorAuth/widgets/change_password.py:12
+msgid "Apply"
+msgstr "Appliquer"
+
+#: TwoFactorAuth/widgets/change_password.py:26
+msgid "Change password"
+msgstr "Modifier le mot de passe"
+
+#: TwoFactorAuth/widgets/change_password.py:54
+msgid "Old password"
+msgstr "Ancien mot de passe"
+
+#: TwoFactorAuth/widgets/change_password.py:64
+msgid "New password"
+msgstr "Nouveau mot de passe"
+
+#: TwoFactorAuth/widgets/change_password.py:74
+msgid "Repeat new password"
+msgstr "Répétez le nouveau mot de passe"
+
+#: TwoFactorAuth/widgets/icon_finder.py:11
+msgid "Select"
+msgstr "Séléctionner"
+
+#: TwoFactorAuth/widgets/authenticator_logo.py:144
+msgid "Choose"
+msgstr "Choisir"
+
+#: TwoFactorAuth/widgets/settings.py:51
+msgid "Preferences"
+msgstr "Préférences"
+
+#: TwoFactorAuth/widgets/settings.py:55
+msgid "Account"
+msgstr "Compte"
+
+#: TwoFactorAuth/widgets/settings.py:65
+msgid "Enable password: "
+msgstr "Activer le mot de passe"
+
+#: TwoFactorAuth/widgets/settings.py:73
+msgid "Password: "
+msgstr "Mot de passe:"
+
+#: TwoFactorAuth/widgets/settings.py:94
+msgid "Secret code generation time (s)"
+msgstr "Temps du génération du code secret (s)"
+
+#: TwoFactorAuth/widgets/settings.py:108
+msgid "Auto-lock the application"
+msgstr "Auto-verrouillage de l'application"
+
+#: TwoFactorAuth/widgets/settings.py:115
+msgid "Auto-lock time (m)"
+msgstr "Temps de l'auto-verrouillage (m)"
+
+#: TwoFactorAuth/widgets/listrow.py:174
+msgid "Copy the generated code"
+msgstr "Copier le code généré"
+
+#: TwoFactorAuth/widgets/listrow.py:183
+msgid "Remove the application"
+msgstr "Supprimer l'application"
+
+#: TwoFactorAuth/widgets/listrow.py:195
+msgid "Error during the generation of code"
+msgstr "Erreur durant la génération du code secret"
+
+#: TwoFactorAuth/widgets/listrow.py:244
+msgid "Couldn't generate the secret code"
+msgstr "Le code secret n'a pas pu être généré"
+
+#: TwoFactorAuth/widgets/add_authenticator.py:99
+msgid "Application Name"
+msgstr "Nom d'application"
+
+#: TwoFactorAuth/widgets/add_authenticator.py:106
+msgid "Secret Code"
+msgstr "Code secret"
+
+#: TwoFactorAuth/widgets/add_authenticator.py:126
+msgid "Select from provided icons"
+msgstr "Choisir une image pourvue "
+
+#: TwoFactorAuth/widgets/add_authenticator.py:131
+msgid "Select a file"
+msgstr "Choisir une fichier"
+
+#: TwoFactorAuth/widgets/add_authenticator.py:136
+msgid "Select an icon name"
+msgstr "Choisir un nom d'icon"
+
+#: TwoFactorAuth/widgets/add_authenticator.py:168
+msgid "Please choose a file"
+msgstr "Veuillez choisir un fichier s’il vous plaît"
+
+#: TwoFactorAuth/widgets/add_authenticator.py:215
+msgid "Add"
+msgstr "Ajouter"
