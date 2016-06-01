@@ -84,16 +84,19 @@ class AuthenticatorLogoChooser(Gtk.Window):
 
     def generate_searchbar(self):
         self.search_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        self.search_box.set_margin_left(60)
 
+
+        box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         self.search_entry = Gtk.Entry()
         self.search_entry.connect("changed", self.filter_logos)
         self.search_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY,
                                              "system-search-symbolic")
 
-        self.search_box.pack_start(self.search_entry, False, True, 6)
         self.search_box.set_visible(False)
         self.search_box.set_no_show_all(True)
+        box.pack_start(self.search_entry, False, True, 6)
+
+        self.search_box.pack_start(box, True, False, 6)
         self.main_box.pack_start(self.search_box, False, False, 6)
 
     def select_logo(self, *args):

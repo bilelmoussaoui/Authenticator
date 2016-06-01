@@ -61,8 +61,8 @@ class SettingsWindow(Gtk.Window):
         """
         main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         password_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        
-        self.enable_switch.set_active(bool(self.cfg.read("state", "login")))
+        lock_enabled = bool(self.cfg.read("state", "login"))
+        self.enable_switch.set_active(lock_enabled)
         self.enable_switch.connect("toggled", self.on_switch_activated)
 
         password_label = Gtk.Label()
@@ -72,6 +72,7 @@ class SettingsWindow(Gtk.Window):
         self.password_button.get_style_context().add_class("text-button")
         self.password_button.set_label("******")
         self.password_button.connect("clicked", self.new_password_window)
+        self.password_button.set_sensitive(lock_enabled)
 
         password_box.pack_start(self.enable_switch, False, True, 6)
         password_box.pack_start(password_label, False, True, 6)        
@@ -102,9 +103,9 @@ class SettingsWindow(Gtk.Window):
         self.auto_lock_time.set_sensitive(is_auto_lock_active)
         self.auto_lock_time.set_value(default_value)
 
-        auto_lock_box.pack_start(self.auto_lock_switch, False, True, 0)
+        auto_lock_box.pack_start(self.auto_lock_switch, False, True, 6)
         auto_lock_box.pack_start(auto_lock_label, False, True, 6)
-        auto_lock_box.pack_start(self.auto_lock_time, False, True, 6)
+        auto_lock_box.pack_start(self.auto_lock_time, False, True, 12)
 
         time_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         time_label = Gtk.Label(_("Secret code generation time (s) :"))
@@ -117,7 +118,7 @@ class SettingsWindow(Gtk.Window):
         self.time_spin_button.set_value(default_value)
 
         time_box.pack_start(time_label, False, True, 6)
-        time_box.pack_start(self.time_spin_button, False, True, 6)
+        time_box.pack_start(self.time_spin_button, False, True, 12)
 
         main_box.pack_start(auto_lock_box, False, True, 6)
         main_box.pack_start(time_box, False, True, 6)

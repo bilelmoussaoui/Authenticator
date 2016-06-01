@@ -17,7 +17,7 @@ class Window(Gtk.ApplicationWindow):
 
     hb = Gtk.HeaderBar()
     main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-    search_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+    search_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
     login_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
     no_apps_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
     apps_list_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
@@ -139,16 +139,15 @@ class Window(Gtk.ApplicationWindow):
             Generate search bar box and entry
         """
         box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        box.set_margin_left(60)
 
         self.search_entry.set_width_chars(28)
         self.search_entry.connect("changed", self.filter_applications)
         self.search_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY, "system-search-symbolic")
 
         box.pack_start(self.search_entry, False, True, 0)
-        self.search_box.pack_start(box, False, True, 6)
+        self.search_box.pack_start(box, True, False, 6)
         self.search_box.set_no_show_all(True)
-        self.apps_box.pack_start(self.search_box, False, True, 0)
+        self.apps_box.pack_start(self.search_box, False, True, 6)
         self.main_box.pack_start(self.apps_box, True, True, 0)
 
     def remove_selected(self, *args):

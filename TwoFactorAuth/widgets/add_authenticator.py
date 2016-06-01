@@ -92,6 +92,7 @@ class AddAuthenticator(Gtk.Window):
             Generate window components
         """
         main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        labels_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         logo_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
         hbox_title = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=18)
@@ -155,8 +156,9 @@ class AddAuthenticator(Gtk.Window):
         vbox.add(hbox_title)
         vbox.add(hbox_two_factor)
         vbox.add(self.hbox_icon_name)
+        labels_box.pack_start(vbox, True, False, 6)
         main_box.pack_start(logo_box, False, True, 6)
-        main_box.pack_start(vbox, False, True, 6)
+        main_box.pack_start(labels_box, False, True, 6)
         self.add(main_box)
 
     def validate_icon_name(self, entry):
