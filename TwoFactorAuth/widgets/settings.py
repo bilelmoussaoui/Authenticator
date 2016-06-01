@@ -157,6 +157,10 @@ class SettingsWindow(Gtk.Window):
         """
         self.password_button.set_sensitive(switch.get_active())
         self.cfg.update("state", switch.get_active(), "login")
+        if switch.get_active():
+            password = self.cfg.read("password", "login")
+            if len(password) == 0:
+                self.new_password_window()
 
         self.parent.refresh_window()
 
