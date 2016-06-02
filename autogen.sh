@@ -1,6 +1,10 @@
 #!/bin/sh
 
 mkdir -p m4
+touch NEWS
+touch README
+touch AUTHORS
+touch ChangeLog
 
 echo "Creating m4/aclocal.m4 ..."
 test -r m4/aclocal.m4 || touch m4/aclocal.m4

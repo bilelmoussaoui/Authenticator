@@ -17,6 +17,8 @@ downloads/
 eggs/
 .eggs/
 lib/
+m4/
+autom4te.cache/
 lib64/
 parts/
 sdist/
@@ -60,3 +62,40 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+
+# Unneeded files
+NEWS
+README
+AUTHORS
+ChangeLog
+aclocal.m4
+py-compile
+install-sh
+gnome-twofactorauth
+stamp-h1
+config.h
+missing
+ltmain.sh 
+configure
+config.status
+config.log 
+config.h.in
+Makefile
+Makefile.in
+TwoFactorAuth/Makefile
+TwoFactorAuth/Makefile.in
+TwoFactorAuth/widgets/Makefile
+TwoFactorAuth/widgets/Makefile.in
+TwoFactorAuth/models/Makefile
+TwoFactorAuth/models/Makefile.in
+data/Makefile
+data/Makefile.in
+data/logos/Makefile
+data/logos/Makefile.in
+schemas/Makefile.in
+schemas/Makefile
+schemas/*.valid
+po/stamp-it
+po/*.gmo
+po/POTFILES
+po/Makefile.in.in

@@ -83,6 +83,7 @@ class ApplicationChooserWindow(Gtk.Window):
             Generate header bar box
         """
         self.hb = Gtk.HeaderBar()
+        self.hb.props.title = _("Select an application")
 
         left_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         right_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)

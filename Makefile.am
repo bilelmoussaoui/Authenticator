@@ -1,7 +1,7 @@
 ACLOCAL_AMFLAGS = -I m4
 NULL =
 
-bin_SCRIPTS = gnome_twofactorauth
+bin_SCRIPTS = gnome-twofactorauth
 CLEANFILES = $(bin_SCRIPTS)
 EXTRA_DIST = gnome-twofactorauth.in
 
@@ -12,7 +12,7 @@ do_substitution = sed -e 's,[@]pythondir[@],$(pythondir),g' \
 	-e 's,[@]VERSION[@],$(VERSION),g' \
 	-e 's,[@]pyexecdir[@],$(pyexecdir),g'
 
-gnome_twofactorauth: gnome-twofactorauth.in Makefile
+gnome-twofactorauth: gnome-twofactorauth.in Makefile
 	$(do_substitution) < $(srcdir)/gnome-twofactorauth.in > gnome-twofactorauth
 	chmod +x gnome-twofactorauth
 

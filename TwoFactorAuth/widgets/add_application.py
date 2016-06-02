@@ -40,6 +40,8 @@ class AddApplication(Gtk.Window):
         """
             Generate the header bar box
         """
+        self.hb.props.title = _("Add an application")
+
         left_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         right_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
 
