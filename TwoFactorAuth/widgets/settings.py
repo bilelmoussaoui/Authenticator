@@ -7,32 +7,32 @@ from gettext import gettext as _
 
 
 class SettingsWindow(Gtk.Window):
-    notebook = Gtk.Notebook()
-    time_spin_button = Gtk.SpinButton()
-    auto_lock_time = Gtk.SpinButton()
-    enable_switch = Gtk.CheckButton()
-    auto_lock_switch = Gtk.CheckButton()
-    password_button = Gtk.Button()
 
     def __init__(self, parent):
         self.parent = parent
         self.cfg = SettingsReader()
+        self.notebook = Gtk.Notebook()
+        self.time_spin_button = Gtk.SpinButton()
+        self.auto_lock_time = Gtk.SpinButton()
+        self.enable_switch = Gtk.CheckButton()
+        self.auto_lock_switch = Gtk.CheckButton()
+        self.password_button = Gtk.Button()
         self.generate_window()
         self.generate_components()
 
     def generate_window(self):
-        self.win = Gtk.Window(title=_("Settings"),type=Gtk.WindowType.TOPLEVEL, 
+        Gtk.Window.__init__(self,title=_("Settings"),type=Gtk.WindowType.TOPLEVEL, 
                                 destroy_with_parent=True, modal=True)
-        self.win.connect("destroy", self.close_window)
-        self.win.resize(410, 300)
-        self.win.set_size_request(410, 300)
-        self.win.set_resizable(False)
-        self.win.set_position(Gtk.WindowPosition.CENTER)
-        self.win.set_transient_for(self.parent)
-        self.win.connect("key_press_event", self.on_key_press)
+        self.connect("delete-event", self.close_window)
+        self.resize(410, 300)
+        self.set_size_request(410, 300)
+        self.set_resizable(False)
+        self.set_position(Gtk.WindowPosition.CENTER)
+        self.set_transient_for(self.parent)
+        self.connect("key_press_event", self.on_key_press)
 
     def show_window(self):
-        self.win.show_all()
+        self.show_all()
 
     def on_key_press(self, key, key_event):
         """
@@ -45,7 +45,7 @@ class SettingsWindow(Gtk.Window):
         """
             Generate all the components
         """
-        self.win.add(self.notebook)
+        self.add(self.notebook)
         user_settings = self.generate_user_settings()
         user_settings.set_border_width(10)
         self.notebook.append_page(user_settings, Gtk.Label().new(_('Behavior')))
@@ -169,4 +169,4 @@ class SettingsWindow(Gtk.Window):
         """
             Close the window
         """
-        self.win.destroy()
+        self.destroy()

@@ -7,7 +7,6 @@ from TwoFactorAuth.models.settings import SettingsReader
 from threading import Thread
 from time import sleep
 import logging
-from math import pi
 from gettext import gettext as _
 
 

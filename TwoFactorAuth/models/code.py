@@ -10,8 +10,6 @@ except ImportError:
 class Code:
     password = None
 
-    label = None
-
     def __init__(self, secret_code):
         self.secret_code = secret_code
         self.create()

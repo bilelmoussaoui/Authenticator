@@ -8,33 +8,35 @@ from TwoFactorAuth.models.settings import SettingsReader
 
 
 class PasswordWindow(Gtk.Window):
-    hb = Gtk.HeaderBar()
-    apply_button = Gtk.Button.new_with_label(_("Apply"))
-    new_entry = Gtk.Entry()
-    new2_entry = Gtk.Entry()
-    old_entry = Gtk.Entry()
 
     def __init__(self, window):
         self.parent = window
         self.cfg = SettingsReader()
+
+        self.hb = Gtk.HeaderBar()
+        self.apply_button = Gtk.Button.new_with_label(_("Apply"))
+        self.new_entry = Gtk.Entry()
+        self.new2_entry = Gtk.Entry()
+        self.old_entry = Gtk.Entry()
+
         self.generate_window()
         self.generate_components()
         self.generate_header_bar()
 
     def generate_window(self):
-        self.win = Gtk.Window(type=Gtk.WindowType.TOPLEVEL, title=_("Change password"),
+        Gtk.Window.__init__(self, type=Gtk.WindowType.TOPLEVEL, title=_("Change password"),
                                 modal=True, destroy_with_parent=True)
-        self.win.connect("destroy", self.close_window)
-        self.win.resize(300, 100)
-        self.win.set_border_width(18)
-        self.win.set_size_request(300, 100)
-        self.win.set_position(Gtk.WindowPosition.CENTER)
-        self.win.set_resizable(False)
-        self.win.set_transient_for(self.parent)
-        self.win.connect("key_press_event", self.on_key_press)
+        self.connect("delete-event", self.close_window)
+        self.resize(300, 100)
+        self.set_border_width(18)
+        self.set_size_request(300, 100)
+        self.set_position(Gtk.WindowPosition.CENTER)
+        self.set_resizable(False)
+        self.set_transient_for(self.parent)
+        self.connect("key_press_event", self.on_key_press)
 
     def show_window(self):
-        self.win.show_all()
+        self.show_all()
 
     def on_key_press(self, key, key_event):
         """
@@ -84,7 +86,7 @@ class PasswordWindow(Gtk.Window):
         box.add(box_new2)
 
         main_box.pack_start(box, False, True, 6)
-        self.win.add(main_box)
+        self.add(main_box)
 
     def update_password(self, *args):
         """
@@ -146,10 +148,10 @@ class PasswordWindow(Gtk.Window):
 
         self.hb.pack_start(left_box)
         self.hb.pack_end(right_box)
-        self.win.set_titlebar(self.hb)
+        self.set_titlebar(self.hb)
 
     def close_window(self, *args):
         """
             Close the window
         """
-        self.win.destroy()
+        self.destroy()

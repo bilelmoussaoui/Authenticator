@@ -27,6 +27,7 @@ import locale
 import gettext
 _ = gettext.gettext
 import argparse
+import faulthandler
 
 if __name__ == "__main__":
     locale.bindtextdomain('TwoFactorAuth', "@localedir@")
@@ -44,12 +45,13 @@ if __name__ == "__main__":
     level = logging.ERROR
     if args.debug:
         level = logging.DEBUG
+        faulthandler.enable()
+    
     logging.basicConfig(level=level,
                         format='[%(levelname)s] %(message)s',
                         )
     if args.version:
         sys.exit("Version : @VERSION@")
-
     app = application.Application(package="@PACKAGE@",
                                   version="@VERSION@",
                                   pkgdatadir="@pkgdatadir@")
