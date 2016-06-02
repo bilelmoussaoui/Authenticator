@@ -2,13 +2,13 @@
 <application>
     <id type="desktop">twofactorauth.desktop</id>
     <licence>CC0</licence>
-    <name>Two-factor Auth</name>
+    <name>Gnome TwoFactorAuth</name>
     <summary>Two Factor Authentication code generator</summary>
     <description>
         <p>Simple application that generates two-factor authentication code, created for Gnome</p>
     </description>
     <screenshots>
-        <screenshot type="default" width="350" height="500">https://raw.githubusercontent.com/bil-elmoussaoui/TwoFactorAuth/master/screenshots/screenshot1.png</screenshot>
+        <screenshot type="default" width="350" height="500">https://raw.githubusercontent.com/bil-elmoussaoui/Gnome-TwoFactorAuth/master/screenshots/screenshot1.png</screenshot>
     </screenshots>
     <url type="homepage">https://github.com/bil-elmoussaoui/Two-factor-gtk</url>
     <updatecontact>bil.elmoussaoui@gmail.com</updatecontact>

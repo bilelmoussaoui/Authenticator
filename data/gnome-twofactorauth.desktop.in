@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
-Exec=twofactorauth
-Name=TwoFactorAuth
+Exec=gnome-twofactorauth
+Name=Gnome TwoFactorAuth
 Categories=Utility;GTK
-Icon=twofactorauth
+Icon=gnome-twofactorauth
 StartupNotify=true

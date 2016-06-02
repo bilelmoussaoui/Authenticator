@@ -1,7 +1,7 @@
 SUBDIRS = logos
 
 desktopdir = $(datadir)/applications
-desktop_DATA = twofactorauth.desktop
+desktop_DATA = gnome-twofactorauth.desktop
 
 uidir = $(pkgdatadir)/data
 ui_DATA = about.ui \
@@ -10,7 +10,7 @@ ui_DATA = about.ui \
 
 appdatadir = $(pkgdatadir)/appdata
 appdata_DATA = \
-	twofactorauth.appdata.xml
+	gnome-twofactorauth.appdata.xml
 
 EXTRA_DIST =  \
 		$(ui_DATA) \
