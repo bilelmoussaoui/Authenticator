@@ -45,7 +45,6 @@ class Application(Gtk.Application):
         self.cfg = SettingsReader()
         if self.cfg.read("state", "login"):
             self.locked = True
-        GObject.threads_init()
         provider = Gtk.CssProvider()
         css_file = self.pkgdatadir + "/data/style.css"
         try:
@@ -127,11 +126,12 @@ class Application(Gtk.Application):
         """
             Shows settings window
         """
-        if not self.settings_window:
-            self.settings_window = SettingsWindow(self.win)
-        else:
-            self.settings_window.show()
-
+        try:
+            settings_window = SettingsWindow(self.win)
+            settings_window.show_window()
+        except Exception as e:
+            print(e)
+              
     def on_quit(self, *args):
         """
         Close the application, stops all threads

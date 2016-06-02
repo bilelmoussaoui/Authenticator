@@ -20,18 +20,21 @@ class PasswordWindow(Gtk.Window):
         self.generate_window()
         self.generate_components()
         self.generate_header_bar()
-        self.show_all()
 
     def generate_window(self):
-        Gtk.Window.__init__(self, title=_("Change password"), modal=True, destroy_with_parent=True)
-        self.connect("delete-event", self.close_window)
-        self.resize(300, 100)
-        self.set_border_width(18)
-        self.set_size_request(300, 100)
-        self.set_position(Gtk.WindowPosition.CENTER)
-        self.set_resizable(False)
-        self.set_transient_for(self.parent)
-        self.connect("key_press_event", self.on_key_press)
+        self.win = Gtk.Window(type=Gtk.WindowType.TOPLEVEL, title=_("Change password"),
+                                modal=True, destroy_with_parent=True)
+        self.win.connect("destroy", self.close_window)
+        self.win.resize(300, 100)
+        self.win.set_border_width(18)
+        self.win.set_size_request(300, 100)
+        self.win.set_position(Gtk.WindowPosition.CENTER)
+        self.win.set_resizable(False)
+        self.win.set_transient_for(self.parent)
+        self.win.connect("key_press_event", self.on_key_press)
+
+    def show_window(self):
+        self.win.show_all()
 
     def on_key_press(self, key, key_event):
         """
@@ -81,7 +84,7 @@ class PasswordWindow(Gtk.Window):
         box.add(box_new2)
 
         main_box.pack_start(box, False, True, 6)
-        self.add(main_box)
+        self.win.add(main_box)
 
     def update_password(self, *args):
         """
@@ -90,7 +93,7 @@ class PasswordWindow(Gtk.Window):
         password = sha256(self.new_entry.get_text().encode("utf-8")).hexdigest()
         self.cfg.update("password", password, "login")
         logging.debug("Password changed successfully")
-        self.destroy()
+        self.close_window()
 
     def on_type_password(self, entry):
         """
@@ -118,13 +121,10 @@ class PasswordWindow(Gtk.Window):
             else:
                 old_is_ok = True
             if old_is_ok:
-                self.old_entry.set_icon_from_icon_name(
-                    Gtk.EntryIconPosition.SECONDARY, "")
+                self.old_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, None)
         if not are_diff:
-            self.new_entry.set_icon_from_icon_name(
-                Gtk.EntryIconPosition.SECONDARY, "")
-            self.new2_entry.set_icon_from_icon_name(
-                Gtk.EntryIconPosition.SECONDARY, "")
+            self.new_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, None)
+            self.new2_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, None)
         self.apply_button.set_sensitive(not are_diff and old_is_ok)
 
     def generate_header_bar(self):
@@ -146,11 +146,10 @@ class PasswordWindow(Gtk.Window):
 
         self.hb.pack_start(left_box)
         self.hb.pack_end(right_box)
-        self.set_titlebar(self.hb)
+        self.win.set_titlebar(self.hb)
 
     def close_window(self, *args):
         """
             Close the window
         """
-        self.hide()
-        return True
+        self.win.destroy()

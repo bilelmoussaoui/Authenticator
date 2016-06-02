@@ -1,6 +1,6 @@
 from gi import require_version
 require_version("Gtk", "3.0")
-from gi.repository import Gtk, GObject
+from gi.repository import Gtk, GObject, GLib
 from TwoFactorAuth.models.code import Code
 from TwoFactorAuth.models.authenticator import Authenticator
 from TwoFactorAuth.models.settings import SettingsReader
@@ -41,7 +41,7 @@ class ListBoxRow(Thread):
         self.logo = logo
         self.create_row()
         self.start()
-        GObject.timeout_add_seconds(1, self.refresh_listbox)
+        GLib.timeout_add_seconds(1, self.refresh_listbox)
 
     @staticmethod
     def get_id(row):

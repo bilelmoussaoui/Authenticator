@@ -3,35 +3,37 @@ require_version("Gtk", "3.0")
 from gi.repository import Gtk, GLib, Gio, Gdk
 from TwoFactorAuth.models.authenticator import Authenticator
 from os import path, listdir
-import logging
 from gettext import gettext as _
 
 
-class AuthenticatorLogoChooser(Gtk.Window):
+class ApplicationChooserWindow(Gtk.Window):
 
     main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
     def __init__(self, window):
+        self.parent = window
         directory = window.parent.app.pkgdatadir + "/data/logos/"
         self.logos = listdir(directory)
         self.logos.sort()
         self.window = window
         self.generate_window()
-        self.generate_searchbar()
-        self.generate_compenents()
-        self.generate_headerbar()
-        self.show_all()
+        self.generate_search_bar()
+        self.generate_components()
+        self.generate_header_bar()
 
     def generate_window(self):
-        Gtk.Window.__init__(self, modal=True, destroy_with_parent=True)
-        self.connect("delete-event", self.close_window)
-        self.resize(380, 450)
-        self.set_size_request(380, 450)
-        self.set_position(Gtk.WindowPosition.CENTER)
-        self.set_resizable(False)
-        self.set_transient_for(self.window.parent)
-        self.connect("key_press_event", self.on_key_press)
-        self.add(self.main_box)
+        self.win = Gtk.Window(type=Gtk.WindowType.TOPLEVEL, modal=True, destroy_with_parent=True)
+        self.win.connect("destroy", self.close_window)
+        self.win.resize(410, 550)
+        self.win.set_size_request(410, 550)
+        self.win.set_position(Gtk.WindowPosition.CENTER)
+        self.win.set_resizable(False)
+        self.win.set_transient_for(self.window.parent)
+        self.win.connect("key_press_event", self.on_key_press)
+        self.win.add(self.main_box)
+
+    def show_window(self):
+        self.win.show_all()
 
     def filter_func(self, row, data, notify_destroy):
         app_label = row.get_children()[0].get_children()[0].get_children()
@@ -82,15 +84,13 @@ class AuthenticatorLogoChooser(Gtk.Window):
             self.listbox.set_filter_func(
                 lambda x, y, z: True, None, False)
 
-    def generate_searchbar(self):
+    def generate_search_bar(self):
         self.search_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-
 
         box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         self.search_entry = Gtk.Entry()
         self.search_entry.connect("changed", self.filter_logos)
-        self.search_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY,
-                                             "system-search-symbolic")
+        self.search_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY, "system-search-symbolic")
 
         self.search_box.set_visible(False)
         self.search_box.set_no_show_all(True)
@@ -104,9 +104,10 @@ class AuthenticatorLogoChooser(Gtk.Window):
         if len(self.logos) > 0:
             img_path = self.logos[index]
             self.window.update_logo(img_path)
+            self.parent.show_window()
             self.close_window()
 
-    def generate_compenents(self):
+    def generate_components(self):
         box_outer = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         if len(self.logos) > 0:
             # Create a ScrolledWindow for installed applications
@@ -146,7 +147,7 @@ class AuthenticatorLogoChooser(Gtk.Window):
                 self.listbox.add(row)
                 i += 1
 
-    def generate_headerbar(self):
+    def generate_header_bar(self):
         self.hb = Gtk.HeaderBar()
 
         left_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
@@ -157,15 +158,14 @@ class AuthenticatorLogoChooser(Gtk.Window):
         cancel_button.get_style_context().add_class("destructive-action")
         left_box.add(cancel_button)
 
-        apply_button = Gtk.Button.new_with_label(_("Choose"))
-        apply_button.get_style_context().add_class("suggested-action")
-        apply_button.connect("clicked", self.select_logo)
-        right_box.add(apply_button)
+        next_button = Gtk.Button.new_with_label(_("Next"))
+        next_button.get_style_context().add_class("suggested-action")
+        next_button.connect("clicked", self.select_logo)
+        right_box.add(next_button)
 
         self.hb.pack_start(left_box)
         self.hb.pack_end(right_box)
-        self.set_titlebar(self.hb)
+        self.win.set_titlebar(self.hb)
 
     def close_window(self, *args):
-        self.hide()
-        return True
+        self.win.destroy()

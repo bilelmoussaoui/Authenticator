@@ -1,7 +1,7 @@
 from gi import require_version
 require_version("Gtk", "3.0")
-from gi.repository import Gtk, Gio, Gdk, GObject
-from TwoFactorAuth.widgets.add_authenticator import AddAuthenticator
+from gi.repository import Gtk, Gio, Gdk, GObject, GLib
+from TwoFactorAuth.widgets.add_application import AddApplication
 from TwoFactorAuth.widgets.confirmation import ConfirmationMessage
 from TwoFactorAuth.widgets.listrow import ListBoxRow
 import logging
@@ -49,18 +49,18 @@ class Window(Gtk.ApplicationWindow):
         self.generate_no_apps_box()
         self.generate_login_form()
         self.refresh_window()
-        GObject.timeout_add_seconds(60, self.refresh_counter)
+        GLib.timeout_add_seconds(60, self.refresh_counter)
 
     def generate_window(self, *args):
         """
             Generate application window (Gtk.Window)
         """
-        Gtk.ApplicationWindow.__init__(self, Gtk.WindowType.TOPLEVEL,
+        Gtk.ApplicationWindow.__init__(self, type=Gtk.WindowType.TOPLEVEL,
                                        application=self.app)
         self.set_position(Gtk.WindowPosition.CENTER)
         self.set_wmclass(self.app.package, "TwoFactorAuth")
-        self.resize(430, 550)
-        self.set_size_request(430, 550)
+        self.resize(410, 550)
+        self.set_size_request(410, 550)
         self.set_resizable(False)
         self.connect("key_press_event", self.on_key_press)
         self.connect("delete-event", lambda x, y: self.app.on_quit())
@@ -364,10 +364,8 @@ class Window(Gtk.ApplicationWindow):
         """
             Create add application window
         """
-        if self.add_application_window:
-            self.add_application_window.show()
-        else:
-            self.add_application_window = AddAuthenticator(self)
+        add_app = AddApplication(self)
+        add_app.show_window()
 
     def toggle_search_box(self, *args):
         """
