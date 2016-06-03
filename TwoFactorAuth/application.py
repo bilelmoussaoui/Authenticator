@@ -34,7 +34,7 @@ class Application(Gtk.Application):
         GLib.set_prgname(self.package)
         current_desktop = env.get("XDG_CURRENT_DESKTOP")
         if current_desktop:
-            self.use_GMenu = current_desktop.lower() in ["gnome", "gnome-wayland"]
+            self.use_GMenu = current_desktop.lower() == "gnome"
         else:
             self.use_GMenu = False
 

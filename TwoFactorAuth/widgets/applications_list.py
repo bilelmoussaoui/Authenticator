@@ -29,7 +29,7 @@ class ApplicationChooserWindow(Gtk.Window):
         self.connect("destroy", self.close_window)
         self.resize(410, 550)
         self.set_size_request(410, 550)
-        self.set_position(Gtk.WindowPosition.CENTER)
+        self.set_position(Gtk.WindowPosition.CENTER_ON_PARENT)
         self.set_resizable(False)
         self.set_transient_for(self.parent)
         self.connect("key_press_event", self.on_key_press)

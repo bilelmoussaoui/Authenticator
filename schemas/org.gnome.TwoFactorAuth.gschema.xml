@@ -22,6 +22,20 @@
                 Auto lock the application after a x seconds
             </description>
         </key>
+        <key name="position-x" type="i">
+            <default>0</default>
+            <summary>Default window postiton on x axes</summary>
+            <description>
+                Default window postiton on x axes
+            </description>
+        </key>
+        <key name="position-y" type="i">
+            <default>0</default>
+            <summary>Default window postiton on y axes</summary>
+            <description>
+                Default window postiton on y axes
+            </description>
+        </key>
     </schema>
     <schema path="/org/gnome/TwoFactorAuth/login/" id="org.gnome.TwoFactorAuth.login" gettext-domain="TwoFactorAuth">
         <key name="password" type="s">

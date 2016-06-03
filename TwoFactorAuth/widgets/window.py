@@ -57,7 +57,7 @@ class Window(Gtk.ApplicationWindow):
         """
         Gtk.ApplicationWindow.__init__(self, type=Gtk.WindowType.TOPLEVEL,
                                        application=self.app)
-        self.set_position(Gtk.WindowPosition.CENTER)
+        self.move_latest_position()
         self.set_wmclass(self.app.package, "TwoFactorAuth")
         self.resize(410, 550)
         self.set_size_request(410, 550)
@@ -619,6 +619,25 @@ class Window(Gtk.ApplicationWindow):
                 self.app.auth.remove_by_id(app_id)
         confirmation.destroy()
         self.refresh_window()
+
+    def save_window_state(self):
+        """
+            Save window position
+        """
+        x, y = self.win.get_position()
+        self.cfg.update("position-x", x, "preferences")
+        self.cfg.update("position-y", y, "preferences")
+
+    def move_latest_position(self):
+        """
+            Move the application to the latest window if found
+        """
+        x = self.app.cfg.read("position-x", "preferences")
+        y = self.app.cfg.read("position-y", "preferences")
+        if x != 0 and y != 0:
+            self.move(x, y)
+        else:
+            self.set_position(Gtk.WindowPosition.CENTER)
 
     def show_about(self, *args):
         """

@@ -31,7 +31,7 @@ class AddApplication(Gtk.Window):
         self.resize(410, 300)
         self.set_border_width(18)
         self.set_size_request(410, 300)
-        self.set_position(Gtk.WindowPosition.CENTER)
+        self.set_position(Gtk.WindowPosition.CENTER_ON_PARENT)
         self.set_resizable(False)
         self.set_transient_for(self.parent)
         self.connect("key_press_event", self.on_key_press)
