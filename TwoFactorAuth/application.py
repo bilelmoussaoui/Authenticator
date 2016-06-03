@@ -145,5 +145,6 @@ class Application(Gtk.Application):
         self.alive = False
         signal.signal(signal.SIGINT, lambda x, y: self.alive)
         if self.win:
+            self.win.save_window_state()
             self.win.destroy()
         self.quit()
