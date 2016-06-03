@@ -8,7 +8,7 @@ from TwoFactorAuth.models.authenticator import Authenticator
 from gettext import gettext as _
 
 
-class AddApplication(Gtk.Window):
+class AddAccount(Gtk.Window):
 
     def __init__(self, window):
         self.parent = window
