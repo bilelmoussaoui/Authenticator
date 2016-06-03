@@ -1,7 +1,7 @@
 appdir = $(pythondir)/TwoFactorAuth/widgets
 
 app_PYTHON = \
-	add_application.py \
+	add_account.py \
 	confirmation.py \
 	listrow.py \
 	applications_list.py \

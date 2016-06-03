@@ -25,7 +25,7 @@ class AddApplication(Gtk.Window):
         self.generate_header_bar()
 
     def generate_window(self):
-        Gtk.Window.__init__(self, type=Gtk.WindowType.TOPLEVEL, title=_("Add a new application"),
+        Gtk.Window.__init__(self, type=Gtk.WindowType.TOPLEVEL, title=_("Add a new account"),
                                 modal=True, destroy_with_parent=True)
         self.connect("delete-event", self.close_window)
         self.resize(410, 300)
@@ -40,7 +40,7 @@ class AddApplication(Gtk.Window):
         """
             Generate the header bar box
         """
-        self.hb.props.title = _("Add an application")
+        self.hb.props.title = _("Add a new account")
 
         left_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         right_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
@@ -70,7 +70,7 @@ class AddApplication(Gtk.Window):
         logo_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
         hbox_title = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=18)
         title_label = Gtk.Label()
-        title_label.set_text(_("Application Name"))
+        title_label.set_text(_("Account Name"))
 
         hbox_title.pack_end(self.name_entry, False, True, 0)
         hbox_title.pack_end(title_label, False, True, 0)

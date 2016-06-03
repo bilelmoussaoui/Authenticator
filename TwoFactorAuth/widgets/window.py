@@ -1,7 +1,7 @@
 from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gio, Gdk, GObject, GLib
-from TwoFactorAuth.widgets.add_application import AddApplication
+from TwoFactorAuth.widgets.add_account import AddAcount
 from TwoFactorAuth.widgets.confirmation import ConfirmationMessage
 from TwoFactorAuth.widgets.listrow import ListBoxRow
 import logging
@@ -365,8 +365,8 @@ class Window(Gtk.ApplicationWindow):
         """
             Create add application window
         """
-        add_app = AddApplication(self)
-        add_app.show_window()
+        add_account = AddAcount(self)
+        add_account.show_window()
 
     def toggle_search_box(self, *args):
         """
