@@ -95,7 +95,7 @@ class Window(Gtk.ApplicationWindow):
                         index = self.list_box.get_selected_row().get_index()
                     else:
                         index = 0
-                    ListBoxRow.toggle_code_box(self.list_box.get_row_at_index(index))
+                    self.list_box.get_row_at_index(index).toggle_code_box()
             elif keypress == "backspace":
                 if len(self.search_entry.get_text()) == 0:
                     self.search_button.set_active(False)
@@ -159,9 +159,10 @@ class Window(Gtk.ApplicationWindow):
         confirmation.show()
         if confirmation.get_confirmation():
             for row in self.list_box.get_children():
-                checkbox = ListBoxRow.get_checkbox(row)
+                checkbox = row.get_checkbox()
                 if checkbox.get_active():
-                    label_id = ListBoxRow.get_id(row)
+                    label_id = row.get_id()
+                    row.kill()
                     self.app.auth.remove_by_id(label_id)
                     self.list_box.remove(row)
             self.list_box.unselect_all()
@@ -418,8 +419,8 @@ class Window(Gtk.ApplicationWindow):
             self.list_box.select_row(list_row_box)
 
         for row in self.list_box.get_children():
-            checkbox = ListBoxRow.get_checkbox(row)
-            code_label = ListBoxRow.get_code_label(row)
+            checkbox = row.get_checkbox()
+            code_label = row.get_code_label()
             visible = checkbox.get_visible()
             selected = checkbox.get_active()
             if not is_visible:
@@ -453,7 +454,7 @@ class Window(Gtk.ApplicationWindow):
         """
             Filter function, used to check if the entered data exists on the application ListBox
         """
-        app_label = ListBoxRow.get_label(row)
+        app_label = row.get_label()
         data = data.lower()
         if len(data) > 0:
             return data in app_label.lower()
@@ -466,7 +467,7 @@ class Window(Gtk.ApplicationWindow):
         """
         index = listbox_row.get_index()
         button_visible = self.remove_button.get_visible()
-        checkbox = ListBoxRow.get_checkbox(listbox_row)
+        checkbox = listbox_row.get_checkbox()
         if button_visible:
             checkbox.set_active(not checkbox.get_active())
         else:
@@ -498,9 +499,8 @@ class Window(Gtk.ApplicationWindow):
         i = 0
         count = len(apps)
         while i < count:
-            row = ListBoxRow(self, apps[i][0], apps[i][1], apps[i][2],
-                             apps[i][3])
-            self.list_box.add(row.get_list_row())
+            self.list_box.add(ListBoxRow(self, apps[i][0], apps[i][1], apps[i][2],
+                             apps[i][3]))
             i += 1
 
     def generate_no_apps_box(self):
@@ -527,8 +527,7 @@ class Window(Gtk.ApplicationWindow):
             :param image: application image path or icon name
         """
         secret_code = sha256(secret_code.encode('utf-8')).hexdigest()
-        row = ListBoxRow(self, uid, name, secret_code, image)
-        self.list_box.add(row.get_list_row())
+        self.list_box.add(ListBoxRow(self, uid, name, secret_code, image))
         self.list_box.show_all()
 
     def copy_code(self, *args):
@@ -540,7 +539,7 @@ class Window(Gtk.ApplicationWindow):
             row = args[0].get_parent().get_parent().get_parent()
             self.list_box.select_row(row)
         selected_row = self.list_box.get_selected_row()
-        code = ListBoxRow.get_code(selected_row)
+        code = selected_row.get_code()
         try:
             clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
             clipboard.clear()
@@ -614,7 +613,8 @@ class Window(Gtk.ApplicationWindow):
         if confirmation.get_confirmation():
             if self.list_box.get_selected_row():
                 selected_row = self.list_box.get_selected_row()
-                app_id = ListBoxRow.get_id(selected_row)
+                app_id = selected_row.get_id()
+                selected_row.kill()
                 self.list_box.remove(selected_row)
                 self.app.auth.remove_by_id(app_id)
         confirmation.destroy()

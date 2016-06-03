@@ -10,20 +10,17 @@ import logging
 from gettext import gettext as _
 
 
-class ListBoxRow(Thread):
+class ListBoxRow(Thread, Gtk.ListBoxRow):
     counter_max = 30
     counter = 30
     timer = 0
     code = None
     code_generated = True
-
-    row = None
-    code_box = None
-    code_label = None
-    timer_label = None
+    alive = True
 
     def __init__(self, parent, uid, name, secret_code, logo):
         Thread.__init__(self)
+        Gtk.ListBoxRow.__init__(self)
         # Read default values
         cfg = SettingsReader()
         self.counter_max = cfg.read("refresh-time", "preferences")
@@ -38,69 +35,67 @@ class ListBoxRow(Thread):
             self.code_generated = False
             logging.error("Could not read the secret code from, the keyring keys were reset manually")
         self.logo = logo
+        # Create needed widgets
+        self.code_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        self.checkbox = Gtk.CheckButton()
+        self.application_name = Gtk.Label(xalign=0)
+        self.code_label = Gtk.Label(xalign=0)
+        self.timer_label = Gtk.Label(xalign=0)
+        # Create the list row
         self.create_row()
         self.start()
         GLib.timeout_add_seconds(1, self.refresh_listbox)
 
-    @staticmethod
-    def get_id(row):
+    def get_id(self):
         """
             Get the application id
-            :param row: ListBoxRow
             :return: (int): row id
         """
-        label_id = row.get_children()[0].get_children()[2]
-        label_id = int(label_id.get_text())
-        return label_id
+        return self.id
 
-    @staticmethod
-    def get_label(row):
+    def get_label(self):
         """
             Get the application label
-            :param row: ListBoxRow
             :return: (str): application label
         """
-        label = row.get_children()[0].get_children()[0].get_children()[2].get_children()[0].get_text()
-        return label.strip()
+        return self.application_name.get_label().strip()
 
-    @staticmethod
-    def get_code(row):
-        code_box = ListBoxRow.get_code_box(row)
-        return code_box.get_children()[0].get_text()
+    def get_code(self):      
+        return self.code_label.get_text()
 
-    @staticmethod
-    def get_code_label(row):
-        code_box = ListBoxRow.get_code_box(row)
-        return code_box.get_children()[0]
+    def get_code_label(self):
+        return self.code_label
 
-    @staticmethod
-    def get_checkbox(row):
+    def get_checkbox(self):
         """
             Get ListBowRow's checkbox
-            :param row: ListBoxRow
             :return: (Gtk.Checkbox)
         """
-        return row.get_children()[0].get_children()[0].get_children()[0]
+        return self.checkbox 
 
-    @staticmethod
-    def get_code_box(row):
+    def get_code_box(self):
         """
             Get code's box
-            :param row: ListBoxRow
             :return: (Gtk.Box)
         """
-        return row.get_children()[0].get_children()[1]
+        return self.code_box
 
-    @staticmethod
-    def toggle_code_box(row):
+
+    def toggle_code_box(self):
         """
             Toggle code box
         """
-        code_box = ListBoxRow.get_code_box(row)
+        code_box = self.get_code_box()
         is_visible = code_box.get_visible()
         code_box.set_visible(not is_visible)
         code_box.set_no_show_all(is_visible)
         code_box.show_all()
+
+    def kill(self):
+        """
+            Kill the row thread once it's removed
+        """
+        self.alive = False
 
     def copy_code(self, event_box, box):
         """
@@ -127,12 +122,10 @@ class ListBoxRow(Thread):
         """
             Create ListBoxRow
         """
-        self.row = Gtk.ListBoxRow()
-        self.row.get_style_context().add_class("application-list-row")
+        self.get_style_context().add_class("application-list-row")
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
         h_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        self.code_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         self.code_box.set_visible(False)
 
         # ID
@@ -146,11 +139,10 @@ class ListBoxRow(Thread):
         box.pack_end(label_id, False, False, 0)
 
         # Checkbox
-        checkbox = Gtk.CheckButton()
-        checkbox.set_visible(False)
-        checkbox.set_no_show_all(True)
-        checkbox.connect("toggled", self.parent.select_application)
-        h_box.pack_start(checkbox, False, True, 6)
+        self.checkbox.set_visible(False)
+        self.checkbox.set_no_show_all(True)
+        self.checkbox.connect("toggled", self.parent.select_application)
+        h_box.pack_start(self.checkbox, False, True, 6)
 
         # Application logo
         auth_icon = Authenticator.get_auth_icon(self.logo, self.parent.app.pkgdatadir)
@@ -160,11 +152,10 @@ class ListBoxRow(Thread):
 
         # Application name
         name_event = Gtk.EventBox()
-        application_name = Gtk.Label(xalign=0)
-        application_name.get_style_context().add_class("application-name")
-        application_name.set_text(self.name)
+        self.application_name .get_style_context().add_class("application-name")
+        self.application_name .set_text(self.name)
         name_event.connect("button-press-event", self.toggle_code)
-        name_event.add(application_name)
+        name_event.add(self.application_name)
         h_box.pack_start(name_event, True, True, 6)
         # Copy button
         copy_event = Gtk.EventBox()
@@ -184,9 +175,7 @@ class ListBoxRow(Thread):
         remove_event.connect("button-press-event", self.parent.remove_application)
         h_box.pack_end(remove_event, False, True, 6)
 
-        self.timer_label = Gtk.Label(xalign=0)
         self.timer_label.set_label(_("Expires in %s seconds") % self.counter)
-        self.code_label = Gtk.Label(xalign=0)
         self.code_label.get_style_context().add_class("application-secret-code")
         if self.code_generated:
             self.update_code(self.code_label)
@@ -197,16 +186,16 @@ class ListBoxRow(Thread):
         self.code_box.pack_end(self.timer_label, False, True, 6)
         self.code_box.pack_start(self.code_label, False, True, 6)
 
-        self.row.add(box)
+        self.add(box)
 
     def get_counter(self):
         return self.counter
 
     def toggle_code(self, *args):
-        ListBoxRow.toggle_code_box(self.row)
+        self.toggle_code_box()
 
     def run(self):
-        while self.code_generated and self.parent.app.alive:
+        while self.code_generated and self.parent.app.alive and self.alive:
             self.counter -= 1
             if self.counter == 0:
                 self.counter = self.counter_max
@@ -214,11 +203,8 @@ class ListBoxRow(Thread):
                 if self.timer != 0:
                     self.timer = 0
             self.update_timer_label()
-            self.row.changed()
+            self.changed()
             sleep(1)
-
-    def get_list_row(self):
-        return self.row
 
     def refresh_listbox(self):
         self.parent.list_box.hide()

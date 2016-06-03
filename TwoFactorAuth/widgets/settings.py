@@ -91,6 +91,7 @@ class SettingsWindow(Gtk.Window):
         is_auto_lock_active = bool(self.cfg.read("auto-lock", "preferences"))
         auto_lock_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         auto_lock_label = Gtk.Label().new(_("Auto-lock the application (m):"))
+        self.auto_lock_switch.set_sensitive(self.cfg.read("state", "login"))
         self.auto_lock_switch.set_active(is_auto_lock_active)
         self.auto_lock_switch.connect("toggled", self.on_auto_lock_activated)
 
@@ -155,7 +156,7 @@ class SettingsWindow(Gtk.Window):
             password = self.cfg.read("password", "login")
             if len(password) == 0:
                 self.new_password_window()
-
+        self.auto_lock_switch.set_sensitive(switch.get_active())
         self.parent.refresh_window()
 
     def on_auto_lock_activated(self, switch, *args):
