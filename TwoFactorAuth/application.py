@@ -59,8 +59,8 @@ class Application(Gtk.Application):
 
     def do_startup(self):
         Gtk.Application.do_startup(self)
+        self.generate_menu()
         if self.use_GMenu:
-            self.generate_menu()
             logging.debug("Adding gnome shell menu")
 
     def generate_menu(self):
@@ -80,8 +80,6 @@ class Application(Gtk.Application):
         help_section = Gio.MenuItem.new_section(None, help_content)
         self.menu.append_item(help_section)
 
-        self.set_app_menu(self.menu)
-
         self.settings_action = Gio.SimpleAction.new("settings", None)
         self.settings_action.connect("activate", self.on_settings)
         self.settings_action.set_enabled(not self.locked)
@@ -99,6 +97,10 @@ class Application(Gtk.Application):
         action = Gio.SimpleAction.new("quit", None)
         action.connect("activate", self.on_quit)
         self.add_action(action)
+
+        if self.use_GMenu:
+            self.set_app_menu(self.menu)
+            logging.debug("Adding gnome shell menu")
 
     def do_activate(self, *args):
         self.win = Window(self)

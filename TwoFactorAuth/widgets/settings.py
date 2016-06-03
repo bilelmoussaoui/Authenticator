@@ -24,8 +24,8 @@ class SettingsWindow(Gtk.Window):
         Gtk.Window.__init__(self,title=_("Settings"),type=Gtk.WindowType.TOPLEVEL, 
                                 destroy_with_parent=True, modal=True)
         self.connect("delete-event", self.close_window)
-        self.resize(410, 300)
-        self.set_size_request(410, 300)
+        self.resize(400, 300)
+        self.set_size_request(400, 300)
         self.set_resizable(False)
         self.set_position(Gtk.WindowPosition.CENTER_ON_PARENT)
         self.set_transient_for(self.parent)

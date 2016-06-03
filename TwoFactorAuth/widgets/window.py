@@ -34,7 +34,7 @@ class Window(Gtk.ApplicationWindow):
     select_button = Gtk.Button()
     lock_button = Gtk.Button()
 
-    popover = Gtk.PopoverMenu().new()
+    popover = None
     settings_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
     pop_settings = Gtk.ModelButton.new()
     password_entry = Gtk.Entry()
@@ -310,48 +310,8 @@ class Window(Gtk.ApplicationWindow):
         self.settings_button.set_image(settings_image)
         self.settings_button.connect("clicked", self.toggle_popover)
 
-        self.popover.get_style_context().add_class("choose-popover")
-        self.popover.set_relative_to(self.settings_button)
-
-        popover_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        popover_box.set_property('margin', 12)
-        popover_box.set_property('width-request', 150)
-        self.popover.add(popover_box)
-
-        shortcuts_enabled = Gtk.get_major_version() >= 3 and Gtk.get_minor_version() >= 20
-
-        self.pop_settings.set_label(_("Settings"))
-        self.pop_settings.get_style_context().add_class("flat")
-        self.pop_settings.connect("clicked", self.app.on_settings)
-        self.pop_settings.set_sensitive(not self.app.locked)
-
-        settings_section_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        settings_section_box.pack_start(self.pop_settings, False, False, 0)
-        settings_section_box.pack_start(Gtk.Separator(), False, False, 0)
-
-        self.settings_box.pack_start(settings_section_box, True, True, 0)
-        popover_box.pack_start(self.settings_box, True, True, 0)
-
-        shortcuts = Gtk.ModelButton.new()
-        shortcuts.get_style_context().add_class("popover-item")
-        shortcuts.set_label(_("Shortcuts"))
-        shortcuts.connect("clicked", self.show_shortcuts)
-        shortcuts.set_visible(shortcuts_enabled)
-        shortcuts.set_no_show_all(not shortcuts_enabled)
-        popover_box.pack_start(shortcuts, False, False, 0)
-
-        about = Gtk.ModelButton.new()
-        about.get_style_context().add_class("popover-item")
-        about.set_label(_("About"))
-        about.connect("clicked", self.show_about)
-        popover_box.pack_start(about, False, False, 0)
-
-        quit = Gtk.ModelButton.new()
-        quit.set_label(_("Quit"))
-        shortcuts.get_style_context().add_class("popover-item")
-        quit.connect("clicked", self.app.on_quit)
-        popover_box.pack_start(quit, False, False, 0)
-
+        self.popover = Gtk.Popover.new_from_model(self.settings_button, self.app.menu)
+        self.popover.props.width_request = 200
         box.add(self.settings_button)
 
     def toggle_popover(self, *args):
@@ -624,9 +584,9 @@ class Window(Gtk.ApplicationWindow):
         """
             Save window position
         """
-        x, y = self.win.get_position()
-        self.cfg.update("position-x", x, "preferences")
-        self.cfg.update("position-y", y, "preferences")
+        x, y = self.get_position()
+        self.app.cfg.update("position-x", x, "preferences")
+        self.app.cfg.update("position-y", y, "preferences")
 
     def move_latest_position(self):
         """
