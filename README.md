@@ -1,8 +1,8 @@
 ![Status](https://img.shields.io/badge/version-stable-green.svg) ![Python 
-version](https://img.shields.io/badge/python-3.4%2C%203.5-blue.svg)
+version](https://img.shields.io/badge/python-3.3%2B-blue.svg)
 
-# TwoFactorAuth
-Two-factor authentication generator for Gnome <br>
+# Gnome TwoFactorAuth
+Two-factor authentication code generator for Gnome <br>
 For translators : https://www.transifex.com/twofactorauth/twofactorauth/
 ### Dependecies 
 - `Python 3.3+`
