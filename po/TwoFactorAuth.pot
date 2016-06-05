@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-03 17:21+0200\n"
+"POT-Creation-Date: 2016-06-05 12:46+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -68,7 +68,7 @@ msgid ""
 "later</a> for details."
 msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:157
+#: TwoFactorAuth/widgets/window.py:158
 msgid "Do you really want to remove selected applications?"
 msgstr ""
 

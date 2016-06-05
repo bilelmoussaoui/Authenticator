@@ -58,7 +58,8 @@ class Window(Gtk.ApplicationWindow):
         Gtk.ApplicationWindow.__init__(self, type=Gtk.WindowType.TOPLEVEL,
                                        application=self.app)
         self.move_latest_position()
-        self.set_wmclass(self.app.package, "TwoFactorAuth")
+        self.set_wmclass(self.app.package, "Gnome TwoFactorAuth")
+        self.set_icon_name(self.app.package)
         self.resize(410, 550)
         self.set_size_request(410, 550)
         self.set_resizable(False)
@@ -236,7 +237,7 @@ class Window(Gtk.ApplicationWindow):
         """
             Generate a header bar box
         """
-        count =  self.app.auth.count() 
+        count =  self.app.auth.count()
         self.hb.set_show_close_button(True)
 
         left_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
