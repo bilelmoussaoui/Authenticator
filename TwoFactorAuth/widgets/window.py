@@ -167,8 +167,7 @@ class Window(Gtk.ApplicationWindow):
                     self.list_box.remove(row)
             self.list_box.unselect_all()
         confirmation.destroy()
-        if self.app.auth.count() == 0:
-            self.toggle_select()
+        self.toggle_select()
         self.refresh_window()
 
     def generate_login_form(self):
