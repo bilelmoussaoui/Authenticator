@@ -1,3 +1,5 @@
+SUBDIRS = applications
+
 resource_files = $(shell $(GLIB_COMPILE_RESOURCES) --sourcedir=$(srcdir) --sourcedir=$(builddir) --generate-dependencies $(builddir)/gnome-twofactorauth.gresource.xml)
 gnome-twofactorauth.gresource: gnome-twofactorauth.gresource.xml $(resource_files)
 	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir) --sourcedir=$(builddir) $<
@@ -5,7 +7,6 @@ gnome-twofactorauth.gresource: gnome-twofactorauth.gresource.xml $(resource_file
 resourcedir = $(pkgdatadir)
 resource_DATA = gnome-twofactorauth.gresource
 
-SUBDIRS = applications
 
 desktopdir = $(datadir)/applications
 desktop_DATA = gnome-twofactorauth.desktop

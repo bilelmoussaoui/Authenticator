@@ -40,7 +40,7 @@ class Application(Gtk.Application):
         else:
             self.use_GMenu = False
 
-        result = GK.unlock_sync(APP_NAME, None)
+        result = GK.unlock_sync("Gnome-TwoFactorAuth", None)
         if result == GK.Result.CANCELLED:
             self.quit()
 

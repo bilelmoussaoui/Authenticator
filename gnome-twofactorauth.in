@@ -54,7 +54,7 @@ if __name__ == "__main__":
     if args.version:
         sys.exit("Version : @VERSION@")
     app = application.Application(package="@PACKAGE@",
-                                  version="@VERSION@"
+                                  version="@VERSION@",
                                   pkgdatadir="@pkgdatadir@")
     exit_status = app.run(None)
     sys.exit(exit_status)
