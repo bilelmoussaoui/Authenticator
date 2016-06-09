@@ -5,6 +5,7 @@ from gi.repository import GdkPixbuf, Gtk
 from gi.repository import GnomeKeyring as GK
 from hashlib import sha256
 
+
 class Authenticator:
 
     def __init__(self):
@@ -26,7 +27,8 @@ class Authenticator:
         # Connect to database
         self.conn = sqlite3.connect(database_file)
         if not self.is_table_exists():
-            logging.debug("SQL: Table 'applications' does not exists, creating it now...")
+            logging.debug(
+                "SQL: Table 'applications' does not exists, creating it now...")
             self.create_table()
             logging.debug("SQL: Table 'applications' created successfully")
 
@@ -74,7 +76,8 @@ class Authenticator:
             data = c.execute(query, (uid,))
             return data.fetchone()[0]
         except Exception as e:
-            logging.error("SQL: Couldn't get application secret code : %s " % str(e))
+            logging.error(
+                "SQL: Couldn't get application secret code : %s " % str(e))
             return None
 
     def remove_by_id(self, uid):
@@ -92,7 +95,7 @@ class Authenticator:
                 if result == GK.Result.OK:
                     if item.get_display_name().strip("'") == secret_code:
                         found = True
-                        break;
+                        break
             if found:
                 GK.item_delete_sync("TwoFactorAuth", gid)
         query = "DELETE FROM applications WHERE uid=?"
@@ -100,7 +103,8 @@ class Authenticator:
             self.conn.execute(query, (uid,))
             self.conn.commit()
         except Exception as e:
-            logging.error("SQL: Couldn't remove application by uid : %s with error : %s" % (uid, str(e)))
+            logging.error(
+                "SQL: Couldn't remove application by uid : %s with error : %s" % (uid, str(e)))
 
     def count(self):
         """
@@ -113,7 +117,8 @@ class Authenticator:
             data = c.execute(query)
             return data.fetchone()[0]
         except Exception as e:
-            logging.error("SQL: Couldn't count applications list : %s " % str(e))
+            logging.error(
+                "SQL: Couldn't count applications list : %s " % str(e))
             return None
 
     def fetch_apps(self):
@@ -131,14 +136,13 @@ class Authenticator:
             return None
 
     @staticmethod
-    def get_auth_icon(image, pkgdatadir):
+    def get_auth_icon(image):
         """
             Generate a GdkPixbuf image
             :param image: icon name or image path
-            :param pkgdatadir: default installation dir of apps
             :return: GdkPixbux Image
         """
-        directory = pkgdatadir + "/data/logos/"
+        directory = DATA_DIR + "/data/applications/"
         theme = Gtk.IconTheme.get_default()
         if path.isfile(directory + image) and path.exists(directory + image):
             icon = GdkPixbuf.Pixbuf.new_from_file(directory + image)
@@ -181,7 +185,8 @@ class Authenticator:
             self.conn.execute(query)
             self.conn.commit()
         except Exception as e:
-            logging.error( "SQL: impossible to create table 'applications' %s " % str(e))
+            logging.error(
+                "SQL: impossible to create table 'applications' %s " % str(e))
 
     def is_table_exists(self):
         """

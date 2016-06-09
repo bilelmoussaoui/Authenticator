@@ -27,7 +27,7 @@ AC_SUBST(GLIB_COMPILE_RESOURCES)
 AC_CONFIG_FILES([
     Makefile
     data/Makefile
-    data/logos/Makefile
+    data/applications/Makefile
     data/gnome-twofactorauth.desktop
     TwoFactorAuth/Makefile
     TwoFactorAuth/models/Makefile

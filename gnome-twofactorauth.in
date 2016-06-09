@@ -30,6 +30,7 @@ import argparse
 import faulthandler
 
 if __name__ == "__main__":
+
     locale.bindtextdomain('TwoFactorAuth', "@localedir@")
     locale.textdomain('TwoFactorAuth')
     gettext.bindtextdomain('TwoFactorAuth', "@localedir@")
@@ -46,14 +47,14 @@ if __name__ == "__main__":
     if args.debug:
         level = logging.DEBUG
         faulthandler.enable()
-    
+
     logging.basicConfig(level=level,
                         format='[%(levelname)s] %(message)s',
                         )
     if args.version:
         sys.exit("Version : @VERSION@")
     app = application.Application(package="@PACKAGE@",
-                                  version="@VERSION@",
+                                  version="@VERSION@"
                                   pkgdatadir="@pkgdatadir@")
     exit_status = app.run(None)
     sys.exit(exit_status)

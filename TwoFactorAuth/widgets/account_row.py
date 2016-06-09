@@ -10,7 +10,7 @@ import logging
 from gettext import gettext as _
 
 
-class ListBoxRow(Thread, Gtk.ListBoxRow):
+class AccountRow(Thread, Gtk.ListBoxRow):
     counter_max = 30
     counter = 30
     timer = 0
@@ -33,10 +33,12 @@ class ListBoxRow(Thread, Gtk.ListBoxRow):
             self.code = Code(self.secret_code)
         else:
             self.code_generated = False
-            logging.error("Could not read the secret code from, the keyring keys were reset manually")
+            logging.error(
+                "Could not read the secret code from, the keyring keys were reset manually")
         self.logo = logo
         # Create needed widgets
         self.code_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        self.revealer = Gtk.Revealer()
         self.checkbox = Gtk.CheckButton()
         self.application_name = Gtk.Label(xalign=0)
         self.code_label = Gtk.Label(xalign=0)
@@ -53,15 +55,15 @@ class ListBoxRow(Thread, Gtk.ListBoxRow):
         """
         return self.id
 
-    def get_label(self):
+    def get_name(self):
         """
-            Get the application label
-            :return: (str): application label
+            Get the application name
+            :return: (str): application name
         """
-        return self.application_name.get_label().strip()
+        return self.name
 
-    def get_code(self):      
-        return self.code_label.get_text()
+    def get_code(self):
+        return self.code
 
     def get_code_label(self):
         return self.code_label
@@ -71,7 +73,7 @@ class ListBoxRow(Thread, Gtk.ListBoxRow):
             Get ListBowRow's checkbox
             :return: (Gtk.Checkbox)
         """
-        return self.checkbox 
+        return self.checkbox
 
     def get_code_box(self):
         """
@@ -80,16 +82,11 @@ class ListBoxRow(Thread, Gtk.ListBoxRow):
         """
         return self.code_box
 
-
     def toggle_code_box(self):
         """
             Toggle code box
         """
-        code_box = self.get_code_box()
-        is_visible = code_box.get_visible()
-        code_box.set_visible(not is_visible)
-        code_box.set_no_show_all(is_visible)
-        code_box.show_all()
+        self.revealer.set_reveal_child(not self.revealer.get_reveal_child())
 
     def kill(self):
         """
@@ -126,17 +123,8 @@ class ListBoxRow(Thread, Gtk.ListBoxRow):
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
         h_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        self.code_box.set_visible(False)
-
-        # ID
-        label_id = Gtk.Label()
-        label_id.set_text(str(self.id))
-        label_id.set_visible(False)
-        label_id.set_no_show_all(True)
-
         box.pack_start(h_box, True, True, 0)
-        box.pack_start(self.code_box, True, True, 0)
-        box.pack_end(label_id, False, False, 0)
+        box.pack_start(self.revealer, True, True, 0)
 
         # Checkbox
         self.checkbox.set_visible(False)
@@ -145,7 +133,7 @@ class ListBoxRow(Thread, Gtk.ListBoxRow):
         h_box.pack_start(self.checkbox, False, True, 6)
 
         # Application logo
-        auth_icon = Authenticator.get_auth_icon(self.logo, self.parent.app.pkgdatadir)
+        auth_icon = Authenticator.get_auth_icon(self.logo)
         auth_logo = Gtk.Image(xalign=0)
         auth_logo.set_from_pixbuf(auth_icon)
         h_box.pack_start(auth_logo, False, True, 6)
@@ -160,7 +148,8 @@ class ListBoxRow(Thread, Gtk.ListBoxRow):
         # Copy button
         copy_event = Gtk.EventBox()
         copy_button = Gtk.Image(xalign=0)
-        copy_button.set_from_icon_name("edit-copy-symbolic", Gtk.IconSize.SMALL_TOOLBAR)
+        copy_button.set_from_icon_name(
+            "edit-copy-symbolic", Gtk.IconSize.SMALL_TOOLBAR)
         copy_button.set_tooltip_text(_("Copy the generated code"))
         copy_event.connect("button-press-event", self.copy_code)
         copy_event.add(copy_button)
@@ -169,23 +158,26 @@ class ListBoxRow(Thread, Gtk.ListBoxRow):
         # Remove button
         remove_event = Gtk.EventBox()
         remove_button = Gtk.Image(xalign=0)
-        remove_button.set_from_icon_name("user-trash-symbolic", Gtk.IconSize.SMALL_TOOLBAR)
+        remove_button.set_from_icon_name(
+            "user-trash-symbolic", Gtk.IconSize.SMALL_TOOLBAR)
         remove_button.set_tooltip_text(_("Remove the application"))
         remove_event.add(remove_button)
-        remove_event.connect("button-press-event", self.parent.remove_application)
+        remove_event.connect("button-press-event",
+                             self.parent.remove_application)
         h_box.pack_end(remove_event, False, True, 6)
 
         self.timer_label.set_label(_("Expires in %s seconds") % self.counter)
-        self.code_label.get_style_context().add_class("application-secret-code")
+        self.timer_label.get_style_context().add_class("account-timer")
+        self.code_label.get_style_context().add_class("account-secret-code")
         if self.code_generated:
             self.update_code(self.code_label)
         else:
             self.code_label.set_text(_("Error during the generation of code"))
-        self.code_box.set_no_show_all(True)
-        self.code_box.set_visible(False)
+
         self.code_box.pack_end(self.timer_label, False, True, 6)
         self.code_box.pack_start(self.code_label, False, True, 6)
-
+        self.revealer.add(self.code_box)
+        self.revealer.set_reveal_child(False)
         self.add(box)
 
     def get_counter(self):
@@ -231,4 +223,3 @@ class ListBoxRow(Thread, Gtk.ListBoxRow):
 
     def update_timer_label(self):
         self.timer_label.set_label(_("Expires in %s seconds") % self.counter)
-

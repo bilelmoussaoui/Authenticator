@@ -75,10 +75,10 @@ gnome-twofactorauth
 stamp-h1
 config.h
 missing
-ltmain.sh 
+ltmain.sh
 configure
 config.status
-config.log 
+config.log
 config.h.in
 Makefile
 Makefile.in
@@ -90,8 +90,8 @@ TwoFactorAuth/models/Makefile
 TwoFactorAuth/models/Makefile.in
 data/Makefile
 data/Makefile.in
-data/logos/Makefile
-data/logos/Makefile.in
+data/applications/Makefile
+data/applications/Makefile.in
 schemas/Makefile.in
 schemas/Makefile
 schemas/*.valid

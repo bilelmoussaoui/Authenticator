@@ -23,22 +23,24 @@ class Application(Gtk.Application):
 
     settings_window = None
     settings_action = None
-
     def __init__(self, *args, **kwargs):
+
         for key in kwargs:
             setattr(self, key, kwargs[key])
         Gtk.Application.__init__(self,
-                                 application_id='org.gnome.TwoFactorAuth',
+                                 application_id="org.gnome.TwoFactorAuth",
                                  flags=Gio.ApplicationFlags.FLAGS_NONE)
-        GLib.set_application_name("TwoFactorAuth")
+        DATA_DIR = self.pkgdatadir
+        GLib.set_application_name(self.package)
         GLib.set_prgname(self.package)
+
         current_desktop = env.get("XDG_CURRENT_DESKTOP")
         if current_desktop:
             self.use_GMenu = current_desktop.lower() == "gnome"
         else:
             self.use_GMenu = False
 
-        result = GK.unlock_sync("TwoFactorAuth", None)
+        result = GK.unlock_sync(APP_NAME, None)
         if result == GK.Result.CANCELLED:
             self.quit()
 
@@ -46,15 +48,16 @@ class Application(Gtk.Application):
         if self.cfg.read("state", "login"):
             self.locked = True
         provider = Gtk.CssProvider()
-        css_file = self.pkgdatadir + "/data/style.css"
+        cssProviderFile = Gio.File.new_for_uri('resource:///org/gnome/TwoFactorAuth/style.css')
+        print(cssProviderFile)
         try:
-            provider.load_from_path(css_file)
+            provider.load_from_path(cssProviderFile)
             Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
                                                      provider,
                                                      Gtk.STYLE_PROVIDER_PRIORITY_USER)
-            logging.debug("Loading css file %s" % css_file)
+            logging.debug("Loading css file %s" % cssProviderFile)
         except Exception as e:
-            logging.debug("File not found %s" % css_file)
+            logging.debug("File not found %s" % cssProviderFile)
             logging.debug("Error message %s" % str(e))
 
     def do_startup(self):
@@ -66,14 +69,16 @@ class Application(Gtk.Application):
     def generate_menu(self):
         # Settings section
         settings_content = Gio.Menu.new()
-        settings_content.append_item(Gio.MenuItem.new(_("Settings"), "app.settings"))
+        settings_content.append_item(
+            Gio.MenuItem.new(_("Settings"), "app.settings"))
         settings_section = Gio.MenuItem.new_section(None, settings_content)
         self.menu.append_item(settings_section)
 
         # Help section
         help_content = Gio.Menu.new()
         if Gtk.get_major_version() >= 3 and Gtk.get_minor_version() >= 20:
-            help_content.append_item(Gio.MenuItem.new(_("Shortcuts"), "app.shortcuts"))
+            help_content.append_item(Gio.MenuItem.new(
+                _("Shortcuts"), "app.shortcuts"))
 
         help_content.append_item(Gio.MenuItem.new(_("About"), "app.about"))
         help_content.append_item(Gio.MenuItem.new(_("Quit"), "app.quit"))
@@ -109,7 +114,8 @@ class Application(Gtk.Application):
 
     def refresh_menu(self):
         if self.use_GMenu:
-            self.settings_action.set_enabled(not self.settings_action.get_enabled())
+            self.settings_action.set_enabled(
+                not self.settings_action.get_enabled())
 
     def on_toggle_lock(self, *args):
         if not self.locked:
@@ -133,7 +139,7 @@ class Application(Gtk.Application):
             settings_window.show_window()
         except Exception as e:
             print(e)
-              
+
     def on_quit(self, *args):
         """
         Close the application, stops all threads

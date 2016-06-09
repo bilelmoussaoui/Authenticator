@@ -1,5 +1,5 @@
-logosdir = $(pkgdatadir)/data/logos
-logos_DATA = amazon.png \
+applicationsdir = $(pkgdatadir)/applications
+applications_DATA = amazon.png \
         dropbox.png \
         facebook.png \
         flickr.png \

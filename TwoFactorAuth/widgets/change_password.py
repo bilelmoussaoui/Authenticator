@@ -25,7 +25,7 @@ class PasswordWindow(Gtk.Window):
 
     def generate_window(self):
         Gtk.Window.__init__(self, type=Gtk.WindowType.TOPLEVEL, title=_("Change password"),
-                                modal=True, destroy_with_parent=True)
+                            modal=True, destroy_with_parent=True)
         self.connect("delete-event", self.close_window)
         self.resize(300, 100)
         self.set_border_width(18)
@@ -92,7 +92,8 @@ class PasswordWindow(Gtk.Window):
         """
             Update user password
         """
-        password = sha256(self.new_entry.get_text().encode("utf-8")).hexdigest()
+        password = sha256(
+            self.new_entry.get_text().encode("utf-8")).hexdigest()
         self.cfg.update("password", password, "login")
         logging.debug("Password changed successfully")
         self.close_window()
@@ -123,10 +124,13 @@ class PasswordWindow(Gtk.Window):
             else:
                 old_is_ok = True
             if old_is_ok:
-                self.old_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, None)
+                self.old_entry.set_icon_from_icon_name(
+                    Gtk.EntryIconPosition.SECONDARY, None)
         if not are_diff:
-            self.new_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, None)
-            self.new2_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, None)
+            self.new_entry.set_icon_from_icon_name(
+                Gtk.EntryIconPosition.SECONDARY, None)
+            self.new2_entry.set_icon_from_icon_name(
+                Gtk.EntryIconPosition.SECONDARY, None)
         self.apply_button.set_sensitive(not are_diff and old_is_ok)
 
     def generate_header_bar(self):

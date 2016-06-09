@@ -12,7 +12,7 @@ class AddAccount(Gtk.Window):
 
     def __init__(self, window):
         self.parent = window
-        
+
         self.selected_image = None
         self.step = 1
         self.logo_image = Gtk.Image(xalign=0)
@@ -26,7 +26,7 @@ class AddAccount(Gtk.Window):
 
     def generate_window(self):
         Gtk.Window.__init__(self, type=Gtk.WindowType.TOPLEVEL, title=_("Add a new account"),
-                                modal=True, destroy_with_parent=True)
+                            modal=True, destroy_with_parent=True)
         self.connect("delete-event", self.close_window)
         self.resize(410, 300)
         self.set_border_width(18)
@@ -68,14 +68,16 @@ class AddAccount(Gtk.Window):
         labels_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         logo_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
-        hbox_title = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=18)
+        hbox_title = Gtk.Box(
+            orientation=Gtk.Orientation.HORIZONTAL, spacing=18)
         title_label = Gtk.Label()
         title_label.set_text(_("Account Name"))
 
         hbox_title.pack_end(self.name_entry, False, True, 0)
         hbox_title.pack_end(title_label, False, True, 0)
 
-        hbox_two_factor = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=18)
+        hbox_two_factor = Gtk.Box(
+            orientation=Gtk.Orientation.HORIZONTAL, spacing=18)
         two_factor_label = Gtk.Label()
         two_factor_label.set_text(_("Secret Code"))
         self.secret_code.connect("changed", self.validate_ascii_code)
@@ -83,7 +85,7 @@ class AddAccount(Gtk.Window):
         hbox_two_factor.pack_end(self.secret_code, False, True, 0)
         hbox_two_factor.pack_end(two_factor_label, False, True, 0)
 
-        auth_icon = Authenticator.get_auth_icon("image-missing", self.parent.app.pkgdatadir)
+        auth_icon = Authenticator.get_auth_icon("image-missing")
         self.logo_image.set_from_pixbuf(auth_icon)
         self.logo_image.get_style_context().add_class("application-logo-add")
         logo_box.pack_start(self.logo_image, True, False, 6)
@@ -107,9 +109,9 @@ class AddAccount(Gtk.Window):
         """
             Update image logo
         """
-        directory = self.parent.app.pkgdatadir + "/data/logos/"
+        directory = DATA_DIR + "/data/applications/"
         self.selected_image = image
-        auth_icon = Authenticator.get_auth_icon(image, self.parent.app.pkgdatadir)
+        auth_icon = Authenticator.get_auth_icon(image)
         self.logo_image.clear()
         self.logo_image.set_from_pixbuf(auth_icon)
 
@@ -121,9 +123,11 @@ class AddAccount(Gtk.Window):
         is_valid = Code.is_valid(ascii_code)
         self.apply_button.set_sensitive(is_valid)
         if not is_valid and len(ascii_code) != 0:
-            entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, "dialog-error-symbolic")
+            entry.set_icon_from_icon_name(
+                Gtk.EntryIconPosition.SECONDARY, "dialog-error-symbolic")
         else:
-            entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, None)
+            entry.set_icon_from_icon_name(
+                Gtk.EntryIconPosition.SECONDARY, None)
 
     def add_application(self, *args):
         """
@@ -136,7 +140,8 @@ class AddAccount(Gtk.Window):
             self.parent.app.auth.add_application(name_entry, secret_entry,
                                                  image_entry)
             uid = self.parent.app.auth.get_latest_id()
-            self.parent.append_list_box(uid, name_entry, secret_entry, image_entry)
+            self.parent.append_list_box(
+                uid, name_entry, secret_entry, image_entry)
             self.parent.refresh_window()
             self.close_window()
         except Exception as e:

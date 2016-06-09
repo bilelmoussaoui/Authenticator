@@ -6,21 +6,21 @@
 }
 .application-name {
     font-weight: bold;
-    font-size: 12px;
+    font-size: 13px;
 }
 .application-logo-add {
     margin-right: 5px;
     margin-bottom: 10px;
 }
-.application-secret-code {
-    font-size: 10px;
+.account-secret-code,
+.account-timer {
+    font-size: 13px;
     margin-top: 0;
     margin-bottom: 5px;
-    margin-left: 65px;
+    margin-left: 60px;
 }
-
-.application-secret-code-select-mode{
-    margin-left: 105px;
+.application-secret-code-select-mode {
+    margin-left: 100px;
 }
 .choose-popover GtkLabel {
     padding: 10px;

@@ -21,8 +21,8 @@ class SettingsWindow(Gtk.Window):
         self.generate_components()
 
     def generate_window(self):
-        Gtk.Window.__init__(self,title=_("Settings"),type=Gtk.WindowType.TOPLEVEL, 
-                                destroy_with_parent=True, modal=True)
+        Gtk.Window.__init__(self, title=_("Settings"), type=Gtk.WindowType.TOPLEVEL,
+                            destroy_with_parent=True, modal=True)
         self.connect("delete-event", self.close_window)
         self.resize(400, 300)
         self.set_size_request(400, 300)
@@ -48,11 +48,13 @@ class SettingsWindow(Gtk.Window):
         self.add(self.notebook)
         user_settings = self.generate_user_settings()
         user_settings.set_border_width(10)
-        self.notebook.append_page(user_settings, Gtk.Label().new(_('Behavior')))
+        self.notebook.append_page(
+            user_settings, Gtk.Label().new(_('Behavior')))
 
         login_settings = self.generate_login_settings()
         login_settings.set_border_width(10)
-        self.notebook.append_page(login_settings, Gtk.Label().new(_('Account')))
+        self.notebook.append_page(
+            login_settings, Gtk.Label().new(_('Account')))
 
     def generate_login_settings(self):
         """
@@ -75,7 +77,7 @@ class SettingsWindow(Gtk.Window):
         self.password_button.set_sensitive(lock_enabled)
 
         password_box.pack_start(self.enable_switch, False, True, 6)
-        password_box.pack_start(password_label, False, True, 6)        
+        password_box.pack_start(password_label, False, True, 6)
         password_box.pack_start(self.password_button, False, True, 6)
 
         main_box.pack_start(password_box, False, True, 6)
@@ -98,9 +100,10 @@ class SettingsWindow(Gtk.Window):
         default_value = self.cfg.read("auto-lock-time", "preferences")
         if default_value < 1 or default_value > 10:
             default_value = 3
-        adjustment = Gtk.Adjustment(value=default_value, lower=1, upper=10, 
+        adjustment = Gtk.Adjustment(value=default_value, lower=1, upper=10,
                                     step_increment=1, page_increment=1, page_size=0)
-        self.auto_lock_time.connect("value-changed", self.on_auto_lock_time_changed)
+        self.auto_lock_time.connect(
+            "value-changed", self.on_auto_lock_time_changed)
         self.auto_lock_time.set_adjustment(adjustment)
         self.auto_lock_time.set_sensitive(is_auto_lock_active)
         self.auto_lock_time.set_value(default_value)
@@ -114,7 +117,7 @@ class SettingsWindow(Gtk.Window):
         default_value = self.cfg.read("refresh-time", "preferences")
         if default_value < 30 or default_value > 120:
             default_value = 30
-        adjustment = Gtk.Adjustment(value=default_value, lower=10, upper=120, 
+        adjustment = Gtk.Adjustment(value=default_value, lower=10, upper=120,
                                     step_increment=1, page_increment=10, page_size=0)
         self.time_spin_button.connect("value-changed", self.on_time_changed)
         self.time_spin_button.set_adjustment(adjustment)
@@ -138,13 +141,15 @@ class SettingsWindow(Gtk.Window):
         """
             Update time tog generate a new secret code
         """
-        self.cfg.update("refresh-time", spin_button.get_value_as_int(), "preferences")
+        self.cfg.update(
+            "refresh-time", spin_button.get_value_as_int(), "preferences")
 
     def on_auto_lock_time_changed(self, spin_button):
         """
             Update time tog generate a new secret code
         """
-        self.cfg.update("auto-lock-time", spin_button.get_value_as_int(), "preferences")
+        self.cfg.update("auto-lock-time",
+                        spin_button.get_value_as_int(), "preferences")
 
     def on_switch_activated(self, switch, *args):
         """

@@ -10,9 +10,10 @@ class ConfirmationMessage(Gtk.Window):
     def __init__(self, parent, message):
         try:
             self.dialog = Gtk.MessageDialog(
-                parent=parent,
-                flags=Gtk.DialogFlags.MODAL,
-                message_format=message,
+                transient_for=parent,
+                modal=True,
+                destroy_with_parent=True,
+                text=message,
                 buttons=Gtk.ButtonsType.OK_CANCEL)
             logging.debug("Confirmation message created successfully")
         except Exception as e:

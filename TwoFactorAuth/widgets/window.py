@@ -3,7 +3,8 @@ require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gio, Gdk, GObject, GLib
 from TwoFactorAuth.widgets.add_account import AddAccount
 from TwoFactorAuth.widgets.confirmation import ConfirmationMessage
-from TwoFactorAuth.widgets.listrow import ListBoxRow
+from TwoFactorAuth.widgets.account_row import AccountRow
+from TwoFactorAuth.widgets.search_bar import SearchBar
 import logging
 from hashlib import sha256
 from gettext import gettext as _
@@ -17,7 +18,6 @@ class Window(Gtk.ApplicationWindow):
 
     hb = Gtk.HeaderBar()
     main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-    search_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
     login_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
     no_apps_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
     apps_list_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
@@ -38,7 +38,6 @@ class Window(Gtk.ApplicationWindow):
     settings_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
     pop_settings = Gtk.ModelButton.new()
     password_entry = Gtk.Entry()
-    search_entry = Gtk.Entry()
 
     def __init__(self, application):
         self.app = application
@@ -58,8 +57,8 @@ class Window(Gtk.ApplicationWindow):
         Gtk.ApplicationWindow.__init__(self, type=Gtk.WindowType.TOPLEVEL,
                                        application=self.app)
         self.move_latest_position()
-        self.set_wmclass(self.app.package, "Gnome TwoFactorAuth")
-        self.set_icon_name(self.app.package)
+        self.set_wmclass("Gnome-TwoFactorAuth", "Gnome TwoFactorAuth")
+        self.set_icon_name("Gnome-TwoFactorAuth")
         self.resize(410, 550)
         self.set_size_request(410, 550)
         self.set_resizable(False)
@@ -80,8 +79,8 @@ class Window(Gtk.ApplicationWindow):
                     self.copy_code()
             elif keypress == "f":
                 if key_event.state == control_mask:
-                    self.search_button.set_active(not self.search_button.get_active())
-
+                    self.search_button.set_active(
+                        not self.search_button.get_active())
             elif keypress == "s":
                 if key_event.state == control_mask:
                     self.toggle_select()
@@ -98,13 +97,20 @@ class Window(Gtk.ApplicationWindow):
                         index = 0
                     self.list_box.get_row_at_index(index).toggle_code_box()
             elif keypress == "backspace":
-                if len(self.search_entry.get_text()) == 0:
+                if self.search_bar.is_empty():
                     self.search_button.set_active(False)
             elif keypress == "escape":
-                if self.search_box.get_visible():
+                if self.search_bar.is_visible():
                     self.search_button.set_active(False)
                 if not self.select_button.get_visible():
                     self.toggle_select()
+            elif keypress == "up" or keypress == "down":
+                dx = -1 if keypress == "up" else 1
+                if count != 0:
+                    index = self.list_box.get_selected_row().get_index()
+                    index = (index + dx)%count
+                    selected_row = self.list_box.get_row_at_index(index)
+                    self.list_box.select_row(selected_row)
         else:
             if keypress == "return":
                 self.on_unlock_clicked()
@@ -121,34 +127,14 @@ class Window(Gtk.ApplicationWindow):
                 self.toggle_app_lock()
         return True
 
-    def filter_applications(self, entry):
-        data = entry.get_text().strip()
-        if len(data) != 0:
-            entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, "edit-clear-symbolic")
-            entry.connect("icon-press", self.on_icon_pressed)
-        else:
-            entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, None)
-        self.list_box.set_filter_func(self.filter_func, data, False)
-
-
-    def on_icon_pressed(self, entry, icon_pos, event):
-        if icon_pos == Gtk.EntryIconPosition.SECONDARY:
-            self.search_entry.set_text("")
-
     def generate_search_bar(self):
         """
             Generate search bar box and entry
         """
-        box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        self.search_bar = SearchBar(self.list_box)
+        self.search_button.connect("toggled", self.search_bar.toggle)
 
-        self.search_entry.set_width_chars(28)
-        self.search_entry.connect("changed", self.filter_applications)
-        self.search_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY, "system-search-symbolic")
-
-        box.pack_start(self.search_entry, False, True, 0)
-        self.search_box.pack_start(box, True, False, 6)
-        self.search_box.set_no_show_all(True)
-        self.apps_box.pack_start(self.search_box, False, True, 6)
+        self.apps_box.pack_start(self.search_bar, False, True, 0)
         self.main_box.pack_start(self.apps_box, True, True, 0)
 
     def remove_selected(self, *args):
@@ -198,11 +184,13 @@ class Window(Gtk.ApplicationWindow):
         ecrypted_pass = sha256(typed_pass.encode("utf-8")).hexdigest()
         login_pass = self.app.cfg.read("password", "login")
         if ecrypted_pass == login_pass or login_pass == typed_pass:
-            self.password_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, None)
+            self.password_entry.set_icon_from_icon_name(
+                Gtk.EntryIconPosition.SECONDARY, None)
             self.toggle_app_lock()
             self.password_entry.set_text("")
         else:
-            self.password_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, "dialog-error-symbolic")
+            self.password_entry.set_icon_from_icon_name(
+                Gtk.EntryIconPosition.SECONDARY, "dialog-error-symbolic")
 
     def toggle_app_lock(self):
         """
@@ -237,14 +225,15 @@ class Window(Gtk.ApplicationWindow):
         """
             Generate a header bar box
         """
-        count =  self.app.auth.count()
+        count = self.app.auth.count()
         self.hb.set_show_close_button(True)
 
         left_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         right_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
 
         remove_icon = Gio.ThemedIcon(name="user-trash-symbolic")
-        remove_image = Gtk.Image.new_from_gicon(remove_icon, Gtk.IconSize.BUTTON)
+        remove_image = Gtk.Image.new_from_gicon(
+            remove_icon, Gtk.IconSize.BUTTON)
         self.remove_button.set_tooltip_text(_("Remove selected applications"))
         self.remove_button.set_image(remove_image)
         self.remove_button.set_sensitive(False)
@@ -256,7 +245,6 @@ class Window(Gtk.ApplicationWindow):
         self.add_button.set_tooltip_text(_("Add a new application"))
         self.add_button.set_image(add_image)
         self.add_button.connect("clicked", self.add_application)
-
 
         pass_enabled = self.app.cfg.read("state", "login")
         can_be_locked = not self.app.locked and pass_enabled
@@ -272,7 +260,8 @@ class Window(Gtk.ApplicationWindow):
         left_box.add(self.lock_button)
 
         select_icon = Gio.ThemedIcon(name="object-select-symbolic")
-        select_image = Gtk.Image.new_from_gicon(select_icon, Gtk.IconSize.BUTTON)
+        select_image = Gtk.Image.new_from_gicon(
+            select_icon, Gtk.IconSize.BUTTON)
         self.select_button.set_tooltip_text(_("Selection mode"))
         self.select_button.set_image(select_image)
         self.select_button.connect("clicked", self.toggle_select)
@@ -280,17 +269,16 @@ class Window(Gtk.ApplicationWindow):
         self.select_button.set_visible(count > 0)
 
         search_icon = Gio.ThemedIcon(name="system-search-symbolic")
-        search_image = Gtk.Image.new_from_gicon(search_icon, Gtk.IconSize.BUTTON)
+        search_image = Gtk.Image.new_from_gicon(
+            search_icon, Gtk.IconSize.BUTTON)
         self.search_button.set_tooltip_text(_("Search"))
         self.search_button.set_image(search_image)
-        self.search_button.connect("toggled", self.toggle_search_box)
         self.search_button.set_no_show_all(not count > 0)
         self.search_button.set_visible(count > 0)
 
         self.cancel_button.set_label(_("Cancel"))
         self.cancel_button.connect("clicked", self.toggle_select)
         self.cancel_button.set_no_show_all(True)
-
 
         right_box.add(self.search_button)
         right_box.add(self.select_button)
@@ -305,12 +293,14 @@ class Window(Gtk.ApplicationWindow):
 
     def generate_popover(self, box):
         settings_icon = Gio.ThemedIcon(name="open-menu-symbolic")
-        settings_image = Gtk.Image.new_from_gicon(settings_icon, Gtk.IconSize.BUTTON)
+        settings_image = Gtk.Image.new_from_gicon(
+            settings_icon, Gtk.IconSize.BUTTON)
         self.settings_button.set_tooltip_text(_("Settings"))
         self.settings_button.set_image(settings_image)
         self.settings_button.connect("clicked", self.toggle_popover)
 
-        self.popover = Gtk.Popover.new_from_model(self.settings_button, self.app.menu)
+        self.popover = Gtk.Popover.new_from_model(
+            self.settings_button, self.app.menu)
         self.popover.props.width_request = 200
         box.add(self.settings_button)
 
@@ -328,22 +318,6 @@ class Window(Gtk.ApplicationWindow):
         add_account = AddAccount(self)
         add_account.show_window()
 
-    def toggle_search_box(self, *args):
-        """
-            Toggle search box, only if there's an application
-        """
-        if self.app.auth.count() > 0:
-            is_visible = self.search_box.get_no_show_all()
-            self.search_box.set_no_show_all(not is_visible)
-            self.search_box.set_visible(is_visible)
-            self.search_box.show_all()
-            self.search_button.get_style_context().remove_class("toggled")
-            if is_visible:
-                self.search_entry.grab_focus_without_selecting()
-            else:
-                self.list_box.set_filter_func(lambda x, y, z: True, None, False)
-
-
     def toggle_select(self, *args):
         """
             Toggle select mode
@@ -360,7 +334,7 @@ class Window(Gtk.ApplicationWindow):
             self.settings_button.set_visible(is_visible)
 
         pass_enabled = self.app.cfg.read("state", "login")
-        self.lock_button.set_visible( is_visible and pass_enabled)
+        self.lock_button.set_visible(is_visible and pass_enabled)
         self.add_button.set_visible(is_visible)
         self.select_button.set_visible(is_visible)
 
@@ -387,7 +361,8 @@ class Window(Gtk.ApplicationWindow):
                 self.select_application(checkbox)
                 code_label.get_style_context().add_class("application-secret-code-select-mode")
             else:
-                code_label.get_style_context().remove_class("application-secret-code-select-mode")
+                code_label.get_style_context().remove_class(
+                    "application-secret-code-select-mode")
 
             checkbox.set_visible(not visible)
             checkbox.set_no_show_all(visible)
@@ -410,17 +385,6 @@ class Window(Gtk.ApplicationWindow):
                 self.selected_count -= 1
         self.remove_button.set_sensitive(self.selected_count > 0)
 
-    def filter_func(self, row, data, notify_destroy):
-        """
-            Filter function, used to check if the entered data exists on the application ListBox
-        """
-        app_label = row.get_label()
-        data = data.lower()
-        if len(data) > 0:
-            return data in app_label.lower()
-        else:
-            return True
-
     def select_row(self, list_box, listbox_row):
         """
             Select row @override the clicked event by default for ListBoxRow
@@ -432,7 +396,8 @@ class Window(Gtk.ApplicationWindow):
             checkbox.set_active(not checkbox.get_active())
         else:
             if self.selected_app_idx:
-                selected_row = self.list_box.get_row_at_index(self.selected_app_idx)
+                selected_row = self.list_box.get_row_at_index(
+                    self.selected_app_idx)
                 if selected_row:
                     self.list_box.unselect_row(selected_row)
             self.selected_app_idx = index
@@ -459,8 +424,8 @@ class Window(Gtk.ApplicationWindow):
         i = 0
         count = len(apps)
         while i < count:
-            self.list_box.add(ListBoxRow(self, apps[i][0], apps[i][1], apps[i][2],
-                             apps[i][3]))
+            self.list_box.add(AccountRow(self, apps[i][0], apps[i][1], apps[i][2],
+                                         apps[i][3]))
             i += 1
 
     def generate_no_apps_box(self):
@@ -487,7 +452,7 @@ class Window(Gtk.ApplicationWindow):
             :param image: application image path or icon name
         """
         secret_code = sha256(secret_code.encode('utf-8')).hexdigest()
-        self.list_box.add(ListBoxRow(self, uid, name, secret_code, image))
+        self.list_box.add(AccountRow(self, uid, name, secret_code, image))
         self.list_box.show_all()
 
     def copy_code(self, *args):
@@ -495,7 +460,8 @@ class Window(Gtk.ApplicationWindow):
             Copy the secret code to clipboard
         """
         if len(args) > 0:
-            # if the code is called by clicking on copy button, select the right ListBowRow
+            # if the code is called by clicking on copy button, select the
+            # right ListBowRow
             row = args[0].get_parent().get_parent().get_parent()
             self.list_box.select_row(row)
         selected_row = self.list_box.get_selected_row()
@@ -522,10 +488,12 @@ class Window(Gtk.ApplicationWindow):
         else:
             if count == 0:
                 self.toggle_boxes(False, True, False)
-                self.toggle_hb_buttons(False, True, False, False, False, True, can_be_locked)
+                self.toggle_hb_buttons(
+                    False, True, False, False, False, True, can_be_locked)
             else:
                 self.toggle_boxes(True, False, False)
-                self.toggle_hb_buttons(False, True, True, True, False, True, can_be_locked)
+                self.toggle_hb_buttons(
+                    False, True, True, True, False, True, can_be_locked)
 
         self.pop_settings.set_sensitive(not is_locked)
         self.main_box.show_all()
@@ -604,7 +572,7 @@ class Window(Gtk.ApplicationWindow):
             Shows about dialog
         """
         builder = Gtk.Builder()
-        builder.add_from_file(self.app.pkgdatadir + "/data/about.ui")
+        builder.add_from_resource('/org/gnome/TwoFactorAuth/about.ui')
 
         dialog = builder.get_object("AboutDialog")
         dialog.set_transient_for(self)
@@ -617,8 +585,8 @@ class Window(Gtk.ApplicationWindow):
         """
         if Gtk.get_major_version() >= 3 and Gtk.get_minor_version() >= 20:
             builder = Gtk.Builder()
-            builder.add_from_file(self.app.pkgdatadir + "/data/shortcuts.ui")
-
+            builder.add_from_resource('/org/gnome/TwoFactorAuth/shortcuts.ui')
+            # builder.add_from_file(DATA_DIR + "/data/shortcuts.ui")
             shortcuts = builder.get_object("shortcuts")
             shortcuts.set_transient_for(self)
             shortcuts.show()
