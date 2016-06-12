@@ -22,10 +22,7 @@ class Application(Gtk.Application):
 
     settings_window = None
     settings_action = None
-    def __init__(self, *args, **kwargs):
-        global DATA_DIR
-        for key in kwargs:
-            setattr(self, key, kwargs[key])
+    def __init__(self):
         Gtk.Application.__init__(self,
                                  application_id="org.gnome.TwoFactorAuth",
                                  flags=Gio.ApplicationFlags.FLAGS_NONE)
