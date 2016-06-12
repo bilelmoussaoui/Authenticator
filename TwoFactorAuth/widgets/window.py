@@ -85,7 +85,7 @@ class Window(Gtk.ApplicationWindow):
             elif keypress == "n":
                 if key_event.state == control_mask:
                     self.add_account()
-            elif keypress == "delete" and not self.search_box.get_visible():
+            elif keypress == "delete" and not self.search_bar.is_visible():
                 self.remove_account()
             elif keypress == "return":
                 if count > 0:
