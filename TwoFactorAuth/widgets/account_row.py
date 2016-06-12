@@ -129,16 +129,16 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         # Checkbox
         self.checkbox.set_visible(False)
         self.checkbox.set_no_show_all(True)
-        self.checkbox.connect("toggled", self.parent.select_application)
+        self.checkbox.connect("toggled", self.parent.select_account)
         h_box.pack_start(self.checkbox, False, True, 0)
 
-        # Application logo
+        # account logo
         auth_icon = Authenticator.get_auth_icon(self.logo)
         auth_logo = Gtk.Image(xalign=0)
         auth_logo.set_from_pixbuf(auth_icon)
         h_box.pack_start(auth_logo, False, True, 6)
 
-        # Application name
+        # accout name
         name_event = Gtk.EventBox()
         self.application_name .get_style_context().add_class("application-name")
         self.application_name .set_text(self.name)
@@ -160,10 +160,10 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         remove_button = Gtk.Image(xalign=0)
         remove_button.set_from_icon_name(
             "user-trash-symbolic", Gtk.IconSize.SMALL_TOOLBAR)
-        remove_button.set_tooltip_text(_("Remove the application"))
+        remove_button.set_tooltip_text(_("Remove the account"))
         remove_event.add(remove_button)
         remove_event.connect("button-press-event",
-                             self.parent.remove_application)
+                             self.parent.remove_account)
         h_box.pack_end(remove_event, False, True, 6)
 
         self.timer_label.set_label(_("Expires in %s seconds") % self.counter)
