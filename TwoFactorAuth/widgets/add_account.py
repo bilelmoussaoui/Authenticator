@@ -52,7 +52,7 @@ class AddAccount(Gtk.Window):
 
         self.apply_button = Gtk.Button.new_with_label(_("Add"))
         self.apply_button.get_style_context().add_class("suggested-action")
-        self.apply_button.connect("clicked", self.add_application)
+        self.apply_button.connect("clicked", self.add_account)
         self.apply_button.set_sensitive(False)
         right_box.add(self.apply_button)
 
@@ -109,7 +109,6 @@ class AddAccount(Gtk.Window):
         """
             Update image logo
         """
-        directory = DATA_DIR + "/data/applications/"
         self.selected_image = image
         auth_icon = Authenticator.get_auth_icon(image)
         self.logo_image.clear()
@@ -129,7 +128,7 @@ class AddAccount(Gtk.Window):
             entry.set_icon_from_icon_name(
                 Gtk.EntryIconPosition.SECONDARY, None)
 
-    def add_application(self, *args):
+    def add_account(self, *args):
         """
             Add a new application to the database
         """
@@ -137,7 +136,7 @@ class AddAccount(Gtk.Window):
         secret_entry = self.secret_code.get_text()
         image_entry = self.selected_image if self.selected_image else "image-missing"
         try:
-            self.parent.app.auth.add_application(name_entry, secret_entry,
+            self.parent.app.auth.add_account(name_entry, secret_entry,
                                                  image_entry)
             uid = self.parent.app.auth.get_latest_id()
             self.parent.append_list_box(
@@ -145,7 +144,7 @@ class AddAccount(Gtk.Window):
             self.parent.refresh_window()
             self.close_window()
         except Exception as e:
-            logging.error("Error in adding a new application")
+            logging.error("Error in adding a new account")
             logging.error(str(e))
 
     def show_window(self):

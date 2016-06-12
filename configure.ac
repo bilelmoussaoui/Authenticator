@@ -10,7 +10,7 @@ AM_MAINTAINER_MODE([enable])
 m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
 
 
-GETTEXT_PACKAGE=TwoFactorAuth
+GETTEXT_PACKAGE=woFactorAuth
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE",
                    [The prefix for our gettext translation domains.])
@@ -32,7 +32,6 @@ AC_CONFIG_FILES([
     TwoFactorAuth/Makefile
     TwoFactorAuth/models/Makefile
     TwoFactorAuth/widgets/Makefile
-    schemas/Makefile
 	po/Makefile.in
 ])
 

@@ -1,10 +1,9 @@
 import sqlite3
 import logging
-from os import path, mknod, makedirs
+from os import path, mknod, makedirs, environ as env
 from gi.repository import GdkPixbuf, Gtk
 from gi.repository import GnomeKeyring as GK
 from hashlib import sha256
-
 
 class Authenticator:
 
@@ -28,9 +27,9 @@ class Authenticator:
         self.conn = sqlite3.connect(database_file)
         if not self.is_table_exists():
             logging.debug(
-                "SQL: Table 'applications' does not exists, creating it now...")
+                "SQL: Table 'accounts' does not exists, creating it now...")
             self.create_table()
-            logging.debug("SQL: Table 'applications' created successfully")
+            logging.debug("SQL: Table 'accounts' created successfully")
 
     @staticmethod
     def fetch_secret_code(secret_code):
@@ -42,17 +41,17 @@ class Authenticator:
         else:
             return None
 
-    def add_application(self, name, secret_code, image):
+    def add_account(self, name, secret_code, image):
         """
-            Add an application to applications table
-            :param name: (str) Application name
+            Add an account to accounts table
+            :param name: (str) account name
             :param secret_code: (str) ASCII Secret code
             :param image: image path or icon name
             :return:
         """
         encrypted_secret = sha256(secret_code.encode('utf-8')).hexdigest()
         t = (name, encrypted_secret, image,)
-        query = "INSERT INTO applications (name, secret_code, image) VALUES (?, ?, ?)"
+        query = "INSERT INTO accounts (name, secret_code, image) VALUES (?, ?, ?)"
         try:
             GK.create_sync("TwoFactorAuth", None)
             attr = GK.Attribute.list_new()
@@ -63,27 +62,27 @@ class Authenticator:
             self.conn.execute(query, t)
             self.conn.commit()
         except Exception as e:
-            logging.error("SQL: Couldn't add a new application : %s ", str(e))
+            logging.error("SQL: Couldn't add a new account : %s ", str(e))
 
     def get_secret_code(self, uid):
         """
-            Count number of applications
+            Count number of accounts
            :return: (int) count
         """
         c = self.conn.cursor()
-        query = "SELECT secret_code FROM applications WHERE uid=?"
+        query = "SELECT secret_code FROM accounts WHERE uid=?"
         try:
             data = c.execute(query, (uid,))
             return data.fetchone()[0]
         except Exception as e:
             logging.error(
-                "SQL: Couldn't get application secret code : %s " % str(e))
+                "SQL: Couldn't get account secret code : %s " % str(e))
             return None
 
     def remove_by_id(self, uid):
         """
-            Remove an application by uid
-            :param uid: (int) application uid
+            Remove an account by uid
+            :param uid: (int) account uid
             :return:
         """
         secret_code = self.get_secret_code(uid)
@@ -98,41 +97,41 @@ class Authenticator:
                         break
             if found:
                 GK.item_delete_sync("TwoFactorAuth", gid)
-        query = "DELETE FROM applications WHERE uid=?"
+        query = "DELETE FROM accounts WHERE uid=?"
         try:
             self.conn.execute(query, (uid,))
             self.conn.commit()
         except Exception as e:
             logging.error(
-                "SQL: Couldn't remove application by uid : %s with error : %s" % (uid, str(e)))
+                "SQL: Couldn't remove account by uid : %s with error : %s" % (uid, str(e)))
 
     def count(self):
         """
-            Count number of applications
+            Count number of accounts
            :return: (int) count
         """
         c = self.conn.cursor()
-        query = "SELECT COUNT(uid) AS count FROM applications"
+        query = "SELECT COUNT(uid) AS count FROM accounts"
         try:
             data = c.execute(query)
             return data.fetchone()[0]
         except Exception as e:
             logging.error(
-                "SQL: Couldn't count applications list : %s " % str(e))
+                "SQL: Couldn't count accounts list : %s " % str(e))
             return None
 
     def fetch_apps(self):
         """
-            Fetch list of applications
-            :return: (tuple) list of applications
+            Fetch list of accounts
+            :return: (tuple) list of accounts
         """
         c = self.conn.cursor()
-        query = "SELECT * FROM applications"
+        query = "SELECT * FROM accounts"
         try:
             data = c.execute(query)
             return data.fetchall()
         except Exception as e:
-            logging.error("SQL: Couldn't fetch applications list  %s" % str(e))
+            logging.error("SQL: Couldn't fetch accounts list  %s" % str(e))
             return None
 
     @staticmethod
@@ -142,7 +141,7 @@ class Authenticator:
             :param image: icon name or image path
             :return: GdkPixbux Image
         """
-        directory = DATA_DIR + "/data/applications/"
+        directory = path.join(env.get("DATA_DIR"), "applications") + "/"
         theme = Gtk.IconTheme.get_default()
         if path.isfile(directory + image) and path.exists(directory + image):
             icon = GdkPixbuf.Pixbuf.new_from_file(directory + image)
@@ -159,11 +158,11 @@ class Authenticator:
 
     def get_latest_id(self):
         """
-            Get the latest uid on applications table
+            Get the latest uid on accounts table
             :return: (int) latest uid
         """
         c = self.conn.cursor()
-        query = "SELECT uid FROM applications ORDER BY uid DESC LIMIT 1;"
+        query = "SELECT uid FROM accounts ORDER BY uid DESC LIMIT 1;"
         try:
             data = c.execute(query)
             return data.fetchone()[0]
@@ -173,12 +172,12 @@ class Authenticator:
 
     def create_table(self):
         """
-            Create applications table
+            Create accounts table
         """
-        query = '''CREATE TABLE "applications" (
+        query = '''CREATE TABLE "accounts" (
             "uid" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE ,
             "name" VARCHAR NOT NULL ,
-            "secret_code" VARCHAR NOT NULL  UNIQUE ,
+            "secret_code" VARCHAR NOT NULL ,
             "image" TEXT NOT NULL
         )'''
         try:
@@ -186,14 +185,14 @@ class Authenticator:
             self.conn.commit()
         except Exception as e:
             logging.error(
-                "SQL: impossible to create table 'applications' %s " % str(e))
+                "SQL: impossible to create table 'accounts' %s " % str(e))
 
     def is_table_exists(self):
         """
-            Check if applications table exists
+            Check if accounts table exists
             :return: (bool)
         """
-        query = "SELECT uid from applications LIMIT 1"
+        query = "SELECT uid from accounts LIMIT 1"
         c = self.conn.cursor()
         try:
             data = c.execute(query)

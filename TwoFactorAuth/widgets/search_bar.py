@@ -12,7 +12,7 @@ class SearchBar(Gtk.Box):
         self.generate()
 
     def generate(self):
-        Gtk.ListBoxRow.__init__(self, orientation=Gtk.Orientation.VERTICAL)
+        Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL)
         self.revealer = Gtk.Revealer()
         box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
 
@@ -22,6 +22,7 @@ class SearchBar(Gtk.Box):
                                                   "system-search-symbolic")
 
         box.pack_start(self.search_entry, True, False, 12)
+        box.props.margin = 6
         self.revealer.add(box)
         self.revealer.set_reveal_child(False)
         self.pack_start(self.revealer, True, False, 0)
@@ -29,6 +30,7 @@ class SearchBar(Gtk.Box):
     def toggle(self, *args):
         if self.revealer.get_reveal_child():
             self.revealer.set_reveal_child(False)
+            self.search_entry.set_text("")
             self.list_accounts.set_filter_func(lambda x, y, z: True,
                                                None, False)
         else:

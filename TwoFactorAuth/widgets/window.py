@@ -59,8 +59,8 @@ class Window(Gtk.ApplicationWindow):
         self.move_latest_position()
         self.set_wmclass("Gnome-TwoFactorAuth", "Gnome TwoFactorAuth")
         self.set_icon_name("Gnome-TwoFactorAuth")
-        self.resize(410, 550)
-        self.set_size_request(410, 550)
+        self.resize(420, 550)
+        self.set_size_request(420, 550)
         self.set_resizable(False)
         self.connect("key_press_event", self.on_key_press)
         self.connect("delete-event", lambda x, y: self.app.on_quit())
@@ -586,7 +586,6 @@ class Window(Gtk.ApplicationWindow):
         if Gtk.get_major_version() >= 3 and Gtk.get_minor_version() >= 20:
             builder = Gtk.Builder()
             builder.add_from_resource('/org/gnome/TwoFactorAuth/shortcuts.ui')
-            # builder.add_from_file(DATA_DIR + "/data/shortcuts.ui")
             shortcuts = builder.get_object("shortcuts")
             shortcuts.set_transient_for(self)
             shortcuts.show()

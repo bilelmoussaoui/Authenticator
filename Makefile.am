@@ -12,11 +12,12 @@ do_substitution = sed -e 's,[@]pythondir[@],$(pythondir),g' \
 	-e 's,[@]VERSION[@],$(VERSION),g' \
 	-e 's,[@]pyexecdir[@],$(pyexecdir),g'
 
+
 gnome-twofactorauth: gnome-twofactorauth.in Makefile
 	$(do_substitution) < $(srcdir)/gnome-twofactorauth.in > gnome-twofactorauth
 	chmod +x gnome-twofactorauth
 
+
 SUBDIRS = TwoFactorAuth \
           data \
-          po \
-		  schemas
+          po

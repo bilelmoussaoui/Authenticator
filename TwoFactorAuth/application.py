@@ -12,7 +12,6 @@ import signal
 from gettext import gettext as _
 from os import environ as env
 
-
 class Application(Gtk.Application):
     win = None
     alive = True
@@ -24,15 +23,14 @@ class Application(Gtk.Application):
     settings_window = None
     settings_action = None
     def __init__(self, *args, **kwargs):
-
+        global DATA_DIR
         for key in kwargs:
             setattr(self, key, kwargs[key])
         Gtk.Application.__init__(self,
                                  application_id="org.gnome.TwoFactorAuth",
                                  flags=Gio.ApplicationFlags.FLAGS_NONE)
-        DATA_DIR = self.pkgdatadir
-        GLib.set_application_name(self.package)
-        GLib.set_prgname(self.package)
+        GLib.set_application_name(_("TwoFactorAuth"))
+        GLib.set_prgname("Gnome-TwoFactorAuth")
 
         current_desktop = env.get("XDG_CURRENT_DESKTOP")
         if current_desktop:
@@ -47,24 +45,21 @@ class Application(Gtk.Application):
         self.cfg = SettingsReader()
         if self.cfg.read("state", "login"):
             self.locked = True
-        provider = Gtk.CssProvider()
         cssProviderFile = Gio.File.new_for_uri('resource:///org/gnome/TwoFactorAuth/style.css')
-        print(cssProviderFile)
+        cssProvider = Gtk.CssProvider()
+        screen = Gdk.Screen.get_default()
+        styleContext = Gtk.StyleContext()
         try:
-            provider.load_from_path(cssProviderFile)
-            Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
-                                                     provider,
-                                                     Gtk.STYLE_PROVIDER_PRIORITY_USER)
-            logging.debug("Loading css file %s" % cssProviderFile)
+            cssProvider.load_from_file(cssProviderFile)
+            styleContext.add_provider_for_screen(screen, cssProvider,
+                                             Gtk.STYLE_PROVIDER_PRIORITY_USER)
+            logging.debug("Loading css file ")
         except Exception as e:
-            logging.debug("File not found %s" % cssProviderFile)
-            logging.debug("Error message %s" % str(e))
+            logging.error("Error message %s" % str(e))
 
     def do_startup(self):
         Gtk.Application.do_startup(self)
         self.generate_menu()
-        if self.use_GMenu:
-            logging.debug("Adding gnome shell menu")
 
     def generate_menu(self):
         # Settings section
@@ -125,20 +120,34 @@ class Application(Gtk.Application):
             self.win.refresh_window()
 
     def on_shortcuts(self, *args):
-        self.win.show_shortcuts()
+        """
+            Shows keyboard shortcuts
+        """
+        if Gtk.get_major_version() >= 3 and Gtk.get_minor_version() >= 20:
+            builder = Gtk.Builder()
+            builder.add_from_resource('/org/gnome/TwoFactorAuth/shortcuts.ui')
+            shortcuts = builder.get_object("shortcuts")
+            shortcuts.set_transient_for(self.win)
+            shortcuts.show()
 
     def on_about(self, *args):
-        self.win.show_about()
+        """
+            Shows about dialog
+        """
+        builder = Gtk.Builder()
+        builder.add_from_resource('/org/gnome/TwoFactorAuth/about.ui')
+
+        dialog = builder.get_object("AboutDialog")
+        dialog.set_transient_for(self.win)
+        dialog.run()
+        dialog.destroy()
 
     def on_settings(self, *args):
         """
             Shows settings window
         """
-        try:
-            settings_window = SettingsWindow(self.win)
-            settings_window.show_window()
-        except Exception as e:
-            print(e)
+        settings_window = SettingsWindow(self.win)
+        settings_window.show_window()
 
     def on_quit(self, *args):
         """

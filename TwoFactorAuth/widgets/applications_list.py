@@ -4,7 +4,7 @@ from gi.repository import Gtk, GLib, Gio, Gdk
 from TwoFactorAuth.models.authenticator import Authenticator
 from TwoFactorAuth.widgets.search_bar import SearchBar
 from TwoFactorAuth.widgets.application_row import ApplicationRow
-from os import path, listdir
+from os import path, listdir, environ as env
 from gettext import gettext as _
 
 
@@ -12,7 +12,9 @@ class ApplicationChooserWindow(Gtk.Window):
 
     def __init__(self, window):
         # directory that contains the main icons
-        self.logos = listdir(DATA_DIR + "/data/applications/")
+
+        directory = path.join(env.get("DATA_DIR"), "applications") + "/"
+        self.logos = listdir(directory)
         self.logos.sort()
         self.parent = window
 

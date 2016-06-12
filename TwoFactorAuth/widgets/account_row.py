@@ -130,7 +130,7 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         self.checkbox.set_visible(False)
         self.checkbox.set_no_show_all(True)
         self.checkbox.connect("toggled", self.parent.select_application)
-        h_box.pack_start(self.checkbox, False, True, 6)
+        h_box.pack_start(self.checkbox, False, True, 0)
 
         # Application logo
         auth_icon = Authenticator.get_auth_icon(self.logo)
