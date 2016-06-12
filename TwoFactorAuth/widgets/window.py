@@ -564,26 +564,3 @@ class Window(Gtk.ApplicationWindow):
             self.move(x, y)
         else:
             self.set_position(Gtk.WindowPosition.CENTER)
-
-    def show_about(self, *args):
-        """
-            Shows about dialog
-        """
-        builder = Gtk.Builder()
-        builder.add_from_resource('/org/gnome/TwoFactorAuth/about.ui')
-
-        dialog = builder.get_object("AboutDialog")
-        dialog.set_transient_for(self)
-        dialog.run()
-        dialog.destroy()
-
-    def show_shortcuts(self, *args):
-        """
-            Shows keyboard shortcuts
-        """
-        if Gtk.get_major_version() >= 3 and Gtk.get_minor_version() >= 20:
-            builder = Gtk.Builder()
-            builder.add_from_resource('/org/gnome/TwoFactorAuth/shortcuts.ui')
-            shortcuts = builder.get_object("shortcuts")
-            shortcuts.set_transient_for(self)
-            shortcuts.show()
