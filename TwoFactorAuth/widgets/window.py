@@ -42,7 +42,7 @@ class Window(Gtk.ApplicationWindow):
         self.generate_window()
         self.generate_header_bar()
         self.generate_search_bar()
-        self.generate_applications_list()
+        self.generate_accounts_list()
         self.generate_no_apps_box()
         self.generate_login_form()
         self.refresh_window()
