@@ -23,8 +23,6 @@ class Window(Gtk.ApplicationWindow):
     apps_list_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
     apps_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
-    add_application_window = None
-
     list_box = Gtk.ListBox()
     search_button = Gtk.ToggleButton()
     add_button = Gtk.Button()
@@ -86,9 +84,9 @@ class Window(Gtk.ApplicationWindow):
                     self.toggle_select()
             elif keypress == "n":
                 if key_event.state == control_mask:
-                    self.add_application()
+                    self.add_account()
             elif keypress == "delete" and not self.search_box.get_visible():
-                self.remove_application()
+                self.remove_account()
             elif keypress == "return":
                 if count > 0:
                     if self.list_box.get_selected_row():
@@ -139,9 +137,9 @@ class Window(Gtk.ApplicationWindow):
 
     def remove_selected(self, *args):
         """
-            Remove selected applications
+            Remove selected accounts
         """
-        message = _("Do you really want to remove selected applications?")
+        message = _("Do you really want to remove selected accounts?")
         confirmation = ConfirmationMessage(self, message)
         confirmation.show()
         if confirmation.get_confirmation():
@@ -234,7 +232,7 @@ class Window(Gtk.ApplicationWindow):
         remove_icon = Gio.ThemedIcon(name="user-trash-symbolic")
         remove_image = Gtk.Image.new_from_gicon(
             remove_icon, Gtk.IconSize.BUTTON)
-        self.remove_button.set_tooltip_text(_("Remove selected applications"))
+        self.remove_button.set_tooltip_text(_("Remove selected accounts"))
         self.remove_button.set_image(remove_image)
         self.remove_button.set_sensitive(False)
         self.remove_button.set_no_show_all(True)
@@ -242,9 +240,9 @@ class Window(Gtk.ApplicationWindow):
 
         add_icon = Gio.ThemedIcon(name="list-add-symbolic")
         add_image = Gtk.Image.new_from_gicon(add_icon, Gtk.IconSize.BUTTON)
-        self.add_button.set_tooltip_text(_("Add a new application"))
+        self.add_button.set_tooltip_text(_("Add a new account"))
         self.add_button.set_image(add_image)
-        self.add_button.connect("clicked", self.add_application)
+        self.add_button.connect("clicked", self.add_account)
 
         pass_enabled = self.app.cfg.read("state", "login")
         can_be_locked = not self.app.locked and pass_enabled
@@ -311,7 +309,7 @@ class Window(Gtk.ApplicationWindow):
             else:
                 self.popover.show_all()
 
-    def add_application(self, *args):
+    def add_account(self, *args):
         """
             Create add application window
         """
@@ -358,7 +356,7 @@ class Window(Gtk.ApplicationWindow):
             visible = checkbox.get_visible()
             selected = checkbox.get_active()
             if not is_visible:
-                self.select_application(checkbox)
+                self.select_account(checkbox)
                 code_label.get_style_context().add_class("application-secret-code-select-mode")
             else:
                 code_label.get_style_context().remove_class(
@@ -367,9 +365,9 @@ class Window(Gtk.ApplicationWindow):
             checkbox.set_visible(not visible)
             checkbox.set_no_show_all(visible)
 
-    def select_application(self, checkbutton):
+    def select_account(self, checkbutton):
         """
-            Select an application in the application ListBox
+            Select an account
             :param checkbutton:
         """
         is_active = checkbutton.get_active()
@@ -403,13 +401,13 @@ class Window(Gtk.ApplicationWindow):
             self.selected_app_idx = index
             self.list_box.select_row(self.list_box.get_row_at_index(index))
 
-    def generate_applications_list(self):
+    def generate_accounts_list(self):
         """
-            Generate an application ListBox inside of a ScrolledWindow
+            Generate an account ListBox inside of a ScrolledWindow
         """
         count = self.app.auth.count()
 
-        # Create a ScrolledWindow for installed applications
+        # Create a ScrolledWindow for accounts
         self.list_box.get_style_context().add_class("applications-list")
         self.list_box.set_adjustment()
         self.list_box.connect("row_activated", self.select_row)
@@ -430,14 +428,14 @@ class Window(Gtk.ApplicationWindow):
 
     def generate_no_apps_box(self):
         """
-            Generate a box with no applications message
+            Generate a box with no accounts message
         """
         logo_image = Gtk.Image()
         logo_image.set_from_icon_name("dialog-information-symbolic",
                                       Gtk.IconSize.DIALOG)
 
         no_apps_label = Gtk.Label()
-        no_apps_label.set_text(_("There's no application at the moment"))
+        no_apps_label.set_text(_("There's no account at the moment"))
 
         self.no_apps_box.pack_start(logo_image, False, False, 6)
         self.no_apps_box.pack_start(no_apps_label, False, False, 6)
@@ -446,10 +444,10 @@ class Window(Gtk.ApplicationWindow):
     def append_list_box(self, uid, name, secret_code, image):
         """
             Add an element to the ListBox
-            :param uid: application id
-            :param name: application name
-            :param secret_code: application secret code
-            :param image: application image path or icon name
+            :param uid: account id
+            :param name: account name
+            :param secret_code: account secret code
+            :param image: account image path or icon name
         """
         secret_code = sha256(secret_code.encode('utf-8')).hexdigest()
         self.list_box.add(AccountRow(self, uid, name, secret_code, image))
@@ -527,7 +525,7 @@ class Window(Gtk.ApplicationWindow):
             self.settings_button.set_visible(settings)
             self.settings_button.set_no_show_all(not settings)
 
-    def remove_application(self, *args):
+    def remove_account(self, *args):
         """
             Remove an application
         """
@@ -535,7 +533,7 @@ class Window(Gtk.ApplicationWindow):
             row = args[0].get_parent().get_parent().get_parent()
             self.list_box.select_row(row)
 
-        message = _("Do you really want to remove the application?")
+        message = _("Do you really want to remove this account?")
         confirmation = ConfirmationMessage(self, message)
         confirmation.show()
         if confirmation.get_confirmation():
@@ -558,7 +556,7 @@ class Window(Gtk.ApplicationWindow):
 
     def move_latest_position(self):
         """
-            Move the application to the latest window if found
+            move the application window to the latest position
         """
         x = self.app.cfg.read("position-x", "preferences")
         y = self.app.cfg.read("position-y", "preferences")

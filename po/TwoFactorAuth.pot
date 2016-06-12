@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-12 13:34+0200\n"
+"POT-Creation-Date: 2016-06-12 13:40+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -63,61 +63,57 @@ msgid ""
 "later</a> for details."
 msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:144
-msgid "Do you really want to remove selected applications?"
+#: TwoFactorAuth/widgets/window.py:142
+msgid "Do you really want to remove selected accounts?"
 msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:167
+#: TwoFactorAuth/widgets/window.py:165
 msgid "Enter your password"
 msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:171
+#: TwoFactorAuth/widgets/window.py:169
 msgid "Unlock"
 msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:237
-msgid "Remove selected applications"
+#: TwoFactorAuth/widgets/window.py:235
+msgid "Remove selected accounts"
 msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:245
-msgid "Add a new application"
+#: TwoFactorAuth/widgets/window.py:243 TwoFactorAuth/widgets/add_account.py:28
+#: TwoFactorAuth/widgets/add_account.py:43
+msgid "Add a new account"
 msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:253
+#: TwoFactorAuth/widgets/window.py:251
 msgid "Lock the Application"
 msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:265
+#: TwoFactorAuth/widgets/window.py:263
 msgid "Selection mode"
 msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:274
+#: TwoFactorAuth/widgets/window.py:272
 #: TwoFactorAuth/widgets/applications_list.py:88
 msgid "Search"
 msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:279 TwoFactorAuth/widgets/add_account.py:48
+#: TwoFactorAuth/widgets/window.py:277 TwoFactorAuth/widgets/add_account.py:48
 #: TwoFactorAuth/widgets/change_password.py:143
 #: TwoFactorAuth/widgets/applications_list.py:80
 msgid "Cancel"
 msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:298 TwoFactorAuth/widgets/settings.py:24
+#: TwoFactorAuth/widgets/window.py:296 TwoFactorAuth/widgets/settings.py:24
 #: TwoFactorAuth/application.py:65
 msgid "Settings"
 msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:440
-msgid "There's no application at the moment"
+#: TwoFactorAuth/widgets/window.py:438
+msgid "There's no account at the moment"
 msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:538
-msgid "Do you really want to remove the application?"
-msgstr ""
-
-#: TwoFactorAuth/widgets/add_account.py:28
-#: TwoFactorAuth/widgets/add_account.py:43
-msgid "Add a new account"
+#: TwoFactorAuth/widgets/window.py:536
+msgid "Do you really want to remove this account?"
 msgstr ""
 
 #: TwoFactorAuth/widgets/add_account.py:53
