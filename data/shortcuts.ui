@@ -28,7 +28,7 @@
                         <child>
                             <object class="GtkShortcutsShortcut">
                                 <property name="visible">True</property>
-                                <property name="title" translatable="yes" context="shortcut window">Add a new application</property>
+                                <property name="title" translatable="yes" context="shortcut window">Add a new account</property>
                                 <property name="accelerator">&lt;Primary&gt;N</property>
                             </object>
                         </child>
@@ -47,18 +47,10 @@
                         <child>
                             <object class="GtkShortcutsShortcut">
                                 <property name="visible">True</property>
-                                <property name="title" translatable="yes" context="shortcut window">Select next application</property>
-                                <property name="accelerator">Up</property>
+                                <property name="title" translatable="yes" context="shortcut window">Select next/previous account</property>
+                                <property name="accelerator">Up Down</property>
                             </object>
                         </child>
-                        <child>
-                            <object class="GtkShortcutsShortcut">
-                                <property name="visible">True</property>
-                                <property name="title" translatable="yes" context="shortcut window">Select previous application</property>
-                                <property name="accelerator">Down</property>
-                            </object>
-                        </child>
-
                         <child>
                             <object class="GtkShortcutsShortcut">
                                 <property name="visible">True</property>

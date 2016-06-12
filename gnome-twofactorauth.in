@@ -21,6 +21,7 @@
 import sys
 sys.path.insert(1, '@pyexecdir@')
 sys.path.insert(1, '@pythondir@')
+from gi.repository import Gio
 from TwoFactorAuth import application
 import logging
 import locale
@@ -28,12 +29,17 @@ import gettext
 _ = gettext.gettext
 import argparse
 import faulthandler
+from os import path, environ as env
 
 if __name__ == "__main__":
+
     locale.bindtextdomain('TwoFactorAuth', "@localedir@")
     locale.textdomain('TwoFactorAuth')
     gettext.bindtextdomain('TwoFactorAuth', "@localedir@")
     gettext.textdomain('TwoFactorAuth')
+
+    env["DATA_DIR"] = "@pkgdatadir@"
+    env["LOCALE_DIR"] = "@localedir@"
 
     parser = argparse.ArgumentParser(prog="TwoFactorAuth")
     parser.add_argument("--debug", "-d", action="store_true",
@@ -46,14 +52,16 @@ if __name__ == "__main__":
     if args.debug:
         level = logging.DEBUG
         faulthandler.enable()
-    
     logging.basicConfig(level=level,
-                        format='[%(levelname)s] %(message)s',
-                        )
+                        format='%(asctime)s %(levelname)s\t%(message)s',
+                        datefmt='%H:%M:%S')
+
+    resource = Gio.resource_load(path.join('@pkgdatadir@',
+                                            'gnome-twofactorauth.gresource'))
+    Gio.Resource._register(resource)
+
     if args.version:
         sys.exit("Version : @VERSION@")
-    app = application.Application(package="@PACKAGE@",
-                                  version="@VERSION@",
-                                  pkgdatadir="@pkgdatadir@")
+    app = application.Application()
     exit_status = app.run(None)
     sys.exit(exit_status)

@@ -1,11 +1,12 @@
 [Desktop Entry]
-_Name=Gnome TwoFactorAuth
-_GenericName=Two Factor Authentication
-_Comment=Two-Factor Authentication code generator
+Name=Gnome TwoFactorAuth
+GenericName=Two Factor Authentication
+Comment=Two-Factor Authentication code generator
 Type=Application
 Exec=gnome-twofactorauth
 Terminal=false
 Categories=GNOME;GTK;
-_Keywords=Gnome;GTK;Verification;
+Keywords=Gnome;GTK;Verification;
 Icon=gnome-twofactorauth
 StartupNotify=true
+StartupWMClass=Gnome-TwoFactorAuth

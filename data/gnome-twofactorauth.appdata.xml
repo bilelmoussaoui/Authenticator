@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <application>
     <id type="desktop">twofactorauth.desktop</id>
-    <licence>CC0</licence>
+    <licence>GPL3</licence>
     <name>Gnome TwoFactorAuth</name>
     <summary>Two Factor Authentication code generator</summary>
     <description>
