@@ -4,7 +4,7 @@ from gi.repository import Gtk, Gdk
 import logging
 from TwoFactorAuth.widgets.applications_list import ApplicationChooserWindow
 from TwoFactorAuth.models.code import Code
-from TwoFactorAuth.models.authenticator import Authenticator
+from TwoFactorAuth.utils import get_icon
 from gettext import gettext as _
 
 
@@ -85,7 +85,7 @@ class AddAccount(Gtk.Window):
         hbox_two_factor.pack_end(self.secret_code, False, True, 0)
         hbox_two_factor.pack_end(two_factor_label, False, True, 0)
 
-        auth_icon = Authenticator.get_auth_icon("image-missing")
+        auth_icon = get_icon("image-missing")
         self.logo_image.set_from_pixbuf(auth_icon)
         self.logo_image.get_style_context().add_class("application-logo-add")
         logo_box.pack_start(self.logo_image, True, False, 6)
@@ -110,7 +110,7 @@ class AddAccount(Gtk.Window):
             Update image logo
         """
         self.selected_image = image
-        auth_icon = Authenticator.get_auth_icon(image)
+        auth_icon = get_icon(image)
         self.logo_image.clear()
         self.logo_image.set_from_pixbuf(auth_icon)
 
@@ -136,9 +136,9 @@ class AddAccount(Gtk.Window):
         secret_entry = self.secret_code.get_text()
         image_entry = self.selected_image if self.selected_image else "image-missing"
         try:
-            self.parent.app.auth.add_account(name_entry, secret_entry,
+            self.parent.app.db.add_account(name_entry, secret_entry,
                                                  image_entry)
-            uid = self.parent.app.auth.get_latest_id()
+            uid = self.parent.app.db.get_latest_id()
             self.parent.append_list_box(
                 uid, name_entry, secret_entry, image_entry)
             self.parent.refresh_window()

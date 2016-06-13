@@ -4,9 +4,10 @@ require_version("Gtk", "3.0")
 require_version("GnomeKeyring", "1.0")
 from gi.repository import Gtk, GLib, Gio, Gdk, GObject, GnomeKeyring as GK
 from TwoFactorAuth.widgets.window import Window
-from TwoFactorAuth.models.authenticator import Authenticator
+from TwoFactorAuth.models.database import Database
 from TwoFactorAuth.widgets.settings import SettingsWindow
 from TwoFactorAuth.models.settings import SettingsReader
+from TwoFactorAuth.utils import *
 import logging
 import signal
 from gettext import gettext as _
@@ -17,8 +18,7 @@ class Application(Gtk.Application):
     alive = True
     locked = False
     menu = Gio.Menu()
-    auth = Authenticator()
-    use_GMenu = True
+    db = Database()
 
     settings_window = None
     settings_action = None
@@ -28,12 +28,6 @@ class Application(Gtk.Application):
                                  flags=Gio.ApplicationFlags.FLAGS_NONE)
         GLib.set_application_name(_("TwoFactorAuth"))
         GLib.set_prgname("Gnome-TwoFactorAuth")
-
-        current_desktop = env.get("XDG_CURRENT_DESKTOP")
-        if current_desktop:
-            self.use_GMenu = current_desktop.lower() == "gnome"
-        else:
-            self.use_GMenu = False
 
         result = GK.unlock_sync("Gnome-TwoFactorAuth", None)
         if result == GK.Result.CANCELLED:
@@ -95,7 +89,7 @@ class Application(Gtk.Application):
         action.connect("activate", self.on_quit)
         self.add_action(action)
 
-        if self.use_GMenu:
+        if is_gnome():
             self.set_app_menu(self.menu)
             logging.debug("Adding gnome shell menu")
 
@@ -105,16 +99,9 @@ class Application(Gtk.Application):
         self.add_window(self.win)
 
     def refresh_menu(self):
-        if self.use_GMenu:
-            self.settings_action.set_enabled(
-                not self.settings_action.get_enabled())
-
-    def on_toggle_lock(self, *args):
-        if not self.locked:
-            self.locked = not self.locked
-            self.win.password_entry.grab_focus_without_selecting()
-            self.refresh_menu()
-            self.win.refresh_window()
+        if is_gnome():
+            is_enabled = self.settings_action.get_enabled()
+            self.settings_action.set_enabled(not is_enabled)
 
     def on_shortcuts(self, *args):
         """

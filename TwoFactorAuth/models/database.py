@@ -1,29 +1,15 @@
 import sqlite3
 import logging
-from os import path, mknod, makedirs, environ as env
-from gi.repository import GdkPixbuf, Gtk
 from gi.repository import GnomeKeyring as GK
 from hashlib import sha256
+from TwoFactorAuth.utils import create_file, get_home_path
 
-class Authenticator:
+class Database:
 
     def __init__(self):
-        home = path.expanduser("~")
-        database_file = home + '/.config/TwoFactorAuth/database.db'
-        # Create missing folders
-        if not (path.isfile(database_file) and path.exists(database_file)):
-            dirs = database_file.split("/")
-            i = 0
-            while i < len(dirs) - 1:
-                directory = "/".join(dirs[0:i + 1]).strip()
-                if not path.exists(directory) and len(directory) != 0:
-                    makedirs(directory)
-                    logging.debug("Creating directory %s " % directory)
-                i += 1
-            # create database file
-            mknod(database_file)
+        database_file = get_home_path() + '/.config/TwoFactorAuth/database.db'
+        if create_file(database_file):
             logging.debug("Creating database file %s " % database_file)
-        # Connect to database
         self.conn = sqlite3.connect(database_file)
         if not self.is_table_exists():
             logging.debug(
@@ -133,28 +119,6 @@ class Authenticator:
         except Exception as e:
             logging.error("SQL: Couldn't fetch accounts list  %s" % str(e))
             return None
-
-    @staticmethod
-    def get_auth_icon(image):
-        """
-            Generate a GdkPixbuf image
-            :param image: icon name or image path
-            :return: GdkPixbux Image
-        """
-        directory = path.join(env.get("DATA_DIR"), "applications") + "/"
-        theme = Gtk.IconTheme.get_default()
-        if path.isfile(directory + image) and path.exists(directory + image):
-            icon = GdkPixbuf.Pixbuf.new_from_file(directory + image)
-        elif path.isfile(image) and path.exists(image):
-            icon = GdkPixbuf.Pixbuf.new_from_file(image)
-        elif theme.has_icon(path.splitext(image)[0]):
-            icon = theme.load_icon(path.splitext(image)[0], 48, 0)
-        else:
-            icon = theme.load_icon("image-missing", 48, 0)
-        if icon.get_width() != 48 or icon.get_height() != 48:
-            icon = icon.scale_simple(48, 48,
-                                     GdkPixbuf.InterpType.BILINEAR)
-        return icon
 
     def get_latest_id(self):
         """

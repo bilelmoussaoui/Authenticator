@@ -58,6 +58,13 @@
                                 <property name="accelerator">&lt;Primary&gt;S</property>
                             </object>
                         </child>
+                        <child>
+                            <object class="GtkShortcutsShortcut">
+                                <property name="visible">True</property>
+                                <property name="title" translatable="yes" context="shortcut window">Lock the application</property>
+                                <property name="accelerator">&lt;Primary&gt;L</property>
+                            </object>
+                        </child>
                     </object>
                 </child>
 

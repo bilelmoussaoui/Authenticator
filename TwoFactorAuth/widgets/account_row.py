@@ -2,8 +2,9 @@ from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, GObject, GLib
 from TwoFactorAuth.models.code import Code
-from TwoFactorAuth.models.authenticator import Authenticator
 from TwoFactorAuth.models.settings import SettingsReader
+from TwoFactorAuth.models.database import Database
+from TwoFactorAuth.utils import get_icon
 from threading import Thread
 from time import sleep
 import logging
@@ -28,7 +29,7 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         self.parent = parent
         self.id = uid
         self.name = name
-        self.secret_code = Authenticator.fetch_secret_code(secret_code)
+        self.secret_code = Database.fetch_secret_code(secret_code)
         if self.secret_code:
             self.code = Code(self.secret_code)
         else:
@@ -133,7 +134,7 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         h_box.pack_start(self.checkbox, False, True, 0)
 
         # account logo
-        auth_icon = Authenticator.get_auth_icon(self.logo)
+        auth_icon = get_icon(self.logo)
         auth_logo = Gtk.Image(xalign=0)
         auth_logo.set_from_pixbuf(auth_icon)
         h_box.pack_start(auth_logo, False, True, 6)
