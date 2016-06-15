@@ -1,9 +1,10 @@
 from gi import require_version
 require_version("Gtk", "3.0")
-from gi.repository import Gtk, GObject, GLib
+from gi.repository import Gtk, Gdk, GLib
 from TwoFactorAuth.models.code import Code
-from TwoFactorAuth.models.authenticator import Authenticator
 from TwoFactorAuth.models.settings import SettingsReader
+from TwoFactorAuth.models.database import Database
+from TwoFactorAuth.utils import get_icon
 from threading import Thread
 from time import sleep
 import logging
@@ -28,7 +29,7 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         self.parent = parent
         self.id = uid
         self.name = name
-        self.secret_code = Authenticator.fetch_secret_code(secret_code)
+        self.secret_code = Database.fetch_secret_code(secret_code)
         if self.secret_code:
             self.code = Code(self.secret_code)
         else:
@@ -94,16 +95,23 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         """
         self.alive = False
 
-    def copy_code(self, event_box, box):
+    def copy_code(self, *args):
         """
             Copy code shows the code box for a while (10s by default)
         """
         self.timer = 0
-        self.parent.copy_code(event_box)
+        code = self.get_code().get_secret_code()
+        try:
+            clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
+            clipboard.clear()
+            clipboard.set_text(code, len(code))
+            logging.debug("Secret code copied to clipboard")
+        except Exception as e:
+            logging.error(str(e))
         self.code_box.set_visible(True)
         self.code_box.set_no_show_all(False)
         self.code_box.show_all()
-        GObject.timeout_add_seconds(1, self.update_timer)
+        GLib.timeout_add_seconds(1, self.update_timer)
 
     def update_timer(self, *args):
         """
@@ -133,7 +141,7 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         h_box.pack_start(self.checkbox, False, True, 0)
 
         # account logo
-        auth_icon = Authenticator.get_auth_icon(self.logo)
+        auth_icon = get_icon(self.logo)
         auth_logo = Gtk.Image(xalign=0)
         auth_logo.set_from_pixbuf(auth_icon)
         h_box.pack_start(auth_logo, False, True, 6)

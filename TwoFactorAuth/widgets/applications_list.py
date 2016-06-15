@@ -1,10 +1,10 @@
 from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, GLib, Gio, Gdk
-from TwoFactorAuth.models.authenticator import Authenticator
 from TwoFactorAuth.widgets.search_bar import SearchBar
 from TwoFactorAuth.widgets.application_row import ApplicationRow
 from os import path, listdir, environ as env
+from TwoFactorAuth.utils import get_icon
 from gettext import gettext as _
 
 
@@ -63,7 +63,7 @@ class ApplicationChooserWindow(Gtk.Window):
                 img_path = self.logos[i]
                 app_name = path.splitext(img_path)[0].strip(".").title()
                 # Application logo
-                app_logo = Authenticator.get_auth_icon(img_path)
+                app_logo = get_icon(img_path)
                 self.listbox.add(ApplicationRow(app_name, app_logo))
                 i += 1
 
