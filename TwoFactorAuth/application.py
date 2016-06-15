@@ -17,11 +17,10 @@ class Application(Gtk.Application):
     win = None
     alive = True
     locked = False
-    menu = Gio.Menu()
-    db = Database()
 
     settings_window = None
     settings_action = None
+
     def __init__(self):
         Gtk.Application.__init__(self,
                                  application_id="org.gnome.TwoFactorAuth",
@@ -29,13 +28,15 @@ class Application(Gtk.Application):
         GLib.set_application_name(_("TwoFactorAuth"))
         GLib.set_prgname("Gnome-TwoFactorAuth")
 
+        self.menu = Gio.Menu()
+        self.db = Database()
+        self.cfg = SettingsReader()
+        self.locked = self.cfg.read("state", "login")
+
         result = GK.unlock_sync("Gnome-TwoFactorAuth", None)
         if result == GK.Result.CANCELLED:
             self.quit()
 
-        self.cfg = SettingsReader()
-        if self.cfg.read("state", "login"):
-            self.locked = True
         cssProviderFile = Gio.File.new_for_uri('resource:///org/gnome/TwoFactorAuth/style.css')
         cssProvider = Gtk.CssProvider()
         screen = Gdk.Screen.get_default()
@@ -94,9 +95,12 @@ class Application(Gtk.Application):
             logging.debug("Adding gnome shell menu")
 
     def do_activate(self, *args):
-        self.win = Window(self)
-        self.win.show_all()
-        self.add_window(self.win)
+        if not self.win:
+            self.win = Window(self)
+            self.win.show_all()
+            self.add_window(self.win)
+        else:
+            self.win.present()
 
     def refresh_menu(self):
         if is_gnome():
@@ -130,8 +134,11 @@ class Application(Gtk.Application):
         """
             Shows settings window
         """
-        settings_window = SettingsWindow(self.win)
-        settings_window.show_window()
+        if not self.settings_window:
+            self.settings_window = SettingsWindow(self.win)
+            self.settings_window.show_window()
+        else:
+            self.settings_window.present()
 
     def on_quit(self, *args):
         """

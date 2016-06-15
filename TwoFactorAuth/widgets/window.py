@@ -62,11 +62,17 @@ class Window(Gtk.ApplicationWindow):
         """
         keypress = Gdk.keyval_name(key_event.keyval).lower()
         if not self.app.locked:
-            control_mask = Gdk.ModifierType.CONTROL_MASK
             count = self.app.db.count()
+            if count > 0:
+                if self.list_box.get_selected_row():
+                    index = self.list_box.get_selected_row().get_index()
+                else:
+                    index = 0
+                selected_row = self.list_box.get_row_at_index(index)
+            control_mask = Gdk.ModifierType.CONTROL_MASK
             if keypress == "c":
                 if key_event.state == control_mask:
-                    self.copy_code()
+                    selected_row.copy_code()
             elif keypress == "l":
                 if key_event.state == control_mask:
                     self.login_box.toggle_lock()
@@ -83,11 +89,7 @@ class Window(Gtk.ApplicationWindow):
                 self.remove_account()
             elif keypress == "return":
                 if count > 0:
-                    if self.list_box.get_selected_row():
-                        index = self.list_box.get_selected_row().get_index()
-                    else:
-                        index = 0
-                    self.list_box.get_row_at_index(index).toggle_code_box()
+                    selected_row.toggle_code_box()
             elif keypress == "backspace":
                 if self.search_bar.is_empty():
                     self.hb.search_button.set_active(False)
@@ -195,8 +197,8 @@ class Window(Gtk.ApplicationWindow):
         """
         self.hb.toggle_select_mode()
         pass_enabled = self.app.cfg.read("state", "login")
-        is_visible = self.hb.is_on_select_mode()
-        if not is_visible:
+        is_select_mode = self.hb.is_on_select_mode()
+        if is_select_mode:
             self.list_box.set_selection_mode(Gtk.SelectionMode.MULTIPLE)
         else:
             self.list_box.set_selection_mode(Gtk.SelectionMode.SINGLE)
@@ -213,11 +215,12 @@ class Window(Gtk.ApplicationWindow):
             code_label = row.get_code_label()
             visible = checkbox.get_visible()
             selected = checkbox.get_active()
-            if not is_visible:
+            style_context = code_label.get_style_context()
+            if is_select_mode:
                 self.select_account(checkbox)
-                code_label.get_style_context().add_class("application-secret-code-select-mode")
+                style_context.add_class("application-secret-code-select-mode")
             else:
-                code_label.get_style_context().remove_class(
+                style_context.remove_class(
                     "application-secret-code-select-mode")
 
             checkbox.set_visible(not visible)
@@ -302,25 +305,6 @@ class Window(Gtk.ApplicationWindow):
         secret_code = sha256(secret_code.encode('utf-8')).hexdigest()
         self.list_box.add(AccountRow(self, uid, name, secret_code, image))
         self.list_box.show_all()
-
-    def copy_code(self, *args):
-        """
-            Copy the secret code to clipboard
-        """
-        if len(args) > 0:
-            # if the code is called by clicking on copy button, select the
-            # right ListBowRow
-            row = args[0].get_parent().get_parent().get_parent()
-            self.list_box.select_row(row)
-        selected_row = self.list_box.get_selected_row()
-        code = selected_row.get_code()
-        try:
-            clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
-            clipboard.clear()
-            clipboard.set_text(code, len(code))
-            logging.debug("Secret code copied to clipboard")
-        except Exception as e:
-            logging.error(str(e))
 
     def refresh_window(self):
         """

@@ -168,7 +168,6 @@ class HeaderBar(Gtk.HeaderBar):
         self.toggle_settings_button(True)
         self.toggle_select_button(False)
 
-
     def is_on_select_mode(self):
         return self.remove_button.get_visible()
 
