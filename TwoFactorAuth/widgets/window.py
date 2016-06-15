@@ -161,17 +161,6 @@ class Window(Gtk.ApplicationWindow):
         self.hb.lock_button.connect("clicked", self.login_box.toggle_lock)
         self.main_box.pack_start(self.login_box, True, False, 0)
 
-    def toggle_boxes(self, apps_box, no_apps_box, login_box):
-        """
-            Change the status of all the boxes in one time
-            :param apps_box: bool
-            :param no_apps_box: bool
-            :param login_box: bool
-            :return:
-        """
-        self.apps_box.set_visible(apps_box)
-        self.apps_box.set_no_show_all(not apps_box)
-
     def generate_header_bar(self):
         """
             Generate a header bar box
@@ -315,19 +304,21 @@ class Window(Gtk.ApplicationWindow):
         if is_locked:
             self.login_box.show()
             self.no_account_box.hide()
-            self.toggle_boxes(False, False, True)
+            self.apps_box.set_visible(False)
+            self.apps_box.set_no_show_all(True)
         else:
             self.login_box.hide()
             if count == 0:
                 self.no_account_box.show()
-                self.toggle_boxes(False, True, False)
+                self.apps_box.set_visible(False)
+                self.apps_box.set_no_show_all(True)
             else:
                 self.no_account_box.hide()
-                self.toggle_boxes(True, False, False)
+                self.apps_box.set_visible(True)
+                self.apps_box.set_no_show_all(False)
         self.hb.refresh()
         self.main_box.show_all()
         self.list_box.set_selection_mode(Gtk.SelectionMode.SINGLE)
-
 
     def remove_account(self, *args):
         """
