@@ -1,13 +1,14 @@
-![Status](https://img.shields.io/badge/status-stable-green.svg) [![Version](https://img.shields.io/badge/version-0.1beta2-green.svg)](https://github.com/bil-elmoussaoui/Gnome-TwoFactorAuth/releases) ![Python 
+![Status](https://img.shields.io/badge/status-stable-green.svg) [![Version](https://img.shields.io/badge/version-0.1beta2-green.svg)](https://github.com/bil-elmoussaoui/Gnome-TwoFactorAuth/releases) ![Python
 version](https://img.shields.io/badge/python-3.3%2B-blue.svg)
 
 # Gnome TwoFactorAuth
 Two-factor authentication code generator for Gnome <br>
 For translators : https://www.transifex.com/twofactorauth/twofactorauth/
-### Dependecies 
+### Dependecies
 - `Python 3.3+`
 - `Gtk 3.16+`
 - `PyOTP`
+- `zbarlight`
 - `GnomeKeyring`
 
 <sub>PS: The application was only tested on Arch with Gtk 3.20+, but it should work nicely with older versions too. Keyboard shortcuts widget won't be shown for older versions.</sub>
@@ -21,7 +22,7 @@ For translators : https://www.transifex.com/twofactorauth/twofactorauth/
 - On Arch :
 ```bash
     yaourt -S gnome-twofactourauth
-``` 
+```
 
 ### Credits
 - Websites and application icons are from Paper theme, created by [Sam Hewitt](https://github.com/snwh)
@@ -35,15 +36,19 @@ For translators : https://www.transifex.com/twofactorauth/twofactorauth/
 ```bash
     sudo pip install pyotp
 ```
+3 - Install `zbarlight`
+```bash
+sudo pip install zbarlight
+```
 <sub>PS : In some distributions you will need to use `pip3` instead of `pip` to install the compatible version of the package with Python 3.</sub> <br>
-3 - Afterwards
+4 - Afterwards
 ```bash
     ./autogen.sh
     make
     sudo make install
 ```
-4 - You can run the application from the desktop file or from terminal using 
+5 - You can run the application from the desktop file or from terminal using
 ```bash
     gnome-twofactorauth
 ```
-<sub>Arch users can build from source directly using AUR `yaourt -S gnome-twofactorauth-git`</sub> 
+<sub>Arch users can build from source directly using AUR `yaourt -S gnome-twofactorauth-git`</sub>
