@@ -57,7 +57,6 @@ class AddAccount(Gtk.Window):
         self.apply_button.connect("clicked", self.add_account)
         self.apply_button.set_sensitive(False)
 
-
         qr_button = Gtk.Button()
         qr_icon = Gio.ThemedIcon(name="camera-photo-symbolic")
         qr_image = Gtk.Image.new_from_gicon(qr_icon, Gtk.IconSize.BUTTON)
@@ -67,7 +66,6 @@ class AddAccount(Gtk.Window):
 
         right_box.add(qr_button)
         right_box.add(self.apply_button)
-
 
         self.hb.pack_start(left_box)
         self.hb.pack_end(right_box)
@@ -125,9 +123,22 @@ class AddAccount(Gtk.Window):
         """
             Keyboard Listener handler
         """
-        if Gdk.keyval_name(key_event.keyval) == "Escape":
+        key_name = Gdk.keyval_name(key_event.keyval).lower()
+        if key_name == "escape":
             self.close_window()
+            return True
 
+        if key_name == "return":
+            if self.apply_button.get_sensitive():
+                self.add_account()
+                return True
+
+        if event.state & Gdk.ModifierType.CONTROL_MASK:
+            if keyname == 's':
+                self.on_qr_scan()
+                return True
+
+        return False
     def update_logo(self, image):
         """
             Update image logo
