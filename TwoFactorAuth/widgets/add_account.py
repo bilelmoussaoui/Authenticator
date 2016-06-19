@@ -134,7 +134,7 @@ class AddAccount(Gtk.Window):
                 return True
 
         if event.state & Gdk.ModifierType.CONTROL_MASK:
-            if keyname == 's':
+            if key_name == 's':
                 self.on_qr_scan()
                 return True
 
