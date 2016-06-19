@@ -2,9 +2,7 @@ from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gio, Gdk, GObject, GLib
 from TwoFactorAuth.widgets.add_account import AddAccount
-from TwoFactorAuth.widgets.confirmation import ConfirmationMessage
-from TwoFactorAuth.widgets.account_row import AccountRow
-from TwoFactorAuth.widgets.search_bar import SearchBar
+from TwoFactorAuth.widgets.accounts_window import AccountsWindow
 from TwoFactorAuth.widgets.login_window import LoginWindow
 from TwoFactorAuth.widgets.no_account_window import NoAccountWindow
 from TwoFactorAuth.widgets.headerbar import HeaderBar
@@ -14,29 +12,16 @@ from gettext import gettext as _
 
 
 class Window(Gtk.ApplicationWindow):
-    app = None
-    selected_app_idx = None
-    selected_count = 0
     counter = 0
-
-    hb = None
     main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-    login_box = None
-    no_account_box = None
-    apps_list_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-    apps_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-
-    list_box = Gtk.ListBox()
-
 
     def __init__(self, application):
         self.app = application
         self.generate_window()
         self.generate_header_bar()
-        self.generate_search_bar()
-        self.generate_accounts_list()
+        self.generate_accounts_box()
         self.generate_no_accounts_box()
-        self.generate_login_form()
+        self.generate_login_box()
         self.refresh_window()
         GLib.timeout_add_seconds(60, self.refresh_counter)
 
@@ -60,56 +45,21 @@ class Window(Gtk.ApplicationWindow):
         """
             Keyboard Listener handling
         """
-        keypress = Gdk.keyval_name(key_event.keyval).lower()
-        if not self.app.locked:
-            count = self.app.db.count()
-            if count > 0:
-                if self.list_box.get_selected_row():
-                    index = self.list_box.get_selected_row().get_index()
-                else:
-                    index = 0
-                selected_row = self.list_box.get_row_at_index(index)
-            control_mask = Gdk.ModifierType.CONTROL_MASK
-            if keypress == "c":
-                if key_event.state == control_mask:
-                    selected_row.copy_code()
-            elif keypress == "l":
-                if key_event.state == control_mask:
-                    self.login_box.toggle_lock()
-            elif keypress == "f":
-                if key_event.state == control_mask:
-                    self.hb.toggle_search()
-            elif keypress == "s":
-                if key_event.state == control_mask:
-                    self.toggle_select()
-            elif keypress == "n":
-                if key_event.state == control_mask:
+        keyname = Gdk.keyval_name(key_event.keyval).lower()
+        if not self.is_locked():
+
+            if not self.no_account_box.is_visible():
+                if keyname == "s" or keyname == "escape":
+                    if key_event.state == Gdk.ModifierType.CONTROL_MASK or not self.hb.select_button.get_visible():
+                        self.toggle_select()
+                        return True
+
+            if keyname == "n":
+                if key_event.state == Gdk.ModifierType.CONTROL_MASK:
                     self.add_account()
-            elif keypress == "delete" and not self.search_bar.is_visible():
-                self.remove_account()
-            elif keypress == "return":
-                if count > 0:
-                    selected_row.toggle_code_box()
-            elif keypress == "backspace":
-                if self.search_bar.is_empty():
-                    self.hb.search_button.set_active(False)
-            elif keypress == "escape":
-                if self.search_bar.is_visible():
-                    self.hb.search_button.set_active(False)
-                if not self.select_button.get_visible():
-                    self.toggle_select()
-            elif keypress == "up" or keypress == "down":
-                dx = -1 if keypress == "up" else 1
-                if count != 0:
-                    row = self.list_box.get_selected_row()
-                    if row:
-                        index = row.get_index()
-                        index = (index + dx)%count
-                        selected_row = self.list_box.get_row_at_index(index)
-                        self.list_box.select_row(selected_row)
-        else:
-            if keypress == "return":
-                self.login_box.on_unlock()
+                    return True
+
+        return False
 
     def refresh_counter(self):
         """
@@ -123,43 +73,20 @@ class Window(Gtk.ApplicationWindow):
                 self.toggle_lock()
         return True
 
-    def generate_search_bar(self):
-        """
-            Generate search bar box and entry
-        """
-        self.search_bar = SearchBar(self.list_box)
-        self.hb.search_button.connect("toggled", self.search_bar.toggle)
-
-        self.apps_box.pack_start(self.search_bar, False, True, 0)
-        self.main_box.pack_start(self.apps_box, True, True, 0)
-
-    def remove_selected(self, *args):
-        """
-            Remove selected accounts
-        """
-        message = _("Do you really want to remove selected accounts?")
-        confirmation = ConfirmationMessage(self, message)
-        confirmation.show()
-        if confirmation.get_confirmation():
-            for row in self.list_box.get_children():
-                checkbox = row.get_checkbox()
-                if checkbox.get_active():
-                    label_id = row.get_id()
-                    row.kill()
-                    self.app.db.remove_by_id(label_id)
-                    self.list_box.remove(row)
-            self.list_box.unselect_all()
-        confirmation.destroy()
-        self.toggle_select()
-        self.refresh_window()
-
-    def generate_login_form(self):
+    def generate_login_box(self):
         """
             Generate login form
         """
-        self.login_box = LoginWindow(self.app)
+        self.login_box = LoginWindow(self.app, self)
         self.hb.lock_button.connect("clicked", self.login_box.toggle_lock)
         self.main_box.pack_start(self.login_box, True, False, 0)
+
+    def generate_accounts_box(self):
+        self.accounts_box = AccountsWindow(self.app, self)
+        self.accounts_list = self.accounts_box.get_accounts_list()
+        self.hb.remove_button.connect("clicked", self.accounts_list.remove_selected)
+        self.search_bar = self.accounts_box.get_search_bar()
+        self.main_box.pack_start(self.accounts_box, True, True, 0)
 
     def generate_header_bar(self):
         """
@@ -169,7 +96,6 @@ class Window(Gtk.ApplicationWindow):
         # connect signals
         self.hb.cancel_button.connect("clicked", self.toggle_select)
         self.hb.select_button.connect("clicked", self.toggle_select)
-        self.hb.remove_button.connect("clicked", self.remove_selected)
         self.hb.add_button.connect("clicked", self.add_account)
         self.set_titlebar(self.hb)
 
@@ -185,96 +111,7 @@ class Window(Gtk.ApplicationWindow):
             Toggle select mode
         """
         self.hb.toggle_select_mode()
-        pass_enabled = self.app.cfg.read("state", "login")
-        is_select_mode = self.hb.is_on_select_mode()
-        if is_select_mode:
-            self.list_box.set_selection_mode(Gtk.SelectionMode.MULTIPLE)
-        else:
-            self.list_box.set_selection_mode(Gtk.SelectionMode.SINGLE)
-
-            if self.selected_app_idx:
-                index = self.selected_app_idx
-            else:
-                index = 0
-            list_row_box = self.list_box.get_row_at_index(index)
-            self.list_box.select_row(list_row_box)
-
-        for row in self.list_box.get_children():
-            checkbox = row.get_checkbox()
-            code_label = row.get_code_label()
-            visible = checkbox.get_visible()
-            selected = checkbox.get_active()
-            style_context = code_label.get_style_context()
-            if is_select_mode:
-                self.select_account(checkbox)
-                style_context.add_class("application-secret-code-select-mode")
-            else:
-                style_context.remove_class(
-                    "application-secret-code-select-mode")
-
-            checkbox.set_visible(not visible)
-            checkbox.set_no_show_all(visible)
-
-    def select_account(self, checkbutton):
-        """
-            Select an account
-            :param checkbutton:
-        """
-        is_active = checkbutton.get_active()
-        is_visible = checkbutton.get_visible()
-        listbox_row = checkbutton.get_parent().get_parent().get_parent()
-        if is_active:
-            self.list_box.select_row(listbox_row)
-            if is_visible:
-                self.selected_count += 1
-        else:
-            self.list_box.unselect_row(listbox_row)
-            if is_visible:
-                self.selected_count -= 1
-        self.hb.remove_button.set_sensitive(self.selected_count > 0)
-
-    def select_row(self, list_box, listbox_row):
-        """
-            Select row @override the clicked event by default for ListBoxRow
-        """
-        index = listbox_row.get_index()
-        is_select_mode = self.hb.is_on_select_mode()
-        checkbox = listbox_row.get_checkbox()
-        if is_select_mode:
-            checkbox.set_active(not checkbox.get_active())
-        else:
-            if self.selected_app_idx:
-                selected_row = self.list_box.get_row_at_index(
-                    self.selected_app_idx)
-                if selected_row:
-                    self.list_box.unselect_row(selected_row)
-            self.selected_app_idx = index
-            self.list_box.select_row(self.list_box.get_row_at_index(index))
-
-    def generate_accounts_list(self):
-        """
-            Generate an account ListBox inside of a ScrolledWindow
-        """
-        count = self.app.db.count()
-
-        # Create a ScrolledWindow for accounts
-        self.list_box.get_style_context().add_class("applications-list")
-        self.list_box.set_adjustment()
-        self.list_box.connect("row_activated", self.select_row)
-        self.list_box.set_selection_mode(Gtk.SelectionMode.SINGLE)
-        self.apps_list_box.pack_start(self.list_box, True, True, 0)
-
-        scrolled_win = Gtk.ScrolledWindow()
-        scrolled_win.add_with_viewport(self.apps_list_box)
-        self.apps_box.pack_start(scrolled_win, True, True, 0)
-
-        apps = self.app.db.fetch_apps()
-        i = 0
-        count = len(apps)
-        while i < count:
-            self.list_box.add(AccountRow(self, apps[i][0], apps[i][1], apps[i][2],
-                                         apps[i][3]))
-            i += 1
+        self.accounts_list.toggle_select_mode()
 
     def generate_no_accounts_box(self):
         """
@@ -283,63 +120,28 @@ class Window(Gtk.ApplicationWindow):
         self.no_account_box = NoAccountWindow()
         self.main_box.pack_start(self.no_account_box, True, False, 0)
 
-    def append_list_box(self, uid, name, secret_code, image):
-        """
-            Add an element to the ListBox
-            :param uid: account id
-            :param name: account name
-            :param secret_code: account secret code
-            :param image: account image path or icon name
-        """
-        secret_code = sha256(secret_code.encode('utf-8')).hexdigest()
-        self.list_box.add(AccountRow(self, uid, name, secret_code, image))
-        self.list_box.show_all()
-
     def refresh_window(self):
         """
             Refresh windows components
         """
-        is_locked = self.app.locked
         count = self.app.db.count()
-        if is_locked:
+        if self.is_locked():
             self.login_box.show()
             self.no_account_box.hide()
-            self.apps_box.set_visible(False)
-            self.apps_box.set_no_show_all(True)
+            self.accounts_box.hide()
         else:
             self.login_box.hide()
             if count == 0:
                 self.no_account_box.show()
-                self.apps_box.set_visible(False)
-                self.apps_box.set_no_show_all(True)
+                self.accounts_box.hide()
             else:
+                self.accounts_box.show()
                 self.no_account_box.hide()
-                self.apps_box.set_visible(True)
-                self.apps_box.set_no_show_all(False)
         self.hb.refresh()
         self.main_box.show_all()
-        self.list_box.set_selection_mode(Gtk.SelectionMode.SINGLE)
 
-    def remove_account(self, *args):
-        """
-            Remove an application
-        """
-        if len(args) > 0:
-            row = args[0].get_parent().get_parent().get_parent()
-            self.list_box.select_row(row)
-
-        message = _("Do you really want to remove this account?")
-        confirmation = ConfirmationMessage(self, message)
-        confirmation.show()
-        if confirmation.get_confirmation():
-            if self.list_box.get_selected_row():
-                selected_row = self.list_box.get_selected_row()
-                app_id = selected_row.get_id()
-                selected_row.kill()
-                self.list_box.remove(selected_row)
-                self.app.db.remove_by_id(app_id)
-        confirmation.destroy()
-        self.refresh_window()
+    def is_locked(self):
+        return self.app.locked
 
     def save_window_state(self):
         """

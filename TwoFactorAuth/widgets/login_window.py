@@ -1,6 +1,6 @@
 from gi import require_version
 require_version("Gtk", "3.0")
-from gi.repository import Gtk, Gio, Gdk, GObject, GLib
+from gi.repository import Gtk, Gdk
 import logging
 from hashlib import sha256
 from gettext import gettext as _
@@ -9,14 +9,16 @@ class LoginWindow(Gtk.Box):
     password_entry = None
     unlock_button = None
 
-    def __init__(self, application):
-        self.app = application
+    def __init__(self, application, window):
         Gtk.Box.__init__(self, orientation=Gtk.Orientation.HORIZONTAL)
+        self.app = application
+        self.window = window
         self.password_entry = Gtk.Entry()
         self.unlock_button = Gtk.Button()
-        self.generate_box()
+        self.generate()
+        self.window.connect("key-press-event", self.__on_key_press)
 
-    def generate_box(self):
+    def generate(self):
         password_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
         self.password_entry.set_visibility(False)
@@ -45,15 +47,32 @@ class LoginWindow(Gtk.Box):
             self.password_entry.set_icon_from_icon_name(
                 Gtk.EntryIconPosition.SECONDARY, "dialog-error-symbolic")
 
-    def toggle_lock(self):
+    def __on_key_press(self, widget, event):
+        keyname = Gdk.keyval_name(event.keyval).lower()
+        if self.window.is_locked():
+            if keyname == "return":
+                self.on_unlock()
+                return True
+        else:
+            pass_enabled = self.app.cfg.read("state", "login")
+            if keyname == "l" and pass_enabled:
+                if event.state & Gdk.ModifierType.CONTROL_MASK:
+                    self.toggle_lock()
+                    return True
+
+        return False
+
+    def toggle_lock(self, *args):
         """
             Lock/unlock the application
         """
-        self.app.locked = not self.app.locked
-        if self.app.locked:
-            self.focus()
-        self.app.refresh_menu()
-        self.app.win.refresh_window()
+        pass_enabled = self.app.cfg.read("state", "login")
+        if pass_enabled:
+            self.app.locked = not self.app.locked
+            if self.app.locked:
+                self.focus()
+            self.app.refresh_menu()
+            self.app.win.refresh_window()
 
     def toggle(self, visible):
         self.set_visible(visible)

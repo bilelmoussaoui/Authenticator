@@ -4,6 +4,7 @@ from gi.repository import Gtk, Gdk, GLib
 from TwoFactorAuth.models.code import Code
 from TwoFactorAuth.models.settings import SettingsReader
 from TwoFactorAuth.models.database import Database
+from TwoFactorAuth.widgets.confirmation import ConfirmationMessage
 from TwoFactorAuth.utils import get_icon
 from threading import Thread
 from time import sleep
@@ -19,24 +20,25 @@ class AccountRow(Thread, Gtk.ListBoxRow):
     code_generated = True
     alive = True
 
-    def __init__(self, parent, uid, name, secret_code, logo):
+    def __init__(self, parent, window, app):
         Thread.__init__(self)
         Gtk.ListBoxRow.__init__(self)
         # Read default values
         cfg = SettingsReader()
         self.counter_max = cfg.read("refresh-time", "preferences")
         self.counter = self.counter_max
+        self.window = window
         self.parent = parent
-        self.id = uid
-        self.name = name
-        self.secret_code = Database.fetch_secret_code(secret_code)
+        self.id = app[0]
+        self.name = app[1]
+        self.secret_code = Database.fetch_secret_code(app[2])
         if self.secret_code:
             self.code = Code(self.secret_code)
         else:
             self.code_generated = False
             logging.error(
                 "Could not read the secret code from, the keyring keys were reset manually")
-        self.logo = logo
+        self.logo = app[3]
         # Create needed widgets
         self.code_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         self.revealer = Gtk.Revealer()
@@ -47,6 +49,7 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         # Create the list row
         self.create_row()
         self.start()
+        self.window.connect("key-press-event", self.__on_key_press)
         GLib.timeout_add_seconds(1, self.refresh_listbox)
 
     def get_id(self):
@@ -166,12 +169,11 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         # Remove button
         remove_event = Gtk.EventBox()
         remove_button = Gtk.Image(xalign=0)
-        remove_button.set_from_icon_name(
-            "user-trash-symbolic", Gtk.IconSize.SMALL_TOOLBAR)
+        remove_button.set_from_icon_name("user-trash-symbolic",
+                                            Gtk.IconSize.SMALL_TOOLBAR)
         remove_button.set_tooltip_text(_("Remove the account"))
         remove_event.add(remove_button)
-        remove_event.connect("button-press-event",
-                             self.parent.remove_account)
+        remove_event.connect("button-press-event", self.remove)
         h_box.pack_end(remove_event, False, True, 6)
 
         self.timer_label.set_label(_("Expires in %s seconds") % self.counter)
@@ -195,7 +197,7 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         self.toggle_code_box()
 
     def run(self):
-        while self.code_generated and self.parent.app.alive and self.alive:
+        while self.code_generated and self.window.app.alive and self.alive:
             self.counter -= 1
             if self.counter == 0:
                 self.counter = self.counter_max
@@ -207,8 +209,7 @@ class AccountRow(Thread, Gtk.ListBoxRow):
             sleep(1)
 
     def refresh_listbox(self):
-        self.parent.list_box.hide()
-        self.parent.list_box.show_all()
+        self.window.accounts_list.refresh()
         return self.code_generated
 
     def regenerate_code(self):
@@ -228,6 +229,39 @@ class AccountRow(Thread, Gtk.ListBoxRow):
             logging.error("Couldn't generate the secret code : %s" % str(e))
             label.set_text(_("Couldn't generate the secret code"))
             self.code_generated = False
+
+    def __on_key_press(self, widget, event):
+        keyname = Gdk.keyval_name(event.keyval).lower()
+        if not self.window.is_locked():
+            if self.parent.get_selected_row_id() == self.get_id():
+                is_search_bar = self.window.search_bar.is_visible()
+                if keyname == "delete" and not is_search_bar:
+                    self.remove()
+                    return True
+
+                if keyname == "return":
+                    self.toggle_code_box()
+                    return True
+
+                if event.state & Gdk.ModifierType.CONTROL_MASK:
+                    if keyname == 'c':
+                        self.copy_code()
+                        return True
+        return False
+
+    def remove(self, *args):
+        """
+            Remove an account
+        """
+        message = _("Do you really want to remove this account?")
+        confirmation = ConfirmationMessage(self.window, message)
+        confirmation.show()
+        if confirmation.get_confirmation():
+            self.kill()
+            self.window.accounts_list.remove(self)
+            self.window.app.db.remove_by_id(self.get_id())
+        confirmation.destroy()
+        self.window.refresh_window()
 
     def update_timer_label(self):
         self.timer_label.set_label(_("Expires in %s seconds") % self.counter)

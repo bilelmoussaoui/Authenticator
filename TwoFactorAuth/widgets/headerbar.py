@@ -141,7 +141,7 @@ class HeaderBar(Gtk.HeaderBar):
     def toggle_settings_button(self, visible):
         if not is_gnome():
             self.settings_button.set_visible(visible)
-            self.lock_bsettings_buttonutton.set_no_show_all(not visible)
+            self.settings_button.set_no_show_all(not visible)
 
     def toggle_lock_button(self, visible):
         self.lock_button.set_visible(visible)

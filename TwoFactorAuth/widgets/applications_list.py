@@ -50,9 +50,9 @@ class ApplicationChooserWindow(Gtk.Window):
         box_outer = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         if len(self.logos) > 0:
             # Create a ScrolledWindow for installed applications
-            scrolled_win = Gtk.ScrolledWindow()
-            scrolled_win.add_with_viewport(box_outer)
-            self.main_box.pack_start(scrolled_win, True, True, 0)
+            self.scrolled_win = Gtk.ScrolledWindow()
+            self.scrolled_win.add_with_viewport(box_outer)
+            self.main_box.pack_start(self.scrolled_win, True, True, 0)
 
             self.listbox.get_style_context().add_class("applications-list")
             self.listbox.set_adjustment()
@@ -66,6 +66,7 @@ class ApplicationChooserWindow(Gtk.Window):
                 app_logo = get_icon(img_path)
                 self.listbox.add(ApplicationRow(app_name, app_logo))
                 i += 1
+            self.listbox.select_row(self.listbox.get_row_at_index(0))
 
     def generate_header_bar(self):
         """
@@ -103,27 +104,32 @@ class ApplicationChooserWindow(Gtk.Window):
         """
             Generate the search bar
         """
-        self.search_bar = SearchBar(self.listbox)
-        self.search_button.connect("toggled", self.search_bar.toggle)
-
+        self.search_bar = SearchBar(self.listbox, self, self.search_button)
         self.main_box.pack_start(self.search_bar, False, True, 0)
 
     def on_key_press(self, label, key_event):
         """
             Keyboard listener handling
         """
-        key_pressed = Gdk.keyval_name(key_event.keyval).lower()
-        if key_pressed == "escape":
-            if self.search_bar.is_visible():
-                self.search_bar.toggle()
-            else:
+        keyname = Gdk.keyval_name(key_event.keyval).lower()
+
+        if keyname == "escape":
+            if not self.search_bar.is_visible():
                 self.close_window()
-        elif key_pressed == "f":
-            if key_event.state == Gdk.ModifierType.CONTROL_MASK:
-                self.search_button.set_active(
-                    not self.search_button.get_active())
-        elif key_pressed == "return":
+                return True
+
+        if keyname == "up" or keyname == "down":
+            dx = -1 if keyname == "up" else 1
+            index = self.listbox.get_selected_row().get_index()
+            index = (index + dx)%len(self.logos)
+            selected_row = self.listbox.get_row_at_index(index)
+            self.listbox.select_row(selected_row)
+            return True
+
+        if keyname == "return":
             self.select_logo()
+            return True
+        return False
 
     def select_logo(self, *args):
         """

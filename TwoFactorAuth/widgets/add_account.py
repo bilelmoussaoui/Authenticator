@@ -13,7 +13,7 @@ class AddAccount(Gtk.Window):
     def __init__(self, window):
         self.parent = window
 
-        self.selected_image = None
+        self.selected_logo = None
         self.step = 1
         self.logo_image = Gtk.Image(xalign=0)
         self.secret_code = Gtk.Entry()
@@ -109,7 +109,7 @@ class AddAccount(Gtk.Window):
         """
             Update image logo
         """
-        self.selected_image = image
+        self.selected_logo = image
         auth_icon = get_icon(image)
         self.logo_image.clear()
         self.logo_image.set_from_pixbuf(auth_icon)
@@ -132,15 +132,13 @@ class AddAccount(Gtk.Window):
         """
             Add a new application to the database
         """
-        name_entry = self.name_entry.get_text()
-        secret_entry = self.secret_code.get_text()
-        image_entry = self.selected_image if self.selected_image else "image-missing"
+        name = self.name_entry.get_text()
+        secret_code = self.secret_code.get_text()
+        logo = self.selected_logo if self.selected_logo else "image-missing"
         try:
-            self.parent.app.db.add_account(name_entry, secret_entry,
-                                                 image_entry)
+            self.parent.app.db.add_account(name, secret_code, logo)
             uid = self.parent.app.db.get_latest_id()
-            self.parent.append_list_box(
-                uid, name_entry, secret_entry, image_entry)
+            self.parent.accounts_list.append([uid, name, secret_code, logo])
             self.parent.refresh_window()
             self.close_window()
         except Exception as e:

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-15 02:08+0200\n"
+"POT-Creation-Date: 2016-06-19 12:58+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -87,14 +87,14 @@ msgid "Selection mode"
 msgstr ""
 
 #: TwoFactorAuth/widgets/headerbar.py:80
-#: TwoFactorAuth/widgets/applications_list.py:88
+#: TwoFactorAuth/widgets/applications_list.py:89
 msgid "Search"
 msgstr ""
 
 #: TwoFactorAuth/widgets/headerbar.py:84
 #: TwoFactorAuth/widgets/add_account.py:48
 #: TwoFactorAuth/widgets/change_password.py:143
-#: TwoFactorAuth/widgets/applications_list.py:80
+#: TwoFactorAuth/widgets/applications_list.py:81
 msgid "Cancel"
 msgstr ""
 
@@ -105,14 +105,6 @@ msgstr ""
 
 #: TwoFactorAuth/widgets/no_account_window.py:19
 msgid "There's no account at the moment"
-msgstr ""
-
-#: TwoFactorAuth/widgets/window.py:140
-msgid "Do you really want to remove selected accounts?"
-msgstr ""
-
-#: TwoFactorAuth/widgets/window.py:340
-msgid "Do you really want to remove this account?"
 msgstr ""
 
 #: TwoFactorAuth/widgets/add_account.py:53
@@ -147,42 +139,46 @@ msgstr ""
 msgid "Repeat new password"
 msgstr ""
 
-#: TwoFactorAuth/widgets/applications_list.py:75
+#: TwoFactorAuth/widgets/applications_list.py:76
 msgid "Select an application"
 msgstr ""
 
-#: TwoFactorAuth/widgets/applications_list.py:91
+#: TwoFactorAuth/widgets/applications_list.py:92
 msgid "Next"
 msgstr ""
 
-#: TwoFactorAuth/widgets/login_window.py:23
+#: TwoFactorAuth/widgets/login_window.py:25
 msgid "Enter your password"
 msgstr ""
 
-#: TwoFactorAuth/widgets/login_window.py:26
+#: TwoFactorAuth/widgets/login_window.py:28
 msgid "Unlock"
 msgstr ""
 
-#: TwoFactorAuth/widgets/account_row.py:161
+#: TwoFactorAuth/widgets/account_row.py:164
 msgid "Copy the generated code"
 msgstr ""
 
-#: TwoFactorAuth/widgets/account_row.py:171
+#: TwoFactorAuth/widgets/account_row.py:174
 msgid "Remove the account"
 msgstr ""
 
-#: TwoFactorAuth/widgets/account_row.py:177
-#: TwoFactorAuth/widgets/account_row.py:233
+#: TwoFactorAuth/widgets/account_row.py:179
+#: TwoFactorAuth/widgets/account_row.py:267
 #, python-format
 msgid "Expires in %s seconds"
 msgstr ""
 
-#: TwoFactorAuth/widgets/account_row.py:183
+#: TwoFactorAuth/widgets/account_row.py:185
 msgid "Error during the generation of code"
 msgstr ""
 
-#: TwoFactorAuth/widgets/account_row.py:229
+#: TwoFactorAuth/widgets/account_row.py:230
 msgid "Couldn't generate the secret code"
+msgstr ""
+
+#: TwoFactorAuth/widgets/account_row.py:256
+msgid "Do you really want to remove this account?"
 msgstr ""
 
 #: TwoFactorAuth/widgets/settings.py:52

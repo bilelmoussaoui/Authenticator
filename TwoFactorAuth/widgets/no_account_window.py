@@ -9,9 +9,9 @@ class NoAccountWindow(Gtk.Box):
     def __init__(self):
         Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL,
                             spacing=6)
-        self.generate_box()
+        self.generate()
 
-    def generate_box(self):
+    def generate(self):
         logo_image = Gtk.Image()
         logo_image.set_from_icon_name("dialog-information-symbolic",
                                       Gtk.IconSize.DIALOG)
@@ -24,6 +24,9 @@ class NoAccountWindow(Gtk.Box):
     def toggle(self, visible):
         self.set_visible(visible)
         self.set_no_show_all(not visible)
+
+    def is_visible(self):
+        return self.get_visible()
 
     def hide(self):
         self.toggle(False)

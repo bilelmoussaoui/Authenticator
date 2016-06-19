@@ -4,6 +4,8 @@ app_PYTHON = \
 	add_account.py \
 	confirmation.py \
 	account_row.py \
+	accounts_list.py \
+	accounts_window.py \
 	login_window.py \
 	headerbar.py \
 	applications_list.py \
