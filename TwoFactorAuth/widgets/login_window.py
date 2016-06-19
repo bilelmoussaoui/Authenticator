@@ -38,7 +38,7 @@ class LoginWindow(Gtk.Box):
         typed_pass = self.password_entry.get_text()
         ecrypted_pass = sha256(typed_pass.encode("utf-8")).hexdigest()
         login_pass = self.app.cfg.read("password", "login")
-        if ecrypted_pass == login_pass or login_pass == typed_pass:
+        if ecrypted_pass == login_pass or login_pass == typed_pass == "":
             self.password_entry.set_icon_from_icon_name(
                 Gtk.EntryIconPosition.SECONDARY, None)
             self.toggle_lock()
