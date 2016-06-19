@@ -60,8 +60,7 @@ class AccountsList(Gtk.ListBox):
         return False
 
     def toggle_select_mode(self):
-        pass_enabled = self.app.cfg.read("state", "login")
-        is_select_mode = self.window.hb.is_on_select_mode()
+        is_select_mode = self.window.is_select_mode
         if is_select_mode:
             self.set_selection_mode(Gtk.SelectionMode.MULTIPLE)
         else:
@@ -102,7 +101,7 @@ class AccountsList(Gtk.ListBox):
             if checkbox.get_active():
                 row.remove()
         self.unselect_all()
-        self.toggle_select_mode()
+        self.window.toggle_select()
         self.window.refresh_window()
 
     def select_account(self, checkbutton):

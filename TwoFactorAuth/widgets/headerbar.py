@@ -17,8 +17,9 @@ class HeaderBar(Gtk.HeaderBar):
 
     popover = None
 
-    def __init__(self, app):
+    def __init__(self, app, window):
         self.app = app
+        self.window = window
         Gtk.HeaderBar.__init__(self)
         self.generate()
 
@@ -110,19 +111,19 @@ class HeaderBar(Gtk.HeaderBar):
                 self.popover.show_all()
 
     def toggle_select_mode(self):
-        is_visible = self.remove_button.get_visible()
+        is_select_mode = self.window.is_select_mode
         pass_enabled = self.app.cfg.read("state", "login")
 
-        self.toggle_remove_button(not is_visible)
-        self.toggle_cancel_button(not is_visible)
-        self.set_show_close_button(is_visible)
-        self.toggle_settings_button(is_visible)
+        self.toggle_remove_button(is_select_mode)
+        self.toggle_cancel_button(is_select_mode)
+        self.set_show_close_button(not is_select_mode)
+        self.toggle_settings_button(not is_select_mode)
 
-        self.toggle_lock_button(is_visible and pass_enabled)
-        self.toggle_add_button(is_visible)
-        self.toggle_select_button(is_visible)
+        self.toggle_lock_button(not is_select_mode and pass_enabled)
+        self.toggle_add_button(not is_select_mode)
+        self.toggle_select_button(not is_select_mode)
 
-        if not is_visible:
+        if is_select_mode:
             self.get_style_context().add_class("selection-mode")
         else:
             self.get_style_context().remove_class("selection-mode")
@@ -167,9 +168,6 @@ class HeaderBar(Gtk.HeaderBar):
         self.toggle_search_button(False)
         self.toggle_settings_button(True)
         self.toggle_select_button(False)
-
-    def is_on_select_mode(self):
-        return self.remove_button.get_visible()
 
     def refresh(self):
         is_locked = self.app.locked

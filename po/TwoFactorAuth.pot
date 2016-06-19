@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-19 12:58+0200\n"
+"POT-Creation-Date: 2016-06-19 15:33+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -68,37 +68,37 @@ msgid ""
 "later</a> for details."
 msgstr ""
 
-#: TwoFactorAuth/widgets/headerbar.py:43
+#: TwoFactorAuth/widgets/headerbar.py:44
 msgid "Remove selected accounts"
 msgstr ""
 
-#: TwoFactorAuth/widgets/headerbar.py:50
-#: TwoFactorAuth/widgets/add_account.py:28
-#: TwoFactorAuth/widgets/add_account.py:43
+#: TwoFactorAuth/widgets/headerbar.py:51
+#: TwoFactorAuth/widgets/add_account.py:30
+#: TwoFactorAuth/widgets/add_account.py:45
 msgid "Add a new account"
 msgstr ""
 
-#: TwoFactorAuth/widgets/headerbar.py:57
+#: TwoFactorAuth/widgets/headerbar.py:58
 msgid "Lock the Application"
 msgstr ""
 
-#: TwoFactorAuth/widgets/headerbar.py:73
+#: TwoFactorAuth/widgets/headerbar.py:74
 msgid "Selection mode"
 msgstr ""
 
-#: TwoFactorAuth/widgets/headerbar.py:80
+#: TwoFactorAuth/widgets/headerbar.py:81
 #: TwoFactorAuth/widgets/applications_list.py:89
 msgid "Search"
 msgstr ""
 
-#: TwoFactorAuth/widgets/headerbar.py:84
-#: TwoFactorAuth/widgets/add_account.py:48
+#: TwoFactorAuth/widgets/headerbar.py:85
+#: TwoFactorAuth/widgets/add_account.py:50
 #: TwoFactorAuth/widgets/change_password.py:143
 #: TwoFactorAuth/widgets/applications_list.py:81
 msgid "Cancel"
 msgstr ""
 
-#: TwoFactorAuth/widgets/headerbar.py:96 TwoFactorAuth/widgets/settings.py:24
+#: TwoFactorAuth/widgets/headerbar.py:97 TwoFactorAuth/widgets/settings.py:24
 #: TwoFactorAuth/application.py:60
 msgid "Settings"
 msgstr ""
@@ -107,15 +107,19 @@ msgstr ""
 msgid "There's no account at the moment"
 msgstr ""
 
-#: TwoFactorAuth/widgets/add_account.py:53
+#: TwoFactorAuth/widgets/add_account.py:55
 msgid "Add"
 msgstr ""
 
-#: TwoFactorAuth/widgets/add_account.py:74
+#: TwoFactorAuth/widgets/add_account.py:64
+msgid "Scan a QR code"
+msgstr ""
+
+#: TwoFactorAuth/widgets/add_account.py:87
 msgid "Account Name"
 msgstr ""
 
-#: TwoFactorAuth/widgets/add_account.py:82
+#: TwoFactorAuth/widgets/add_account.py:95
 msgid "Secret Code"
 msgstr ""
 

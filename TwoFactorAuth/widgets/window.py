@@ -14,6 +14,7 @@ from gettext import gettext as _
 class Window(Gtk.ApplicationWindow):
     counter = 0
     main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+    is_select_mode = False
 
     def __init__(self, application):
         self.app = application
@@ -92,7 +93,7 @@ class Window(Gtk.ApplicationWindow):
         """
             Generate a header bar box
         """
-        self.hb = HeaderBar(self.app)
+        self.hb = HeaderBar(self.app, self)
         # connect signals
         self.hb.cancel_button.connect("clicked", self.toggle_select)
         self.hb.select_button.connect("clicked", self.toggle_select)
@@ -110,6 +111,7 @@ class Window(Gtk.ApplicationWindow):
         """
             Toggle select mode
         """
+        self.is_select_mode = not self.is_select_mode
         self.hb.toggle_select_mode()
         self.accounts_list.toggle_select_mode()
 
