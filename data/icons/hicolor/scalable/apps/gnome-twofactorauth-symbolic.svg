@@ -16,7 +16,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r"
-   sodipodi:docname="TwoFactAuth-icon.svg"
+   sodipodi:docname="gnome-twofactorauth-symbolic.svg"
    inkscape:export-filename="/media/removable/content/tfa-icon/gnome-twofactorauth.png"
    inkscape:export-xdpi="45"
    inkscape:export-ydpi="45">
@@ -831,14 +831,14 @@
   </defs>
   <sodipodi:namedview
      id="base"
-     pagecolor="#ffffff"
+     pagecolor="#000000"
      bordercolor="#666666"
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1"
-     inkscape:cx="139.95474"
-     inkscape:cy="242.48808"
+     inkscape:zoom="2.8284271"
+     inkscape:cx="233.51318"
+     inkscape:cy="440.47798"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -879,7 +879,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -1806,6 +1806,6 @@
        rx="79.78949"
        ry="54.142868"
        clip-path="url(#clipPath5183)"
-       transform="translate(8,284.78563)" />
+       transform="translate(8,288)" />
   </g>
 </svg>
