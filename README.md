@@ -26,6 +26,7 @@ For translators : https://www.transifex.com/twofactorauth/twofactorauth/
 
 ### Credits
 - Websites and application icons are from Paper theme, created by [Sam Hewitt](https://github.com/snwh)
+- Applications/Websites database are from [twofactorauth](https://github.com/2factorauth/twofactorauth), by 2factorauth team
 
 ### How to build from source
 1 - Clone the repository

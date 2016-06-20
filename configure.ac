@@ -28,6 +28,8 @@ AC_CONFIG_FILES([
     Makefile
     data/Makefile
     data/applications/Makefile
+    data/applications/images/Makefile
+    data/applications/data/Makefile
     data/gnome-twofactorauth.desktop
     TwoFactorAuth/Makefile
     TwoFactorAuth/models/Makefile

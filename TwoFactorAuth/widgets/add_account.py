@@ -139,6 +139,7 @@ class AddAccount(Gtk.Window):
                 return True
 
         return False
+
     def update_logo(self, image):
         """
             Update image logo
@@ -183,6 +184,7 @@ class AddAccount(Gtk.Window):
         if self.step == 1:
             applications_choose_window = ApplicationChooserWindow(self)
             applications_choose_window.show_window()
+            applications_choose_window.present()
             self.step = 2
         else:
             self.show_all()

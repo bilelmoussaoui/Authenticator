@@ -3,25 +3,23 @@ require_version("Gtk", "3.0")
 from gi.repository import Gtk, GLib, Gio, Gdk
 from TwoFactorAuth.widgets.search_bar import SearchBar
 from TwoFactorAuth.widgets.application_row import ApplicationRow
-from os import path, listdir, environ as env
-from TwoFactorAuth.utils import get_icon
+from os import path, environ as env
 from gettext import gettext as _
-
+import yaml
+from glob import glob
 
 class ApplicationChooserWindow(Gtk.Window):
+    db = []
 
     def __init__(self, window):
         # directory that contains the main icons
-
-        directory = path.join(env.get("DATA_DIR"), "applications") + "/"
-        self.logos = listdir(directory)
-        self.logos.sort()
         self.parent = window
-
         self.search_button = Gtk.ToggleButton()
         self.listbox = Gtk.ListBox()
         self.main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-
+        if len(self.db) == 0:
+            self.read_database()
+        print(len(self.db))
         self.generate_window()
         self.generate_search_bar()
         self.generate_components()
@@ -48,7 +46,7 @@ class ApplicationChooserWindow(Gtk.Window):
             Generate window compenents
         """
         box_outer = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-        if len(self.logos) > 0:
+        if len(self.db) > 0:
             # Create a ScrolledWindow for installed applications
             self.scrolled_win = Gtk.ScrolledWindow()
             self.scrolled_win.add_with_viewport(box_outer)
@@ -59,12 +57,14 @@ class ApplicationChooserWindow(Gtk.Window):
             self.listbox.set_selection_mode(Gtk.SelectionMode.SINGLE)
             box_outer.pack_start(self.listbox, True, True, 0)
             i = 0
-            while i < len(self.logos):
-                img_path = self.logos[i]
-                app_name = path.splitext(img_path)[0].strip(".").title()
+            directory = path.join(env.get("DATA_DIR"), "applications") + "/images/"
+
+            self.db = sorted(self.db, key=lambda k: k['name'])
+            while i < len(self.db):
+                img_path = directory + self.db[i]["img"]
+                app_name = self.db[i]["name"]
                 # Application logo
-                app_logo = get_icon(img_path)
-                self.listbox.add(ApplicationRow(app_name, app_logo))
+                self.listbox.add(ApplicationRow(app_name, img_path))
                 i += 1
             self.listbox.select_row(self.listbox.get_row_at_index(0))
 
@@ -91,7 +91,7 @@ class ApplicationChooserWindow(Gtk.Window):
 
         next_button = Gtk.Button.new_with_label(_("Next"))
         next_button.get_style_context().add_class("suggested-action")
-        next_button.connect("clicked", self.select_logo)
+        next_button.connect("clicked", self.select_application)
 
         right_box.pack_start(self.search_button, False, False, 6)
         right_box.pack_start(next_button, False, False, 6)
@@ -107,6 +107,25 @@ class ApplicationChooserWindow(Gtk.Window):
         self.search_bar = SearchBar(self.listbox, self, self.search_button)
         self.main_box.pack_start(self.search_bar, False, True, 0)
 
+    def read_database(self):
+        db_dir = path.join(env.get("DATA_DIR"), "applications") + "/data/*.yml"
+        db_files = glob(db_dir)
+        for db_file in db_files:
+            with open(db_file, 'r') as data:
+                try:
+                    websites = yaml.load(data)["websites"]
+                    for app in websites:
+                        if self.is_valid_app(app):
+                            self.db.append(app)
+                except yaml.YAMLError as error:
+                    logging.error("Error loading yml file : %s " % str(error))
+
+    def is_valid_app(self, app):
+        if set(["tfa", "software"]).issubset(app.keys()):
+            return app["tfa"] and app["software"]
+        else:
+            return False
+
     def on_key_press(self, label, key_event):
         """
             Keyboard listener handling
@@ -121,23 +140,23 @@ class ApplicationChooserWindow(Gtk.Window):
         if keyname == "up" or keyname == "down":
             dx = -1 if keyname == "up" else 1
             index = self.listbox.get_selected_row().get_index()
-            index = (index + dx)%len(self.logos)
+            index = (index + dx)%len(self.db)
             selected_row = self.listbox.get_row_at_index(index)
             self.listbox.select_row(selected_row)
             return True
 
         if keyname == "return":
-            self.select_logo()
+            self.select_application()
             return True
         return False
 
-    def select_logo(self, *args):
+    def select_application(self, *args):
         """
             Select a logo and return its path to the add application window
         """
-        index = self.listbox.get_selected_row().get_index()
-        if len(self.logos) > 0:
-            img_path = self.logos[index]
+        selected_row = self.listbox.get_selected_row()
+        if selected_row:
+            img_path = selected_row.get_icon_name()
             self.parent.update_logo(img_path)
             self.parent.show_window()
             self.close_window()

@@ -103,9 +103,8 @@ class Application(Gtk.Application):
             self.win.present()
 
     def refresh_menu(self):
-        if not is_gnome():
-            is_enabled = self.settings_action.get_enabled()
-            self.settings_action.set_enabled(not is_enabled)
+        is_enabled = self.settings_action.get_enabled()
+        self.settings_action.set_enabled(not is_enabled)
 
     def on_shortcuts(self, *args):
         """
