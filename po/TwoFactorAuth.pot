@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-19 15:33+0200\n"
+"POT-Creation-Date: 2016-06-20 12:18+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,32 +29,52 @@ msgstr ""
 
 #: data/shortcuts.ui:24
 msgctxt "shortcut window"
-msgid "Copy"
+msgid "Add a new account"
 msgstr ""
 
 #: data/shortcuts.ui:31
 msgctxt "shortcut window"
-msgid "Add a new account"
+msgid "Selection mode"
 msgstr ""
 
 #: data/shortcuts.ui:38
 msgctxt "shortcut window"
+msgid "Lock the application"
+msgstr ""
+
+#: data/shortcuts.ui:47
+msgctxt "shortcut window"
+msgid "Account list"
+msgstr ""
+
+#: data/shortcuts.ui:51
+msgctxt "shortcut window"
+msgid "Copy"
+msgstr ""
+
+#: data/shortcuts.ui:58
+msgctxt "shortcut window"
 msgid "Delete"
 msgstr ""
 
-#: data/shortcuts.ui:50
+#: data/shortcuts.ui:65
 msgctxt "shortcut window"
 msgid "Select next/previous account"
 msgstr ""
 
-#: data/shortcuts.ui:57
+#: data/shortcuts.ui:74
 msgctxt "shortcut window"
-msgid "Selection mode"
+msgid "Add Account"
 msgstr ""
 
-#: data/shortcuts.ui:64
+#: data/shortcuts.ui:78
 msgctxt "shortcut window"
-msgid "Lock the application"
+msgid "Scan QR code"
+msgstr ""
+
+#: data/shortcuts.ui:85
+msgctxt "shortcut window"
+msgid "Close"
 msgstr ""
 
 #: data/about.ui:14
@@ -87,14 +107,14 @@ msgid "Selection mode"
 msgstr ""
 
 #: TwoFactorAuth/widgets/headerbar.py:81
-#: TwoFactorAuth/widgets/applications_list.py:89
+#: TwoFactorAuth/widgets/applications_list.py:88
 msgid "Search"
 msgstr ""
 
 #: TwoFactorAuth/widgets/headerbar.py:85
 #: TwoFactorAuth/widgets/add_account.py:50
 #: TwoFactorAuth/widgets/change_password.py:143
-#: TwoFactorAuth/widgets/applications_list.py:81
+#: TwoFactorAuth/widgets/applications_list.py:80
 msgid "Cancel"
 msgstr ""
 
@@ -111,15 +131,15 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
-#: TwoFactorAuth/widgets/add_account.py:64
+#: TwoFactorAuth/widgets/add_account.py:63
 msgid "Scan a QR code"
 msgstr ""
 
-#: TwoFactorAuth/widgets/add_account.py:87
+#: TwoFactorAuth/widgets/add_account.py:85
 msgid "Account Name"
 msgstr ""
 
-#: TwoFactorAuth/widgets/add_account.py:95
+#: TwoFactorAuth/widgets/add_account.py:93
 msgid "Secret Code"
 msgstr ""
 
@@ -143,11 +163,11 @@ msgstr ""
 msgid "Repeat new password"
 msgstr ""
 
-#: TwoFactorAuth/widgets/applications_list.py:76
+#: TwoFactorAuth/widgets/applications_list.py:75
 msgid "Select an application"
 msgstr ""
 
-#: TwoFactorAuth/widgets/applications_list.py:92
+#: TwoFactorAuth/widgets/applications_list.py:91
 msgid "Next"
 msgstr ""
 
