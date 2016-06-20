@@ -6,7 +6,7 @@
             <object class="GtkShortcutsSection">
                 <property name="visible">True</property>
                 <property name="section-name">shortcuts</property>
-                <property name="max-height">10</property>
+                <property name="max-height">5</property>
                 <child>
                     <object class="GtkShortcutsGroup">
                         <property name="visible">True</property>
@@ -21,34 +21,8 @@
                         <child>
                             <object class="GtkShortcutsShortcut">
                                 <property name="visible">True</property>
-                                <property name="title" translatable="yes" context="shortcut window">Copy</property>
-                                <property name="accelerator">&lt;Primary&gt;C</property>
-                            </object>
-                        </child>
-                        <child>
-                            <object class="GtkShortcutsShortcut">
-                                <property name="visible">True</property>
                                 <property name="title" translatable="yes" context="shortcut window">Add a new account</property>
                                 <property name="accelerator">&lt;Primary&gt;N</property>
-                            </object>
-                        </child>
-                        <child>
-                            <object class="GtkShortcutsShortcut">
-                                <property name="visible">True</property>
-                                <property name="title" translatable="yes" context="shortcut window">Delete</property>
-                                <property name="accelerator">Delete</property>
-                            </object>
-                        </child>
-                    </object>
-                </child>
-                <child>
-                    <object class="GtkShortcutsGroup">
-                        <property name="visible">True</property>
-                        <child>
-                            <object class="GtkShortcutsShortcut">
-                                <property name="visible">True</property>
-                                <property name="title" translatable="yes" context="shortcut window">Select next/previous account</property>
-                                <property name="accelerator">Up Down</property>
                             </object>
                         </child>
                         <child>
@@ -58,10 +32,64 @@
                                 <property name="accelerator">&lt;Primary&gt;S</property>
                             </object>
                         </child>
+                        <child>
+                            <object class="GtkShortcutsShortcut">
+                                <property name="visible">True</property>
+                                <property name="title" translatable="yes" context="shortcut window">Lock the application</property>
+                                <property name="accelerator">&lt;Primary&gt;L</property>
+                            </object>
+                        </child>
                     </object>
                 </child>
-
+                <child>
+                    <object class="GtkShortcutsGroup">
+                        <property name="visible">True</property>
+                        <property name="title" translatable="yes" context="shortcut window">Account list</property>
+                        <child>
+                            <object class="GtkShortcutsShortcut">
+                                <property name="visible">True</property>
+                                <property name="title" translatable="yes" context="shortcut window">Copy</property>
+                                <property name="accelerator">&lt;Primary&gt;C</property>
+                            </object>
+                        </child>
+                        <child>
+                            <object class="GtkShortcutsShortcut">
+                                <property name="visible">True</property>
+                                <property name="title" translatable="yes" context="shortcut window">Delete</property>
+                                <property name="accelerator">Delete</property>
+                            </object>
+                        </child>
+                        <child>
+                            <object class="GtkShortcutsShortcut">
+                                <property name="visible">True</property>
+                                <property name="title" translatable="yes" context="shortcut window">Select next/previous account</property>
+                                <property name="accelerator">Up Down</property>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+                <child>
+                    <object class="GtkShortcutsGroup">
+                        <property name="visible">True</property>
+                        <property name="title" translatable="yes" context="shortcut window">Add Account</property>
+                        <child>
+                            <object class="GtkShortcutsShortcut">
+                                <property name="visible">True</property>
+                                <property name="title" translatable="yes" context="shortcut window">Scan QR code</property>
+                                <property name="accelerator">&lt;Primary&gt;S</property>
+                            </object>
+                        </child>
+                        <child>
+                            <object class="GtkShortcutsShortcut">
+                                <property name="visible">True</property>
+                                <property name="title" translatable="yes" context="shortcut window">Close</property>
+                                <property name="accelerator">Escape</property>
+                            </object>
+                        </child>
+                    </object>
+                </child>
             </object>
+
         </child>
     </object>
 </interface>

@@ -4,9 +4,10 @@ require_version("Gtk", "3.0")
 require_version("GnomeKeyring", "1.0")
 from gi.repository import Gtk, GLib, Gio, Gdk, GObject, GnomeKeyring as GK
 from TwoFactorAuth.widgets.window import Window
-from TwoFactorAuth.models.authenticator import Authenticator
+from TwoFactorAuth.models.database import Database
 from TwoFactorAuth.widgets.settings import SettingsWindow
 from TwoFactorAuth.models.settings import SettingsReader
+from TwoFactorAuth.utils import *
 import logging
 import signal
 from gettext import gettext as _
@@ -16,12 +17,10 @@ class Application(Gtk.Application):
     win = None
     alive = True
     locked = False
-    menu = Gio.Menu()
-    auth = Authenticator()
-    use_GMenu = True
 
     settings_window = None
     settings_action = None
+
     def __init__(self):
         Gtk.Application.__init__(self,
                                  application_id="org.gnome.TwoFactorAuth",
@@ -29,19 +28,15 @@ class Application(Gtk.Application):
         GLib.set_application_name(_("TwoFactorAuth"))
         GLib.set_prgname("Gnome-TwoFactorAuth")
 
-        current_desktop = env.get("XDG_CURRENT_DESKTOP")
-        if current_desktop:
-            self.use_GMenu = current_desktop.lower() == "gnome"
-        else:
-            self.use_GMenu = False
+        self.menu = Gio.Menu()
+        self.db = Database()
+        self.cfg = SettingsReader()
+        self.locked = self.cfg.read("state", "login")
 
         result = GK.unlock_sync("Gnome-TwoFactorAuth", None)
         if result == GK.Result.CANCELLED:
             self.quit()
 
-        self.cfg = SettingsReader()
-        if self.cfg.read("state", "login"):
-            self.locked = True
         cssProviderFile = Gio.File.new_for_uri('resource:///org/gnome/TwoFactorAuth/style.css')
         cssProvider = Gtk.CssProvider()
         screen = Gdk.Screen.get_default()
@@ -95,26 +90,21 @@ class Application(Gtk.Application):
         action.connect("activate", self.on_quit)
         self.add_action(action)
 
-        if self.use_GMenu:
+        if is_gnome():
             self.set_app_menu(self.menu)
             logging.debug("Adding gnome shell menu")
 
     def do_activate(self, *args):
-        self.win = Window(self)
-        self.win.show_all()
-        self.add_window(self.win)
+        if not self.win:
+            self.win = Window(self)
+            self.win.show_all()
+            self.add_window(self.win)
+        else:
+            self.win.present()
 
     def refresh_menu(self):
-        if self.use_GMenu:
-            self.settings_action.set_enabled(
-                not self.settings_action.get_enabled())
-
-    def on_toggle_lock(self, *args):
-        if not self.locked:
-            self.locked = not self.locked
-            self.win.password_entry.grab_focus_without_selecting()
-            self.refresh_menu()
-            self.win.refresh_window()
+        is_enabled = self.settings_action.get_enabled()
+        self.settings_action.set_enabled(not is_enabled)
 
     def on_shortcuts(self, *args):
         """
@@ -143,8 +133,11 @@ class Application(Gtk.Application):
         """
             Shows settings window
         """
-        settings_window = SettingsWindow(self.win)
-        settings_window.show_window()
+        if not self.settings_window:
+            self.settings_window = SettingsWindow(self.win)
+            self.settings_window.show_window()
+        else:
+            self.settings_window.present()
 
     def on_quit(self, *args):
         """

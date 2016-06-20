@@ -1,41 +1,42 @@
 from gi import require_version
 require_version("Gtk", "3.0")
-from gi.repository import Gtk, Gio
+from gi.repository import Gtk, Gio, Gdk
 import logging
 
 
-class SearchBar(Gtk.Box):
+class SearchBar(Gtk.Revealer):
 
-    def __init__(self, list_accounts):
-        self.search_entry = Gtk.Entry()
-        self.list_accounts = list_accounts
+    def __init__(self, listbox, window, search_button):
+        self.search_entry = Gtk.SearchEntry()
+        self.listbox = listbox
+        self.search_button = search_button
+        self.window = window
         self.generate()
+        self.search_button.connect("toggled", self.toggle)
+        self.window.connect("key-press-event", self.__on_key_press)
 
     def generate(self):
-        Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL)
-        self.revealer = Gtk.Revealer()
+        Gtk.Revealer.__init__(self)
         box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
 
         self.search_entry.set_width_chars(28)
-        self.search_entry.connect("changed", self.filter_applications)
-        self.search_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY,
-                                                  "system-search-symbolic")
+        self.search_entry.connect("search-changed", self.filter_applications)
 
         box.pack_start(self.search_entry, True, False, 12)
         box.props.margin = 6
-        self.revealer.add(box)
-        self.revealer.set_reveal_child(False)
-        self.pack_start(self.revealer, True, False, 0)
+
+        self.add(box)
+        self.set_reveal_child(False)
 
     def toggle(self, *args):
-        if self.revealer.get_reveal_child():
-            self.revealer.set_reveal_child(False)
+        if self.is_visible():
+            self.set_reveal_child(False)
             self.search_entry.set_text("")
-            self.list_accounts.set_filter_func(lambda x, y, z: True,
+            self.listbox.set_filter_func(lambda x, y, z: True,
                                                None, False)
         else:
-            self.revealer.set_reveal_child(True)
-            self.search_entry.grab_focus_without_selecting()
+            self.set_reveal_child(True)
+            self.focus()
 
     def filter_func(self, row, data, notify_destroy):
         """
@@ -48,23 +49,35 @@ class SearchBar(Gtk.Box):
         else:
             return True
 
+    def __on_key_press(self, widget, event):
+        keyname = Gdk.keyval_name(event.keyval).lower()
+        if keyname == 'escape' and self.search_button.get_active():
+            if self.search_entry.is_focus():
+                self.search_button.set_active(False)
+            else:
+                self.focus()
+
+        if not "is_locked" in dir(self.window) or not self.window.is_locked():
+            if keyname == "backspace":
+                if self.is_empty():
+                    self.search_button.set_active(False)
+                    return True
+                    
+            if event.state & Gdk.ModifierType.CONTROL_MASK:
+                if keyname == 'f':
+                    self.search_button.set_active(not self.search_button.get_active())
+                    return True
+        return False
+
+    def focus(self):
+        self.search_entry.grab_focus_without_selecting()
+
     def is_visible(self):
-        return self.revealer.get_reveal_child()
+        return self.get_reveal_child()
 
     def is_empty(self):
         return len(self.search_entry.get_text()) == 0
 
-    def on_icon_pressed(self, entry, icon_pos, event):
-        if icon_pos == Gtk.EntryIconPosition.SECONDARY:
-            self.search_entry.set_text("")
-
     def filter_applications(self, entry):
         data = entry.get_text().strip()
-        if len(data) != 0:
-            entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY,
-                                          "edit-clear-symbolic")
-            entry.connect("icon-press", self.on_icon_pressed)
-        else:
-            entry.set_icon_from_icon_name(
-                Gtk.EntryIconPosition.SECONDARY, None)
-        self.list_accounts.set_filter_func(self.filter_func, data, False)
+        self.listbox.set_filter_func(self.filter_func, data, False)

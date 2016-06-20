@@ -2,5 +2,6 @@ appdir = $(pythondir)/TwoFactorAuth/models
 
 app_PYTHON = \
 	code.py \
-	authenticator.py \
+	database.py \
+	qr_reader.py \
 	settings.py

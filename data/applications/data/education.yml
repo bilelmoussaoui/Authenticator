@@ -1,0 +1,124 @@
+websites:
+    - name: Academic Earth
+      url: http://academicearth.org/
+      twitter: academicearth
+      img: academicearth.png
+      tfa: No
+
+    - name: Antagning.se
+      url: https://www.antagning.se
+      img: antagning.png
+      twitter: antagningse
+      tfa: No
+
+    - name: Clever
+      url: https://www.clever.com
+      img: clever.png
+      tfa: Yes
+      sms: Yes
+      software: Yes
+      doc: https://support.clever.com/hc/en-us/articles/202062333-Two-Factor-Authentication
+
+    - name: CSN
+      url: https://www.csn.se
+      img: csn.png
+      tfa: Yes
+      hardware: Yes
+      software: Yes
+      doc: https://www.csn.se/bas/vanligaFragor.do
+
+    - name: Codecademy
+      url: http://www.codecademy.com/
+      twitter: codecademy
+      img: codecademy.png
+      tfa: No
+
+    - name: Code School
+      url: https://www.codeschool.com/
+      twitter: codeschool
+      img: codeschool.png
+      tfa: No
+
+    - name: Coursera
+      url: https://www.coursera.org/
+      twitter: coursera
+      img: coursera.png
+      tfa: No
+
+    - name: Duolingo
+      url: https://www.duolingo.com
+      img: duolingo.png
+      twitter: duolingo
+      tfa: No
+
+    - name: Edmodo
+      url: https://www.edmodo.com/
+      twitter: edmodo
+      img: edmodo.png
+      tfa: No
+
+    - name: edX
+      url: https://www.edx.org/
+      twitter: edXOnline
+      img: edx.png
+      tfa: No
+
+    - name: Montclair State University
+      url: http://www.montclair.edu/employee-services/
+      twitter: montclairstateu
+      img: montclair.png
+      tfa: No
+
+    - name: My Study Life
+      url: https://www.mystudylife.com/
+      twitter: mystudylife
+      img: mystudylife.png
+      tfa: No
+
+    - name: Oplerno
+      url: https://enroll.oplerno.com/
+      img: oplerno.png
+      tfa: Yes
+      software: Yes
+
+    - name: PushCoin
+      url: https://pushcoin.com
+      img: pushcoin.png
+      tfa: Yes
+      hardware: Yes
+      exceptions:
+          text: "U2F support only for school admin accounts. 2FA for parent accounts is in progress."
+      doc: http://knowhow.pushcoin.com/using-security-key-for-2-step-verification/
+
+    - name: Robert Morris University
+      url: https://sentry.rmu.edu/login
+      twitter: rmu
+      img: rmu.png
+      tfa: No
+
+    - name: SchoolSoft
+      url: http://schoolsoft.se/
+      img: schoolsoft.png
+      tfa: No
+
+    - name: Udacity
+      url: https://www.udacity.com/
+      twitter: udacity
+      img: udacity.png
+      tfa: No
+
+    - name: Udemy
+      url: https://www.udemy.com/
+      twitter: udemy
+      img: udemy.png
+      tfa: No
+
+    - name: Virginia Tech
+      url: https://www.vt.edu/
+      img: virginiatech.png
+      tfa: Yes
+      sms: Yes
+      phone: Yes
+      software: Yes
+      hardware: Yes
+      doc: http://it.vt.edu/2factor/index.php

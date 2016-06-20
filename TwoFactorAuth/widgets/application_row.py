@@ -1,16 +1,17 @@
 from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk
+from TwoFactorAuth.utils import get_icon
 import logging
 from gettext import gettext as _
 
 
 class ApplicationRow(Gtk.ListBoxRow):
 
-    def __init__(self, name, logo):
+    def __init__(self, name, image):
         Gtk.ListBoxRow.__init__(self)
         self.name = name
-        self.logo = logo
+        self.image = image
         # Create the list row
         self.create_row()
 
@@ -21,6 +22,9 @@ class ApplicationRow(Gtk.ListBoxRow):
         """
         return self.name
 
+    def get_icon_name(self):
+        return self.image
+
     def create_row(self):
         """
             Create ListBoxRow
@@ -30,8 +34,9 @@ class ApplicationRow(Gtk.ListBoxRow):
         hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
 
         # Application logo
+        application_logo = get_icon(self.image)
         application_image = Gtk.Image(xalign=0)
-        application_image.set_from_pixbuf(self.logo)
+        application_image.set_from_pixbuf(application_logo)
         hbox.pack_start(application_image, False, True, 6)
 
         # Application name
