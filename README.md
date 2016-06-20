@@ -9,6 +9,7 @@ For translators : https://www.transifex.com/twofactorauth/twofactorauth/
 - `Gtk 3.16+`
 - `PyOTP`
 - `zbarlight`
+- `yaml`
 - `GnomeKeyring`
 
 <sub>PS: The application was only tested on Arch with Gtk 3.20+, but it should work nicely with older versions too. Keyboard shortcuts widget won't be shown for older versions.</sub>
@@ -41,14 +42,19 @@ For translators : https://www.transifex.com/twofactorauth/twofactorauth/
 ```bash
 sudo pip install zbarlight
 ```
+4 - Install `yaml`
+```bash
+sudo pip install pyyaml
+```
+
 <sub>PS : In some distributions you will need to use `pip3` instead of `pip` to install the compatible version of the package with Python 3.</sub> <br>
-4 - Afterwards
+5 - Afterwards
 ```bash
     ./autogen.sh
     make
     sudo make install
 ```
-5 - You can run the application from the desktop file or from terminal using
+6 - You can run the application from the desktop file or from terminal using
 ```bash
     gnome-twofactorauth
 ```
