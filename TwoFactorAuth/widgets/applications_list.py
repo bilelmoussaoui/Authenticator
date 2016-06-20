@@ -19,7 +19,6 @@ class ApplicationChooserWindow(Gtk.Window):
         self.main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         if len(self.db) == 0:
             self.read_database()
-        print(len(self.db))
         self.generate_window()
         self.generate_search_bar()
         self.generate_components()
@@ -59,7 +58,7 @@ class ApplicationChooserWindow(Gtk.Window):
             i = 0
             directory = path.join(env.get("DATA_DIR"), "applications") + "/images/"
 
-            self.db = sorted(self.db, key=lambda k: k['name'])
+            self.db = sorted(self.db, key=lambda k: k['name'].lower())
             while i < len(self.db):
                 img_path = directory + self.db[i]["img"]
                 app_name = self.db[i]["name"]
