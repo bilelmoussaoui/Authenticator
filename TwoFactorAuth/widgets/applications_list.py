@@ -7,29 +7,40 @@ from os import path, environ as env
 from gettext import gettext as _
 import yaml
 from glob import glob
+from threading import Thread
 
-class ApplicationChooserWindow(Gtk.Window):
-    db = []
+
+class ApplicationChooserWindow(Gtk.Window, Thread):
 
     def __init__(self, window):
+        Thread.__init__(self)
+        self.nom = "applications-db-reader"
+        Gtk.Window.__init__(self, type=Gtk.WindowType.TOPLEVEL, modal=True,
+                            destroy_with_parent=True)
         # directory that contains the main icons
         self.parent = window
+        self.db = []
+        self.spinner = Gtk.Spinner()
+        self.db_read = False
         self.search_button = Gtk.ToggleButton()
         self.listbox = Gtk.ListBox()
         self.main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        if len(self.db) == 0:
-            self.read_database()
         self.generate_window()
         self.generate_search_bar()
         self.generate_components()
         self.generate_header_bar()
+        self.start()
+
+    def run(self):
+        while not self.db_read:
+            self.read_database()
+            self.add_apps()
+            self.update_ui()
 
     def generate_window(self):
         """
             Generate the main window
         """
-        Gtk.Window.__init__(self, type=Gtk.WindowType.TOPLEVEL, modal=True,
-                            destroy_with_parent=True)
         self.connect("destroy", self.close_window)
         self.resize(410, 550)
         self.set_size_request(410, 550)
@@ -45,27 +56,24 @@ class ApplicationChooserWindow(Gtk.Window):
             Generate window compenents
         """
         box_outer = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-        if len(self.db) > 0:
-            # Create a ScrolledWindow for installed applications
-            self.scrolled_win = Gtk.ScrolledWindow()
-            self.scrolled_win.add_with_viewport(box_outer)
-            self.main_box.pack_start(self.scrolled_win, True, True, 0)
+        # Create a ScrolledWindow for installed applications
+        self.scrolled_win = Gtk.ScrolledWindow()
+        self.scrolled_win.add_with_viewport(box_outer)
+        self.scrolled_win.hide()
+        self.main_box.pack_start(self.scrolled_win, True, True, 0)
 
-            self.listbox.get_style_context().add_class("applications-list")
-            self.listbox.set_adjustment()
-            self.listbox.set_selection_mode(Gtk.SelectionMode.SINGLE)
-            box_outer.pack_start(self.listbox, True, True, 0)
-            i = 0
-            directory = path.join(env.get("DATA_DIR"), "applications") + "/images/"
+        self.listbox.get_style_context().add_class("applications-list")
+        self.listbox.set_adjustment()
+        self.listbox.set_selection_mode(Gtk.SelectionMode.SINGLE)
+        box_outer.pack_start(self.listbox, True, True, 0)
 
-            self.db = sorted(self.db, key=lambda k: k['name'].lower())
-            while i < len(self.db):
-                img_path = directory + self.db[i]["img"]
-                app_name = self.db[i]["name"]
-                # Application logo
-                self.listbox.add(ApplicationRow(app_name, img_path))
-                i += 1
-            self.listbox.select_row(self.listbox.get_row_at_index(0))
+        spinner_box_outer = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        spinner_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        self.spinner.start()
+        self.spinner.show()
+        spinner_box.pack_start(self.spinner, False, False, 6)
+        spinner_box_outer.pack_start(spinner_box, True, True, 6)
+        self.main_box.pack_start(spinner_box_outer, True, True, 0)
 
     def generate_header_bar(self):
         """
@@ -106,19 +114,6 @@ class ApplicationChooserWindow(Gtk.Window):
         self.search_bar = SearchBar(self.listbox, self, self.search_button)
         self.main_box.pack_start(self.search_bar, False, True, 0)
 
-    def read_database(self):
-        db_dir = path.join(env.get("DATA_DIR"), "applications") + "/data/*.yml"
-        db_files = glob(db_dir)
-        for db_file in db_files:
-            with open(db_file, 'r') as data:
-                try:
-                    websites = yaml.load(data)["websites"]
-                    for app in websites:
-                        if self.is_valid_app(app):
-                            self.db.append(app)
-                except yaml.YAMLError as error:
-                    logging.error("Error loading yml file : %s " % str(error))
-
     def is_valid_app(self, app):
         if set(["tfa", "software"]).issubset(app.keys()):
             return app["tfa"] and app["software"]
@@ -139,7 +134,7 @@ class ApplicationChooserWindow(Gtk.Window):
         if keyname == "up" or keyname == "down":
             dx = -1 if keyname == "up" else 1
             index = self.listbox.get_selected_row().get_index()
-            index = (index + dx)%len(self.db)
+            index = (index + dx) % len(self.db)
             selected_row = self.listbox.get_row_at_index(index)
             self.listbox.select_row(selected_row)
             return True
@@ -148,6 +143,39 @@ class ApplicationChooserWindow(Gtk.Window):
             self.select_application()
             return True
         return False
+
+    def update_ui(self):
+        self.spinner.stop()
+        self.spinner.get_parent().get_parent().hide()
+        self.scrolled_win.show()
+        self.listbox.hide()
+        if len(self.listbox.get_children()) != 0:
+            self.listbox.show_all()
+        self.db_read = True
+
+    def read_database(self):
+        db_dir = path.join(env.get("DATA_DIR"), "applications") + "/data/*.yml"
+        db_files = glob(db_dir)
+        for db_file in db_files:
+            with open(db_file, 'r') as data:
+                try:
+                    websites = yaml.load(data)["websites"]
+                    for app in websites:
+                        if self.is_valid_app(app):
+                            self.db.append(app)
+                except yaml.YAMLError as error:
+                    logging.error("Error loading yml file : %s " % str(error))
+
+    def add_apps(self):
+        i = 0
+        directory = path.join(env.get("DATA_DIR"), "applications") + "/images/"
+        self.db = sorted(self.db, key=lambda k: k['name'].lower())
+        while i < len(self.db):
+            img_path = directory + self.db[i]["img"]
+            app_name = self.db[i]["name"]
+            self.listbox.add(ApplicationRow(app_name, img_path))
+            i += 1
+        self.listbox.select_row(self.listbox.get_row_at_index(0))
 
     def select_application(self, *args):
         """
