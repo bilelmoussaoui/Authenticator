@@ -47,12 +47,12 @@ def get_icon(image):
     """
     directory = path.join(env.get("DATA_DIR"), "applications") + "/"
     theme = Gtk.IconTheme.get_default()
-    if path.isfile(directory + image) and path.exists(directory + image):
+    if theme.has_icon(path.splitext(image)[0]):
+        icon = theme.load_icon(path.splitext(image)[0], 48, 0)
+    elif path.isfile(directory + image) and path.exists(directory + image):
         icon = GdkPixbuf.Pixbuf.new_from_file(directory + image)
     elif path.isfile(image) and path.exists(image):
         icon = GdkPixbuf.Pixbuf.new_from_file(image)
-    elif theme.has_icon(path.splitext(image)[0]):
-        icon = theme.load_icon(path.splitext(image)[0], 48, 0)
     else:
         icon = theme.load_icon("image-missing", 48, 0)
     if icon.get_width() != 48 or icon.get_height() != 48:

@@ -69,13 +69,13 @@ class ApplicationChooserWindow(Gtk.Window, Thread):
         self.listbox.set_selection_mode(Gtk.SelectionMode.SINGLE)
         box_outer.pack_start(self.listbox, True, True, 0)
 
-        spinner_box_outer = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        self.spinner_box_outer = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         spinner_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         self.spinner.start()
         self.spinner.show()
         spinner_box.pack_start(self.spinner, False, False, 6)
-        spinner_box_outer.pack_start(spinner_box, True, True, 6)
-        self.main_box.pack_start(spinner_box_outer, True, True, 0)
+        self.spinner_box_outer.pack_start(spinner_box, True, True, 6)
+        self.main_box.pack_start(self.spinner_box_outer, True, True, 0)
 
     def generate_header_bar(self):
         """
@@ -154,7 +154,7 @@ class ApplicationChooserWindow(Gtk.Window, Thread):
             Hide and stop the spinner and show the scrolled window
         """
         self.spinner.stop()
-        self.spinner.get_parent().get_parent().hide()
+        self.spinner_box_outer.hide()
         self.scrolled_win.show()
         self.listbox.hide()
         if len(self.listbox.get_children()) != 0:
@@ -184,12 +184,11 @@ class ApplicationChooserWindow(Gtk.Window, Thread):
         """
             Add database applications to the Gtk.ListBox
         """
-        directory = path.join(env.get("DATA_DIR"), "applications") + "/images/"
         self.db = sorted(self.db, key=lambda k: k['name'].lower())
         logging.debug("Application list was ordered alphabetically")
 
         for app in self.db:
-            img_path = directory + app["img"]
+            img_path = app["img"]
             app_name = app["name"]
             self.listbox.add(ApplicationRow(app_name, img_path))
 
