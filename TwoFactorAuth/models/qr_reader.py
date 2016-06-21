@@ -49,7 +49,7 @@ class QRReader:
             remove image file for security reasons
         """
         if path.isfile(self.filename):
-            remove(filename)
+            remove(self.filename)
             logging.debug("QR code image was removed for security reasons")
 
     def is_valid(self):

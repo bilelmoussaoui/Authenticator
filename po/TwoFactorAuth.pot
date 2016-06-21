@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-21 04:45+0200\n"
+"POT-Creation-Date: 2016-06-21 20:42+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -88,38 +88,38 @@ msgid ""
 "later</a> for details."
 msgstr ""
 
-#: TwoFactorAuth/widgets/headerbar.py:63
+#: TwoFactorAuth/widgets/headerbar.py:64
 msgid "Remove selected accounts"
 msgstr ""
 
-#: TwoFactorAuth/widgets/headerbar.py:70
+#: TwoFactorAuth/widgets/headerbar.py:71
 #: TwoFactorAuth/widgets/add_account.py:49
 #: TwoFactorAuth/widgets/add_account.py:64
 msgid "Add a new account"
 msgstr ""
 
-#: TwoFactorAuth/widgets/headerbar.py:77
+#: TwoFactorAuth/widgets/headerbar.py:78
 msgid "Lock the Application"
 msgstr ""
 
-#: TwoFactorAuth/widgets/headerbar.py:93
+#: TwoFactorAuth/widgets/headerbar.py:94
 msgid "Selection mode"
 msgstr ""
 
-#: TwoFactorAuth/widgets/headerbar.py:100
+#: TwoFactorAuth/widgets/headerbar.py:101
 #: TwoFactorAuth/widgets/applications_list.py:98
 msgid "Search"
 msgstr ""
 
-#: TwoFactorAuth/widgets/headerbar.py:104
+#: TwoFactorAuth/widgets/headerbar.py:105
 #: TwoFactorAuth/widgets/add_account.py:69
 #: TwoFactorAuth/widgets/change_password.py:162
 #: TwoFactorAuth/widgets/applications_list.py:90
 msgid "Cancel"
 msgstr ""
 
-#: TwoFactorAuth/widgets/headerbar.py:116 TwoFactorAuth/widgets/settings.py:43
-#: TwoFactorAuth/application.py:79
+#: TwoFactorAuth/widgets/headerbar.py:117 TwoFactorAuth/widgets/settings.py:43
+#: TwoFactorAuth/application.py:78
 msgid "Settings"
 msgstr ""
 
@@ -202,7 +202,8 @@ msgid "Couldn't generate the secret code"
 msgstr ""
 
 #: TwoFactorAuth/widgets/account_row.py:275
-msgid "Do you really want to remove this account?"
+#, python-format
+msgid "Do you really want to remove \"%s\"?"
 msgstr ""
 
 #: TwoFactorAuth/widgets/settings.py:71
@@ -225,18 +226,18 @@ msgstr ""
 msgid "Secret code generation time (s) :"
 msgstr ""
 
-#: TwoFactorAuth/application.py:47
+#: TwoFactorAuth/application.py:46
 msgid "TwoFactorAuth"
 msgstr ""
 
-#: TwoFactorAuth/application.py:87
+#: TwoFactorAuth/application.py:86
 msgid "Shortcuts"
 msgstr ""
 
-#: TwoFactorAuth/application.py:89
+#: TwoFactorAuth/application.py:88
 msgid "About"
 msgstr ""
 
-#: TwoFactorAuth/application.py:90
+#: TwoFactorAuth/application.py:89
 msgid "Quit"
 msgstr ""

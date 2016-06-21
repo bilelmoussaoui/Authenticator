@@ -37,7 +37,6 @@ class Application(Gtk.Application):
     alive = True
     locked = False
 
-    settings_window = None
     settings_action = None
 
     def __init__(self):
@@ -167,11 +166,9 @@ class Application(Gtk.Application):
         """
             Shows settings window
         """
-        if not self.settings_window:
-            self.settings_window = SettingsWindow(self.win)
-            self.settings_window.show_window()
-        else:
-            self.settings_window.present()
+        settings_window = SettingsWindow(self.win)
+        settings_window.show_window()
+        settings_window.present()
 
     def on_quit(self, *args):
         """

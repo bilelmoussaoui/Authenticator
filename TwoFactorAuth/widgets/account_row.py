@@ -272,7 +272,7 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         """
             Remove an account
         """
-        message = _("Do you really want to remove this account?")
+        message = _('Do you really want to remove "%s"?' % self.get_name())
         confirmation = ConfirmationMessage(self.window, message)
         confirmation.show()
         if confirmation.get_confirmation():
