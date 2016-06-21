@@ -1,9 +1,8 @@
-![Status](https://img.shields.io/badge/status-stable-green.svg) [![Version](https://img.shields.io/badge/version-0.1beta2-green.svg)](https://github.com/bil-elmoussaoui/Gnome-TwoFactorAuth/releases) ![Python
+![Status](https://img.shields.io/badge/status-stable-green.svg) [![Version](https://img.shields.io/badge/version-0.1beta4-green.svg)](https://github.com/bil-elmoussaoui/Gnome-TwoFactorAuth/releases) ![Python
 version](https://img.shields.io/badge/python-3.3%2B-blue.svg)
 
 # Gnome TwoFactorAuth
 Two-factor authentication code generator for Gnome <br>
-For translators : https://www.transifex.com/twofactorauth/twofactorauth/
 ### Dependecies
 - `Python 3.3+`
 - `Gtk 3.16+`
@@ -45,7 +44,7 @@ For translators : https://www.transifex.com/twofactorauth/twofactorauth/
 ```bash
 sudo pip install zbarlight
 ```
-4 - Install `yaml`
+4 - Install `pyyaml`
 ```bash
 sudo pip install pyyaml
 ```
@@ -62,3 +61,11 @@ sudo pip install pyyaml
     gnome-twofactorauth
 ```
 <sub>Arch users can build from source directly using AUR `yaourt -S gnome-twofactorauth-git`</sub>
+
+### Flags
+- `--debug` <br/>
+    Open the application with debug flags
+- `--version`<br/>
+    Shows the version number of the application
+- `--about`<br/>
+    Shows the about dialog

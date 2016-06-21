@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-21 20:42+0200\n"
+"POT-Creation-Date: 2016-06-21 21:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -107,14 +107,14 @@ msgid "Selection mode"
 msgstr ""
 
 #: TwoFactorAuth/widgets/headerbar.py:101
-#: TwoFactorAuth/widgets/applications_list.py:98
+#: TwoFactorAuth/widgets/applications_list.py:99
 msgid "Search"
 msgstr ""
 
 #: TwoFactorAuth/widgets/headerbar.py:105
 #: TwoFactorAuth/widgets/add_account.py:69
 #: TwoFactorAuth/widgets/change_password.py:162
-#: TwoFactorAuth/widgets/applications_list.py:90
+#: TwoFactorAuth/widgets/applications_list.py:91
 msgid "Cancel"
 msgstr ""
 
@@ -163,11 +163,11 @@ msgstr ""
 msgid "Repeat new password"
 msgstr ""
 
-#: TwoFactorAuth/widgets/applications_list.py:85
+#: TwoFactorAuth/widgets/applications_list.py:86
 msgid "Select an application"
 msgstr ""
 
-#: TwoFactorAuth/widgets/applications_list.py:101
+#: TwoFactorAuth/widgets/applications_list.py:102
 msgid "Next"
 msgstr ""
 
