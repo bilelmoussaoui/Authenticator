@@ -1,4 +1,23 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+ Copyright © 2016 Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>
+
+ This file is part of Gnome-TwoFactorAuth.
+
+ Gnome-TwoFactorAuth is free software: you can redistribute it and/or
+ modify it under the terms of the GNU General Public License as published
+ by the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ TwoFactorAuth is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with Gnome-TwoFactorAuth. If not, see <http://www.gnu.org/licenses/>.
+"""
 from gi import require_version
 require_version("Gtk", "3.0")
 require_version("GnomeKeyring", "1.0")
@@ -110,14 +129,22 @@ class Application(Gtk.Application):
         """
             Shows keyboard shortcuts
         """
+        shortcuts = Application.shortcuts_dialog()
+        if shortcuts:
+            shortcuts.set_transient_for(self.win)
+            shortcuts.show()
+
+    @staticmethod
+    def shortcuts_dialog():
         if Gtk.get_major_version() >= 3 and Gtk.get_minor_version() >= 20:
             builder = Gtk.Builder()
             builder.add_from_resource('/org/gnome/TwoFactorAuth/shortcuts.ui')
             shortcuts = builder.get_object("shortcuts")
-            shortcuts.set_transient_for(self.win)
-            shortcuts.show()
+            return shortcuts
+        return None
 
-    def on_about(self, *args):
+    @staticmethod
+    def about_dialog():
         """
             Shows about dialog
         """
@@ -125,6 +152,13 @@ class Application(Gtk.Application):
         builder.add_from_resource('/org/gnome/TwoFactorAuth/about.ui')
 
         dialog = builder.get_object("AboutDialog")
+        return dialog
+
+    def on_about(self, *args):
+        """
+            Shows about dialog
+        """
+        dialog = Application.about_dialog()
         dialog.set_transient_for(self.win)
         dialog.run()
         dialog.destroy()

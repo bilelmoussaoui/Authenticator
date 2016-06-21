@@ -1,10 +1,29 @@
+# -*- coding: utf-8 -*-
+"""
+ Copyright © 2016 Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>
+
+ This file is part of Gnome-TwoFactorAuth.
+
+ Gnome-TwoFactorAuth is free software: you can redistribute it and/or
+ modify it under the terms of the GNU General Public License as published
+ by the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ TwoFactorAuth is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with Gnome-TwoFactorAuth. If not, see <http://www.gnu.org/licenses/>.
+"""
 from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gdk
 from TwoFactorAuth.models.settings import SettingsReader
 from TwoFactorAuth.widgets.change_password import PasswordWindow
 from gettext import gettext as _
-
+import logging
 
 class SettingsWindow(Gtk.Window):
 
@@ -139,17 +158,20 @@ class SettingsWindow(Gtk.Window):
 
     def on_time_changed(self, spin_button):
         """
-            Update time tog generate a new secret code
+            Update time to generate a new secret code
         """
         self.cfg.update(
             "refresh-time", spin_button.get_value_as_int(), "preferences")
+        logging.info("Time to generate a new secret code updated")
 
     def on_auto_lock_time_changed(self, spin_button):
         """
-            Update time tog generate a new secret code
+            Update auto lock time
         """
         self.cfg.update("auto-lock-time",
                         spin_button.get_value_as_int(), "preferences")
+        logging.info("Auto lock time updated")
+
 
     def on_switch_activated(self, switch, *args):
         """
@@ -162,6 +184,7 @@ class SettingsWindow(Gtk.Window):
             if len(password) == 0:
                 self.new_password_window()
         self.auto_lock_switch.set_sensitive(switch.get_active())
+        logging.info("Password enabled/disabled")
         self.parent.refresh_window()
 
     def on_auto_lock_activated(self, switch, *args):
@@ -170,9 +193,11 @@ class SettingsWindow(Gtk.Window):
         """
         self.auto_lock_time.set_sensitive(switch.get_active())
         self.cfg.update("auto-lock", switch.get_active(), "preferences")
+        logging.info("Auto lock state updated")
 
     def close_window(self, *args):
         """
             Close the window
         """
+        logging.debug("SettingsWindow closed")
         self.destroy()

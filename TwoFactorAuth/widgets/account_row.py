@@ -1,3 +1,22 @@
+# -*- coding: utf-8 -*-
+"""
+ Copyright © 2016 Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>
+
+ This file is part of Gnome-TwoFactorAuth.
+
+ Gnome-TwoFactorAuth is free software: you can redistribute it and/or
+ modify it under the terms of the GNU General Public License as published
+ by the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ TwoFactorAuth is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with Gnome-TwoFactorAuth. If not, see <http://www.gnu.org/licenses/>.
+"""
 from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gdk, GLib
@@ -170,7 +189,7 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         remove_event = Gtk.EventBox()
         remove_button = Gtk.Image(xalign=0)
         remove_button.set_from_icon_name("user-trash-symbolic",
-                                            Gtk.IconSize.SMALL_TOOLBAR)
+                                         Gtk.IconSize.SMALL_TOOLBAR)
         remove_button.set_tooltip_text(_("Remove the account"))
         remove_event.add(remove_button)
         remove_event.connect("button-press-event", self.remove)

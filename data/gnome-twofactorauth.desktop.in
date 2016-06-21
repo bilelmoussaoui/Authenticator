@@ -9,4 +9,11 @@ Categories=GNOME;GTK;
 Keywords=Gnome;GTK;Verification;
 Icon=gnome-twofactorauth
 StartupNotify=true
+X-GNOME-Gettext-Domain=TwoFactorAuth
 StartupWMClass=Gnome-TwoFactorAuth
+Actions=AboutDialog;
+
+
+[Desktop Action AboutDialog]
+Exec=gnome-twofactorauth --about
+Name=About Gnome TwoFactorAuth

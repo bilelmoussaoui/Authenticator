@@ -1,3 +1,22 @@
+# -*- coding: utf-8 -*-
+"""
+ Copyright © 2016 Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>
+
+ This file is part of Gnome-TwoFactorAuth.
+
+ Gnome-TwoFactorAuth is free software: you can redistribute it and/or
+ modify it under the terms of the GNU General Public License as published
+ by the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ TwoFactorAuth is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with Gnome-TwoFactorAuth. If not, see <http://www.gnu.org/licenses/>.
+"""
 from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gio, Gdk, GObject, GLib
@@ -6,9 +25,9 @@ from TwoFactorAuth.widgets.accounts_window import AccountsWindow
 from TwoFactorAuth.widgets.login_window import LoginWindow
 from TwoFactorAuth.widgets.no_account_window import NoAccountWindow
 from TwoFactorAuth.widgets.headerbar import HeaderBar
-import logging
 from hashlib import sha256
 from gettext import gettext as _
+import logging
 
 
 class Window(Gtk.ApplicationWindow):
@@ -85,7 +104,8 @@ class Window(Gtk.ApplicationWindow):
     def generate_accounts_box(self):
         self.accounts_box = AccountsWindow(self.app, self)
         self.accounts_list = self.accounts_box.get_accounts_list()
-        self.hb.remove_button.connect("clicked", self.accounts_list.remove_selected)
+        self.hb.remove_button.connect(
+            "clicked", self.accounts_list.remove_selected)
         self.search_bar = self.accounts_box.get_search_bar()
         self.main_box.pack_start(self.accounts_box, True, True, 0)
 

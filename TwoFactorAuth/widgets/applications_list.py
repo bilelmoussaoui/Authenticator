@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, GLib, Gio, Gdk
@@ -8,6 +9,7 @@ from gettext import gettext as _
 import yaml
 from glob import glob
 from threading import Thread
+import logging
 
 
 class ApplicationChooserWindow(Gtk.Window, Thread):
@@ -17,7 +19,6 @@ class ApplicationChooserWindow(Gtk.Window, Thread):
         self.nom = "applications-db-reader"
         Gtk.Window.__init__(self, type=Gtk.WindowType.TOPLEVEL, modal=True,
                             destroy_with_parent=True)
-        # directory that contains the main icons
         self.parent = window
         self.db = []
         self.spinner = Gtk.Spinner()
@@ -32,6 +33,7 @@ class ApplicationChooserWindow(Gtk.Window, Thread):
         self.start()
 
     def run(self):
+        # Load applications list using a Thread
         while not self.db_read:
             self.read_database()
             self.add_apps()
@@ -56,7 +58,7 @@ class ApplicationChooserWindow(Gtk.Window, Thread):
             Generate window compenents
         """
         box_outer = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-        # Create a ScrolledWindow for installed applications
+        # Create a ScrolledWindow
         self.scrolled_win = Gtk.ScrolledWindow()
         self.scrolled_win.add_with_viewport(box_outer)
         self.scrolled_win.hide()
@@ -115,6 +117,9 @@ class ApplicationChooserWindow(Gtk.Window, Thread):
         self.main_box.pack_start(self.search_bar, False, True, 0)
 
     def is_valid_app(self, app):
+        """
+            Check if the application supports tfa
+        """
         if set(["tfa", "software"]).issubset(app.keys()):
             return app["tfa"] and app["software"]
         else:
@@ -145,6 +150,9 @@ class ApplicationChooserWindow(Gtk.Window, Thread):
         return False
 
     def update_ui(self):
+        """
+            Hide and stop the spinner and show the scrolled window
+        """
         self.spinner.stop()
         self.spinner.get_parent().get_parent().hide()
         self.scrolled_win.show()
@@ -152,10 +160,15 @@ class ApplicationChooserWindow(Gtk.Window, Thread):
         if len(self.listbox.get_children()) != 0:
             self.listbox.show_all()
         self.db_read = True
+        logging.debug("UI updated")
 
     def read_database(self):
+        """
+            Read .yml database files provided by 2factorauth guys!
+        """
         db_dir = path.join(env.get("DATA_DIR"), "applications") + "/data/*.yml"
         db_files = glob(db_dir)
+        logging.debug("Reading database files started")
         for db_file in db_files:
             with open(db_file, 'r') as data:
                 try:
@@ -165,17 +178,23 @@ class ApplicationChooserWindow(Gtk.Window, Thread):
                             self.db.append(app)
                 except yaml.YAMLError as error:
                     logging.error("Error loading yml file : %s " % str(error))
+        logging.debug("Reading database files finished")
 
     def add_apps(self):
-        i = 0
+        """
+            Add database applications to the Gtk.ListBox
+        """
         directory = path.join(env.get("DATA_DIR"), "applications") + "/images/"
         self.db = sorted(self.db, key=lambda k: k['name'].lower())
-        while i < len(self.db):
-            img_path = directory + self.db[i]["img"]
-            app_name = self.db[i]["name"]
+        logging.debug("Application list was ordered alphabetically")
+
+        for app in self.db:
+            img_path = directory + app["img"]
+            app_name = app["name"]
             self.listbox.add(ApplicationRow(app_name, img_path))
-            i += 1
-        self.listbox.select_row(self.listbox.get_row_at_index(0))
+
+        if len(self.db) != 0:
+            self.listbox.select_row(self.listbox.get_row_at_index(0))
 
     def select_application(self, *args):
         """
@@ -184,8 +203,12 @@ class ApplicationChooserWindow(Gtk.Window, Thread):
         selected_row = self.listbox.get_selected_row()
         if selected_row:
             img_path = selected_row.get_icon_name()
+            app_name = selected_row.get_name()
+            logging.debug("%s was selected" % app_name)
             self.parent.update_logo(img_path)
+            self.parent.name_entry.set_text(app_name)
             self.parent.show_window()
+            self.parent.present()
             self.close_window()
 
     def show_window(self):
@@ -195,4 +218,5 @@ class ApplicationChooserWindow(Gtk.Window, Thread):
         """
             Close the window
         """
+        logging.debug("Closing ApplicationChooserWindow")
         self.destroy()

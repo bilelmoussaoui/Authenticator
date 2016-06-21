@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-21 02:55+0200\n"
+"POT-Creation-Date: 2016-06-21 04:45+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -88,155 +88,155 @@ msgid ""
 "later</a> for details."
 msgstr ""
 
-#: TwoFactorAuth/widgets/headerbar.py:44
+#: TwoFactorAuth/widgets/headerbar.py:63
 msgid "Remove selected accounts"
 msgstr ""
 
-#: TwoFactorAuth/widgets/headerbar.py:51
-#: TwoFactorAuth/widgets/add_account.py:30
-#: TwoFactorAuth/widgets/add_account.py:45
+#: TwoFactorAuth/widgets/headerbar.py:70
+#: TwoFactorAuth/widgets/add_account.py:49
+#: TwoFactorAuth/widgets/add_account.py:64
 msgid "Add a new account"
 msgstr ""
 
-#: TwoFactorAuth/widgets/headerbar.py:58
+#: TwoFactorAuth/widgets/headerbar.py:77
 msgid "Lock the Application"
 msgstr ""
 
-#: TwoFactorAuth/widgets/headerbar.py:74
+#: TwoFactorAuth/widgets/headerbar.py:93
 msgid "Selection mode"
 msgstr ""
 
-#: TwoFactorAuth/widgets/headerbar.py:81
-#: TwoFactorAuth/widgets/applications_list.py:96
+#: TwoFactorAuth/widgets/headerbar.py:100
+#: TwoFactorAuth/widgets/applications_list.py:98
 msgid "Search"
 msgstr ""
 
-#: TwoFactorAuth/widgets/headerbar.py:85
-#: TwoFactorAuth/widgets/add_account.py:50
-#: TwoFactorAuth/widgets/change_password.py:143
-#: TwoFactorAuth/widgets/applications_list.py:88
+#: TwoFactorAuth/widgets/headerbar.py:104
+#: TwoFactorAuth/widgets/add_account.py:69
+#: TwoFactorAuth/widgets/change_password.py:162
+#: TwoFactorAuth/widgets/applications_list.py:90
 msgid "Cancel"
 msgstr ""
 
-#: TwoFactorAuth/widgets/headerbar.py:97 TwoFactorAuth/widgets/settings.py:24
-#: TwoFactorAuth/application.py:60
+#: TwoFactorAuth/widgets/headerbar.py:116 TwoFactorAuth/widgets/settings.py:43
+#: TwoFactorAuth/application.py:79
 msgid "Settings"
 msgstr ""
 
-#: TwoFactorAuth/widgets/no_account_window.py:19
+#: TwoFactorAuth/widgets/no_account_window.py:39
 msgid "There's no account at the moment"
 msgstr ""
 
-#: TwoFactorAuth/widgets/add_account.py:55
+#: TwoFactorAuth/widgets/add_account.py:74
 msgid "Add"
 msgstr ""
 
-#: TwoFactorAuth/widgets/add_account.py:63
+#: TwoFactorAuth/widgets/add_account.py:82
 msgid "Scan a QR code"
 msgstr ""
 
-#: TwoFactorAuth/widgets/add_account.py:85
+#: TwoFactorAuth/widgets/add_account.py:104
 msgid "Account Name"
 msgstr ""
 
-#: TwoFactorAuth/widgets/add_account.py:93
+#: TwoFactorAuth/widgets/add_account.py:112
 msgid "Secret Code"
 msgstr ""
 
-#: TwoFactorAuth/widgets/change_password.py:17
+#: TwoFactorAuth/widgets/change_password.py:36
 msgid "Apply"
 msgstr ""
 
-#: TwoFactorAuth/widgets/change_password.py:27
+#: TwoFactorAuth/widgets/change_password.py:46
 msgid "Change password"
 msgstr ""
 
-#: TwoFactorAuth/widgets/change_password.py:59
+#: TwoFactorAuth/widgets/change_password.py:78
 msgid "Old password"
 msgstr ""
 
-#: TwoFactorAuth/widgets/change_password.py:69
+#: TwoFactorAuth/widgets/change_password.py:88
 msgid "New password"
 msgstr ""
 
-#: TwoFactorAuth/widgets/change_password.py:79
+#: TwoFactorAuth/widgets/change_password.py:98
 msgid "Repeat new password"
 msgstr ""
 
-#: TwoFactorAuth/widgets/applications_list.py:83
+#: TwoFactorAuth/widgets/applications_list.py:85
 msgid "Select an application"
 msgstr ""
 
-#: TwoFactorAuth/widgets/applications_list.py:99
+#: TwoFactorAuth/widgets/applications_list.py:101
 msgid "Next"
 msgstr ""
 
-#: TwoFactorAuth/widgets/login_window.py:25
+#: TwoFactorAuth/widgets/login_window.py:45
 msgid "Enter your password"
 msgstr ""
 
-#: TwoFactorAuth/widgets/login_window.py:28
+#: TwoFactorAuth/widgets/login_window.py:48
 msgid "Unlock"
 msgstr ""
 
-#: TwoFactorAuth/widgets/account_row.py:164
+#: TwoFactorAuth/widgets/account_row.py:183
 msgid "Copy the generated code"
 msgstr ""
 
-#: TwoFactorAuth/widgets/account_row.py:174
+#: TwoFactorAuth/widgets/account_row.py:193
 msgid "Remove the account"
 msgstr ""
 
-#: TwoFactorAuth/widgets/account_row.py:179
-#: TwoFactorAuth/widgets/account_row.py:267
+#: TwoFactorAuth/widgets/account_row.py:198
+#: TwoFactorAuth/widgets/account_row.py:286
 #, python-format
 msgid "Expires in %s seconds"
 msgstr ""
 
-#: TwoFactorAuth/widgets/account_row.py:185
+#: TwoFactorAuth/widgets/account_row.py:204
 msgid "Error during the generation of code"
 msgstr ""
 
-#: TwoFactorAuth/widgets/account_row.py:230
+#: TwoFactorAuth/widgets/account_row.py:249
 msgid "Couldn't generate the secret code"
 msgstr ""
 
-#: TwoFactorAuth/widgets/account_row.py:256
+#: TwoFactorAuth/widgets/account_row.py:275
 msgid "Do you really want to remove this account?"
 msgstr ""
 
-#: TwoFactorAuth/widgets/settings.py:52
+#: TwoFactorAuth/widgets/settings.py:71
 msgid "Behavior"
 msgstr ""
 
-#: TwoFactorAuth/widgets/settings.py:57
+#: TwoFactorAuth/widgets/settings.py:76
 msgid "Account"
 msgstr ""
 
-#: TwoFactorAuth/widgets/settings.py:71
+#: TwoFactorAuth/widgets/settings.py:90
 msgid "Password protection"
 msgstr ""
 
-#: TwoFactorAuth/widgets/settings.py:95
+#: TwoFactorAuth/widgets/settings.py:114
 msgid "Auto-lock the application (m):"
 msgstr ""
 
-#: TwoFactorAuth/widgets/settings.py:116
+#: TwoFactorAuth/widgets/settings.py:135
 msgid "Secret code generation time (s) :"
 msgstr ""
 
-#: TwoFactorAuth/application.py:28
+#: TwoFactorAuth/application.py:47
 msgid "TwoFactorAuth"
 msgstr ""
 
-#: TwoFactorAuth/application.py:68
+#: TwoFactorAuth/application.py:87
 msgid "Shortcuts"
 msgstr ""
 
-#: TwoFactorAuth/application.py:70
+#: TwoFactorAuth/application.py:89
 msgid "About"
 msgstr ""
 
-#: TwoFactorAuth/application.py:71
+#: TwoFactorAuth/application.py:90
 msgid "Quit"
 msgstr ""
