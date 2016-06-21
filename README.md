@@ -10,8 +10,8 @@ For translators : https://www.transifex.com/twofactorauth/twofactorauth/
 - `PyOTP`
 - `zbarlight` depends on `zbar`
     - `libzbar-dev` on Ubuntu
-    - `zbar` on Arch 
-- `yaml`
+    - `zbar` on Arch
+- `pyyaml`
 - `GnomeKeyring`
 - `gnome-screenshot`
 
