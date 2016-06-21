@@ -31,13 +31,14 @@ class ApplicationChooserWindow(Gtk.Window, Thread):
         self.generate_components()
         self.generate_header_bar()
         self.start()
+        GLib.timeout_add_seconds(1, self.update_ui)
 
     def run(self):
         # Load applications list using a Thread
         while not self.db_read:
             self.read_database()
             self.add_apps()
-            self.update_ui()
+            self.db_read = True
 
     def generate_window(self):
         """
@@ -153,14 +154,16 @@ class ApplicationChooserWindow(Gtk.Window, Thread):
         """
             Hide and stop the spinner and show the scrolled window
         """
-        self.spinner.stop()
-        self.spinner_box_outer.hide()
-        self.scrolled_win.show()
-        self.listbox.hide()
-        if len(self.listbox.get_children()) != 0:
-            self.listbox.show_all()
-        self.db_read = True
-        logging.debug("UI updated")
+        if self.db_read:
+            self.spinner.stop()
+            self.spinner_box_outer.hide()
+            self.scrolled_win.show()
+            self.listbox.hide()
+            if len(self.listbox.get_children()) != 0:
+                self.listbox.show_all()
+            logging.debug("UI updated")
+            return False
+        return True
 
     def read_database(self):
         """
