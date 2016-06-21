@@ -11,6 +11,7 @@ For translators : https://www.transifex.com/twofactorauth/twofactorauth/
 - `zbarlight`
 - `yaml`
 - `GnomeKeyring`
+- `Gnome-screenshot`
 
 <sub>PS: The application was only tested on Arch with Gtk 3.20+, but it should work nicely with older versions too. Keyboard shortcuts widget won't be shown for older versions.</sub>
 
