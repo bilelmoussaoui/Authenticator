@@ -206,6 +206,7 @@ class AddAccount(Gtk.Window):
             applications_choose_window.present()
             self.step = 2
         else:
+            self.name_entry.grab_focus_without_selecting()
             self.show_all()
 
     def close_window(self, *args):
