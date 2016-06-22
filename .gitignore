@@ -68,6 +68,8 @@ NEWS
 README
 AUTHORS
 ChangeLog
+COPYING
+INSTALL
 aclocal.m4
 py-compile
 install-sh
@@ -99,3 +101,7 @@ po/stamp-it
 po/*.gmo
 po/POTFILES
 po/Makefile.in.in
+*.valid
+*.compiled
+*.desktop
+*.gresource
