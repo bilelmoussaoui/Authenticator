@@ -20,6 +20,11 @@ Two-factor authentication code generator for Gnome <br>
 
 <img src="screenshots/screenshot7.png" width="280" /> <img src="screenshots/screenshot1.png" width="280" /> <img src="screenshots/screenshot2.png" width="280" />
 
+### Features
+- QR code scanner
+- Beautiful UI
+- Handy shortcuts
+- Huge database of (290+) websites/applications
 
 ### Installation
 - On Arch :
