@@ -6,11 +6,12 @@ Two-factor authentication code generator for Gnome <br>
 ### Dependecies
 - `Python 3.3+`
 - `Gtk 3.16+`
-- `PyOTP`
+- `python-pyotp`
+- `python-yaml`
+- `python-pillow`
 - `zbarlight` depends on `zbar`
     - `libzbar-dev` on Ubuntu
     - `zbar` on Arch
-- `pyyaml`
 - `GnomeKeyring`
 - `gnome-screenshot`
 
@@ -41,7 +42,7 @@ Two-factor authentication code generator for Gnome <br>
 ```bash
     git clone https://github.com/bil-elmoussaoui/TwoFactorAuth && cd ./TwoFactorAuth
 ```
-2 - Install `PyOTP`
+2 - Install `python-pyotp`
 ```bash
     sudo pip install pyotp
 ```
@@ -49,19 +50,23 @@ Two-factor authentication code generator for Gnome <br>
 ```bash
 sudo pip install zbarlight
 ```
-4 - Install `pyyaml`
+4 - Install `python-yaml`
 ```bash
 sudo pip install pyyaml
 ```
+5 - Install `python-pillow`
+```bash
+sudo pip install pillow
+```
 
 <sub>PS : In some distributions you will need to use `pip3` instead of `pip` to install the compatible version of the package with Python 3.</sub> <br>
-5 - Afterwards
+6 - Afterwards
 ```bash
     ./autogen.sh
     make
     sudo make install
 ```
-6 - You can run the application from the desktop file or from terminal using
+7 - You can run the application from the desktop file or from terminal using
 ```bash
     gnome-twofactorauth
 ```
