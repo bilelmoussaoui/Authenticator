@@ -197,11 +197,11 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         h_box.pack_start(auth_logo, False, True, 6)
 
         # Account name entry
-        self.name_entry_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        name_entry_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         self.name_entry = RowEntryName(self.name)
-        self.name_entry_box.pack_start(self.name_entry, False, False, 6)
-        h_box.pack_start(self.name_entry_box, False, False, 0)
-        self.name_entry_box.set_visible(False)
+        name_entry_box.pack_start(self.name_entry, False, False, 6)
+        h_box.pack_start(name_entry_box, False, False, 0)
+        name_entry_box.set_visible(False)
 
         # accout name
         name_event = Gtk.EventBox()
@@ -221,17 +221,8 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         remove_button.set_tooltip_text(_("Remove the account"))
         remove_event.add(remove_button)
         remove_event.connect("button-press-event", self.remove)
-        h_box.pack_end(remove_event, False, True, 6)
+        h_box.pack_end(remove_event, False, False, 6)
 
-        # Edit button
-        edit_event = Gtk.EventBox()
-        edit_button = Gtk.Image(xalign=0)
-        edit_button.set_from_icon_name("document-edit-symbolic",
-                                        Gtk.IconSize.SMALL_TOOLBAR)
-        edit_button.set_tooltip_text(_("Edit the account"))
-        edit_event.add(edit_button)
-        edit_event.connect("button-press-event", self.edit)
-        h_box.pack_end(edit_event, False, True, 6)
         # Copy button
         copy_event = Gtk.EventBox()
         copy_button = Gtk.Image(xalign=0)
@@ -240,7 +231,29 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         copy_button.set_tooltip_text(_("Copy the generated code"))
         copy_event.connect("button-press-event", self.copy_code)
         copy_event.add(copy_button)
-        h_box.pack_end(copy_event, False, True, 6)
+        h_box.pack_end(copy_event, False, False, 6)
+
+        # Edit button
+        edit_event = Gtk.EventBox()
+        self.edit_button = Gtk.Image(xalign=0)
+        self.edit_button.set_from_icon_name("document-edit-symbolic",
+                                        Gtk.IconSize.SMALL_TOOLBAR)
+        self.edit_button.set_tooltip_text(_("Edit the account"))
+        edit_event.add(self.edit_button)
+        edit_event.connect("button-press-event", self.edit)
+        h_box.pack_end(edit_event, False, False, 6)
+
+        # Apply button
+        apply_event = Gtk.EventBox()
+        self.apply_button = Gtk.Image(xalign=0)
+        self.apply_button.set_from_icon_name("emblem-ok-symbolic",
+                                        Gtk.IconSize.SMALL_TOOLBAR)
+        self.apply_button.set_tooltip_text(_("Save the new account name"))
+        apply_event.add(self.apply_button)
+        apply_event.connect("button-press-event", self.apply_edit_name)
+        h_box.pack_end(apply_event, False, False, 6)
+
+        self.toggle_edit_mode(False)
 
         self.timer_label.set_label(_("Expires in %s seconds") % self.counter)
         self.timer_label.get_style_context().add_class("account-timer")
@@ -301,7 +314,10 @@ class AccountRow(Thread, Gtk.ListBoxRow):
             self.name_entry.hide()
         self.application_name.set_visible(not visible)
         self.application_name.set_no_show_all(visible)
-        self.name_entry_box.set_visible(not visible)
+        self.apply_button.set_visible(visible)
+        self.apply_button.set_no_show_all(not visible)
+        self.edit_button.get_parent().set_visible(not visible)
+        self.edit_button.get_parent().set_no_show_all(visible)
 
 
     def __on_key_press(self, widget, event):
@@ -333,10 +349,9 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         return False
 
     def edit(self, *args):
-        self.application_name.set_visible(False)
-        self.application_name.set_no_show_all(True)
-        self.name_entry.show()
-        self.name_entry.focus()
+        is_visible = self.name_entry.is_visible()
+        self.toggle_edit_mode(not is_visible)
+
 
     def apply_edit_name(self, *args):
         new_name = self.name_entry.get_text()
