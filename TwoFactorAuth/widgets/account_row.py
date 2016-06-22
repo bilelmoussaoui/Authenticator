@@ -19,7 +19,7 @@
 """
 from gi import require_version
 require_version("Gtk", "3.0")
-from gi.repository import Gtk, Gdk, GLib
+from gi.repository import Gtk, Gdk, GLib, Pango
 from TwoFactorAuth.models.code import Code
 from TwoFactorAuth.models.settings import SettingsReader
 from TwoFactorAuth.models.database import Database
@@ -30,6 +30,33 @@ from time import sleep
 import logging
 from gettext import gettext as _
 
+
+class RowEntryName(Gtk.Entry):
+
+    def __init__(self, name):
+        self.name = name
+        self.generate()
+
+    def generate(self):
+        Gtk.Entry.__init__(self, xalign=0)
+        self.set_text(self.name)
+        self.hide()
+
+    def toggle(self, visible):
+        self.set_visible(visible)
+        self.set_no_show_all(not visible)
+
+    def is_visible(self):
+        return self.get_visible()
+
+    def hide(self):
+        self.toggle(False)
+
+    def show(self):
+        self.toggle(True)
+
+    def focus(self):
+        self.grab_focus_without_selecting()
 
 class AccountRow(Thread, Gtk.ListBoxRow):
     counter_max = 30
@@ -69,7 +96,6 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         self.create_row()
         self.start()
         self.window.connect("key-press-event", self.__on_key_press)
-        GLib.timeout_add_seconds(1, self.refresh_listbox)
 
     def get_id(self):
         """
@@ -168,22 +194,19 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         auth_logo.set_from_pixbuf(auth_icon)
         h_box.pack_start(auth_logo, False, True, 6)
 
+        # Account name entry
+        self.name_entry = RowEntryName(self.name)
+        h_box.pack_start(self.name_entry, True, True, 0)
+
         # accout name
         name_event = Gtk.EventBox()
         self.application_name .get_style_context().add_class("application-name")
+        self.application_name.set_ellipsize(Pango.EllipsizeMode.END)
+        self.application_name.props.tooltip_text = self.name
         self.application_name .set_text(self.name)
         name_event.connect("button-press-event", self.toggle_code)
         name_event.add(self.application_name)
-        h_box.pack_start(name_event, True, True, 6)
-        # Copy button
-        copy_event = Gtk.EventBox()
-        copy_button = Gtk.Image(xalign=0)
-        copy_button.set_from_icon_name(
-            "edit-copy-symbolic", Gtk.IconSize.SMALL_TOOLBAR)
-        copy_button.set_tooltip_text(_("Copy the generated code"))
-        copy_event.connect("button-press-event", self.copy_code)
-        copy_event.add(copy_button)
-        h_box.pack_end(copy_event, False, True, 6)
+        h_box.pack_start(name_event, False, True, 6)
 
         # Remove button
         remove_event = Gtk.EventBox()
@@ -194,6 +217,25 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         remove_event.add(remove_button)
         remove_event.connect("button-press-event", self.remove)
         h_box.pack_end(remove_event, False, True, 6)
+
+        # Edit button
+        edit_event = Gtk.EventBox()
+        edit_button = Gtk.Image(xalign=0)
+        edit_button.set_from_icon_name("document-edit-symbolic",
+                                        Gtk.IconSize.SMALL_TOOLBAR)
+        edit_button.set_tooltip_text(_("Edit the account"))
+        edit_event.add(edit_button)
+        edit_event.connect("button-press-event", self.edit)
+        h_box.pack_end(edit_event, False, True, 6)
+        # Copy button
+        copy_event = Gtk.EventBox()
+        copy_button = Gtk.Image(xalign=0)
+        copy_button.set_from_icon_name(
+            "edit-copy-symbolic", Gtk.IconSize.SMALL_TOOLBAR)
+        copy_button.set_tooltip_text(_("Copy the generated code"))
+        copy_event.connect("button-press-event", self.copy_code)
+        copy_event.add(copy_button)
+        h_box.pack_end(copy_event, False, True, 6)
 
         self.timer_label.set_label(_("Expires in %s seconds") % self.counter)
         self.timer_label.get_style_context().add_class("account-timer")
@@ -227,10 +269,6 @@ class AccountRow(Thread, Gtk.ListBoxRow):
             self.changed()
             sleep(1)
 
-    def refresh_listbox(self):
-        self.window.accounts_list.refresh()
-        return self.code_generated
-
     def regenerate_code(self):
         label = self.code_label
         if label:
@@ -249,17 +287,36 @@ class AccountRow(Thread, Gtk.ListBoxRow):
             label.set_text(_("Couldn't generate the secret code"))
             self.code_generated = False
 
+    def toggle_edit_mode(self, visible):
+        if visible:
+            self.name_entry.show()
+            self.name_entry.focus()
+        else:
+            self.name_entry.hide()
+        self.application_name.set_visible(not visible)
+        self.application_name.set_no_show_all(visible)
+
+
     def __on_key_press(self, widget, event):
         keyname = Gdk.keyval_name(event.keyval).lower()
         if not self.window.is_locked():
             if self.parent.get_selected_row_id() == self.get_id():
                 is_search_bar = self.window.search_bar.is_visible()
-                if keyname == "delete" and not is_search_bar:
+                is_editing_name = self.name_entry.is_visible()
+                if keyname == "delete" and not is_search_bar and not is_editing_name:
                     self.remove()
                     return True
 
+                if keyname == "escape":
+                    if is_editing_name:
+                        self.toggle_edit_mode(False)
+                        return True
+
                 if keyname == "return":
-                    self.toggle_code_box()
+                    if is_editing_name:
+                        self.apply_edit_name()
+                    else:
+                        self.toggle_code_box()
                     return True
 
                 if event.state & Gdk.ModifierType.CONTROL_MASK:
@@ -267,6 +324,18 @@ class AccountRow(Thread, Gtk.ListBoxRow):
                         self.copy_code()
                         return True
         return False
+
+    def edit(self, *args):
+        self.application_name.set_visible(False)
+        self.application_name.set_no_show_all(True)
+        self.name_entry.show()
+        self.name_entry.focus()
+
+    def apply_edit_name(self, *args):
+        new_name = self.name_entry.get_text()
+        self.application_name.set_text(new_name)
+        self.window.app.db.update_name_by_id(self.get_id(), new_name)
+        self.toggle_edit_mode(False)
 
     def remove(self, *args):
         """

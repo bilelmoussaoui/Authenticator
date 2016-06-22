@@ -36,6 +36,8 @@ class AccountsList(Gtk.ListBox):
         self.window = window
         self.generate()
         self.window.connect("key-press-event", self.on_key_press)
+        self.connect("row-selected", self.selected_row)
+        GLib.timeout_add_seconds(1, self.refresh)
 
     def generate(self):
         Gtk.ListBox.__init__(self)
@@ -60,6 +62,10 @@ class AccountsList(Gtk.ListBox):
             self.select_row(self.get_row_at_index(0))
         self.show_all()
 
+    def selected_row(self, account_list, selected_row):
+        for row in self.get_children():
+            row.toggle_edit_mode(False)
+
     def on_key_press(self, app, key_event):
         """
             Keyboard Listener handling
@@ -73,8 +79,8 @@ class AccountsList(Gtk.ListBox):
                     selected_row = self.get_selected_row()
                     if selected_row is not None:
                         index = selected_row.get_index()
-                        index = (index + dx) % count
-                        self.select_row(self.get_row_at_index(index))
+                        new_index = (index + dx) % count
+                        self.select_row(self.get_row_at_index(new_index))
                         return True
         return False
 

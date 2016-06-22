@@ -9,14 +9,16 @@
         <property name="window_position">center</property>
         <property name="destroy_with_parent">True</property>
         <property name="type_hint">menu</property>
-        <property name="program_name">TwoFactorAuth</property>
+        <property name="program_name">Gnome TwoFactorAuth</property>
         <property name="version">0.1 beta</property>
         <property name="comments" translatable="yes">Simple application to generate two-factor authentication code</property>
         <property name="license" translatable="yes">This program comes with absolutely no warranty. See the &lt;a href="http://www.gnu.org/licenses/gpl-3.0.html"&gt;GNU General Public License, version 3 or later&lt;/a&gt; for details.</property>
         <property name="authors">Bilal Elmoussaoui</property>
-        <property name="logo_icon_name">two-factor-auth</property>
-        <property name="wrap_license">True</property>
+        <property name="logo_icon_name">gnome-twofactorauth</property>
         <property name="license_type">gpl-3-0</property>
+        <property name="website">https://github.com/bil-elmoussaoui/Gnome-TwoFactorAuth</property>
+        <property name="website_label" translatable="yes">Github</property>
+        <property name="artists">Alexandros Felekidis</property>
         <child internal-child="vbox">
             <object class="GtkBox" id="aboutdialog-vbox">
                 <property name="can_focus">False</property>

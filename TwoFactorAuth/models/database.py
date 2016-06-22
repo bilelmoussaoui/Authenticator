@@ -111,6 +111,14 @@ class Database:
             logging.error(
                 "SQL: Couldn't remove account by uid : %s with error : %s" % (uid, str(e)))
 
+    def update_name_by_id(self, id, new_name):
+        query = "UPDATE accounts SET name=? WHERE uid=?"
+        try:
+            self.conn.execute(query, (new_name, id, ))
+            self.conn.commit()
+        except Exception as e:
+            logging.error("SQL: couldn't update account name by id : %s with error : %s" %(id, str(e)))
+
     def count(self):
         """
             Count number of accounts
