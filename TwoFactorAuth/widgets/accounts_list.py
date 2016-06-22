@@ -64,7 +64,8 @@ class AccountsList(Gtk.ListBox):
 
     def selected_row(self, account_list, selected_row):
         for row in self.get_children():
-            row.toggle_edit_mode(False)
+            if row != selected_row:
+                row.toggle_edit_mode(False)
 
     def on_key_press(self, app, key_event):
         """

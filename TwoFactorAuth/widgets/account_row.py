@@ -40,6 +40,8 @@ class RowEntryName(Gtk.Entry):
     def generate(self):
         Gtk.Entry.__init__(self, xalign=0)
         self.set_text(self.name)
+        self.set_width_chars(25)
+        self.set_max_width_chars(25)
         self.hide()
 
     def toggle(self, visible):
@@ -195,8 +197,11 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         h_box.pack_start(auth_logo, False, True, 6)
 
         # Account name entry
+        self.name_entry_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         self.name_entry = RowEntryName(self.name)
-        h_box.pack_start(self.name_entry, True, True, 0)
+        self.name_entry_box.pack_start(self.name_entry, False, False, 6)
+        h_box.pack_start(self.name_entry_box, False, False, 0)
+        self.name_entry_box.set_visible(False)
 
         # accout name
         name_event = Gtk.EventBox()
@@ -290,11 +295,13 @@ class AccountRow(Thread, Gtk.ListBoxRow):
     def toggle_edit_mode(self, visible):
         if visible:
             self.name_entry.show()
+            self.name_entry.set_text(self.get_name())
             self.name_entry.focus()
         else:
             self.name_entry.hide()
         self.application_name.set_visible(not visible)
         self.application_name.set_no_show_all(visible)
+        self.name_entry_box.set_visible(not visible)
 
 
     def __on_key_press(self, widget, event):

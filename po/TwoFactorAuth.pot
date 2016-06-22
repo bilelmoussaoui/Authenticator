@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-22 15:55+0200\n"
+"POT-Creation-Date: 2016-06-23 00:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -183,33 +183,33 @@ msgstr ""
 msgid "Unlock"
 msgstr ""
 
-#: TwoFactorAuth/widgets/account_row.py:216
+#: TwoFactorAuth/widgets/account_row.py:221
 msgid "Remove the account"
 msgstr ""
 
-#: TwoFactorAuth/widgets/account_row.py:226
+#: TwoFactorAuth/widgets/account_row.py:231
 msgid "Edit the account"
 msgstr ""
 
-#: TwoFactorAuth/widgets/account_row.py:235
+#: TwoFactorAuth/widgets/account_row.py:240
 msgid "Copy the generated code"
 msgstr ""
 
-#: TwoFactorAuth/widgets/account_row.py:240
-#: TwoFactorAuth/widgets/account_row.py:356
+#: TwoFactorAuth/widgets/account_row.py:245
+#: TwoFactorAuth/widgets/account_row.py:363
 #, python-format
 msgid "Expires in %s seconds"
 msgstr ""
 
-#: TwoFactorAuth/widgets/account_row.py:246
+#: TwoFactorAuth/widgets/account_row.py:251
 msgid "Error during the generation of code"
 msgstr ""
 
-#: TwoFactorAuth/widgets/account_row.py:287
+#: TwoFactorAuth/widgets/account_row.py:292
 msgid "Couldn't generate the secret code"
 msgstr ""
 
-#: TwoFactorAuth/widgets/account_row.py:345
+#: TwoFactorAuth/widgets/account_row.py:352
 #, python-format
 msgid "Do you really want to remove \"%s\"?"
 msgstr ""
