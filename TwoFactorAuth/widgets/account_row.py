@@ -186,7 +186,7 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         self.checkbox.set_visible(False)
         self.checkbox.set_no_show_all(True)
         self.checkbox.connect("toggled", self.parent.select_account)
-        h_box.pack_start(self.checkbox, False, True, 0)
+        h_box.pack_start(self.checkbox, False, True, 6)
 
         # account logo
         auth_icon = get_icon(self.logo)
@@ -335,6 +335,7 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         new_name = self.name_entry.get_text()
         self.application_name.set_text(new_name)
         self.window.app.db.update_name_by_id(self.get_id(), new_name)
+        self.name = new_name
         self.toggle_edit_mode(False)
 
     def remove(self, *args):

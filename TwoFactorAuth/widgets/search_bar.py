@@ -73,12 +73,13 @@ class SearchBar(Gtk.Revealer):
         if keyname == 'escape' and self.search_button.get_active():
             if self.search_entry.is_focus():
                 self.search_button.set_active(False)
+                self.search_entry.set_text("")
             else:
                 self.focus()
 
         if not "is_locked" in dir(self.window) or not self.window.is_locked():
             if keyname == "backspace":
-                if self.is_empty():
+                if self.is_empty() and self.is_visible():
                     self.search_button.set_active(False)
                     return True
 
