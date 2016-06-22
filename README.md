@@ -1,8 +1,8 @@
 ![Status](https://img.shields.io/badge/status-stable-green.svg) [![Version](https://img.shields.io/badge/version-0.1.0-green.svg)](https://github.com/bil-elmoussaoui/Gnome-TwoFactorAuth/releases) ![Python
 version](https://img.shields.io/badge/python-3.3%2B-blue.svg)
-
 # Gnome TwoFactorAuth
-Two-factor authentication code generator for Gnome <br>
+<img src="https://raw.githubusercontent.com/bil-elmoussaoui/Gnome-TwoFactorAuth/master/data/icons/hicolor/48x48/apps/gnome-twofactorauth.png" width="128" height="128" />
+<p>Two-factor authentication code generator for Gnome. Created with love using Python and Gtk.</p>
 ### Dependecies
 - `Python 3.3+`
 - `Gtk 3.16+`
