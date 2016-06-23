@@ -29,7 +29,6 @@ import logging
 
 class AccountsList(Gtk.ListBox):
     scrolled_win = None
-    selected_count = 0
 
     def __init__(self, application, window):
         self.app = application
@@ -68,6 +67,9 @@ class AccountsList(Gtk.ListBox):
         for row in self.get_children():
             if row != selected_row:
                 row.toggle_edit_mode(False)
+            checkbutton = row.get_checkbox()
+            if not checkbutton.get_active() and self.window.is_select_mode:
+                self.unselect_row(row)
 
     def activate_row(self, account_list, selected_row):
         if self.window.is_select_mode and selected_row:
@@ -97,26 +99,24 @@ class AccountsList(Gtk.ListBox):
             self.set_selection_mode(Gtk.SelectionMode.MULTIPLE)
         else:
             self.set_selection_mode(Gtk.SelectionMode.SINGLE)
-
-        self.select_row(self.get_row_at_index(0))
+            if len(self.get_children()) != 0:
+                self.select_row(self.get_row_at_index(0))
 
         for row in self.get_children():
             checkbox = row.get_checkbox()
             code_label = row.get_code_label()
             visible = checkbox.get_visible()
-            selected = checkbox.get_active()
             style_context = code_label.get_style_context()
             if is_select_mode:
                 self.select_account(checkbox)
                 style_context.add_class("application-secret-code-select-mode")
             else:
-                style_context.remove_class(
-                    "application-secret-code-select-mode")
-
+                style_context.remove_class("application-secret-code-select-mode")
+            row.toggle_action_box(visible)
             checkbox.set_visible(not visible)
             checkbox.set_no_show_all(visible)
 
-    def append(self,  app):
+    def append(self, app):
         """
             Add an element to the ListBox
         """
@@ -146,12 +146,10 @@ class AccountsList(Gtk.ListBox):
         listbox_row = checkbutton.get_parent().get_parent().get_parent()
         if is_active:
             self.select_row(listbox_row)
-            if is_visible:
-                self.selected_count += 1
         else:
             self.unselect_row(listbox_row)
-            if is_visible:
-                self.selected_count -= 1
+        selected_count = len(self.get_selected_rows())
+        self.window.hb.remove_button.set_sensitive(selected_count > 0)
 
     def get_selected_row_id(self):
         selected_row = self.get_selected_row()
@@ -179,4 +177,3 @@ class AccountsList(Gtk.ListBox):
     def refresh(self):
         self.scrolled_win.hide()
         self.scrolled_win.show_all()
-        self.window.hb.remove_button.set_sensitive(self.selected_count > 0)

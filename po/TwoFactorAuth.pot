@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-23 00:52+0200\n"
+"POT-Creation-Date: 2016-06-24 00:46+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -111,14 +111,14 @@ msgid "Selection mode"
 msgstr ""
 
 #: TwoFactorAuth/widgets/headerbar.py:101
-#: TwoFactorAuth/widgets/applications_list.py:99
+#: TwoFactorAuth/widgets/applications_list.py:118
 msgid "Search"
 msgstr ""
 
 #: TwoFactorAuth/widgets/headerbar.py:105
 #: TwoFactorAuth/widgets/add_account.py:69
 #: TwoFactorAuth/widgets/change_password.py:162
-#: TwoFactorAuth/widgets/applications_list.py:91
+#: TwoFactorAuth/widgets/applications_list.py:110
 msgid "Cancel"
 msgstr ""
 
@@ -167,11 +167,11 @@ msgstr ""
 msgid "Repeat new password"
 msgstr ""
 
-#: TwoFactorAuth/widgets/applications_list.py:86
+#: TwoFactorAuth/widgets/applications_list.py:105
 msgid "Select an application"
 msgstr ""
 
-#: TwoFactorAuth/widgets/applications_list.py:102
+#: TwoFactorAuth/widgets/applications_list.py:121
 msgid "Next"
 msgstr ""
 
@@ -183,37 +183,37 @@ msgstr ""
 msgid "Unlock"
 msgstr ""
 
-#: TwoFactorAuth/widgets/account_row.py:221
+#: TwoFactorAuth/widgets/account_row.py:222
 msgid "Remove the account"
 msgstr ""
 
-#: TwoFactorAuth/widgets/account_row.py:231
+#: TwoFactorAuth/widgets/account_row.py:232
 msgid "Copy the generated code"
 msgstr ""
 
-#: TwoFactorAuth/widgets/account_row.py:241
+#: TwoFactorAuth/widgets/account_row.py:242
 msgid "Edit the account"
 msgstr ""
 
-#: TwoFactorAuth/widgets/account_row.py:251
+#: TwoFactorAuth/widgets/account_row.py:252
 msgid "Save the new account name"
 msgstr ""
 
-#: TwoFactorAuth/widgets/account_row.py:258
-#: TwoFactorAuth/widgets/account_row.py:378
+#: TwoFactorAuth/widgets/account_row.py:260
+#: TwoFactorAuth/widgets/account_row.py:384
 #, python-format
 msgid "Expires in %s seconds"
 msgstr ""
 
-#: TwoFactorAuth/widgets/account_row.py:264
+#: TwoFactorAuth/widgets/account_row.py:266
 msgid "Error during the generation of code"
 msgstr ""
 
-#: TwoFactorAuth/widgets/account_row.py:305
+#: TwoFactorAuth/widgets/account_row.py:311
 msgid "Couldn't generate the secret code"
 msgstr ""
 
-#: TwoFactorAuth/widgets/account_row.py:367
+#: TwoFactorAuth/widgets/account_row.py:373
 #, python-format
 msgid "Do you really want to remove \"%s\"?"
 msgstr ""

@@ -214,6 +214,7 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         h_box.pack_start(name_event, False, True, 6)
 
         # Remove button
+        self.actions_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         remove_event = Gtk.EventBox()
         remove_button = Gtk.Image(xalign=0)
         remove_button.set_from_icon_name("user-trash-symbolic",
@@ -221,7 +222,7 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         remove_button.set_tooltip_text(_("Remove the account"))
         remove_event.add(remove_button)
         remove_event.connect("button-press-event", self.remove)
-        h_box.pack_end(remove_event, False, False, 6)
+        self.actions_box.pack_end(remove_event, False, False, 6)
 
         # Copy button
         copy_event = Gtk.EventBox()
@@ -231,7 +232,7 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         copy_button.set_tooltip_text(_("Copy the generated code"))
         copy_event.connect("button-press-event", self.copy_code)
         copy_event.add(copy_button)
-        h_box.pack_end(copy_event, False, False, 6)
+        self.actions_box.pack_end(copy_event, False, False, 6)
 
         # Edit button
         edit_event = Gtk.EventBox()
@@ -241,7 +242,7 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         self.edit_button.set_tooltip_text(_("Edit the account"))
         edit_event.add(self.edit_button)
         edit_event.connect("button-press-event", self.edit)
-        h_box.pack_end(edit_event, False, False, 6)
+        self.actions_box.pack_end(edit_event, False, False, 6)
 
         # Apply button
         apply_event = Gtk.EventBox()
@@ -251,8 +252,9 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         self.apply_button.set_tooltip_text(_("Save the new account name"))
         apply_event.add(self.apply_button)
         apply_event.connect("button-press-event", self.apply_edit_name)
-        h_box.pack_end(apply_event, False, False, 6)
-
+        self.actions_box.pack_end(apply_event, False, False, 6)
+        h_box.pack_end(self.actions_box, False, False, 0)
+        self.toggle_action_box(True)
         self.toggle_edit_mode(False)
 
         self.timer_label.set_label(_("Expires in %s seconds") % self.counter)
@@ -274,6 +276,10 @@ class AccountRow(Thread, Gtk.ListBoxRow):
 
     def toggle_code(self, *args):
         self.toggle_code_box()
+
+    def toggle_action_box(self, visible):
+        self.actions_box.set_visible(visible)
+        self.actions_box.set_no_show_all(not visible)
 
     def run(self):
         while self.code_generated and self.window.app.alive and self.alive:
