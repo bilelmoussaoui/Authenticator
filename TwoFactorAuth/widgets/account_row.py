@@ -351,6 +351,7 @@ class AccountRow(Thread, Gtk.ListBoxRow):
     def edit(self, *args):
         is_visible = self.name_entry.is_visible()
         self.toggle_edit_mode(not is_visible)
+        self.parent.select_row(self)
 
 
     def apply_edit_name(self, *args):
