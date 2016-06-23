@@ -36,7 +36,9 @@ class AccountsList(Gtk.ListBox):
         self.window = window
         self.generate()
         self.window.connect("key-press-event", self.on_key_press)
+        self.connect("row-activated", self.activate_row)
         self.connect("row-selected", self.selected_row)
+
         GLib.timeout_add_seconds(1, self.refresh)
 
     def generate(self):
@@ -66,6 +68,10 @@ class AccountsList(Gtk.ListBox):
         for row in self.get_children():
             if row != selected_row:
                 row.toggle_edit_mode(False)
+
+    def activate_row(self, account_list, selected_row):
+        if self.window.is_select_mode and selected_row:
+            self.select_account(selected_row.get_checkbox())
 
     def on_key_press(self, app, key_event):
         """
@@ -146,7 +152,6 @@ class AccountsList(Gtk.ListBox):
             self.unselect_row(listbox_row)
             if is_visible:
                 self.selected_count -= 1
-        self.window.hb.remove_button.set_sensitive(self.selected_count > 0)
 
     def get_selected_row_id(self):
         selected_row = self.get_selected_row()
@@ -174,3 +179,4 @@ class AccountsList(Gtk.ListBox):
     def refresh(self):
         self.scrolled_win.hide()
         self.scrolled_win.show_all()
+        self.window.hb.remove_button.set_sensitive(self.selected_count > 0)
