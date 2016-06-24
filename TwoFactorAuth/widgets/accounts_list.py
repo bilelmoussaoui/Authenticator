@@ -83,13 +83,15 @@ class AccountsList(Gtk.ListBox):
         if not self.window.is_locked():
             if not self.window.no_account_box.is_visible():
                 if keyname == "up" or keyname == "down":
-                    count = self.app.db.count()
+                    count = len(self.get_children())
                     dx = -1 if keyname == "up" else 1
                     selected_row = self.get_selected_row()
                     if selected_row is not None:
                         index = selected_row.get_index()
                         new_index = (index + dx) % count
                         self.select_row(self.get_row_at_index(new_index))
+                        scrollbar = self.scrolled_win.get_vscrollbar()
+                        print(scrollbar)
                         return True
         return False
 

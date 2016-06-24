@@ -158,9 +158,7 @@ class AccountRow(Thread, Gtk.ListBoxRow):
             logging.debug("Secret code copied to clipboard")
         except Exception as e:
             logging.error(str(e))
-        self.code_box.set_visible(True)
-        self.code_box.set_no_show_all(False)
-        self.code_box.show_all()
+        self.revealer.set_reveal_child(True)
         GLib.timeout_add_seconds(1, self.update_timer)
 
     def update_timer(self, *args):
@@ -169,8 +167,7 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         """
         self.timer += 1
         if self.timer > 10:
-            self.code_box.set_visible(False)
-            self.code_box.set_no_show_all(True)
+            self.revealer.set_reveal_child(False)
         return self.timer <= 10
 
     def create_row(self):
