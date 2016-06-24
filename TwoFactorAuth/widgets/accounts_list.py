@@ -90,8 +90,6 @@ class AccountsList(Gtk.ListBox):
                         index = selected_row.get_index()
                         new_index = (index + dx) % count
                         self.select_row(self.get_row_at_index(new_index))
-                        scrollbar = self.scrolled_win.get_vscrollbar()
-                        print(scrollbar)
                         return True
         return False
 
