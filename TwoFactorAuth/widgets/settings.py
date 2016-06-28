@@ -31,7 +31,6 @@ class SettingsWindow(Gtk.Window):
         self.parent = parent
         self.cfg = SettingsReader()
         self.notebook = Gtk.Notebook()
-        self.time_spin_button = Gtk.SpinButton()
         self.auto_lock_time = Gtk.SpinButton()
         self.enable_switch = Gtk.CheckButton()
         self.auto_lock_switch = Gtk.CheckButton()
@@ -131,22 +130,7 @@ class SettingsWindow(Gtk.Window):
         auto_lock_box.pack_start(auto_lock_label, False, True, 6)
         auto_lock_box.pack_start(self.auto_lock_time, False, True, 12)
 
-        time_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        time_label = Gtk.Label().new(_("Secret code generation time (s) :"))
-        default_value = self.cfg.read("refresh-time", "preferences")
-        if default_value < 30 or default_value > 120:
-            default_value = 30
-        adjustment = Gtk.Adjustment(value=default_value, lower=10, upper=120,
-                                    step_increment=1, page_increment=10, page_size=0)
-        self.time_spin_button.connect("value-changed", self.on_time_changed)
-        self.time_spin_button.set_adjustment(adjustment)
-        self.time_spin_button.set_value(default_value)
-
-        time_box.pack_start(time_label, False, True, 6)
-        time_box.pack_start(self.time_spin_button, False, True, 12)
-
         main_box.pack_start(auto_lock_box, False, True, 6)
-        main_box.pack_start(time_box, False, True, 6)
         return main_box
 
     def new_password_window(self, *args):
@@ -156,14 +140,6 @@ class SettingsWindow(Gtk.Window):
         pass_window = PasswordWindow(self)
         pass_window.show_window()
 
-    def on_time_changed(self, spin_button):
-        """
-            Update time to generate a new secret code
-        """
-        self.cfg.update(
-            "refresh-time", spin_button.get_value_as_int(), "preferences")
-        logging.info("Time to generate a new secret code updated")
-
     def on_auto_lock_time_changed(self, spin_button):
         """
             Update auto lock time
@@ -171,7 +147,6 @@ class SettingsWindow(Gtk.Window):
         self.cfg.update("auto-lock-time",
                         spin_button.get_value_as_int(), "preferences")
         logging.info("Auto lock time updated")
-
 
     def on_switch_activated(self, switch, *args):
         """

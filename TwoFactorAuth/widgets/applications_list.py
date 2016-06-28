@@ -44,7 +44,6 @@ class ApplicationChooserWindow(Gtk.Window, Thread, GObject.GObject):
         self.parent = window
         self.db = []
         self.spinner = Gtk.Spinner()
-        self.db_read = False
         self.search_button = Gtk.ToggleButton()
         self.listbox = Gtk.ListBox()
         self.main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
@@ -73,7 +72,7 @@ class ApplicationChooserWindow(Gtk.Window, Thread, GObject.GObject):
         x, y = self.parent.parent.get_position()
         self.move(x, y)
         self.set_resizable(False)
-        self.set_transient_for(self.parent)
+        self.set_transient_for(self.parent.parent)
         self.connect("key_press_event", self.on_key_press)
         self.add(self.main_box)
 

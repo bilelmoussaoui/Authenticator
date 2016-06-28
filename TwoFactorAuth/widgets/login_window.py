@@ -89,6 +89,7 @@ class LoginWindow(Gtk.Box):
         pass_enabled = self.app.cfg.read("state", "login")
         if pass_enabled:
             self.app.locked = not self.app.locked
+            self.window.counter = 0
             if self.app.locked:
                 self.focus()
             self.app.refresh_menu()

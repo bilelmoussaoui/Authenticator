@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-28 02:09+0200\n"
+"POT-Creation-Date: 2016-06-28 02:22+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -111,18 +111,18 @@ msgid "Selection mode"
 msgstr ""
 
 #: TwoFactorAuth/widgets/headerbar.py:101
-#: TwoFactorAuth/widgets/applications_list.py:123
+#: TwoFactorAuth/widgets/applications_list.py:122
 msgid "Search"
 msgstr ""
 
 #: TwoFactorAuth/widgets/headerbar.py:105
 #: TwoFactorAuth/widgets/add_account.py:69
 #: TwoFactorAuth/widgets/change_password.py:162
-#: TwoFactorAuth/widgets/applications_list.py:115
+#: TwoFactorAuth/widgets/applications_list.py:114
 msgid "Cancel"
 msgstr ""
 
-#: TwoFactorAuth/widgets/headerbar.py:117 TwoFactorAuth/widgets/settings.py:43
+#: TwoFactorAuth/widgets/headerbar.py:117 TwoFactorAuth/widgets/settings.py:42
 #: TwoFactorAuth/application.py:78
 msgid "Settings"
 msgstr ""
@@ -167,11 +167,11 @@ msgstr ""
 msgid "Repeat new password"
 msgstr ""
 
-#: TwoFactorAuth/widgets/applications_list.py:110
+#: TwoFactorAuth/widgets/applications_list.py:109
 msgid "Select an application"
 msgstr ""
 
-#: TwoFactorAuth/widgets/applications_list.py:126
+#: TwoFactorAuth/widgets/applications_list.py:125
 msgid "Next"
 msgstr ""
 
@@ -218,24 +218,20 @@ msgstr ""
 msgid "Do you really want to remove \"%s\"?"
 msgstr ""
 
-#: TwoFactorAuth/widgets/settings.py:71
+#: TwoFactorAuth/widgets/settings.py:70
 msgid "Behavior"
 msgstr ""
 
-#: TwoFactorAuth/widgets/settings.py:76
+#: TwoFactorAuth/widgets/settings.py:75
 msgid "Account"
 msgstr ""
 
-#: TwoFactorAuth/widgets/settings.py:90
+#: TwoFactorAuth/widgets/settings.py:89
 msgid "Password protection"
 msgstr ""
 
-#: TwoFactorAuth/widgets/settings.py:114
+#: TwoFactorAuth/widgets/settings.py:113
 msgid "Auto-lock the application (m):"
-msgstr ""
-
-#: TwoFactorAuth/widgets/settings.py:135
-msgid "Secret code generation time (s) :"
 msgstr ""
 
 #: TwoFactorAuth/application.py:46
