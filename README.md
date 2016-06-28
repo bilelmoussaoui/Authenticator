@@ -42,31 +42,18 @@ version](https://img.shields.io/badge/python-3.3%2B-blue.svg)
 ```bash
     git clone https://github.com/bil-elmoussaoui/TwoFactorAuth && cd ./TwoFactorAuth
 ```
-2 - Install `python-pyotp`
+2 - Install Python dependecies
 ```bash
-    sudo pip install pyotp
+    sudo pip install pyotp zbarlight python-yaml pillow
 ```
-3 - Install `zbarlight`
-```bash
-sudo pip install zbarlight
-```
-4 - Install `python-yaml`
-```bash
-sudo pip install pyyaml
-```
-5 - Install `python-pillow`
-```bash
-sudo pip install pillow
-```
-
 <sub>PS : In some distributions you will need to use `pip3` instead of `pip` to install the compatible version of the package with Python 3.</sub> <br>
-6 - Afterwards
+3 - Afterwards
 ```bash
     ./autogen.sh
     make
     sudo make install
 ```
-7 - You can run the application from the desktop file or from terminal using
+4 - You can run the application from the desktop file or from terminal using
 ```bash
     gnome-twofactorauth
 ```
