@@ -19,7 +19,7 @@
 """
 from gi import require_version
 require_version("Gtk", "3.0")
-from gi.repository import Gtk, GLib, Gio, Gdk
+from gi.repository import Gtk, GObject, Gio, Gdk, GLib
 from TwoFactorAuth.widgets.search_bar import SearchBar
 from TwoFactorAuth.widgets.application_row import ApplicationRow
 from os import path, environ as env
@@ -30,10 +30,14 @@ from threading import Thread
 import logging
 
 
-class ApplicationChooserWindow(Gtk.Window, Thread):
+class ApplicationChooserWindow(Gtk.Window, Thread, GObject.GObject):
+    __gsignals__ = {
+        'db_updated': (GObject.SignalFlags.RUN_LAST, None, (bool,))
+    }
 
     def __init__(self, window):
         Thread.__init__(self)
+        GObject.GObject.__init__(self)
         self.nom = "applications-db-reader"
         Gtk.Window.__init__(self, type=Gtk.WindowType.TOPLEVEL, modal=True,
                             destroy_with_parent=True)
@@ -49,14 +53,15 @@ class ApplicationChooserWindow(Gtk.Window, Thread):
         self.generate_components()
         self.generate_header_bar()
         self.start()
-        GLib.timeout_add_seconds(1, self.update_ui)
+
+    def emit(self, *args):
+        GLib.idle_add(GObject.GObject.emit, self, *args)
 
     def run(self):
         # Load applications list using a Thread
-        while not self.db_read:
-            self.read_database()
-            self.add_apps()
-            self.db_read = True
+        self.read_database()
+        self.add_apps()
+        self.emit("db_updated", True)
 
     def generate_window(self):
         """
@@ -169,20 +174,17 @@ class ApplicationChooserWindow(Gtk.Window, Thread):
             return True
         return False
 
-    def update_ui(self):
+    def do_db_updated(self, *args):
         """
             Hide and stop the spinner and show the scrolled window
         """
-        if self.db_read:
-            self.spinner.stop()
-            self.spinner_box_outer.hide()
-            self.scrolled_win.show()
-            self.listbox.hide()
-            if len(self.listbox.get_children()) != 0:
-                self.listbox.show_all()
-            logging.debug("UI updated")
-            return False
-        return True
+        self.spinner.stop()
+        self.spinner_box_outer.hide()
+        self.scrolled_win.show()
+        self.listbox.hide()
+        if len(self.listbox.get_children()) != 0:
+            self.listbox.show_all()
+        logging.debug("UI updated")
 
     def read_database(self):
         """
