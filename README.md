@@ -1,4 +1,4 @@
-![Status](https://img.shields.io/badge/status-stable-green.svg) [![Version](https://img.shields.io/badge/version-0.1.0-green.svg)](https://github.com/bil-elmoussaoui/Gnome-TwoFactorAuth/releases) ![Python
+![Status](https://img.shields.io/badge/status-stable-green.svg) [![Version](https://img.shields.io/badge/version-0.1.1-green.svg)](https://github.com/bil-elmoussaoui/Gnome-TwoFactorAuth/releases) ![Python
 version](https://img.shields.io/badge/python-3.3%2B-blue.svg)
 # Gnome TwoFactorAuth
 <img src="https://raw.githubusercontent.com/bil-elmoussaoui/Gnome-TwoFactorAuth/master/data/icons/hicolor/48x48/apps/gnome-twofactorauth.png" width="128" height="128" />

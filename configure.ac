@@ -1,4 +1,4 @@
-AC_INIT([TwoFactorAuth], [0.1], [https://github.com/bil-elmoussaoui/TwoFactorAuth])
+AC_INIT([TwoFactorAuth], [0.1.1], [https://github.com/bil-elmoussaoui/TwoFactorAuth])
 
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR([Makefile.am])
