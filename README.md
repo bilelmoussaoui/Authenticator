@@ -51,7 +51,7 @@ sudo pip install pyotp zbarlight python-yaml pillow
 ```bash
 ./autogen.sh
 make
-udo make install
+sudo make install
 ```
 4 - You can run the application from the desktop file or from terminal using
 ```bash
