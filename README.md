@@ -30,7 +30,7 @@ version](https://img.shields.io/badge/python-3.3%2B-blue.svg)
 ### Installation
 - On Arch :
 ```bash
-    yaourt -S gnome-twofactourauth
+yaourt -S gnome-twofactorauth
 ```
 
 ### Credits
@@ -40,22 +40,22 @@ version](https://img.shields.io/badge/python-3.3%2B-blue.svg)
 ### How to build from source
 1 - Clone the repository
 ```bash
-    git clone https://github.com/bil-elmoussaoui/TwoFactorAuth && cd ./TwoFactorAuth
+git clone https://github.com/bil-elmoussaoui/TwoFactorAuth && cd ./TwoFactorAuth
 ```
 2 - Install Python dependecies
 ```bash
-    sudo pip install pyotp zbarlight python-yaml pillow
+sudo pip install pyotp zbarlight python-yaml pillow
 ```
 <sub>PS : In some distributions you will need to use `pip3` instead of `pip` to install the compatible version of the package with Python 3.</sub> <br>
 3 - Afterwards
 ```bash
-    ./autogen.sh
-    make
-    sudo make install
+./autogen.sh
+make
+sudo make install
 ```
 4 - You can run the application from the desktop file or from terminal using
 ```bash
-    gnome-twofactorauth
+gnome-twofactorauth
 ```
 <sub>Arch users can build from source directly using AUR `yaourt -S gnome-twofactorauth-git`</sub>
 
