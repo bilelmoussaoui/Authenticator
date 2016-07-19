@@ -113,7 +113,6 @@ class ApplicationChooserWindow(Gtk.Window, Thread, GObject.GObject):
 
         cancel_button = Gtk.Button.new_with_label(_("Cancel"))
         cancel_button.connect("clicked", self.close_window)
-        cancel_button.get_style_context().add_class("destructive-action")
         left_box.add(cancel_button)
 
         search_icon = Gio.ThemedIcon(name="system-search-symbolic")

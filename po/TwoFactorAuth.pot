@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-28 02:29+0200\n"
+"POT-Creation-Date: 2016-07-19 12:39+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -111,7 +111,7 @@ msgid "Selection mode"
 msgstr ""
 
 #: TwoFactorAuth/widgets/headerbar.py:101
-#: TwoFactorAuth/widgets/applications_list.py:122
+#: TwoFactorAuth/widgets/applications_list.py:121
 msgid "Search"
 msgstr ""
 
@@ -171,7 +171,7 @@ msgstr ""
 msgid "Select an application"
 msgstr ""
 
-#: TwoFactorAuth/widgets/applications_list.py:125
+#: TwoFactorAuth/widgets/applications_list.py:124
 msgid "Next"
 msgstr ""
 
