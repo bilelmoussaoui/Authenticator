@@ -8,77 +8,80 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-07-19 12:39+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2016-07-20 17:29+0000\n"
+"Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
+"Language-Team: Swedish <https://hosted.weblate.org/projects/gnome-"
+"twofactorauth/translation/sv/>\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 2.8-dev\n"
 
 #: data/shortcuts.ui:13
 msgctxt "shortcut window"
 msgid "General"
-msgstr ""
+msgstr "Allmänt"
 
 #: data/shortcuts.ui:17
 msgctxt "shortcut window"
 msgid "Search"
-msgstr ""
+msgstr "Sök"
 
 #: data/shortcuts.ui:24
 msgctxt "shortcut window"
 msgid "Add a new account"
-msgstr ""
+msgstr "Lägg till ett nytt konto"
 
 #: data/shortcuts.ui:31
 msgctxt "shortcut window"
 msgid "Selection mode"
-msgstr ""
+msgstr "Urvalsläge"
 
 #: data/shortcuts.ui:38
 msgctxt "shortcut window"
 msgid "Lock the application"
-msgstr ""
+msgstr "Lås programmet"
 
 #: data/shortcuts.ui:47
 msgctxt "shortcut window"
 msgid "Account list"
-msgstr ""
+msgstr "Kontolista"
 
 #: data/shortcuts.ui:51
 msgctxt "shortcut window"
 msgid "Copy"
-msgstr ""
+msgstr "Kopiera"
 
 #: data/shortcuts.ui:58
 msgctxt "shortcut window"
 msgid "Delete"
-msgstr ""
+msgstr "Ta bort"
 
 #: data/shortcuts.ui:65
 msgctxt "shortcut window"
 msgid "Select next/previous account"
-msgstr ""
+msgstr "Välj nästa/föregående konto"
 
 #: data/shortcuts.ui:74
 msgctxt "shortcut window"
 msgid "Add Account"
-msgstr ""
+msgstr "Lägg till konto"
 
 #: data/shortcuts.ui:78
 msgctxt "shortcut window"
 msgid "Scan QR code"
-msgstr ""
+msgstr "Läs av QR-kod"
 
 #: data/shortcuts.ui:85
 msgctxt "shortcut window"
 msgid "Close"
-msgstr ""
+msgstr "Stäng"
 
 #: data/about.ui:14
 msgid "Simple application to generate two-factor authentication code"
-msgstr ""
+msgstr "Enkelt program för att generera tvåfaktorsautentiseringskod"
 
 #: data/about.ui:15
 msgid ""
@@ -86,165 +89,168 @@ msgid ""
 "gnu.org/licenses/gpl-3.0.html\">GNU General Public License, version 3 or "
 "later</a> for details."
 msgstr ""
+"Detta program kommer helt utan garanti. Se <a href=\""
+"http://www.gnu.org/licenses/gpl-3.0.html\">GNU General Public License, "
+"version 3 eller senare</a> för detaljer."
 
 #: data/about.ui:20
 msgid "Github"
-msgstr ""
+msgstr "Github"
 
 #: TwoFactorAuth/widgets/headerbar.py:64
 msgid "Remove selected accounts"
-msgstr ""
+msgstr "Ta bort valda konton"
 
 #: TwoFactorAuth/widgets/headerbar.py:71
 #: TwoFactorAuth/widgets/add_account.py:49
 #: TwoFactorAuth/widgets/add_account.py:64
 msgid "Add a new account"
-msgstr ""
+msgstr "Lägg till ett nytt konto"
 
 #: TwoFactorAuth/widgets/headerbar.py:78
 msgid "Lock the Application"
-msgstr ""
+msgstr "Lås programmet"
 
 #: TwoFactorAuth/widgets/headerbar.py:94
 msgid "Selection mode"
-msgstr ""
+msgstr "Urvalsläge"
 
 #: TwoFactorAuth/widgets/headerbar.py:101
 #: TwoFactorAuth/widgets/applications_list.py:121
 msgid "Search"
-msgstr ""
+msgstr "Sök"
 
 #: TwoFactorAuth/widgets/headerbar.py:105
 #: TwoFactorAuth/widgets/add_account.py:69
 #: TwoFactorAuth/widgets/change_password.py:162
 #: TwoFactorAuth/widgets/applications_list.py:114
 msgid "Cancel"
-msgstr ""
+msgstr "Avbryt"
 
 #: TwoFactorAuth/widgets/headerbar.py:117 TwoFactorAuth/widgets/settings.py:42
 #: TwoFactorAuth/application.py:78
 msgid "Settings"
-msgstr ""
+msgstr "Inställningar"
 
 #: TwoFactorAuth/widgets/no_account_window.py:39
 msgid "There's no account at the moment"
-msgstr ""
+msgstr "Det finns inget konto för tillfället"
 
 #: TwoFactorAuth/widgets/add_account.py:74
 msgid "Add"
-msgstr ""
+msgstr "Lägg till"
 
 #: TwoFactorAuth/widgets/add_account.py:82
 msgid "Scan a QR code"
-msgstr ""
+msgstr "Läs av en QR-kod"
 
 #: TwoFactorAuth/widgets/add_account.py:104
 msgid "Account Name"
-msgstr ""
+msgstr "Kontonamn"
 
 #: TwoFactorAuth/widgets/add_account.py:112
 msgid "Secret Code"
-msgstr ""
+msgstr "Hemlig kod"
 
 #: TwoFactorAuth/widgets/change_password.py:36
 msgid "Apply"
-msgstr ""
+msgstr "Verkställ"
 
 #: TwoFactorAuth/widgets/change_password.py:46
 msgid "Change password"
-msgstr ""
+msgstr "Ändra lösenord"
 
 #: TwoFactorAuth/widgets/change_password.py:78
 msgid "Old password"
-msgstr ""
+msgstr "Gammalt lösenord"
 
 #: TwoFactorAuth/widgets/change_password.py:88
 msgid "New password"
-msgstr ""
+msgstr "Nytt lösenord"
 
 #: TwoFactorAuth/widgets/change_password.py:98
 msgid "Repeat new password"
-msgstr ""
+msgstr "Upprepa nytt lösenord"
 
 #: TwoFactorAuth/widgets/applications_list.py:109
 msgid "Select an application"
-msgstr ""
+msgstr "Välj ett program"
 
 #: TwoFactorAuth/widgets/applications_list.py:124
 msgid "Next"
-msgstr ""
+msgstr "Nästa"
 
 #: TwoFactorAuth/widgets/login_window.py:45
 msgid "Enter your password"
-msgstr ""
+msgstr "Ange ditt lösenord"
 
 #: TwoFactorAuth/widgets/login_window.py:48
 msgid "Unlock"
-msgstr ""
+msgstr "Lås upp"
 
 #: TwoFactorAuth/widgets/account_row.py:219
 msgid "Remove the account"
-msgstr ""
+msgstr "Ta bort kontot"
 
 #: TwoFactorAuth/widgets/account_row.py:229
 msgid "Copy the generated code"
-msgstr ""
+msgstr "Kopiera den genererade koden"
 
 #: TwoFactorAuth/widgets/account_row.py:239
 msgid "Edit the account"
-msgstr ""
+msgstr "Redigera kontot"
 
 #: TwoFactorAuth/widgets/account_row.py:249
 msgid "Save the new account name"
-msgstr ""
+msgstr "Spara det nya kontonamnet"
 
 #: TwoFactorAuth/widgets/account_row.py:257
 #: TwoFactorAuth/widgets/account_row.py:381
 #, python-format
 msgid "Expires in %s seconds"
-msgstr ""
+msgstr "Går ut om %s sekunder"
 
 #: TwoFactorAuth/widgets/account_row.py:263
 msgid "Error during the generation of code"
-msgstr ""
+msgstr "Fel under generering av kod"
 
 #: TwoFactorAuth/widgets/account_row.py:308
 msgid "Couldn't generate the secret code"
-msgstr ""
+msgstr "Kunde inte generera den hemliga koden"
 
 #: TwoFactorAuth/widgets/account_row.py:370
 #, python-format
 msgid "Do you really want to remove \"%s\"?"
-msgstr ""
+msgstr "Vill du verkligen ta bort ”%s”?"
 
 #: TwoFactorAuth/widgets/settings.py:70
 msgid "Behavior"
-msgstr ""
+msgstr "Beteende"
 
 #: TwoFactorAuth/widgets/settings.py:75
 msgid "Account"
-msgstr ""
+msgstr "Konto"
 
 #: TwoFactorAuth/widgets/settings.py:89
 msgid "Password protection"
-msgstr ""
+msgstr "Lösenordsskydd"
 
 #: TwoFactorAuth/widgets/settings.py:113
 msgid "Auto-lock the application (m):"
-msgstr ""
+msgstr "Lås programmet automatiskt (m):"
 
 #: TwoFactorAuth/application.py:46
 msgid "TwoFactorAuth"
-msgstr ""
+msgstr "TwoFactorAuth"
 
 #: TwoFactorAuth/application.py:86
 msgid "Shortcuts"
-msgstr ""
+msgstr "Genvägar"
 
 #: TwoFactorAuth/application.py:88
 msgid "About"
-msgstr ""
+msgstr "Om"
 
 #: TwoFactorAuth/application.py:89
 msgid "Quit"
-msgstr ""
+msgstr "Avsluta"
