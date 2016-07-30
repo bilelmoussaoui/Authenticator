@@ -5,14 +5,25 @@ websites:
       img: adp.png
       tfa: No
 
+    - name: Adirondack Insurance Exchange
+      url: http://www.aie-ny.com/
+      img: adirondackinsurnaceexchange.png
+      tfa: No
+
     - name: Credit Karma
       url: https://www.creditkarma.com
       twitter: creditkarma
       img: creditkarma.png
       tfa: No
 
+    - name: ditech
+      url: https://www.ditech.com
+      twitter: ditech
+      img: ditech.png
+      tfa: No
+
     - name: FreeAgent
-      url: http://www.freeagent.com
+      url: https://www.freeagent.com
       img: freeagent.png
       twitter: freeagent
       tfa: No
@@ -40,7 +51,7 @@ websites:
       twitter: InexFinance
       img: inex.png
       tfa: No
-      
+
     - name: Intuit TurboTax
       url: https://turbotax.intuit.com/
       img: turbotax.png
@@ -50,6 +61,14 @@ websites:
       email: Yes
       software: Yes
       doc: https://ttlc.intuit.com/questions/2902682-what-is-two-step-verification
+
+    - name: Justworks
+      url: https://justworks.com/
+      img: justworks.png
+      tfa: Yes
+      sms: Yes
+      software: Yes
+      doc: http://help.justworks.com/customer/en/portal/articles/2488740-two-factor-authentication
 
     - name: Kiva
       url: https://www.kiva.org
@@ -83,6 +102,12 @@ websites:
       img: mintbills.png
       tfa: No
 
+    - name: Northwestern Mutual
+      url: https://www.northwesternmutual.com/
+      facebook: northwesternmutual
+      img: northwesternmutual.png
+      tfa: No
+
     - name: Paychex
       url: https://www.paychex.com
       img: paychex.png
@@ -101,6 +126,12 @@ websites:
       url: https://www.popmoney.com
       twitter: popmoney
       img: popmoney.png
+      tfa: No
+
+    - name: President's Choice Financial
+      url: https://www.pcfinancial.ca
+      twitter: PCFinancial
+      img: presidentschoice.png
       tfa: No
 
     - name: Progressive
@@ -144,6 +175,12 @@ websites:
       tfa: Yes
       email: Yes
       doc: https://help.simpletax.ca/questions/two-factor-authentication
+
+    - name: TransferWise
+      url: https://transferwise.com
+      img: transferwise.png
+      tfa: No
+      twitter: TransferWise
 
     - name: Treasury Direct
       url: https://www.treasurydirect.gov

@@ -50,10 +50,10 @@ websites:
       software: Yes
       exceptions:
           text: "2FA is only available on paid plans."
-      doc: http://support.enjin.com/hc/en-us/articles/201090770-2-Factor-Authentication-Authy-
+      doc: https://support.enjin.com/hc/en-us/articles/201090770-2-Factor-Authentication-Authy-
 
     - name: EVE Online
-      url: http://www.eveonline.com/
+      url: https://www.eveonline.com/
       img: eveonline.png
       tfa: Yes
       email: Yes
@@ -93,7 +93,7 @@ websites:
       email: Yes
       phone: Yes
       software: Yes
-      doc: http://help.guildwars2.com/entries/95446157-Securing-Your-Account-With-Authentication
+      doc: https://help.guildwars2.com/entries/95446157-Securing-Your-Account-With-Authentication
 
     - name: Humble Bundle
       url: https://www.humblebundle.com/
@@ -123,7 +123,7 @@ websites:
       tfa: No
 
     - name: Nintendo Network
-      url: http://www.nintendo.com/
+      url: https://www.nintendo.com/
       twitter: NintendoAmerica
       img: nintendo.png
       tfa: No
@@ -144,8 +144,16 @@ websites:
       tfa: No
       status: http://www.polygon.com/2016/4/20/11470660/psn-two-factor-authentication-playstation-network
 
+    - name: Roberts Space Industries
+      url: https://robertsspaceindustries.com/
+      img: robertsspaceindustries.png
+      tfa: Yes
+      software: Yes
+      email: Yes
+      doc: https://robertsspaceindustries.com/faq/two-step-authentication
+
     - name: Rockstar Games Social Club
-      url: http://socialclub.rockstargames.com
+      url: https://socialclub.rockstargames.com
       twitter: RockstarSupport
       img: rockstargames.png
       tfa: No
@@ -156,6 +164,16 @@ websites:
       tfa: Yes
       software: Yes
       doc: http://services.runescape.com/m=rswiki/en/Authenticator_FAQ
+
+    - name: Square Enix
+      url: http://na.square-enix.com/
+      img: squarenix.png
+      tfa: Yes
+      software: Yes
+      hardware: Yes
+      doc: http://www.square-enix.com/na/account/otp/
+      exceptions:
+          text: "Software implementation requires you to have purchased either Final Fantasy XI or Final Fantasy XIV and registered the game."
 
     - name: "Star Wars: The Old Republic"
       url: http://www.swtor.com/
@@ -175,16 +193,6 @@ websites:
       exceptions:
         text: "Software implementation requires use of the Steam Mobile app. It does not support multiple accounts on the same device. It does not support multiple accounts using the same phone number for SMS. Authentication on non-phone devices is not officially supported. SMS support is limited to receiving account recovery codes for password resets."
 
-    - name: Square Enix
-      url: http://na.square-enix.com/
-      img: squarenix.png
-      tfa: Yes
-      software: Yes
-      hardware: Yes
-      doc: http://www.square-enix.com/na/account/otp/
-      exceptions:
-          text: "Software implementation requires you to have purchased either Final Fantasy XI or Final Fantasy XIV and registered the game."
-
     - name: Tibia
       url: http://www.tibia.com/
       img: tibia.png
@@ -200,7 +208,7 @@ websites:
       doc: https://store.trionworlds.com/account/profile/manage-game
 
     - name: Uplay
-      url: http://uplay.ubi.com/
+      url: https://uplay.ubi.com/
       img: uplay.png
       tfa: Yes
       software: Yes

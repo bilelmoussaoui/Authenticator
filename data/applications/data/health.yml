@@ -64,14 +64,20 @@ websites:
       software: Yes
       doc: http://windows.microsoft.com/en-au/windows/two-step-verification-faq
 
+    - name: MedicAlert
+      url: https://www.medicalert.ca
+      img: medicalert.png
+      twitter: MedicAlertCA
+      tfa: No
+
     - name: Misfit
-      url: http://misfit.com/
+      url: https://misfit.com/
       twitter: Misfit
       img: misfit.png
       tfa: No
 
     - name: myfitnesspal
-      url: http://www.myfitnesspal.com
+      url: https://www.myfitnesspal.com
       twitter: myfitnesspal
       img: myfitnesspal.png
       tfa: No
