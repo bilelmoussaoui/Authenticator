@@ -67,6 +67,7 @@ class AccountRow(Thread, Gtk.ListBoxRow):
     code = None
     code_generated = True
     alive = True
+    notification = None
 
     def __init__(self, parent, window, app):
         Thread.__init__(self)
@@ -153,6 +154,8 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         code = self.get_code().get_secret_code()
         try:
             clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
+            self.window.notification.update(_('Code "%s" copied to clipboard' % str(code)))
+            self.window.notification.show()
             clipboard.clear()
             clipboard.set_text(code, len(code))
             logging.debug("Secret code copied to clipboard")
@@ -371,6 +374,8 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         confirmation = ConfirmationMessage(self.window, message)
         confirmation.show()
         if confirmation.get_confirmation():
+            self.window.notification.update(_('"%s" was removed' % self.name))
+            self.window.notification.show()
             self.kill()
             self.window.accounts_list.remove(self)
             self.window.app.db.remove_by_id(self.get_id())
