@@ -58,7 +58,7 @@ class Application(Gtk.Application):
         if Gtk.get_major_version() >= 3 and Gtk.get_minor_version() >= 20:
             cssFileName = "gnome-twofactorauth-post3.20.css"
         else:
-            cssFileName = "ggnome-twofactorauth-pre3.20.css"
+            cssFileName = "gnome-twofactorauth-pre3.20.css"
         cssProviderFile = Gio.File.new_for_uri('resource:///org/gnome/TwoFactorAuth/%s' % cssFileName)
         cssProvider = Gtk.CssProvider()
         screen = Gdk.Screen.get_default()
