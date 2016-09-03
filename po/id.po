@@ -8,77 +8,80 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-07-19 12:39+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2016-09-03 01:11+0000\n"
+"Last-Translator: Mohamad Hasan Al Banna <se7entime@protonmail.com>\n"
+"Language-Team: Indonesian <https://hosted.weblate.org/projects/gnome-"
+"twofactorauth/translation/id/>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 2.8\n"
 
 #: data/shortcuts.ui:13
 msgctxt "shortcut window"
 msgid "General"
-msgstr ""
+msgstr "Umum"
 
 #: data/shortcuts.ui:17
 msgctxt "shortcut window"
 msgid "Search"
-msgstr ""
+msgstr "Cari"
 
 #: data/shortcuts.ui:24
 msgctxt "shortcut window"
 msgid "Add a new account"
-msgstr ""
+msgstr "Tambah akun baru"
 
 #: data/shortcuts.ui:31
 msgctxt "shortcut window"
 msgid "Selection mode"
-msgstr ""
+msgstr "Mode seleksi"
 
 #: data/shortcuts.ui:38
 msgctxt "shortcut window"
 msgid "Lock the application"
-msgstr ""
+msgstr "Kunci aplikasi"
 
 #: data/shortcuts.ui:47
 msgctxt "shortcut window"
 msgid "Account list"
-msgstr ""
+msgstr "Daftar akun"
 
 #: data/shortcuts.ui:51
 msgctxt "shortcut window"
 msgid "Copy"
-msgstr ""
+msgstr "Salin"
 
 #: data/shortcuts.ui:58
 msgctxt "shortcut window"
 msgid "Delete"
-msgstr ""
+msgstr "Hapus"
 
 #: data/shortcuts.ui:65
 msgctxt "shortcut window"
 msgid "Select next/previous account"
-msgstr ""
+msgstr "Pilih akun selanjutnya/sebelumnya"
 
 #: data/shortcuts.ui:74
 msgctxt "shortcut window"
 msgid "Add Account"
-msgstr ""
+msgstr "Tambah Akun"
 
 #: data/shortcuts.ui:78
 msgctxt "shortcut window"
 msgid "Scan QR code"
-msgstr ""
+msgstr "Pindai kode QR"
 
 #: data/shortcuts.ui:85
 msgctxt "shortcut window"
 msgid "Close"
-msgstr ""
+msgstr "Tutup"
 
 #: data/about.ui:14
 msgid "Simple application to generate two-factor authentication code"
-msgstr ""
+msgstr "Aplikasi simpel untuk menghasilkan kode two-factor authenticaion"
 
 #: data/about.ui:15
 msgid ""
@@ -89,162 +92,162 @@ msgstr ""
 
 #: data/about.ui:20
 msgid "Github"
-msgstr ""
+msgstr "Github"
 
 #: TwoFactorAuth/widgets/headerbar.py:64
 msgid "Remove selected accounts"
-msgstr ""
+msgstr "Hapus akun terpilih"
 
 #: TwoFactorAuth/widgets/headerbar.py:71
 #: TwoFactorAuth/widgets/add_account.py:49
 #: TwoFactorAuth/widgets/add_account.py:64
 msgid "Add a new account"
-msgstr ""
+msgstr "Tambah akun baru"
 
 #: TwoFactorAuth/widgets/headerbar.py:78
 msgid "Lock the Application"
-msgstr ""
+msgstr "Kunci Aplikasi"
 
 #: TwoFactorAuth/widgets/headerbar.py:94
 msgid "Selection mode"
-msgstr ""
+msgstr "Mode seleksi"
 
 #: TwoFactorAuth/widgets/headerbar.py:101
 #: TwoFactorAuth/widgets/applications_list.py:121
 msgid "Search"
-msgstr ""
+msgstr "Cari"
 
 #: TwoFactorAuth/widgets/headerbar.py:105
 #: TwoFactorAuth/widgets/add_account.py:69
 #: TwoFactorAuth/widgets/change_password.py:162
 #: TwoFactorAuth/widgets/applications_list.py:114
 msgid "Cancel"
-msgstr ""
+msgstr "Batal"
 
 #: TwoFactorAuth/widgets/headerbar.py:117 TwoFactorAuth/widgets/settings.py:42
 #: TwoFactorAuth/application.py:78
 msgid "Settings"
-msgstr ""
+msgstr "Pengaturan"
 
 #: TwoFactorAuth/widgets/no_account_window.py:39
 msgid "There's no account at the moment"
-msgstr ""
+msgstr "Tidak ada akun saat ini"
 
 #: TwoFactorAuth/widgets/add_account.py:74
 msgid "Add"
-msgstr ""
+msgstr "Tambah"
 
 #: TwoFactorAuth/widgets/add_account.py:82
 msgid "Scan a QR code"
-msgstr ""
+msgstr "Pindai kode QR"
 
 #: TwoFactorAuth/widgets/add_account.py:104
 msgid "Account Name"
-msgstr ""
+msgstr "Nama Akun"
 
 #: TwoFactorAuth/widgets/add_account.py:112
 msgid "Secret Code"
-msgstr ""
+msgstr "Kode Rahasia"
 
 #: TwoFactorAuth/widgets/change_password.py:36
 msgid "Apply"
-msgstr ""
+msgstr "Terapkan"
 
 #: TwoFactorAuth/widgets/change_password.py:46
 msgid "Change password"
-msgstr ""
+msgstr "Ganti kata sandi"
 
 #: TwoFactorAuth/widgets/change_password.py:78
 msgid "Old password"
-msgstr ""
+msgstr "Kata sandi lama"
 
 #: TwoFactorAuth/widgets/change_password.py:88
 msgid "New password"
-msgstr ""
+msgstr "Kata sandi baru"
 
 #: TwoFactorAuth/widgets/change_password.py:98
 msgid "Repeat new password"
-msgstr ""
+msgstr "Ulangan kata sandi baru"
 
 #: TwoFactorAuth/widgets/applications_list.py:109
 msgid "Select an application"
-msgstr ""
+msgstr "Pilih aplikasi"
 
 #: TwoFactorAuth/widgets/applications_list.py:124
 msgid "Next"
-msgstr ""
+msgstr "Selanjutnya"
 
 #: TwoFactorAuth/widgets/login_window.py:45
 msgid "Enter your password"
-msgstr ""
+msgstr "Masukkan kata sandi anda"
 
 #: TwoFactorAuth/widgets/login_window.py:48
 msgid "Unlock"
-msgstr ""
+msgstr "Buka Kunci"
 
 #: TwoFactorAuth/widgets/account_row.py:219
 msgid "Remove the account"
-msgstr ""
+msgstr "Hapus akun"
 
 #: TwoFactorAuth/widgets/account_row.py:229
 msgid "Copy the generated code"
-msgstr ""
+msgstr "Salin kode yang dihasilkan"
 
 #: TwoFactorAuth/widgets/account_row.py:239
 msgid "Edit the account"
-msgstr ""
+msgstr "Sunting akun"
 
 #: TwoFactorAuth/widgets/account_row.py:249
 msgid "Save the new account name"
-msgstr ""
+msgstr "Simpan nama akun baru"
 
 #: TwoFactorAuth/widgets/account_row.py:257
 #: TwoFactorAuth/widgets/account_row.py:381
 #, python-format
 msgid "Expires in %s seconds"
-msgstr ""
+msgstr "Kadaluarsa dalam %s detik"
 
 #: TwoFactorAuth/widgets/account_row.py:263
 msgid "Error during the generation of code"
-msgstr ""
+msgstr "Galat ketika menghasilkan kode"
 
 #: TwoFactorAuth/widgets/account_row.py:308
 msgid "Couldn't generate the secret code"
-msgstr ""
+msgstr "Tidak dapat menghasilkan kode rahasia"
 
 #: TwoFactorAuth/widgets/account_row.py:370
 #, python-format
 msgid "Do you really want to remove \"%s\"?"
-msgstr ""
+msgstr "Kamu benar-benar ingin menghapus \"%s\"?"
 
 #: TwoFactorAuth/widgets/settings.py:70
 msgid "Behavior"
-msgstr ""
+msgstr "Kebiasaan"
 
 #: TwoFactorAuth/widgets/settings.py:75
 msgid "Account"
-msgstr ""
+msgstr "Akun"
 
 #: TwoFactorAuth/widgets/settings.py:89
 msgid "Password protection"
-msgstr ""
+msgstr "Proteksi kata sandi"
 
 #: TwoFactorAuth/widgets/settings.py:113
 msgid "Auto-lock the application (m):"
-msgstr ""
+msgstr "Kunci-otomatis aplikasi (m):"
 
 #: TwoFactorAuth/application.py:46
 msgid "TwoFactorAuth"
-msgstr ""
+msgstr "TwoFactorAuth"
 
 #: TwoFactorAuth/application.py:86
 msgid "Shortcuts"
-msgstr ""
+msgstr "Jalan pintas"
 
 #: TwoFactorAuth/application.py:88
 msgid "About"
-msgstr ""
+msgstr "Tentang"
 
 #: TwoFactorAuth/application.py:89
 msgid "Quit"
-msgstr ""
+msgstr "Keluar"
