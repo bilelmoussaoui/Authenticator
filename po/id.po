@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-07-19 12:39+0100\n"
-"PO-Revision-Date: 2016-10-24 02:04+0000\n"
-"Last-Translator: Turfa Auliarachman <turfa_auliarachman@rocketmail.com>\n"
+"PO-Revision-Date: 2016-10-24 21:12+0000\n"
+"Last-Translator: Arie Kurniawan <hubungi.aja@gmail.com>\n"
 "Language-Team: Indonesian <https://hosted.weblate.org/projects/gnome-"
 "twofactorauth/translation/id/>\n"
 "Language: id\n"
@@ -95,7 +95,7 @@ msgstr ""
 
 #: data/about.ui:20
 msgid "Github"
-msgstr "Github"
+msgstr "Github.com"
 
 #: TwoFactorAuth/widgets/headerbar.py:64
 msgid "Remove selected accounts"
@@ -241,7 +241,7 @@ msgstr "Kunci-otomatis aplikasi (m):"
 
 #: TwoFactorAuth/application.py:46
 msgid "TwoFactorAuth"
-msgstr "TwoFactorAuth"
+msgstr "AutentiksiDuaFaktor"
 
 #: TwoFactorAuth/application.py:86
 msgid "Shortcuts"
