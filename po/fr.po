@@ -179,8 +179,8 @@ msgid "Auto-lock the application (m):"
 msgstr "Auto-verrouillage de l'application (m):"
 
 #: TwoFactorAuth/widgets/settings.py:112
-msgid "Secret code generation time (s) :"
-msgstr "Temps de génération du code secret (s) :"
+msgid "Secret code generation time (s):"
+msgstr "Temps de génération du code secret (s):"
 
 #: TwoFactorAuth/widgets/listrow.py:173
 msgid "Copy the generated code"
