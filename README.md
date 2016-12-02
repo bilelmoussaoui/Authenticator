@@ -1,3 +1,6 @@
+<a href="https://hosted.weblate.org/engage/gnome-twofactorauth/?utm_source=widget">
+<img src="https://hosted.weblate.org/widgets/gnome-twofactorauth/-/svg-badge.svg" alt="Translation status" />
+</a>
 ![Status](https://img.shields.io/badge/status-stable-green.svg) [![Version](https://img.shields.io/badge/version-0.1.1-green.svg)](https://github.com/bil-elmoussaoui/Gnome-TwoFactorAuth/releases) ![Python
 version](https://img.shields.io/badge/python-3.3%2B-blue.svg)
 # Gnome TwoFactorAuth
