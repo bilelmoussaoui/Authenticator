@@ -1,13 +1,13 @@
 websites:
+    - name: Adirondack Insurance Exchange
+      url: http://www.aie-ny.com/
+      img: adirondackinsurnaceexchange.png
+      tfa: No
+
     - name: ADP
       url: https://www.adp.com
       twitter: adp
       img: adp.png
-      tfa: No
-
-    - name: Adirondack Insurance Exchange
-      url: http://www.aie-ny.com/
-      img: adirondackinsurnaceexchange.png
       tfa: No
 
     - name: Credit Karma
@@ -25,8 +25,9 @@ websites:
     - name: FreeAgent
       url: https://www.freeagent.com
       img: freeagent.png
-      twitter: freeagent
-      tfa: No
+      tfa: Yes
+      software: Yes
+      docs: https://www.freeagent.com/support/kb/getting-started/two-step-verification
 
     - name: FreshBooks
       url: https://www.freshbooks.com
@@ -39,6 +40,13 @@ websites:
       img: geico.png
       twitter: geico_service
       tfa: No
+
+    - name: Gusto
+      url: https://www.gusto.com
+      img: gusto.png
+      tfa: Yes
+      sms: Yes
+      doc: https://support.gusto.com/hc/en-us/articles/210838787-Two-Step-Authentication
 
     - name: HelloWallet
       url: https://www.hellowallet.com
@@ -102,6 +110,13 @@ websites:
       img: mintbills.png
       tfa: No
 
+    - name: Noddle
+      url: https://www.noddle.co.uk
+      twitter: useyournoddle
+      facebook: noodleuk
+      img: noddle.png
+      tfa: No
+
     - name: Northwestern Mutual
       url: https://www.northwesternmutual.com/
       facebook: northwesternmutual
@@ -113,6 +128,12 @@ websites:
       img: paychex.png
       tfa: Yes
       sms: Yes
+      phone: Yes
+
+    - name: Paytrust
+      url: http://paytrust.quicken.com
+      img: paytrust.png
+      tfa: Yes
       phone: Yes
 
     - name: Pocketsmith
@@ -156,12 +177,25 @@ websites:
       software: Yes
       doc: http://help.quickfile.co.uk/main/1/2-factor_authentication.htm
 
+    - name: Quizzle
+      url: https://www.quizzle.com
+      img: quizzle.png
+      tfa: No
+      twitter: Quizzle
+
     - name: Ripple Trade
       url: https://www.rippletrade.com/
       img: rippletrade.png
       tfa: Yes
       sms: Yes
       doc: https://ripple.com/knowledge_center/using-two-factor-authentication-2fa/
+
+    - name: Santander UK
+      url: http://www.santander.co.uk
+      img: santander.png
+      tfa: Yes
+      sms: Yes
+      doc: http://www.santander.co.uk/uk/help-support/security-centre
 
     - name: Shoeboxed
       url: https://www.shoeboxed.com/
@@ -212,10 +246,3 @@ websites:
       twitter: ynab
       img: ynab.png
       tfa: no
-
-    - name: ZenPayroll
-      url: https://www.zenpayroll.com
-      img: zenpayroll.png
-      tfa: Yes
-      sms: Yes
-      doc: http://help.zenpayroll.com/customer/portal/articles/969452-two-step-authentication
