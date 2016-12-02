@@ -25,6 +25,7 @@ from TwoFactorAuth.widgets.accounts_window import AccountsWindow
 from TwoFactorAuth.widgets.login_window import LoginWindow
 from TwoFactorAuth.widgets.no_account_window import NoAccountWindow
 from TwoFactorAuth.widgets.headerbar import HeaderBar
+from TwoFactorAuth.widgets.inapp_notification import InAppNotification
 from hashlib import sha256
 from gettext import gettext as _
 import logging
@@ -59,6 +60,8 @@ class Window(Gtk.ApplicationWindow):
         self.set_resizable(False)
         self.connect("key_press_event", self.on_key_press)
         self.connect("delete-event", lambda x, y: self.app.on_quit())
+        self.notification = InAppNotification()
+        self.main_box.pack_start(self.notification, False, False, 0)
         self.add(self.main_box)
 
     def on_key_press(self, app, key_event):

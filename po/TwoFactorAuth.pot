@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-07-19 12:39+0100\n"
+"POT-Creation-Date: 2016-07-31 03:20+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -97,8 +97,8 @@ msgid "Remove selected accounts"
 msgstr ""
 
 #: TwoFactorAuth/widgets/headerbar.py:71
-#: TwoFactorAuth/widgets/add_account.py:49
-#: TwoFactorAuth/widgets/add_account.py:64
+#: TwoFactorAuth/widgets/add_account.py:50
+#: TwoFactorAuth/widgets/add_account.py:67
 msgid "Add a new account"
 msgstr ""
 
@@ -116,14 +116,14 @@ msgid "Search"
 msgstr ""
 
 #: TwoFactorAuth/widgets/headerbar.py:105
-#: TwoFactorAuth/widgets/add_account.py:69
+#: TwoFactorAuth/widgets/add_account.py:72
 #: TwoFactorAuth/widgets/change_password.py:162
 #: TwoFactorAuth/widgets/applications_list.py:114
 msgid "Cancel"
 msgstr ""
 
 #: TwoFactorAuth/widgets/headerbar.py:117 TwoFactorAuth/widgets/settings.py:42
-#: TwoFactorAuth/application.py:78
+#: TwoFactorAuth/application.py:82
 msgid "Settings"
 msgstr ""
 
@@ -131,20 +131,24 @@ msgstr ""
 msgid "There's no account at the moment"
 msgstr ""
 
-#: TwoFactorAuth/widgets/add_account.py:74
+#: TwoFactorAuth/widgets/add_account.py:77
 msgid "Add"
 msgstr ""
 
-#: TwoFactorAuth/widgets/add_account.py:82
+#: TwoFactorAuth/widgets/add_account.py:85
 msgid "Scan a QR code"
 msgstr ""
 
-#: TwoFactorAuth/widgets/add_account.py:104
+#: TwoFactorAuth/widgets/add_account.py:107
 msgid "Account Name"
 msgstr ""
 
-#: TwoFactorAuth/widgets/add_account.py:112
+#: TwoFactorAuth/widgets/add_account.py:115
 msgid "Secret Code"
+msgstr ""
+
+#: TwoFactorAuth/widgets/add_account.py:145
+msgid "Selected area is not a valid QR code"
 msgstr ""
 
 #: TwoFactorAuth/widgets/change_password.py:36
@@ -183,39 +187,49 @@ msgstr ""
 msgid "Unlock"
 msgstr ""
 
-#: TwoFactorAuth/widgets/account_row.py:219
+#: TwoFactorAuth/widgets/account_row.py:157
+#, python-format
+msgid "Code \"%s\" copied to clipboard"
+msgstr ""
+
+#: TwoFactorAuth/widgets/account_row.py:222
 msgid "Remove the account"
 msgstr ""
 
-#: TwoFactorAuth/widgets/account_row.py:229
+#: TwoFactorAuth/widgets/account_row.py:232
 msgid "Copy the generated code"
 msgstr ""
 
-#: TwoFactorAuth/widgets/account_row.py:239
+#: TwoFactorAuth/widgets/account_row.py:242
 msgid "Edit the account"
 msgstr ""
 
-#: TwoFactorAuth/widgets/account_row.py:249
+#: TwoFactorAuth/widgets/account_row.py:252
 msgid "Save the new account name"
 msgstr ""
 
-#: TwoFactorAuth/widgets/account_row.py:257
-#: TwoFactorAuth/widgets/account_row.py:381
+#: TwoFactorAuth/widgets/account_row.py:260
+#: TwoFactorAuth/widgets/account_row.py:386
 #, python-format
 msgid "Expires in %s seconds"
 msgstr ""
 
-#: TwoFactorAuth/widgets/account_row.py:263
+#: TwoFactorAuth/widgets/account_row.py:266
 msgid "Error during the generation of code"
 msgstr ""
 
-#: TwoFactorAuth/widgets/account_row.py:308
+#: TwoFactorAuth/widgets/account_row.py:311
 msgid "Couldn't generate the secret code"
 msgstr ""
 
-#: TwoFactorAuth/widgets/account_row.py:370
+#: TwoFactorAuth/widgets/account_row.py:373
 #, python-format
 msgid "Do you really want to remove \"%s\"?"
+msgstr ""
+
+#: TwoFactorAuth/widgets/account_row.py:377
+#, python-format
+msgid "\"%s\" was removed"
 msgstr ""
 
 #: TwoFactorAuth/widgets/settings.py:70
@@ -234,18 +248,26 @@ msgstr ""
 msgid "Auto-lock the application (m):"
 msgstr ""
 
+#: TwoFactorAuth/widgets/inapp_notification.py:28
+msgid "Undo"
+msgstr ""
+
+#: TwoFactorAuth/widgets/inapp_notification.py:39
+msgid "Hide notification"
+msgstr ""
+
 #: TwoFactorAuth/application.py:46
 msgid "TwoFactorAuth"
 msgstr ""
 
-#: TwoFactorAuth/application.py:86
+#: TwoFactorAuth/application.py:90
 msgid "Shortcuts"
 msgstr ""
 
-#: TwoFactorAuth/application.py:88
+#: TwoFactorAuth/application.py:92
 msgid "About"
 msgstr ""
 
-#: TwoFactorAuth/application.py:89
+#: TwoFactorAuth/application.py:93
 msgid "Quit"
 msgstr ""

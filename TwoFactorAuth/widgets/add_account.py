@@ -23,6 +23,7 @@ from gi.repository import Gtk, Gdk, Gio
 import logging
 from TwoFactorAuth.utils import screenshot_area, current_date_time
 from TwoFactorAuth.widgets.applications_list import ApplicationChooserWindow
+from TwoFactorAuth.widgets.inapp_notification import InAppNotification
 from TwoFactorAuth.models.code import Code
 from TwoFactorAuth.models.qr_reader import QRReader
 from TwoFactorAuth.utils import get_icon
@@ -55,6 +56,8 @@ class AddAccount(Gtk.Window):
         self.set_position(Gtk.WindowPosition.CENTER_ON_PARENT)
         self.set_resizable(False)
         self.set_transient_for(self.parent)
+        self.notification = InAppNotification()
+
         self.connect("key_press_event", self.on_key_press)
 
     def generate_header_bar(self):
@@ -124,6 +127,7 @@ class AddAccount(Gtk.Window):
         vbox.add(hbox_name)
         vbox.add(hbox_secret_code)
         labels_box.pack_start(vbox, True, False, 6)
+        main_box.pack_start(self.notification, False, False, 0)
         main_box.pack_start(logo_box, False, True, 6)
         main_box.pack_start(labels_box, False, True, 6)
         self.add(main_box)
@@ -137,6 +141,9 @@ class AddAccount(Gtk.Window):
                 self.name_entry.set_text(data["issuer"])
                 self.secret_code.set_text(data["secret"])
                 self.apply_button.set_sensitive(True)
+            else:
+                self.notification.update(_("Selected area is not a valid QR code"))
+                self.notification.show()
 
     def on_key_press(self, key, key_event):
         """
@@ -206,7 +213,7 @@ class AddAccount(Gtk.Window):
             applications_choose_window.present()
             self.step = 2
         else:
-            self.name_entry.grab_focus_without_selecting()
+            self.secret_code.grab_focus_without_selecting()
             self.show_all()
 
     def close_window(self, *args):

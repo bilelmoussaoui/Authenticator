@@ -7,6 +7,7 @@ app_PYTHON = \
 	accounts_list.py \
 	accounts_window.py \
 	login_window.py \
+	inapp_notification.py \
 	headerbar.py \
 	applications_list.py \
 	application_row.py \
