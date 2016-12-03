@@ -10,6 +10,7 @@ do_substitution = sed -e 's,[@]pythondir[@],$(pythondir),g' \
 	-e 's,[@]localedir[@],$(localedir),g' \
 	-e 's,[@]PACKAGE[@],$(PACKAGE),g' \
 	-e 's,[@]VERSION[@],$(VERSION),g' \
+	-e 's,[@]srcdir[@],$(srcdir),g' \
 	-e 's,[@]pyexecdir[@],$(pyexecdir),g'
 
 

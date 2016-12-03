@@ -45,13 +45,13 @@ def get_icon(image):
         :param image: icon name or image path
         :return: GdkPixbux Image
     """
-    directory = path.join(env.get("DATA_DIR"), "applications") + "/"
+    directory = path.join(env.get("DATA_DIR"), "applications", "images") + "/"
     theme = Gtk.IconTheme.get_default()
     if theme.has_icon(path.splitext(image)[0]):
         icon = theme.load_icon(path.splitext(image)[0], 48, 0)
-    elif path.isfile(directory + image) and path.exists(directory + image):
+    elif path.exists(directory + image):
         icon = GdkPixbuf.Pixbuf.new_from_file(directory + image)
-    elif path.isfile(image) and path.exists(image):
+    elif path.exists(image):
         icon = GdkPixbuf.Pixbuf.new_from_file(image)
     else:
         icon = theme.load_icon("image-missing", 48, 0)
