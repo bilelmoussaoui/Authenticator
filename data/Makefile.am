@@ -14,7 +14,7 @@ desktop_DATA = gnome-twofactorauth.desktop
 
 @INTLTOOL_DESKTOP_RULE@
 
-appdatadir = $(pkgdatadir)/appdata
+appdatadir = $(datadir)/appdata
 appdata_DATA = $(appdata_in_files:.xml.in=.xml)
 appdata_in_files = gnome-twofactorauth.appdata.xml.in
 

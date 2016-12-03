@@ -67,10 +67,11 @@ class ApplicationChooserWindow(Gtk.Window, Thread, GObject.GObject):
             Generate the main window
         """
         self.connect("destroy", self.close_window)
-        self.resize(410, 550)
-        self.set_size_request(410, 550)
+        self.resize(500, 650)
+        self.set_size_request(500, 650)
         x, y = self.parent.parent.get_position()
-        self.move(x, y)
+        if x and y:
+            self.move(x, y)
         self.set_resizable(False)
         self.set_transient_for(self.parent.parent)
         self.connect("key_press_event", self.on_key_press)

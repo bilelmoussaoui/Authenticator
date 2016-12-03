@@ -6,7 +6,7 @@
 }
 .application-name {
     font-weight: bold;
-    font-size: 12px;
+    font-size: 14px;
 }
 .application-logo-add {
     margin-right: 5px;
@@ -14,7 +14,7 @@
 }
 .account-secret-code,
 .account-timer {
-    font-size: 11px;
+    font-size: 16px;
     margin-top: 0;
     margin-bottom: 5px;
     margin-left: 60px;
