@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: TwoFactorAuth\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-06-02 23:11+0200\n"
-"PO-Revision-Date: 2016-07-27 17:18+0000\n"
+"PO-Revision-Date: 2016-12-10 03:14+0000\n"
 "Last-Translator: Christophe CHAUVET <christophe.chauvet@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/gnome-"
 "twofactorauth/translation/fr/>\n"
@@ -18,12 +18,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 2.8-dev\n"
+"X-Generator: Weblate 2.10-dev\n"
 
 #: data/shortcuts.ui:13
 msgctxt "shortcut window"
 msgid "General"
-msgstr "Général"
+msgstr "Généralité"
 
 #: data/shortcuts.ui:17
 msgctxt "shortcut window"
