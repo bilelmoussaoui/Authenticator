@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: TwoFactorAuth\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-06-02 23:11+0200\n"
-"PO-Revision-Date: 2016-12-10 03:14+0000\n"
+"PO-Revision-Date: 2016-12-12 23:38+0000\n"
 "Last-Translator: Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/gnome-"
 "twofactorauth/translation/fr/>\n"
@@ -181,7 +181,7 @@ msgstr "Mot de passe de protection"
 
 #: TwoFactorAuth/widgets/settings.py:93
 msgid "Auto-lock the application (m):"
-msgstr "Auto-verrouillage de l'application (m):"
+msgstr "Auto-verrouillage de l'application (m) :"
 
 #: TwoFactorAuth/widgets/settings.py:112
 msgid "Secret code generation time (s) :"
