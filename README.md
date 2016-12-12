@@ -9,6 +9,8 @@ version](https://img.shields.io/badge/python-3.3%2B-blue.svg)
 ### Dependecies
 - `Python 3.3+`
 - `Gtk 3.16+`
+- `meson` (works only with git version for now)
+- `ninja`
 - `python-pyotp`
 - `python-yaml`
 - `python-pillow`
@@ -52,9 +54,10 @@ sudo pip install pyotp zbarlight python-yaml pillow
 <sub>PS : In some distributions you will need to use `pip3` instead of `pip` to install the compatible version of the package with Python 3.</sub> <br>
 3 - Afterwards
 ```bash
-./autogen.sh
-make
-sudo make install
+mkdir build && cd build
+meson ..
+ninja 
+sudo ninja install
 ```
 4 - You can run the application from the desktop file or from terminal using
 ```bash

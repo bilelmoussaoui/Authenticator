@@ -22,8 +22,7 @@ from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk
 import sys
-sys.path.insert(1, '@pyexecdir@')
-sys.path.insert(1, '@pythondir@')
+sys.path.insert(1, '@PYTHONDIR@')
 from gi.repository import Gio
 from TwoFactorAuth import application
 import logging
@@ -35,18 +34,20 @@ import faulthandler
 from os import path, environ as env
 
 if __name__ == "__main__":
+    locale.bindtextdomain('gnome-twofactorauth', '@LOCALE_DIR@')
+    locale.textdomain('gnome-twofactorauth')
+    gettext.bindtextdomain('gnome-twofactorauth', '@LOCALE_DIR@')
+    gettext.textdomain('gnome-twofactorauth')
+    version = "@GITVERSION@"
+    if not version:
+        version = "@VERSION@"
+    env["DATA_DIR"] =  "@DATADIR@"
+    env["LOCALE_DIR"] = '@LOCALE_DIR@'
+    print("@LOCALE_DIR@")
 
-    locale.bindtextdomain('TwoFactorAuth', "@localedir@")
-    locale.textdomain('TwoFactorAuth')
-    gettext.bindtextdomain('TwoFactorAuth', "@localedir@")
-    gettext.textdomain('TwoFactorAuth')
-
-    env["DATA_DIR"] = "@pkgdatadir@"
-    env["LOCALE_DIR"] = "@localedir@"
-
-    parser = argparse.ArgumentParser(prog="TwoFactorAuth")
+    parser = argparse.ArgumentParser(prog="Gnome-TwoFactorAuth")
     parser.add_argument("--debug", "-d", action="store_true",
-                        help=_("start in debug mode"))
+                        help=_("Start in debug mode"))
     parser.add_argument("--version", "-v", action="store_true",
                         help=_("Gnome-TwoFactorAuth version number"))
     parser.add_argument("--about", action="store_true",
@@ -61,11 +62,11 @@ if __name__ == "__main__":
                         format='[%(levelname)s] - %(asctime)s - %(message)s',
                         datefmt='%Y-%m-%d %H:%M:%S')
 
-    resource = Gio.resource_load(path.join('@pkgdatadir@',
+    resource = Gio.resource_load(path.join('@DATADIR@',
                                             'gnome-twofactorauth.gresource'))
     Gio.Resource._register(resource)
     if args.version:
-        sys.exit("Version : @VERSION@")
+        sys.exit("Version : " + str(version))
     elif args.about:
         about_dialog = application.Application.about_dialog()
         about_dialog.run()

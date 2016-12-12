@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <application>
-    <id type="desktop">twofactorauth.desktop</id>
+    <id type="desktop">gnome-twofactorauth.desktop</id>
     <licence>GPL3</licence>
-    <name>Gnome TwoFactorAuth</name>
-    <summary>Two Factor Authentication code generator</summary>
+    <_name>Gnome TwoFactorAuth</_name>
+    <_summary>Two Factor Authentication code generator</_summary>
     <description>
-        <p>Simple application that generates two-factor authentication code, created for Gnome</p>
+        <_p>Simple application that generates two-factor authentication code, created for Gnome</_p>
     </description>
     <screenshots>
         <screenshot type="default" width="350" height="500">https://raw.githubusercontent.com/bil-elmoussaoui/Gnome-TwoFactorAuth/master/screenshots/screenshot1.png</screenshot>
