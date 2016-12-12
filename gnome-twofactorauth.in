@@ -38,12 +38,10 @@ if __name__ == "__main__":
     locale.textdomain('gnome-twofactorauth')
     gettext.bindtextdomain('gnome-twofactorauth', '@LOCALE_DIR@')
     gettext.textdomain('gnome-twofactorauth')
-    version = "@GITVERSION@"
-    if not version:
-        version = "@VERSION@"
+    GIT_VERSION = "@GITVERSION@"
+    VERSION = "@VERSION@"
     env["DATA_DIR"] =  "@DATADIR@"
     env["LOCALE_DIR"] = '@LOCALE_DIR@'
-    print("@LOCALE_DIR@")
 
     parser = argparse.ArgumentParser(prog="Gnome-TwoFactorAuth")
     parser.add_argument("--debug", "-d", action="store_true",
@@ -66,7 +64,9 @@ if __name__ == "__main__":
                                             'gnome-twofactorauth.gresource'))
     Gio.Resource._register(resource)
     if args.version:
-        sys.exit("Version : " + str(version))
+        if GIT_VERSION:
+            print("Git current commit : " + str(GIT_VERSION))
+        sys.exit("Version : " + str(VERSION))
     elif args.about:
         about_dialog = application.Application.about_dialog()
         about_dialog.run()

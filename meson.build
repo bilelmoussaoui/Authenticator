@@ -6,8 +6,8 @@ project('gnome-twofactorauth', 'c',
 python = find_program('python3')
 git = find_program('git', required : false)
 intltool_merge = find_program('intltool-merge')
-if git.found()
-    GITVERSION = run_command(git, 'describe', '--always').stdout().strip()
+if git.found()  
+    GITVERSION = run_command(git, 'rev-parse', 'HEAD').stdout().strip()
 else
     GITVERSION = ''
 endif
