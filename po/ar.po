@@ -1,0 +1,236 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-12-13 00:20+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../TwoFactorAuth/application.py:46
+msgid "TwoFactorAuth"
+msgstr ""
+
+#: ../TwoFactorAuth/application.py:82 ../TwoFactorAuth/widgets/headerbar.py:117
+#: ../TwoFactorAuth/widgets/settings.py:42
+msgid "Settings"
+msgstr ""
+
+#: ../TwoFactorAuth/application.py:90
+msgid "Shortcuts"
+msgstr ""
+
+#: ../TwoFactorAuth/application.py:92
+msgid "About"
+msgstr ""
+
+#: ../TwoFactorAuth/application.py:93
+msgid "Quit"
+msgstr ""
+
+#: ../TwoFactorAuth/widgets/account_row.py:157
+#, python-format
+msgid "Code \"%s\" copied to clipboard"
+msgstr ""
+
+#: ../TwoFactorAuth/widgets/account_row.py:222
+msgid "Remove the account"
+msgstr ""
+
+#: ../TwoFactorAuth/widgets/account_row.py:232
+msgid "Copy the generated code"
+msgstr ""
+
+#: ../TwoFactorAuth/widgets/account_row.py:242
+msgid "Edit the account"
+msgstr ""
+
+#: ../TwoFactorAuth/widgets/account_row.py:252
+msgid "Save the new account name"
+msgstr ""
+
+#: ../TwoFactorAuth/widgets/account_row.py:260
+#: ../TwoFactorAuth/widgets/account_row.py:386
+#, python-format
+msgid "Expires in %s seconds"
+msgstr ""
+
+#: ../TwoFactorAuth/widgets/account_row.py:266
+msgid "Error during the generation of code"
+msgstr ""
+
+#: ../TwoFactorAuth/widgets/account_row.py:311
+msgid "Couldn't generate the secret code"
+msgstr ""
+
+#: ../TwoFactorAuth/widgets/account_row.py:373
+#, python-format
+msgid "Do you really want to remove \"%s\"?"
+msgstr ""
+
+#: ../TwoFactorAuth/widgets/account_row.py:377
+#, python-format
+msgid "\"%s\" was removed"
+msgstr ""
+
+#: ../TwoFactorAuth/widgets/add_account.py:50
+#: ../TwoFactorAuth/widgets/add_account.py:67
+#: ../TwoFactorAuth/widgets/headerbar.py:71
+msgid "Add a new account"
+msgstr ""
+
+#: ../TwoFactorAuth/widgets/add_account.py:72
+#: ../TwoFactorAuth/widgets/applications_list.py:115
+#: ../TwoFactorAuth/widgets/change_password.py:162
+#: ../TwoFactorAuth/widgets/headerbar.py:105
+msgid "Cancel"
+msgstr ""
+
+#: ../TwoFactorAuth/widgets/add_account.py:77
+msgid "Add"
+msgstr ""
+
+#: ../TwoFactorAuth/widgets/add_account.py:85
+msgid "Scan a QR code"
+msgstr ""
+
+#: ../TwoFactorAuth/widgets/add_account.py:107
+msgid "Account Name"
+msgstr ""
+
+#: ../TwoFactorAuth/widgets/add_account.py:115
+msgid "Secret Code"
+msgstr ""
+
+#: ../TwoFactorAuth/widgets/add_account.py:145
+msgid "Selected area is not a valid QR code"
+msgstr ""
+
+#: ../TwoFactorAuth/widgets/applications_list.py:110
+msgid "Select an application"
+msgstr ""
+
+#: ../TwoFactorAuth/widgets/applications_list.py:122
+#: ../TwoFactorAuth/widgets/headerbar.py:101
+msgid "Search"
+msgstr ""
+
+#: ../TwoFactorAuth/widgets/applications_list.py:125
+msgid "Next"
+msgstr ""
+
+#: ../TwoFactorAuth/widgets/change_password.py:36
+msgid "Apply"
+msgstr ""
+
+#: ../TwoFactorAuth/widgets/change_password.py:46
+msgid "Change password"
+msgstr ""
+
+#: ../TwoFactorAuth/widgets/change_password.py:78
+msgid "Old password"
+msgstr ""
+
+#: ../TwoFactorAuth/widgets/change_password.py:88
+msgid "New password"
+msgstr ""
+
+#: ../TwoFactorAuth/widgets/change_password.py:98
+msgid "Repeat new password"
+msgstr ""
+
+#: ../TwoFactorAuth/widgets/headerbar.py:64
+msgid "Remove selected accounts"
+msgstr ""
+
+#: ../TwoFactorAuth/widgets/headerbar.py:78
+msgid "Lock the Application"
+msgstr ""
+
+#: ../TwoFactorAuth/widgets/headerbar.py:94
+msgid "Selection mode"
+msgstr ""
+
+#: ../TwoFactorAuth/widgets/inapp_notification.py:28
+msgid "Undo"
+msgstr ""
+
+#: ../TwoFactorAuth/widgets/inapp_notification.py:39
+msgid "Hide notification"
+msgstr ""
+
+#: ../TwoFactorAuth/widgets/login_window.py:45
+msgid "Enter your password"
+msgstr ""
+
+#: ../TwoFactorAuth/widgets/login_window.py:48
+msgid "Unlock"
+msgstr ""
+
+#: ../TwoFactorAuth/widgets/no_account_window.py:39
+msgid "There's no account at the moment"
+msgstr ""
+
+#: ../TwoFactorAuth/widgets/settings.py:70
+msgid "Behavior"
+msgstr ""
+
+#: ../TwoFactorAuth/widgets/settings.py:75
+msgid "Account"
+msgstr ""
+
+#: ../TwoFactorAuth/widgets/settings.py:89
+msgid "Password protection"
+msgstr ""
+
+#: ../TwoFactorAuth/widgets/settings.py:113
+msgid "Auto-lock the application (m):"
+msgstr ""
+
+#: ../data/gnome-twofactorauth.appdata.xml.in.h:1
+#: ../data/gnome-twofactorauth.desktop.in.h:1
+msgid "Gnome TwoFactorAuth"
+msgstr ""
+
+#: ../data/gnome-twofactorauth.appdata.xml.in.h:2
+msgid "Two Factor Authentication code generator"
+msgstr ""
+
+#: ../data/gnome-twofactorauth.appdata.xml.in.h:3
+msgid ""
+"Simple application that generates two-factor authentication code, created "
+"for Gnome"
+msgstr ""
+
+#: ../data/gnome-twofactorauth.desktop.in.h:2
+msgid "Two Factor Authentication"
+msgstr ""
+
+#: ../data/gnome-twofactorauth.desktop.in.h:3
+msgid "Two-Factor Authentication code generator"
+msgstr ""
+
+#: ../data/gnome-twofactorauth.desktop.in.h:4
+msgid "About Gnome TwoFactorAuth"
+msgstr ""
+
+#: ../gnome-twofactorauth.in:50
+msgid "Start in debug mode"
+msgstr ""
+
+#: ../gnome-twofactorauth.in:52
+msgid "Gnome-TwoFactorAuth version number"
+msgstr ""
+
+#: ../gnome-twofactorauth.in:54
+msgid "Show about dialog"
+msgstr ""
