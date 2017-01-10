@@ -26,11 +26,13 @@ from TwoFactorAuth.widgets.window import Window
 from TwoFactorAuth.models.database import Database
 from TwoFactorAuth.widgets.settings import SettingsWindow
 from TwoFactorAuth.models.settings import SettingsReader
+from TwoFactorAuth.interfaces.application_observrable import ApplicaitonObservable
 from TwoFactorAuth.utils import *
 import logging
 import signal
 from gettext import gettext as _
 from os import environ as env
+
 
 class Application(Gtk.Application):
     win = None
@@ -46,6 +48,8 @@ class Application(Gtk.Application):
         GLib.set_application_name(_("TwoFactorAuth"))
         GLib.set_prgname("Gnome-TwoFactorAuth")
 
+        self.observable = ApplicaitonObservable()
+
         self.menu = Gio.Menu()
         self.db = Database()
         self.cfg = SettingsReader()
@@ -59,14 +63,15 @@ class Application(Gtk.Application):
             cssFileName = "gnome-twofactorauth-post3.20.css"
         else:
             cssFileName = "gnome-twofactorauth-pre3.20.css"
-        cssProviderFile = Gio.File.new_for_uri('resource:///org/gnome/TwoFactorAuth/%s' % cssFileName)
+        cssProviderFile = Gio.File.new_for_uri(
+            'resource:///org/gnome/TwoFactorAuth/%s' % cssFileName)
         cssProvider = Gtk.CssProvider()
         screen = Gdk.Screen.get_default()
         styleContext = Gtk.StyleContext()
         try:
             cssProvider.load_from_file(cssProviderFile)
             styleContext.add_provider_for_screen(screen, cssProvider,
-                                             Gtk.STYLE_PROVIDER_PRIORITY_USER)
+                                                 Gtk.STYLE_PROVIDER_PRIORITY_USER)
             logging.debug("Loading css file ")
         except Exception as e:
             logging.error("Error message %s" % str(e))
@@ -80,6 +85,8 @@ class Application(Gtk.Application):
         settings_content = Gio.Menu.new()
         settings_content.append_item(
             Gio.MenuItem.new(_("Settings"), "app.settings"))
+        self.is_dark_mode_menu = Gio.MenuItem.new(_("Night mode"), "app.night_mode")
+        settings_content.append_item(self.is_dark_mode_menu)
         settings_section = Gio.MenuItem.new_section(None, settings_content)
         self.menu.append_item(settings_section)
 
@@ -93,6 +100,10 @@ class Application(Gtk.Application):
         help_content.append_item(Gio.MenuItem.new(_("Quit"), "app.quit"))
         help_section = Gio.MenuItem.new_section(None, help_content)
         self.menu.append_item(help_section)
+
+        self.dark_mode_action = Gio.SimpleAction.new_stateful("night_mode", GLib.VariantType.new("b"), GLib.Variant.new_boolean(False))
+        self.dark_mode_action.connect("activate", self.enable_dark_mode)
+        self.add_action(self.dark_mode_action)
 
         self.settings_action = Gio.SimpleAction.new("settings", None)
         self.settings_action.connect("activate", self.on_settings)
@@ -111,10 +122,21 @@ class Application(Gtk.Application):
         action = Gio.SimpleAction.new("quit", None)
         action.connect("activate", self.on_quit)
         self.add_action(action)
-
+        self.refresh_menu_night_mode()
         if is_gnome():
             self.set_app_menu(self.menu)
             logging.debug("Adding gnome shell menu")
+
+    def enable_dark_mode(self, *args):
+        is_dark_mode = self.cfg.read("night-mode", "preferences")
+        self.cfg.update("night-mode", not is_dark_mode, "preferences")
+        self.refresh_menu_night_mode()
+
+    def refresh_menu_night_mode(self):
+        is_dark_mode = self.cfg.read("night-mode", "preferences")
+        settings = Gtk.Settings.get_default()
+        settings.set_property("gtk-application-prefer-dark-theme", is_dark_mode)
+        self.dark_mode_action.set_state(GLib.Variant.new_boolean(is_dark_mode))
 
     def do_activate(self, *args):
         if not self.win:
@@ -184,8 +206,7 @@ class Application(Gtk.Application):
             clipboard.clear()
         except Exception as e:
             logging.error(str(e))
-        self.alive = False
-        signal.signal(signal.SIGINT, lambda x, y: self.alive)
+        self.observable.update_observers(alive=False)
         if self.win:
             self.win.save_window_state()
             self.win.destroy()

@@ -36,6 +36,20 @@
                 Default window postiton on y axes
             </description>
         </key>
+        <key name="view-mode" type="s">
+            <default>"list"</default>
+            <summary>Default view mode grid/list</summary>
+            <description>
+              The way the generated codes will be shown list/grid mode
+            </description>
+        </key>
+        <key name="night-mode" type="b">
+            <default>false</default>
+            <summary>Night mode</summary>
+            <description>
+              Enable/disable night mode within the application
+            </description>
+        </key>
     </schema>
     <schema path="/org/gnome/TwoFactorAuth/login/" id="org.gnome.TwoFactorAuth.login" gettext-domain="TwoFactorAuth">
         <key name="password" type="s">

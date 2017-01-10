@@ -24,11 +24,13 @@ from TwoFactorAuth.utils import is_gnome
 import logging
 from gettext import gettext as _
 
-
+# view-grid-symbolic
+# view-list-symoblic
 class HeaderBar(Gtk.HeaderBar):
 
     search_button = Gtk.ToggleButton()
     add_button = Gtk.Button()
+    view_mode_button = Gtk.Button()
     settings_button = Gtk.Button()
     remove_button = Gtk.Button()
     cancel_button = Gtk.Button()
@@ -86,7 +88,7 @@ class HeaderBar(Gtk.HeaderBar):
 
     def generate_right_box(self):
         count = self.app.db.count()
-
+        is_grid = self.app.cfg.read("view-mode", "preferences").lower() == "grid"
         right_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         select_icon = Gio.ThemedIcon(name="object-select-symbolic")
         select_image = Gtk.Image.new_from_gicon(
@@ -102,10 +104,14 @@ class HeaderBar(Gtk.HeaderBar):
         self.search_button.set_image(search_image)
         self.toggle_search_button(count > 0)
 
+        self.set_toggle_view_mode_icon(is_grid)
+        self.view_mode_button.connect("clicked", self.toggle_view_mode)
+
         self.cancel_button.set_label(_("Cancel"))
         self.toggle_cancel_button(False)
 
         right_box.add(self.search_button)
+        right_box.add(self.view_mode_button)
         right_box.add(self.select_button)
         right_box.add(self.cancel_button)
         return right_box
@@ -129,6 +135,25 @@ class HeaderBar(Gtk.HeaderBar):
                 self.popover.hide()
             else:
                 self.popover.show_all()
+
+    def toggle_view_mode(self, *args):
+        is_grid = self.app.cfg.read("view-mode", "preferences").lower() == "grid"
+        if not is_grid:
+            self.app.cfg.update("view-mode", "grid" , "preferences")
+        else:
+            self.app.cfg.update("view-mode", "list" , "preferences")
+        self.set_toggle_view_mode_icon(not is_grid)
+        self.window.toggle_view_mode(not is_grid)
+
+    def set_toggle_view_mode_icon(self, is_grid):
+        if not is_grid:
+            view_mode_icon = Gio.ThemedIcon(name="view-grid-symbolic")
+            self.view_mode_button.set_tooltip_text(_("Grid mode"))
+        else:
+            view_mode_icon = Gio.ThemedIcon(name="view-list-symbolic")
+            self.view_mode_button.set_tooltip_text(_("List mode"))
+        view_mode_image = Gtk.Image.new_from_gicon(view_mode_icon, Gtk.IconSize.BUTTON)
+        self.view_mode_button.set_image(view_mode_image)
 
     def toggle_select_mode(self):
         is_select_mode = self.window.is_select_mode
@@ -180,6 +205,10 @@ class HeaderBar(Gtk.HeaderBar):
         self.remove_button.set_visible(visible)
         self.remove_button.set_no_show_all(not visible)
 
+    def toggle_view_mode_button(self, visible):
+        self.view_mode_button.set_visible(visible)
+        self.view_mode_button.set_no_show_all(not visible)
+
     def hide(self):
         self.toggle_add_button(False)
         self.toggle_lock_button(False)
@@ -188,6 +217,7 @@ class HeaderBar(Gtk.HeaderBar):
         self.toggle_search_button(False)
         self.toggle_settings_button(True)
         self.toggle_select_button(False)
+        self.toggle_view_mode_button(False)
 
     def refresh(self):
         is_locked = self.app.locked
@@ -202,6 +232,7 @@ class HeaderBar(Gtk.HeaderBar):
                 self.toggle_select_button(False)
                 self.toggle_remove_button(False)
                 self.toggle_search_button(False)
+                self.toggle_view_mode_button(False)
                 self.toggle_lock_button(can_be_locked)
                 self.toggle_settings_button(True)
                 self.toggle_cancel_button(False)
@@ -210,6 +241,7 @@ class HeaderBar(Gtk.HeaderBar):
                 self.toggle_select_button(True)
                 self.toggle_remove_button(False)
                 self.toggle_search_button(True)
+                self.toggle_view_mode_button(True)
                 self.toggle_lock_button(can_be_locked)
                 self.toggle_settings_button(True)
                 self.toggle_cancel_button(False)

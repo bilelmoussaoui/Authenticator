@@ -1,0 +1,68 @@
+
+{
+    "app-id": "org.gnome.TwoFactorAuth",
+    "branch": "0.1.1",
+    "runtime": "org.gnome.Platform",
+    "runtime-version": "3.22",
+    "sdk": "org.gnome.Sdk",
+    "command": "gnome-twofactorauth",
+    "copy-icon": true,
+    "separate-locales": false,
+    "no-debuginfo": true,
+    "desktop-file-name-prefix": "",
+    "finish-args": [
+      "--socket=x11",
+      "--socket=wayland",
+      "--filesystem=host",
+      "--talk-name=org.freedesktop.Notifications",
+      "--talk-name=org.freedesktop.secrets",
+      "--own-name=org.gnome.TwoFactorAuth"
+  	],
+    "modules": [{
+      "name" :"python-pyotp",
+      "no-autogen": true,
+      "sources": [{
+        "type": "archive",
+        "url": "https://pypi.python.org/packages/42/71/85c28b2d373eee3592d6f079e556df4a28d5c133c2ba484d7311dc9a746c/pylast-1.6.0.tar.gz",
+       "sha256": "6bf325ee0fdeb35780554843cf64df99304abb98c5ce2e451c0df7e95e08b42e"
+      },{
+        "type": "file",
+        "path": "pip-Makefile",
+        "dest-filename": "Makefile"
+      }],
+      "modules": [{
+        "name": "python-yaml",
+        "no-autogen": true,
+        "sources": [{
+          "type": "archive",
+          "url": "https://pypi.python.org/packages/b3/b2/238e2590826bfdd113244a40d9d3eb26918bd798fc187e2360a8367068db/six-1.10.0.tar.gz#md5=34eed507548117b2ab523ab14b2f8b55",
+          "sha256": "105f8d68616f8248e24bf0e9372ef04d3cc10104f1980f54d57b2ce73a5ad56a"
+        },{ 
+          "type": "file",
+          "path": "pip-Makefile",
+          "dest-filename": "Makefile"
+        }]
+      }]
+    },{
+      "name": "python-pillow",
+      "no-autogen": true,
+      "sources": [{
+        "type": "archive",
+        "url": "https://pypi.python.org/packages/d9/03/155b3e67fe35fe5b6f4227a8d9e96a14fda828b18199800d161bcefc1359/requests-2.12.3.tar.gz#md5=0cafdecd95a46b081dd5fcfa4978db7a",
+       "sha256": "de5d266953875e9647e37ef7bfe6ef1a46ff8ddfe61b5b3652edf7ea717ee2b2"
+      },{
+        "type": "file",
+        "path": "pip-Makefile",
+        "dest-filename": "Makefile"
+      }]
+    },{
+      "name": "lollypop",
+      "make-install-args": ["prefix=/app"],
+      "no-autogen": true,
+      "sources": [{
+          "type": "archive",
+          "url": "file:///tmp/lollypop-0.9.223.tar.xz",
+          "sha256": "d1cab2e73fd223387f518573b1ccd7d5fca7bd5f48bbdc7b1afe43d141fa0649"
+        }]
+    }]
+}

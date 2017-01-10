@@ -17,9 +17,7 @@
  You should have received a copy of the GNU General Public License
  along with Gnome-TwoFactorAuth. If not, see <http://www.gnu.org/licenses/>.
 """
-from gi import require_version
-require_version("Gtk", "3.0")
-from gi.repository import Gtk, Gdk, Gio
+
 import logging
 from TwoFactorAuth.utils import screenshot_area, current_date_time
 from TwoFactorAuth.widgets.applications_list import ApplicationChooserWindow
@@ -28,6 +26,9 @@ from TwoFactorAuth.models.code import Code
 from TwoFactorAuth.models.qr_reader import QRReader
 from TwoFactorAuth.utils import get_icon
 from gettext import gettext as _
+from gi import require_version
+require_version("Gtk", "3.0")
+from gi.repository import Gtk, Gdk, Gio
 
 
 class AddAccount(Gtk.Window):
@@ -47,7 +48,8 @@ class AddAccount(Gtk.Window):
         self.generate_header_bar()
 
     def generate_window(self):
-        Gtk.Window.__init__(self, type=Gtk.WindowType.TOPLEVEL, title=_("Add a new account"),
+        Gtk.Window.__init__(self, type=Gtk.WindowType.TOPLEVEL,
+                            title=_("Add a new account"),
                             modal=True, destroy_with_parent=True)
         self.connect("delete-event", self.close_window)
         self.resize(500, 400)
@@ -65,7 +67,6 @@ class AddAccount(Gtk.Window):
             Generate the header bar box
         """
         self.hb.props.title = _("Add a new account")
-
         left_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         right_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
 
@@ -118,7 +119,7 @@ class AddAccount(Gtk.Window):
         hbox_secret_code.pack_end(self.secret_code, False, True, 0)
         hbox_secret_code.pack_end(secret_code_label, False, True, 0)
 
-        account_logo = get_icon("image-missing")
+        account_logo = get_icon("image-missing", 48)
         self.account_image.set_from_pixbuf(account_logo)
         self.account_image.get_style_context().add_class("application-logo-add")
         logo_box.pack_start(self.account_image, True, False, 6)
@@ -142,7 +143,9 @@ class AddAccount(Gtk.Window):
                 self.secret_code.set_text(data["secret"])
                 self.apply_button.set_sensitive(True)
             else:
-                self.notification.update(_("Selected area is not a valid QR code"))
+                self.notification.update(
+                    _("Selected area is not a valid QR code"))
+                self.notification.set_message_type(Gtk.MessageType.ERROR)
                 self.notification.show()
 
     def on_key_press(self, key, key_event):
@@ -171,7 +174,7 @@ class AddAccount(Gtk.Window):
             Update image logo
         """
         self.selected_logo = image
-        account_icon = get_icon(image)
+        account_icon = get_icon(image, 48)
         self.account_image.clear()
         self.account_image.set_from_pixbuf(account_icon)
 
@@ -199,11 +202,11 @@ class AddAccount(Gtk.Window):
         try:
             self.parent.app.db.add_account(name, secret_code, logo)
             uid = self.parent.app.db.get_latest_id()
-            self.parent.accounts_list.append([uid, name, secret_code, logo])
+            self.parent.accounts_box.append([uid, name, secret_code, logo])
             self.parent.refresh_window()
             self.close_window()
         except Exception as e:
-            logging.error("Error in adding a new account")
+            logging.error("Error in addin.accounts_boxg a new account")
             logging.error(str(e))
 
     def show_window(self):

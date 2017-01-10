@@ -57,7 +57,7 @@ class Window(Gtk.ApplicationWindow):
         self.set_icon_name("Gnome-TwoFactorAuth")
         self.resize(500, 650)
         self.set_size_request(500, 650)
-        self.set_resizable(False)
+        self.set_resizable(True)
         self.connect("key_press_event", self.on_key_press)
         self.connect("delete-event", lambda x, y: self.app.on_quit())
         self.notification = InAppNotification()
@@ -107,6 +107,7 @@ class Window(Gtk.ApplicationWindow):
     def generate_accounts_box(self):
         self.accounts_box = AccountsWindow(self.app, self)
         self.accounts_list = self.accounts_box.get_accounts_list()
+        self.accounts_grid = self.accounts_box.get_accounts_grid()
         self.hb.remove_button.connect(
             "clicked", self.accounts_list.remove_selected)
         self.search_bar = self.accounts_box.get_search_bar()
@@ -130,6 +131,10 @@ class Window(Gtk.ApplicationWindow):
         add_account = AddAccount(self)
         add_account.show_window()
 
+    def toggle_view_mode(self, is_grid):
+        self.accounts_box.set_mode_view(is_grid)
+        self.refresh_window()
+
     def toggle_select(self, *args):
         """
             Toggle select mode
@@ -137,6 +142,7 @@ class Window(Gtk.ApplicationWindow):
         self.is_select_mode = not self.is_select_mode
         self.hb.toggle_select_mode()
         self.accounts_list.toggle_select_mode()
+        self.accounts_grid.toggle_select_mode()
 
     def generate_no_accounts_box(self):
         """
@@ -150,6 +156,8 @@ class Window(Gtk.ApplicationWindow):
             Refresh windows components
         """
         count = self.app.db.count()
+        self.accounts_grid.show_all()
+        self.accounts_list.show_all()
         if self.is_locked():
             self.login_box.show()
             self.no_account_box.hide()

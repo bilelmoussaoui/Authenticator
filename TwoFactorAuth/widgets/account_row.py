@@ -20,15 +20,13 @@
 from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gdk, GLib, Pango
-from TwoFactorAuth.models.code import Code
-from TwoFactorAuth.models.settings import SettingsReader
-from TwoFactorAuth.models.database import Database
 from TwoFactorAuth.widgets.confirmation import ConfirmationMessage
 from TwoFactorAuth.utils import get_icon
 from threading import Thread
 from time import sleep
 import logging
 from gettext import gettext as _
+from TwoFactorAuth.models.observer import Observer
 
 
 class RowEntryName(Gtk.Entry):
@@ -60,34 +58,18 @@ class RowEntryName(Gtk.Entry):
     def focus(self):
         self.grab_focus_without_selecting()
 
-class AccountRow(Thread, Gtk.ListBoxRow):
-    counter_max = 30
-    counter = 30
-    timer = 0
-    code = None
-    code_generated = True
-    alive = True
-    notification = None
 
-    def __init__(self, parent, window, app):
-        Thread.__init__(self)
-        Gtk.ListBoxRow.__init__(self)
+class AccountRow(Observer):
+    notification = None
+    timer = 0
+    remove_timer = 0
+
+    def __init__(self, parent, window, account):
         # Read default values
-        cfg = SettingsReader()
-        self.counter_max = cfg.read("refresh-time", "preferences")
-        self.counter = self.counter_max
         self.window = window
         self.parent = parent
-        self.id = app[0]
-        self.name = app[1]
-        self.secret_code = Database.fetch_secret_code(app[2])
-        if self.secret_code:
-            self.code = Code(self.secret_code)
-        else:
-            self.code_generated = False
-            logging.error(
-                "Could not read the secret code from, the keyring keys were reset manually")
-        self.logo = app[3]
+        self.account = account
+        self.account.account_observerable.register(self)
         # Create needed widgets
         self.code_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         self.revealer = Gtk.Revealer()
@@ -95,30 +77,35 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         self.application_name = Gtk.Label(xalign=0)
         self.code_label = Gtk.Label(xalign=0)
         self.timer_label = Gtk.Label(xalign=0)
-        # Create the list row
-        self.create_row()
-        self.start()
-        self.window.connect("key-press-event", self.__on_key_press)
+        self.is_grid_view = isinstance(self, AccountRowGrid)
 
-    def get_id(self):
-        """
-            Get the application id
-            :return: (int): row id
-        """
-        return self.id
+    def update(self, *args, **kwargs):
+        self.set_account_code(kwargs.get("code", None))
+        self.set_account_name(kwargs.get("name", None))
+        self.set_account_counter(kwargs.get("counter", None))
 
-    def get_name(self):
-        """
-            Get the application name
-            :return: (str): application name
-        """
-        return self.name
+    def set_account_name(self, name):
+        if name:
+            self.application_name.props.tooltip_text = name
+            self.application_name .set_text(name)
 
-    def get_code(self):
-        return self.code
+    def set_account_code(self, code):
+        if code:
+            self.code_label.set_text(str(code))
+
+    def set_account_counter(self, counter):
+        if counter:
+            if self.is_grid_view:
+                label = str(counter)
+            else:
+                label = _("Expires in %s seconds" % str(counter))
+            self.timer_label.set_label(label)
 
     def get_code_label(self):
         return self.code_label
+
+    def get_name(self):
+        return self.account.get_name()
 
     def get_checkbox(self):
         """
@@ -140,21 +127,16 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         """
         self.revealer.set_reveal_child(not self.revealer.get_reveal_child())
 
-    def kill(self):
-        """
-            Kill the row thread once it's removed
-        """
-        self.alive = False
-
     def copy_code(self, *args):
         """
             Copy code shows the code box for a while (10s by default)
         """
         self.timer = 0
-        code = self.get_code().get_secret_code()
+        code = self.account.get_code()
         try:
             clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
-            self.window.notification.update(_('Code "%s" copied to clipboard' % str(code)))
+            self.window.notification.update(
+                _('Code "%s" copied to clipboard' % str(code)))
             self.window.notification.show()
             clipboard.clear()
             clipboard.set_text(code, len(code))
@@ -164,6 +146,13 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         self.revealer.set_reveal_child(True)
         GLib.timeout_add_seconds(1, self.update_timer)
 
+    def update_remove_countdown(self, *args):
+        if self.remove_timer > 0:
+            self.remove_timer -= 1
+            if self.remove_timer == 0:
+                self.account.remove()
+        return self.timer <= self.window.notification.timeout
+
     def update_timer(self, *args):
         """
             Update timer
@@ -172,6 +161,40 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         if self.timer > 10:
             self.revealer.set_reveal_child(False)
         return self.timer <= 10
+
+    def toggle_code(self, *args):
+        self.toggle_code_box()
+
+    def toggle_action_box(self, visible):
+        self.actions_box.set_visible(visible)
+        self.actions_box.set_no_show_all(not visible)
+
+    def remove(self, *args):
+        """
+            Remove an account
+        """
+        message = _('Do you really want to remove "%s"?' % self.account.get_name())
+        confirmation = ConfirmationMessage(self.window, message)
+        confirmation.show()
+        if confirmation.get_confirmation():
+            self.window.notification.update(_('"%s" was removed' % self.account.get_name()), self.undo_remove)
+            self.window.notification.show()
+            self.remove_timer = self.window.notification.timeout
+            GLib.timeout_add_seconds(1, self.update_remove_countdown)
+        confirmation.destroy()
+        self.window.refresh_window()
+
+    def undo_remove(self):
+        self.remove_timer = 0
+        self.window.notification.hide()
+
+class AccountRowList(AccountRow, Gtk.ListBoxRow):
+
+    def __init__(self, parent, window, account):
+        AccountRow.__init__(self, parent, window, account)
+        Gtk.ListBoxRow.__init__(self)
+        self.create_row()
+        self.window.connect("key-press-event", self.__on_key_press)
 
     def create_row(self):
         """
@@ -191,14 +214,14 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         h_box.pack_start(self.checkbox, False, True, 6)
 
         # account logo
-        auth_icon = get_icon(self.logo)
+        auth_icon = get_icon(self.account.get_logo(), 48)
         auth_logo = Gtk.Image(xalign=0)
         auth_logo.set_from_pixbuf(auth_icon)
         h_box.pack_start(auth_logo, False, True, 6)
 
         # Account name entry
         name_entry_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        self.name_entry = RowEntryName(self.name)
+        self.name_entry = RowEntryName(self.account.get_name())
         name_entry_box.pack_start(self.name_entry, False, False, 6)
         h_box.pack_start(name_entry_box, False, False, 0)
         name_entry_box.set_visible(False)
@@ -207,8 +230,7 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         name_event = Gtk.EventBox()
         self.application_name .get_style_context().add_class("application-name")
         self.application_name.set_ellipsize(Pango.EllipsizeMode.END)
-        self.application_name.props.tooltip_text = self.name
-        self.application_name .set_text(self.name)
+        self.set_account_name(self.account.get_name())
         name_event.connect("button-press-event", self.toggle_code)
         name_event.add(self.application_name)
         h_box.pack_start(name_event, False, True, 6)
@@ -238,7 +260,7 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         edit_event = Gtk.EventBox()
         self.edit_button = Gtk.Image(xalign=0)
         self.edit_button.set_from_icon_name("document-edit-symbolic",
-                                        Gtk.IconSize.SMALL_TOOLBAR)
+                                            Gtk.IconSize.SMALL_TOOLBAR)
         self.edit_button.set_tooltip_text(_("Edit the account"))
         edit_event.add(self.edit_button)
         edit_event.connect("button-press-event", self.edit)
@@ -248,7 +270,7 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         apply_event = Gtk.EventBox()
         self.apply_button = Gtk.Image(xalign=0)
         self.apply_button.set_from_icon_name("emblem-ok-symbolic",
-                                        Gtk.IconSize.SMALL_TOOLBAR)
+                                             Gtk.IconSize.SMALL_TOOLBAR)
         self.apply_button.set_tooltip_text(_("Save the new account name"))
         apply_event.add(self.apply_button)
         apply_event.connect("button-press-event", self.apply_edit_name)
@@ -257,13 +279,13 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         self.toggle_action_box(True)
         self.toggle_edit_mode(False)
 
-        self.timer_label.set_label(_("Expires in %s seconds") % self.counter)
+        self.set_account_counter(self.account.get_counter())
         self.timer_label.get_style_context().add_class("account-timer")
         self.code_label.get_style_context().add_class("account-secret-code")
-        if self.code_generated:
-            self.update_code(self.code_label)
+        if self.account.code_generated:
+            self.set_account_code(self.account.get_code())
         else:
-            self.code_label.set_text(_("Error during the generation of code"))
+            self.set_account_code(_("Error during the generation of code"))
 
         self.code_box.pack_end(self.timer_label, False, True, 6)
         self.code_box.pack_start(self.code_label, False, True, 6)
@@ -271,50 +293,10 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         self.revealer.set_reveal_child(False)
         self.add(box)
 
-    def get_counter(self):
-        return self.counter
-
-    def toggle_code(self, *args):
-        self.toggle_code_box()
-
-    def toggle_action_box(self, visible):
-        self.actions_box.set_visible(visible)
-        self.actions_box.set_no_show_all(not visible)
-
-    def run(self):
-        while self.code_generated and self.window.app.alive and self.alive:
-            self.counter -= 1
-            if self.counter == 0:
-                self.counter = self.counter_max
-                self.regenerate_code()
-                if self.timer != 0:
-                    self.timer = 0
-            self.update_timer_label()
-            self.changed()
-            sleep(1)
-
-    def regenerate_code(self):
-        label = self.code_label
-        if label:
-            self.code.update()
-            self.update_code(label)
-
-    def update_code(self, label):
-        try:
-            code = self.code.get_secret_code()
-            if code:
-                label.set_text(code)
-            else:
-                raise TypeError
-        except TypeError as e:
-            logging.error("Couldn't generate the secret code : %s" % str(e))
-            label.set_text(_("Couldn't generate the secret code"))
-            self.code_generated = False
-
     def toggle_edit_mode(self, visible):
         if visible:
             self.name_entry.show()
-            self.name_entry.set_text(self.get_name())
+            self.name_entry.set_text(self.account.get_name())
             self.name_entry.focus()
         else:
             self.name_entry.hide()
@@ -325,11 +307,10 @@ class AccountRow(Thread, Gtk.ListBoxRow):
         self.edit_button.get_parent().set_visible(not visible)
         self.edit_button.get_parent().set_no_show_all(visible)
 
-
     def __on_key_press(self, widget, event):
         keyname = Gdk.keyval_name(event.keyval).lower()
         if not self.window.is_locked():
-            if self.parent.get_selected_row_id() == self.get_id():
+            if self.parent.get_selected_row_id() == self.account.get_id():
                 is_search_bar = self.window.search_bar.is_visible()
                 is_editing_name = self.name_entry.is_visible()
                 if keyname == "delete" and not is_search_bar and not is_editing_name:
@@ -362,25 +343,101 @@ class AccountRow(Thread, Gtk.ListBoxRow):
     def apply_edit_name(self, *args):
         new_name = self.name_entry.get_text()
         self.application_name.set_text(new_name)
-        self.window.app.db.update_name_by_id(self.get_id(), new_name)
-        self.name = new_name
+        self.account.set_name(new_name)
         self.toggle_edit_mode(False)
+        self.parent.window.refresh_window()
 
-    def remove(self, *args):
-        """
-            Remove an account
-        """
-        message = _('Do you really want to remove "%s"?' % self.get_name())
-        confirmation = ConfirmationMessage(self.window, message)
-        confirmation.show()
-        if confirmation.get_confirmation():
-            self.window.notification.update(_('"%s" was removed' % self.name))
-            self.window.notification.show()
-            self.kill()
-            self.window.accounts_list.remove(self)
-            self.window.app.db.remove_by_id(self.get_id())
-        confirmation.destroy()
-        self.window.refresh_window()
 
-    def update_timer_label(self):
-        self.timer_label.set_label(_("Expires in %s seconds") % self.counter)
+class AccountRowGrid(AccountRow, Gtk.Box):
+
+    def __init__(self, parent, window, account):
+        AccountRow.__init__(self, parent, window, account)
+        Gtk.Box.__init__(self)
+        self.create_row()
+        self.window.connect("key-press-event", self.__on_key_press)
+
+    def create_row(self):
+        """
+            Create ListBoxRow
+        """
+        self.actions_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        v_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+
+        # Checkbox
+        overlay_box = Gtk.Overlay()
+        checkbox_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        self.checkbox.set_visible(False)
+        self.checkbox.get_style_context().add_class("checkbutton-grid")
+        self.checkbox.set_no_show_all(True)
+        self.checkbox.connect("toggled", self.parent.select_account)
+        checkbox_box.pack_end(self.checkbox, False, False, 0)
+        overlay_box.add_overlay(checkbox_box)
+
+        # account logo
+        logo_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        auth_icon = get_icon(self.account.get_logo(), 96)
+        auth_logo = Gtk.Image(xalign=0)
+        auth_logo.set_from_pixbuf(auth_icon)
+        logo_box.add(auth_logo)
+        overlay_box.add(logo_box)
+        v_box.pack_start(overlay_box, False, False, 6)
+
+        # accout name
+        name_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        name_event = Gtk.EventBox()
+        self.application_name .get_style_context().add_class("application-name-grid")
+        self.application_name.set_ellipsize(Pango.EllipsizeMode.END)
+        self.set_account_name(self.account.get_name())
+        name_event.connect("button-press-event", self.toggle_code)
+        name_event.add(self.application_name)
+        name_box.pack_start(name_event, True, False, 6)
+        v_box.pack_start(name_box, False, False, 0)
+
+        # Copy button
+        copy_event = Gtk.EventBox()
+        copy_button = Gtk.Image(xalign=0)
+        copy_button.set_from_icon_name(
+            "edit-copy-symbolic", Gtk.IconSize.SMALL_TOOLBAR)
+        copy_button.set_tooltip_text(_("Copy the generated code"))
+        copy_event.connect("button-press-event", self.copy_code)
+        copy_event.add(copy_button)
+        self.actions_box.pack_end(copy_event, False, False, 6)
+
+
+        self.set_account_counter(self.account.get_counter())
+        self.timer_label.get_style_context().add_class("account-timer-grid")
+
+        self.code_label.get_style_context().add_class("account-secret-code-grid")
+        if self.account.code_generated:
+            self.set_account_code(self.account.get_code())
+        else:
+            self.set_account_code(_("Error during the generation of code"))
+
+        self.code_box.pack_end(self.timer_label, False, True, 6)
+        self.code_box.pack_start(self.code_label, True, False, 6)
+        self.revealer.add(self.code_box)
+        self.revealer.set_reveal_child(False)
+        v_box.pack_start(self.revealer, False, False, 0)
+
+        # self.pack_start(checkbox_box, False, False, 0)
+        self.pack_start(v_box, True, False, 0)
+
+
+    def __on_key_press(self, widget, event):
+        keyname = Gdk.keyval_name(event.keyval).lower()
+        if not self.window.is_locked():
+            if self.parent.get_selected_row_id() == self.account.get_id():
+                is_search_bar = self.window.search_bar.is_visible()
+                if keyname == "delete" and not is_search_bar:
+                    self.remove()
+                    return True
+
+                if keyname == "return":
+                    self.toggle_code_box()
+                    return True
+
+                if event.state & Gdk.ModifierType.CONTROL_MASK:
+                    if keyname == 'c':
+                        self.copy_code()
+                        return True
+        return False

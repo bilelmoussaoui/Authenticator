@@ -1,8 +1,8 @@
+from gettext import gettext as _
+import logging
 from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gio, GLib
-from gettext import gettext as _
-import logging
 
 
 class InAppNotification(Gtk.Revealer):
@@ -19,35 +19,27 @@ class InAppNotification(Gtk.Revealer):
 
     def generate_components(self):
         self.get_style_context().add_class("top")
-        frame = Gtk.Frame()
-        self.main_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        frame.props.width_request = 100
-        frame.get_style_context().add_class("app-notification")
+        self.infobar = Gtk.InfoBar()
+        self.infobar.set_show_close_button(True)
+        self.infobar.connect("response", self.response)
+        self.infobar.set_default_response(Gtk.ResponseType.CLOSE)
+        self.infobar.set_message_type(Gtk.MessageType.INFO)
 
-        self.undo_button = Gtk.Button()
-        self.undo_button.set_label(_("Undo"))
-        if self.undo_action is not None:
-            self.undo_button.connect("clicked", self.undo_action)
-        else:
-            self.undo_button.set_visible(False)
-            self.undo_button.set_no_show_all(True)
-
-        delete_button = Gtk.Button()
-        delete_icon = Gio.ThemedIcon(name="edit-delete-symbolic")
-        delete_image = Gtk.Image.new_from_gicon(
-            delete_icon, Gtk.IconSize.BUTTON)
-        delete_button.set_tooltip_text(_("Hide notification"))
-        delete_button.set_image(delete_image)
-        delete_button.connect("clicked", self.on_hide_notification)
+        content_area = self.infobar.get_content_area()
+        action_area = self.infobar.get_action_area()
+        self.undo_button = None
+        if self.undo_action:
+            self.undo_button = self.infobar.add_button(
+                _("Undo"), Gtk.ResponseType.CANCEL)
 
         self.message_label = Gtk.Label()
         self.message_label.set_text(self.message)
 
-        self.main_box.pack_end(delete_button, False, False, 6)
-        self.main_box.pack_end(self.undo_button, False, False, 6)
-        self.main_box.pack_start(self.message_label, False, False, 6)
-        frame.add(self.main_box)
-        self.add(frame)
+        content_area.add(self.message_label)
+        self.add(self.infobar)
+
+    def set_message_type(self, message_type):
+        self.infobar.set_message_type(message_type)
 
     def on_hide_notification(self, *args):
         self.hide()
@@ -58,14 +50,27 @@ class InAppNotification(Gtk.Revealer):
     def hide(self):
         self.set_reveal_child(False)
 
-    def update(self, message, undo_action = None):
+    def update(self, message, undo_action=None):
         self.message_label.set_text(message)
         self.timer = 0
-        if undo_action is not None:
-            self.undo_button.set_visible(True)
-            self.undo_button.set_no_show_all(False)
+        if undo_action:
+            if not self.undo_button:
+                self.undo_button = self.infobar.add_button(
+                    _("Undo"), Gtk.ResponseType.CANCEL)
+            else:
+                self.undo_button.set_visible(True)
+                self.undo_button.set_no_show_all(False)
             self.undo_action = undo_action
-            self.undo_button.connect("clicked", self.undo_action)
+        else:
+            if self.undo_button:
+                self.undo_button.set_visible(False)
+                self.undo_button.set_no_show_all(True)
+
+    def response(self, infobar, response_id):
+        if response_id == Gtk.ResponseType.CLOSE:
+            self.hide()
+        elif response_id == Gtk.ResponseType.CANCEL:
+            self.undo_action()
 
     def update_timer(self):
         if self.get_reveal_child():

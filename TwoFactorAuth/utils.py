@@ -39,7 +39,7 @@ def get_home_path():
     return path.expanduser("~")
 
 
-def get_icon(image):
+def get_icon(image, size):
     """
         Generate a GdkPixbuf image
         :param image: icon name or image path
@@ -48,15 +48,15 @@ def get_icon(image):
     directory = path.join(env.get("DATA_DIR"), "applications", "images") + "/"
     theme = Gtk.IconTheme.get_default()
     if theme.has_icon(path.splitext(image)[0]):
-        icon = theme.load_icon(path.splitext(image)[0], 48, 0)
+        icon = theme.load_icon(path.splitext(image)[0], size, 0)
     elif path.exists(directory + image):
         icon = GdkPixbuf.Pixbuf.new_from_file(directory + image)
     elif path.exists(image):
         icon = GdkPixbuf.Pixbuf.new_from_file(image)
     else:
-        icon = theme.load_icon("image-missing", 48, 0)
-    if icon.get_width() != 48 or icon.get_height() != 48:
-        icon = icon.scale_simple(48, 48, GdkPixbuf.InterpType.BILINEAR)
+        icon = theme.load_icon("image-missing", size, 0)
+    if icon.get_width() != size or icon.get_height() != size:
+        icon = icon.scale_simple(size, size, GdkPixbuf.InterpType.BILINEAR)
     return icon
 
 

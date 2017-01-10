@@ -4,10 +4,13 @@
 .application-list-row:selected GtkImage {
     color: @theme_fg_selected_color;
 }
-.application-name {
+.application-name,
+.application-name-grid {
     font-weight: bold;
     font-size: 14px;
 }
+
+
 .application-logo-add {
     margin-right: 5px;
     margin-bottom: 10px;
@@ -19,9 +22,21 @@
     margin-bottom: 5px;
     margin-left: 60px;
 }
+
+.account-secret-code-grid,
+.account-timer-grid {
+    font-size: 18px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
 .application-secret-code-select-mode {
     margin-left: 98px;
 }
 .choose-popover GtkLabel {
     padding: 10px;
+}
+
+.checkbutton-grid{
+  color:@theme_fg_color;
 }

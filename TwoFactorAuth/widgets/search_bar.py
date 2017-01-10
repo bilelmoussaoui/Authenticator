@@ -25,9 +25,9 @@ import logging
 
 class SearchBar(Gtk.Revealer):
 
-    def __init__(self, listbox, window, search_button):
+    def __init__(self, window, search_button, *args):
         self.search_entry = Gtk.SearchEntry()
-        self.listbox = listbox
+        self.search_list = args[0]
         self.search_button = search_button
         self.window = window
         self.generate()
@@ -49,10 +49,10 @@ class SearchBar(Gtk.Revealer):
 
     def toggle(self, *args):
         if self.is_visible():
-            self.set_reveal_child(False)
             self.search_entry.set_text("")
-            self.listbox.set_filter_func(lambda x, y, z: True,
-                                         None, False)
+            self.set_reveal_child(False)
+            for search_list in self.search_list:
+                search_list.set_filter_func(lambda x, y, z: True, None, False)
         else:
             self.set_reveal_child(True)
             self.focus()
@@ -61,6 +61,8 @@ class SearchBar(Gtk.Revealer):
         """
             Filter function, used to check if the entered data exists on the application ListBox
         """
+        if isinstance(row, Gtk.FlowBoxChild):
+            row = row.get_children()[0]
         app_label = row.get_name()
         data = data.lower()
         if len(data) > 0:
@@ -101,4 +103,5 @@ class SearchBar(Gtk.Revealer):
 
     def filter_applications(self, entry):
         data = entry.get_text().strip()
-        self.listbox.set_filter_func(self.filter_func, data, False)
+        for search_list in self.search_list:
+            search_list.set_filter_func(self.filter_func, data, False)

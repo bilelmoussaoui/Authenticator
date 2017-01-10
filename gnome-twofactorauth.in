@@ -73,6 +73,9 @@ if __name__ == "__main__":
         about_dialog.destroy()
         sys.exit()
     else:
-        app = application.Application()
-        exit_status = app.run(None)
-        sys.exit(exit_status)
+        try:
+            app = application.Application()
+            exit_status = app.run(None)
+            sys.exit(exit_status)
+        except KeyboardInterrupt:
+            exit()

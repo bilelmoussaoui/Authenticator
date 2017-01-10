@@ -53,7 +53,7 @@ class ApplicationRow(Gtk.ListBoxRow):
         hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
 
         # Application logo
-        application_logo = get_icon(self.image)
+        application_logo = get_icon(self.image, 48)
         application_image = Gtk.Image(xalign=0)
         application_image.set_from_pixbuf(application_logo)
         hbox.pack_start(application_image, False, True, 6)

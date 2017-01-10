@@ -137,7 +137,7 @@ class ApplicationChooserWindow(Gtk.Window, Thread, GObject.GObject):
         """
             Generate the search bar
         """
-        self.search_bar = SearchBar(self.listbox, self, self.search_button)
+        self.search_bar = SearchBar(self, self.search_button, [self.listbox])
         self.main_box.pack_start(self.search_bar, False, True, 0)
 
     def is_valid_app(self, app):
