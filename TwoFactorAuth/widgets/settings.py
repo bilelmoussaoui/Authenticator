@@ -26,7 +26,6 @@ from gettext import gettext as _
 import logging
 
 class SettingsWindow(Gtk.Window):
-    main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
     def __init__(self, parent):
         self.parent = parent
@@ -36,6 +35,7 @@ class SettingsWindow(Gtk.Window):
         self.auto_lock_switch = Gtk.CheckButton()
         self.password_button = Gtk.Button()
         self.hb = Gtk.HeaderBar()
+        self.main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         self.generate_window()
         self.generate_components()
 
