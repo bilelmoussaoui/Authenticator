@@ -19,7 +19,8 @@
 """
 
 import logging
-from TwoFactorAuth.utils import screenshot_area, current_date_time
+
+from TwoFactorAuth.utils import screenshot_area
 from TwoFactorAuth.widgets.applications_list import ApplicationChooserWindow
 from TwoFactorAuth.widgets.inapp_notification import InAppNotification
 from TwoFactorAuth.models.code import Code
@@ -134,8 +135,8 @@ class AddAccount(Gtk.Window):
         self.add(main_box)
 
     def on_qr_scan(self, *args):
-        filename = "/tmp/TwoFactorAuth-%s.png" % current_date_time()
-        if screenshot_area(filename):
+        filename = screenshot_area()
+        if filename:
             qr = QRReader(filename)
             data = qr.read()
             if qr.is_valid():
@@ -200,9 +201,8 @@ class AddAccount(Gtk.Window):
         secret_code = self.secret_code.get_text()
         logo = self.selected_logo if self.selected_logo else "image-missing"
         try:
-            self.parent.app.db.add_account(name, secret_code, logo)
-            uid = self.parent.app.db.get_latest_id()
-            self.parent.accounts_box.append([uid, name, secret_code, logo])
+            new_account = self.parent.app.db.add_account(name, secret_code, logo)
+            self.parent.accounts_box.append(new_account)
             self.parent.refresh_window()
             self.close_window()
         except Exception as e:

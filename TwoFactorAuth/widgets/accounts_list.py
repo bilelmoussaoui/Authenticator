@@ -169,6 +169,9 @@ class AccountsList(Gtk.ListBox):
         self.scrolled_win.hide()
         self.scrolled_win.show_all()
 
+    def append(self, account):
+        self.add(AccountRowList(self, self.window, account))
+
     def remove_by_id(self, _id):
         for row in self.get_children():
             if row.account.get_id() == _id:

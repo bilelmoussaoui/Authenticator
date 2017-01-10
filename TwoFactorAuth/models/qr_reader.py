@@ -18,7 +18,7 @@
  along with Gnome-TwoFactorAuth. If not, see <http://www.gnu.org/licenses/>.
 """
 from PIL import Image
-import zbarlight
+from zbarlight import scan_codes
 from urllib.parse import urlparse, parse_qsl
 import logging
 from os import remove, path
@@ -34,7 +34,7 @@ class QRReader:
         with open(self.filename, 'rb') as image_file:
             image = Image.open(image_file)
             image.load()
-        self.codes = zbarlight.scan_codes('qrcode', image)
+        self.codes = scan_codes('qrcode', image)
         self.remove()
         if self.codes:
             otpauth_url = self.codes[0].decode()

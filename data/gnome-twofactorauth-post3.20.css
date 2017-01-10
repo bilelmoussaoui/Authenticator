@@ -17,7 +17,7 @@
 }
 .account-secret-code,
 .account-timer {
-    font-size: 16px;
+    font-size: 14px;
     margin-top: 0;
     margin-bottom: 5px;
     margin-left: 60px;
@@ -25,7 +25,7 @@
 
 .account-secret-code-grid,
 .account-timer-grid {
-    font-size: 18px;
+    font-size: 14px;
     margin-top: 10px;
     margin-bottom: 5px;
 }
@@ -37,6 +37,3 @@
     padding: 10px;
 }
 
-.checkbutton-grid{
-  color:@theme_fg_color;
-}

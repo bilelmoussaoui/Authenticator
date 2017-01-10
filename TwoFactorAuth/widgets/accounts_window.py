@@ -127,11 +127,11 @@ class AccountsWindow(Gtk.Box, Observer):
         """
             Add an element to the ListBox
         """
-        app[2] = sha256(app[2].encode('utf-8')).hexdigest()
-        account = Account(app, self.app.db)
-        account.row_observerable.register(self)
-        self.accounts.append(account)
-        self.app.observable.register(account)
-        self.accounts_list.add(AccountRowList(self.accounts_list, self.window, account))
-        self.accounts_grid.add(AccountRowGrid(self.accounts_grid, self.window, account))
-        self.show_all()
+        if app:
+            account = Account(app, self.app.db)
+            account.row_observerable.register(self)
+            self.accounts.append(account)
+            self.app.observable.register(account)
+            self.accounts_list.append(account)
+            self.accounts_grid.append(account)
+            self.show_all()

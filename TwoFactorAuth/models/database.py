@@ -19,15 +19,15 @@
 """
 import sqlite3
 import logging
-from gi.repository import GnomeKeyring as GK
+from gi.repository import GnomeKeyring as GK, GLib
 from hashlib import sha256
-from TwoFactorAuth.utils import create_file, get_home_path
+from TwoFactorAuth.utils import create_file
 
 
 class Database:
 
     def __init__(self):
-        database_file = get_home_path() + '/.config/TwoFactorAuth/database.db'
+        database_file = GLib.get_home_dir() + '/.config/TwoFactorAuth/database.db'
         if create_file(database_file):
             logging.debug("Creating database file %s " % database_file)
         self.conn = sqlite3.connect(database_file)
@@ -67,6 +67,8 @@ class Database:
                                 secret_code, False)
             self.conn.execute(query, t)
             self.conn.commit()
+            uid = self.get_latest_id()
+            return [uid, name, encrypted_secret, image]
         except Exception as e:
             logging.error("SQL: Couldn't add a new account : %s ", str(e))
 

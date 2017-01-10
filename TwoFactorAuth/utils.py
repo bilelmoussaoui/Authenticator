@@ -19,10 +19,10 @@
  along with Gnome-TwoFactorAuth. If not, see <http://www.gnu.org/licenses/>.
 """
 from os import path, mknod, makedirs, environ as env
-from gi.repository import GdkPixbuf, Gtk, Gio
+from gi.repository import GdkPixbuf, Gtk, Gio, GLib
 import logging
 from subprocess import PIPE, Popen, call
-from time import strftime
+from tempfile import NamedTemporaryFile
 
 
 def is_gnome():
@@ -45,14 +45,6 @@ def show_app_menu():
         return not is_gnome()
     except Exception as e:
         logging.critical("Couldn't load gsettings source %s " % str(e))
-
-
-
-def get_home_path():
-    """
-        Get the home path, used to create db file
-    """
-    return path.expanduser("~")
 
 
 def get_icon(image, size):
@@ -95,31 +87,26 @@ def create_file(file_path):
         return False
 
 
-def screenshot_area(file_name):
+def screenshot_area():
     """
         Screenshot an area of the screen using gnome-screenshot
         used to QR scan
     """
     ink_flag = call(['which', 'gnome-screenshot'], stdout=PIPE, stderr=PIPE)
     if ink_flag == 0:
+        file_name = path.join(GLib.get_tmp_dir(), NamedTemporaryFile().name)
         p = Popen(["gnome-screenshot", "-a", "-f", file_name],
                   stdout=PIPE, stderr=PIPE)
         output, error = p.communicate()
         if error:
             error = error.decode("utf-8").split("\n")
-            logging.debug("\n".join([e for e in error]))
+            logging.error("\n".join([e for e in error]))
         if not path.isfile(file_name):
             logging.debug("The screenshot was not token")
             return False
-        return True
+        return file_name
     else:
         logging.error(
             "Couldn't find gnome-screenshot, please install it first")
         return False
 
-
-def current_date_time():
-    """
-        Get the current date time, format 31_03_2016-13:12:50
-    """
-    return strftime("%d_%m_%Y-%H:%M:%S")

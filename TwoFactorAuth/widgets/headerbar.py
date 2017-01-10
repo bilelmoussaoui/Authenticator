@@ -27,7 +27,6 @@ from gettext import gettext as _
 # view-grid-symbolic
 # view-list-symoblic
 class HeaderBar(Gtk.HeaderBar):
-
     search_button = Gtk.ToggleButton()
     add_button = Gtk.Button()
     view_mode_button = Gtk.Button()
@@ -56,6 +55,7 @@ class HeaderBar(Gtk.HeaderBar):
 
         self.pack_start(left_box)
         self.pack_end(right_box)
+        self.refresh()
 
     def generate_left_box(self):
         left_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
@@ -66,20 +66,17 @@ class HeaderBar(Gtk.HeaderBar):
         self.remove_button.set_tooltip_text(_("Remove selected accounts"))
         self.remove_button.set_image(remove_image)
         self.remove_button.set_sensitive(False)
-        self.toggle_remove_button(False)
 
         add_icon = Gio.ThemedIcon(name="list-add-symbolic")
         add_image = Gtk.Image.new_from_gicon(add_icon, Gtk.IconSize.BUTTON)
         self.add_button.set_tooltip_text(_("Add a new account"))
         self.add_button.set_image(add_image)
 
-        pass_enabled = self.app.cfg.read("state", "login")
-        can_be_locked = not self.app.locked and pass_enabled
         lock_icon = Gio.ThemedIcon(name="changes-prevent-symbolic")
         lock_image = Gtk.Image.new_from_gicon(lock_icon, Gtk.IconSize.BUTTON)
         self.lock_button.set_tooltip_text(_("Lock the Application"))
         self.lock_button.set_image(lock_image)
-        self.toggle_lock_button(can_be_locked)
+
 
         left_box.add(self.remove_button)
         left_box.add(self.add_button)
@@ -95,20 +92,18 @@ class HeaderBar(Gtk.HeaderBar):
             select_icon, Gtk.IconSize.BUTTON)
         self.select_button.set_tooltip_text(_("Selection mode"))
         self.select_button.set_image(select_image)
-        self.toggle_select_button(count > 0)
 
         search_icon = Gio.ThemedIcon(name="system-search-symbolic")
         search_image = Gtk.Image.new_from_gicon(
             search_icon, Gtk.IconSize.BUTTON)
         self.search_button.set_tooltip_text(_("Search"))
         self.search_button.set_image(search_image)
-        self.toggle_search_button(count > 0)
+        self.search_button.set_visible(count > 0)
 
         self.set_toggle_view_mode_icon(is_grid)
         self.view_mode_button.connect("clicked", self.toggle_view_mode)
 
         self.cancel_button.set_label(_("Cancel"))
-        self.toggle_cancel_button(False)
 
         right_box.add(self.search_button)
         right_box.add(self.view_mode_button)
@@ -159,14 +154,14 @@ class HeaderBar(Gtk.HeaderBar):
         is_select_mode = self.window.is_select_mode
         pass_enabled = self.app.cfg.read("state", "login")
 
-        self.toggle_remove_button(is_select_mode)
-        self.toggle_cancel_button(is_select_mode)
+        self.remove_button.set_visible(is_select_mode)
+        self.cancel_button.set_visible(is_select_mode)
         self.set_show_close_button(not is_select_mode)
-        self.toggle_settings_button(not is_select_mode)
+        self.settings_button.set_visible(not is_select_mode)
 
-        self.toggle_lock_button(not is_select_mode and pass_enabled)
-        self.toggle_add_button(not is_select_mode)
-        self.toggle_select_button(not is_select_mode)
+        self.lock_button.set_visible(not is_select_mode and pass_enabled)
+        self.add_button.set_visible(not is_select_mode)
+        self.select_button.set_visible(not is_select_mode)
 
         if is_select_mode:
             self.get_style_context().add_class("selection-mode")
@@ -176,72 +171,30 @@ class HeaderBar(Gtk.HeaderBar):
     def toggle_search(self):
         self.search_button.set_active(not self.search_button.get_active())
 
-    def toggle_search_button(self, visible):
-        self.search_button.set_visible(visible)
-        self.search_button.set_no_show_all(not visible)
-
-    def toggle_select_button(self, visible):
-        self.select_button.set_visible(visible)
-        self.select_button.set_no_show_all(not visible)
-
     def toggle_settings_button(self, visible):
         if show_app_menu():
             self.settings_button.set_visible(visible)
             self.settings_button.set_no_show_all(not visible)
 
-    def toggle_lock_button(self, visible):
-        self.lock_button.set_visible(visible)
-        self.lock_button.set_no_show_all(not visible)
-
-    def toggle_add_button(self, visible):
-        self.add_button.set_visible(visible)
-        self.add_button.set_no_show_all(not visible)
-
-    def toggle_cancel_button(self, visible):
-        self.cancel_button.set_visible(visible)
-        self.cancel_button.set_no_show_all(not visible)
-
-    def toggle_remove_button(self, visible):
-        self.remove_button.set_visible(visible)
-        self.remove_button.set_no_show_all(not visible)
-
-    def toggle_view_mode_button(self, visible):
-        self.view_mode_button.set_visible(visible)
-        self.view_mode_button.set_no_show_all(not visible)
-
-    def hide(self):
-        self.toggle_add_button(False)
-        self.toggle_lock_button(False)
-        self.toggle_cancel_button(False)
-        self.toggle_remove_button(False)
-        self.toggle_search_button(False)
-        self.toggle_settings_button(True)
-        self.toggle_select_button(False)
-        self.toggle_view_mode_button(False)
 
     def refresh(self):
         is_locked = self.app.locked
         pass_enabled = self.app.cfg.read("state", "login")
         can_be_locked = not is_locked and pass_enabled
         count = self.app.db.count()
-        if is_locked:
-            self.hide()
-        else:
-            if count == 0:
-                self.toggle_add_button(True)
-                self.toggle_select_button(False)
-                self.toggle_remove_button(False)
-                self.toggle_search_button(False)
-                self.toggle_view_mode_button(False)
-                self.toggle_lock_button(can_be_locked)
-                self.toggle_settings_button(True)
-                self.toggle_cancel_button(False)
-            else:
-                self.toggle_add_button(True)
-                self.toggle_select_button(True)
-                self.toggle_remove_button(False)
-                self.toggle_search_button(True)
-                self.toggle_view_mode_button(True)
-                self.toggle_lock_button(can_be_locked)
-                self.toggle_settings_button(True)
-                self.toggle_cancel_button(False)
+        self.view_mode_button.set_visible(not count == 0 and not is_locked)
+        self.select_button.set_visible(not count == 0 and not is_locked)
+        self.search_button.set_visible(not count == 0 and not is_locked)
+        self.view_mode_button.set_no_show_all(not (not count == 0 and not is_locked))
+        self.select_button.set_no_show_all(not(not count == 0 and not is_locked))
+        self.search_button.set_no_show_all(not(not count == 0 and not is_locked))
+        self.lock_button.set_visible(can_be_locked)
+        self.add_button.set_visible(not is_locked)
+        self.lock_button.set_no_show_all(not can_be_locked)
+        self.add_button.set_no_show_all(is_locked)
+
+        self.toggle_settings_button(True)
+        self.cancel_button.set_visible(False)
+        self.remove_button.set_visible(False)
+        self.cancel_button.set_no_show_all(True)
+        self.remove_button.set_no_show_all(True)
