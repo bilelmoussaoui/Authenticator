@@ -19,7 +19,7 @@
  along with Gnome-TwoFactorAuth. If not, see <http://www.gnu.org/licenses/>.
 """
 from os import path, mknod, makedirs, environ as env
-from gi.repository import GdkPixbuf, Gtk
+from gi.repository import GdkPixbuf, Gtk, Gio
 import logging
 from subprocess import PIPE, Popen, call
 from time import strftime
@@ -30,6 +30,22 @@ def is_gnome():
         Check if the current distro is gnome
     """
     return env.get("XDG_CURRENT_DESKTOP").lower() == "gnome"
+
+
+def show_app_menu():
+    try:
+        source = Gio.SettingsSchemaSource.get_default()
+        path = "org.gnome.desktop.wm.preferences"
+        key = "button-layout"
+        source.lookup(path, True)
+        gsettings = Gio.Settings.new(path)
+        value = gsettings.get_value(key)
+        value = str(value).strip("'")
+        #  "appmenu" in value or
+        return not is_gnome()
+    except Exception as e:
+        logging.critical("Couldn't load gsettings source %s " % str(e))
+
 
 
 def get_home_path():

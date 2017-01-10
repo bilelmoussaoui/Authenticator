@@ -38,7 +38,6 @@ class Application(Gtk.Application):
     win = None
     alive = True
     locked = False
-
     settings_action = None
 
     def __init__(self):
@@ -101,7 +100,7 @@ class Application(Gtk.Application):
         help_section = Gio.MenuItem.new_section(None, help_content)
         self.menu.append_item(help_section)
 
-        self.dark_mode_action = Gio.SimpleAction.new_stateful("night_mode", GLib.VariantType.new("b"), GLib.Variant.new_boolean(False))
+        self.dark_mode_action = Gio.SimpleAction.new("night_mode", None)
         self.dark_mode_action.connect("activate", self.enable_dark_mode)
         self.add_action(self.dark_mode_action)
 
@@ -123,7 +122,7 @@ class Application(Gtk.Application):
         action.connect("activate", self.on_quit)
         self.add_action(action)
         self.refresh_menu_night_mode()
-        if is_gnome():
+        if not show_app_menu():
             self.set_app_menu(self.menu)
             logging.debug("Adding gnome shell menu")
 
@@ -136,7 +135,11 @@ class Application(Gtk.Application):
         is_dark_mode = self.cfg.read("night-mode", "preferences")
         settings = Gtk.Settings.get_default()
         settings.set_property("gtk-application-prefer-dark-theme", is_dark_mode)
-        self.dark_mode_action.set_state(GLib.Variant.new_boolean(is_dark_mode))
+        if is_dark_mode:
+            self.is_dark_mode_menu.set_icon(Gio.ThemedIcon.new("emblem-ok-symbolic"))
+        else:
+            self.is_dark_mode_menu.set_icon(Gio.ThemedIcon.new(""))
+        #self.dark_mode_action.set_state(GLib.Variant.new_boolean(is_dark_mode))
 
     def do_activate(self, *args):
         if not self.win:

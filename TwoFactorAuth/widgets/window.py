@@ -55,8 +55,7 @@ class Window(Gtk.ApplicationWindow):
         self.move_latest_position()
         self.set_wmclass("Gnome-TwoFactorAuth", "Gnome TwoFactorAuth")
         self.set_icon_name("Gnome-TwoFactorAuth")
-        self.resize(500, 650)
-        self.set_size_request(500, 650)
+        self.use_latest_size()
         self.set_resizable(True)
         self.connect("key_press_event", self.on_key_press)
         self.connect("delete-event", lambda x, y: self.app.on_quit())
@@ -180,9 +179,12 @@ class Window(Gtk.ApplicationWindow):
         """
             Save window position
         """
-        x, y = self.get_position()
-        self.app.cfg.update("position-x", x, "preferences")
-        self.app.cfg.update("position-y", y, "preferences")
+        pos_x, pos_y = self.get_position()
+        size_x, size_y = self.get_size()
+        self.app.cfg.update("position-x", pos_x, "preferences")
+        self.app.cfg.update("position-y", pos_y, "preferences")
+        self.app.cfg.update("size-x", size_x, "preferences")
+        self.app.cfg.update("size-y", size_y, "preferences")
 
     def move_latest_position(self):
         """
@@ -194,3 +196,9 @@ class Window(Gtk.ApplicationWindow):
             self.move(x, y)
         else:
             self.set_position(Gtk.WindowPosition.CENTER)
+
+    def use_latest_size(self):
+        x = self.app.cfg.read("size-x", "preferences")
+        y = self.app.cfg.read("size-y", "preferences")
+        self.resize(x, y)
+        self.props.width_request = 500

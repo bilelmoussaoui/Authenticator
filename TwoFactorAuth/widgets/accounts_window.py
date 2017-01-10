@@ -80,6 +80,8 @@ class AccountsWindow(Gtk.Box, Observer):
         if removed_id:
             self.accounts_list.remove_by_id(removed_id)
             self.accounts_grid.remove_by_id(removed_id)
+        if self.app.db.count() == 0:
+            self.window.refresh_window()
 
     def get_accounts_list(self):
         return self.accounts_list

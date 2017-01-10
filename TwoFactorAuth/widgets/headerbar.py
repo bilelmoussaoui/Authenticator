@@ -20,7 +20,7 @@
 from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gio
-from TwoFactorAuth.utils import is_gnome
+from TwoFactorAuth.utils import show_app_menu
 import logging
 from gettext import gettext as _
 
@@ -50,7 +50,7 @@ class HeaderBar(Gtk.HeaderBar):
         right_box = self.generate_right_box()
         left_box = self.generate_left_box()
 
-        if not is_gnome():
+        if show_app_menu():
             # add settings menu
             self.generate_popover(right_box)
 
@@ -185,7 +185,7 @@ class HeaderBar(Gtk.HeaderBar):
         self.select_button.set_no_show_all(not visible)
 
     def toggle_settings_button(self, visible):
-        if not is_gnome():
+        if show_app_menu():
             self.settings_button.set_visible(visible)
             self.settings_button.set_no_show_all(not visible)
 

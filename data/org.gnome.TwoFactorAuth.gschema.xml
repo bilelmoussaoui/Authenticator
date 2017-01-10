@@ -36,6 +36,21 @@
                 Default window postiton on y axes
             </description>
         </key>
+
+        <key name="size-x" type="i">
+            <default>500</default>
+            <summary>Default window postiton on x axes</summary>
+            <description>
+                Default window postiton on x axes
+            </description>
+        </key>
+        <key name="size-y" type="i">
+            <default>650</default>
+            <summary>Default window postiton on y axes</summary>
+            <description>
+                Default window postiton on y axes
+            </description>
+        </key>
         <key name="view-mode" type="s">
             <default>"list"</default>
             <summary>Default view mode grid/list</summary>
