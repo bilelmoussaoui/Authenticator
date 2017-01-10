@@ -38,6 +38,14 @@ version](https://img.shields.io/badge/python-3.3%2B-blue.svg)
 yaourt -S gnome-twofactorauth
 ```
 
+- On Ubuntu (xenial/yakkety) using GetDeb Apps PPA:
+```bash
+ wget -q -O - http://archive.getdeb.net/getdeb-archive.key | sudo apt-key add -
+sudo sh -c 'echo "deb http://archive.getdeb.net/ubuntu xenial-getdeb apps" >> /etc/apt/sources.list.d/getdeb.list'
+sudo apt update
+sudo apt install gnome-twofactorauth
+ ```
+
 ### Credits
 - Websites and application icons are from Paper theme, created by [Sam Hewitt](https://github.com/snwh)
 - Applications/Websites database are from [twofactorauth](https://github.com/2factorauth/twofactorauth), by 2factorauth team
