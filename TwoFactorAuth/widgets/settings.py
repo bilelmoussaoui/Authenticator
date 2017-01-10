@@ -26,15 +26,16 @@ from gettext import gettext as _
 import logging
 
 class SettingsWindow(Gtk.Window):
+    main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
     def __init__(self, parent):
         self.parent = parent
         self.cfg = SettingsReader()
-        self.notebook = Gtk.Notebook()
         self.auto_lock_time = Gtk.SpinButton()
         self.enable_switch = Gtk.CheckButton()
         self.auto_lock_switch = Gtk.CheckButton()
         self.password_button = Gtk.Button()
+        self.hb = Gtk.HeaderBar()
         self.generate_window()
         self.generate_components()
 
@@ -44,10 +45,15 @@ class SettingsWindow(Gtk.Window):
         self.connect("delete-event", self.close_window)
         self.resize(400, 300)
         self.set_size_request(400, 300)
+        self.set_border_width(18)
         self.set_resizable(False)
         self.set_position(Gtk.WindowPosition.CENTER_ON_PARENT)
         self.set_transient_for(self.parent)
         self.connect("key_press_event", self.on_key_press)
+        self.hb.set_show_close_button(True)
+        self.set_titlebar(self.hb)
+        self.add(self.main_box)
+
 
     def show_window(self):
         self.show_all()
@@ -63,18 +69,24 @@ class SettingsWindow(Gtk.Window):
         """
             Generate all the components
         """
-        self.add(self.notebook)
-        user_settings = self.generate_user_settings()
-        user_settings.set_border_width(10)
-        self.notebook.append_page(
-            user_settings, Gtk.Label().new(_('Behavior')))
+        self.stack = Gtk.Stack()
+        self.stack.set_vexpand(True)
+        self.stack.set_hexpand(True)
+        self.stack.set_transition_type(
+            Gtk.StackTransitionType.SLIDE_LEFT_RIGHT)
+        self.stack.set_transition_duration(1000)
 
-        login_settings = self.generate_login_settings()
-        login_settings.set_border_width(10)
-        self.notebook.append_page(
-            login_settings, Gtk.Label().new(_('Account')))
+        stack_switcher = Gtk.StackSwitcher()
+        stack_switcher.set_stack(self.stack)
+        self.hb.set_custom_title(stack_switcher)
 
-    def generate_login_settings(self):
+        behavior_settings = self.generate_behavior_settings()
+        account_settings = self.generate_account_settings()
+        self.stack.add_titled(behavior_settings, "behavior", _("Behavior"))
+        self.stack.add_titled(account_settings, "account", _("Account"))
+        self.main_box.add(self.stack)
+
+    def generate_account_settings(self):
         """
             Create a box with login settings components
             :return (Gtk.Box): Box contains all the components
@@ -101,7 +113,7 @@ class SettingsWindow(Gtk.Window):
         main_box.pack_start(password_box, False, True, 6)
         return main_box
 
-    def generate_user_settings(self):
+    def generate_behavior_settings(self):
         """
             Create a box with user settings components
             :return (Gtk.Box): Box contains all the components
