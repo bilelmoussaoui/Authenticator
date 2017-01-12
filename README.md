@@ -17,7 +17,7 @@ version](https://img.shields.io/badge/python-3.3%2B-blue.svg)
 - `zbarlight` depends on `zbar`
     - `libzbar-dev` on Ubuntu
     - `zbar` on Arch
-- `GnomeKeyring`
+- `gnome-keyring`
 - `gnome-screenshot`
 
 <sub>PS: The application was only tested on Arch with Gtk 3.20+, but it should work nicely with older versions too. Keyboard shortcuts widget won't be shown for older versions.</sub>
