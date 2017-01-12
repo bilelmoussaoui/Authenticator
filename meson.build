@@ -1,5 +1,5 @@
 # See https://github.com/mesonbuild/meson/issues/226
-project('gnome-twofactorauth', 'c',
+project('org.gnome.Authenticator', 'c',
 	version: '0.1.1')
 
 
@@ -29,12 +29,12 @@ message('Python install dir found : YES ' + python_dir)
 
 # Configuration params
 conf = configuration_data()
-conf.set('PACKAGE_URL', 'https://github.com/bil-elmoussaoui/TwoFactorAuth')
+conf.set('PACKAGE_URL', 'https://github.com/bil-elmoussaoui/Gnome-Authenticator')
 conf.set('LIBDIR', get_option('prefix') + '/' + get_option('libdir'))
-conf.set('DATADIR', get_option('prefix') + '/' + get_option('datadir') + '/TwoFactorAuth/')
+conf.set('DATADIR', get_option('prefix') + '/' + get_option('datadir') + '/Authenticator/')
 conf.set('LOCALE_DIR', get_option('prefix') + '/' + get_option('datadir') + '/locale/')
-conf.set('PACKAGE_NAME', 'Gnome TwoFactorAuth')
-conf.set('PACKAGE', 'gnome-twofactorauth')
+conf.set('PACKAGE_NAME', 'Gnome Authenticator')
+conf.set('PACKAGE', 'org.gnome.Authenticator')
 conf.set('GITVERSION', GITVERSION)
 conf.set('VERSION', meson.project_version())
 conf.set('BUILDDIR', meson.current_build_dir())
@@ -44,12 +44,12 @@ subdir('data')
 subdir('po')
 
 
-run_command(python, '-m', 'compileall', meson.current_source_dir() + '/TwoFactorAuth')
-install_subdir('TwoFactorAuth', install_dir: python_dir)
+run_command(python, '-m', 'compileall', meson.current_source_dir() + '/Authenticator')
+install_subdir('Authenticator', install_dir: python_dir)
 
 message('Preparing init file')
-configure_file(input : 'gnome-twofactorauth.in', output : 'gnome-twofactorauth', configuration : conf)
+configure_file(input : 'gnome-authenticator.in', output : 'gnome-authenticator', configuration : conf)
 
-configure_file = '@0@/gnome-twofactorauth'.format(meson.current_build_dir())
+configure_file = '@0@/gnome-authenticator'.format(meson.current_build_dir())
 install_data(configure_file, install_dir: 'bin')
 meson.add_install_script('meson_post_install.sh')

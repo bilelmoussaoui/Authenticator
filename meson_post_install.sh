@@ -7,4 +7,4 @@ gtk-update-icon-cache -f -t ${DESTDIR}/${MESON_INSTALL_PREFIX}/share/icons/hicol
 glib-compile-schemas ${DESTDIR}/${MESON_INSTALL_PREFIX}/share/glib-2.0/schemas/
 
 # Fix binary permissions
-chmod +x  ${DESTDIR}/${MESON_INSTALL_PREFIX}/bin/gnome-twofactorauth
+chmod +x  ${DESTDIR}/${MESON_INSTALL_PREFIX}/bin/gnome-authenticator

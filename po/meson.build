@@ -7,4 +7,4 @@ if r.returncode() != 0
 endif
 
 langs = r.stdout().strip().split()
-i18n.gettext('gnome-twofactorauth', languages : langs)
+i18n.gettext('Authenticator', languages : langs)

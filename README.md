@@ -4,16 +4,16 @@
 ![Status](https://img.shields.io/badge/status-stable-green.svg) [![Version](https://img.shields.io/badge/version-0.1.1-green.svg)](https://github.com/bil-elmoussaoui/Gnome-TwoFactorAuth/releases) ![Python
 version](https://img.shields.io/badge/python-3.3%2B-blue.svg)
 # Gnome TwoFactorAuth
-<img src="https://raw.githubusercontent.com/bil-elmoussaoui/Gnome-TwoFactorAuth/master/data/icons/hicolor/48x48/apps/gnome-twofactorauth.png" width="128" height="128" />
+<img src="https://raw.githubusercontent.com/bil-elmoussaoui/Gnome-Authenticator/master/data/icons/hicolor/48x48/apps/org.gnome.Authenticator.png" width="128" height="128" />
 <p>Two-factor authentication code generator for Gnome. Created with love using Python and Gtk.</p>
 ### Dependecies
 - `Python 3.3+`
 - `Gtk 3.16+`
 - `meson` (works only with git version for now)
 - `ninja`
-- `python-pyotp`
-- `python-yaml`
-- `python-pillow`
+- `pyotp`
+- `pyaml`
+- `Pillow`
 - `zbarlight` depends on `zbar`
     - `libzbar-dev` on Ubuntu
     - `zbar` on Arch
@@ -53,11 +53,11 @@ sudo apt install gnome-twofactorauth
 ### How to build from source
 1 - Clone the repository
 ```bash
-git clone https://github.com/bil-elmoussaoui/TwoFactorAuth && cd ./TwoFactorAuth
+git clone https://github.com/bil-elmoussaoui/Gnome-Authenticator && cd ./Gnome-Authenticator
 ```
 2 - Install Python dependecies
 ```bash
-sudo pip install pyotp zbarlight python-yaml pillow
+sudo pip install pyotp zbarlight pyaml Pillow
 ```
 <sub>PS : In some distributions you will need to use `pip3` instead of `pip` to install the compatible version of the package with Python 3.</sub> <br>
 3 - Afterwards
