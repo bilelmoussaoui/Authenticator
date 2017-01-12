@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/gnome/Authenticator">
+    <file>org.gnome.Authenticator-post3.20.css</file>
+    <file>org.gnome.Authenticator-pre3.20.css</file>
+    <file preprocess="xml-stripblanks">about.ui</file>
+    <file preprocess="xml-stripblanks">shortcuts.ui</file>
+  </gresource>
+</gresources>

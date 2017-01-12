@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+    <schema path="/org/gnome/Authenticator/preferences/" id="org.gnome.Authenticator.preferences" gettext-domain="Authenticator">
+        <key name="refresh-time" type="i">
+            <default>30</default>
+            <summary>Time to generate an other password</summary>
+            <description>
+                Time on seconds to generate a new password
+            </description>
+        </key>
+        <key name="auto-lock" type="b">
+            <default>false</default>
+            <summary>Auto lock the application</summary>
+            <description>
+                Auto lock the application after a (auto-lock-time)s
+            </description>
+        </key>
+        <key name="auto-lock-time" type="i">
+            <default>3</default>
+            <summary>Auto lock the application after x seconds</summary>
+            <description>
+                Auto lock the application after a x seconds
+            </description>
+        </key>
+        <key name="position-x" type="i">
+            <default>0</default>
+            <summary>Default window postiton on x axes</summary>
+            <description>
+                Default window postiton on x axes
+            </description>
+        </key>
+        <key name="position-y" type="i">
+            <default>0</default>
+            <summary>Default window postiton on y axes</summary>
+            <description>
+                Default window postiton on y axes
+            </description>
+        </key>
+
+        <key name="size-x" type="i">
+            <default>500</default>
+            <summary>Default window postiton on x axes</summary>
+            <description>
+                Default window postiton on x axes
+            </description>
+        </key>
+        <key name="size-y" type="i">
+            <default>650</default>
+            <summary>Default window postiton on y axes</summary>
+            <description>
+                Default window postiton on y axes
+            </description>
+        </key>
+        <key name="view-mode" type="s">
+            <default>"list"</default>
+            <summary>Default view mode grid/list</summary>
+            <description>
+              The way the generated codes will be shown list/grid mode
+            </description>
+        </key>
+        <key name="night-mode" type="b">
+            <default>false</default>
+            <summary>Night mode</summary>
+            <description>
+              Enable/disable night mode within the application
+            </description>
+        </key>
+    </schema>
+    <schema path="/org/gnome/Authenticator/login/" id="org.gnome.Authenticator.login" gettext-domain="Authenticator">
+        <key name="password" type="s">
+            <default>""</default>
+            <summary>Access code to user interface</summary>
+            <description>
+                Password to secure generated codes
+            </description>
+        </key>
+        <key name="state" type="b">
+            <default>false</default>
+            <summary>Use password to access to user interface</summary>
+            <description>
+                Show a password form whenever the application is opened
+            </description>
+        </key>
+    </schema>
+</schemalist>
