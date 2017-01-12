@@ -194,6 +194,7 @@ class ApplicationChooserWindow(Gtk.Window, Thread, GObject.GObject):
         db_files = glob(db_dir)
         logging.debug("Reading database files started")
         for db_file in db_files:
+            logging.debug("Reading database file {0}".format(db_file))
             with open(db_file, 'r') as data:
                 try:
                     websites = yaml.load(data)["websites"]
@@ -201,7 +202,9 @@ class ApplicationChooserWindow(Gtk.Window, Thread, GObject.GObject):
                         if self.is_valid_app(app):
                             self.db.append(app)
                 except yaml.YAMLError as error:
-                    logging.error("Error loading yml file : %s " % str(error))
+                    logging.error("Error loading yml file {0} : {1}".format(db_file, str(error)))
+                except TypeError:
+                    logging.error("Not a valid yml file {0}".format(db_file))
         logging.debug("Reading database files finished")
 
     def add_apps(self):

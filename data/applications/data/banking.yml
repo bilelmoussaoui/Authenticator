@@ -248,7 +248,7 @@ websites:
     - name: Discover
       url: https://www.discover.com/
       img: discover.png
-      tfa: no
+      tfa: No
       twitter: Discover
       facebook: discover
 
@@ -259,6 +259,14 @@ websites:
       hardware: Yes
       software: Yes
       doc: https://www.dnb.no/privat/kundeservice/innlogging-nettbank.html
+
+    - name: Dutch-Bangla Bank Limited (DBBL)
+      url: http://www.dutchbanglabank.com/
+      facebook: Dutchbanglabankltd
+      email_address: hrd_head@dbbl.com.bd
+      img: dbbl.png
+      tfa: No
+      lang: bn
 
     - name: everbank.com
       url: https://everbank.com
@@ -320,6 +328,14 @@ websites:
       facebook: GECapitalOfficial
       img: GECapitalBank.png
       tfa: No
+
+    - name: GLS Gemeinschaftsbank
+      url: https://www.gls.de/
+      twitter: glsbank
+      facebook: glsbank
+      img: gls.png
+      tfa: No
+      lang: de
 
     - name: Halifax
       url: https://www.halifax.co.uk
@@ -536,6 +552,13 @@ websites:
       img: sccfcu.png
       tfa: No
 
+    - name: Santander UK
+      url: http://www.santander.co.uk
+      img: santander.png
+      tfa: Yes
+      sms: Yes
+      doc: http://www.santander.co.uk/uk/help-support/security-centre
+
     - name: SchoolsFirst FCU
       url: https://www.schoolsfirstfcu.org/
       twitter: SchoolsFirstFCU
@@ -713,6 +736,13 @@ websites:
       twitter: Liz_Wescom
       facebook: WescomCreditUnion
       img: wescom.png
+      tfa: No
+
+    - name: Westminster Savings Credit Union (WSCU)
+      url: https://www.wscu.com/Personal/
+      twitter: wscu
+      facebook: westminstersavings
+      img: wscu.png
       tfa: No
 
     - name: Zag Bank

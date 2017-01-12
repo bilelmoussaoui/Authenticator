@@ -220,3 +220,4 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         y = self.app.cfg.read("size-y", "preferences")
         self.resize(x, y)
         self.props.width_request = 500
+        self.props.height_request = 650

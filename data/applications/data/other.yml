@@ -72,6 +72,15 @@ websites:
       tfa: No
       twitter: Azendoo
 
+    - name: BasisCode Compliance
+      url: http://basiscode.com
+      img: basiscode.png
+      tfa: Yes
+      sms: Yes
+      email: Yes
+      phone: Yes
+      doc: http://basiscode.com/blog/two-factor-authentication-compliance-software/
+
     - name: Bugzilla@Mozilla
       url: https://bugzilla.mozilla.org
       img: bugzilla.png
@@ -179,6 +188,13 @@ websites:
       email: Yes
       doc: https://everlaw.zendesk.com/hc/en-us/articles/206312165-Two-Factor-Authentication
 
+    - name: Findmyshift
+      url: https://www.findmyshift.com/
+      img: findmyshift.png
+      tfa: Yes
+      software: Yes
+      doc: https://www.findmyshift.com/help/what-is-two-factor-authentication
+
     - name: Formstack
       url: https://www.formstack.com/
       img: formstack.png
@@ -229,6 +245,13 @@ websites:
       phone: Yes
       software: Yes
       doc: https://www.kickstarter.com/help/faq/backer+questions#faq_63004
+
+    - name: Liftopia
+      url: https://www.liftopia.com
+      img: liftopia.png
+      tfa: No
+      twitter: Liftopia
+      facebook: liftopia
 
     - name: Mandrill
       url: https://mandrill.com/
@@ -408,7 +431,7 @@ websites:
       software: Yes
       doc: https://www.watchmanmonitoring.com/two-factor-authentication
       exceptions:
-          text: 'Two factor authentication unavailable for "End User" access, which is read-only.'
+          text: "Two factor authentication unavailable for 'End User' access, which is read-only."
 
     - name: Webmin
       url: http://www.webmin.com/

@@ -7,9 +7,11 @@ websites:
 
     - name: Betterment
       url: https://www.betterment.com/
-      twitter: betterment
       img: betterment.png
-      tfa: No
+      tfa: Yes
+      software: Yes
+      sms: Yes
+      doc: https://support.betterment.com/customer/en/portal/topics/1026376-two-factor-authentication-2fa-?b_id=9042
 
     - name: Charles Schwab
       url: https://www.schwab.com/
@@ -23,7 +25,7 @@ websites:
       url: https://www.colfinancial.com
       twitter: COLfinancial
       img: colfinancial.png
-      tfa: no
+      tfa: No
 
     - name: E*Trade
       url: https://www.etrade.com/
@@ -71,9 +73,10 @@ websites:
 
     - name: Merrill Edge
       url: https://www.merrilledge.com/
-      twitter: MerrillLynch
       img: merrilledge.png
-      tfa: No
+      tfa: Yes
+      sms: Yes
+      doc: https://github.com/2factorauth/twofactorauth/issues/2275
 
     - name: MotifInvesting
       url: https://www.motifinvesting.com/
@@ -162,7 +165,7 @@ websites:
       url: https://www.tiaa-cref.org
       twitter: TC_Talks
       img: tiaacref.png
-      tfa: no
+      tfa: No
 
     - name: TradeKing
       url: https://www.tradeking.com
@@ -175,7 +178,9 @@ websites:
       img: vanguard.png
       tfa: Yes
       sms: Yes
-      doc: https://personal.vanguard.com/us/insights/article/Account-security-092015
+      phone: Yes
+      hardware: Yes
+      doc: https://personal.vanguard.com/us/insights/article/security-codes-112015
       exceptions:
           text: "TFA is only available for Personal Investor accounts"
 

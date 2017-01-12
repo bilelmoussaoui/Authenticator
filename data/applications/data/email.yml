@@ -55,6 +55,15 @@ websites:
       img: maildotcom.png
       tfa: No
 
+    - name: mail.de
+      url: https://mail.de/
+      img: mailde.png
+      tfa: Yes
+      software: Yes
+      hardware: Yes
+      doc: https://mail.de/hilfe/u2f-authenticator
+      lang: de
+
     - name: Mail.Ru
       url: https://mail.ru/
       img: mailru.png
@@ -71,10 +80,23 @@ websites:
       hardware: Yes
       doc: https://support-en.mailbox.org/knowledge-base/article/is-there-a-two-factor-authentication
 
+    - name: Mailfence
+      url: https://mailfence.com/
+      img: mailfence.png
+      tfa: Yes
+      software: Yes
+      doc: https://mailfence.com/c/mailfence/more/totp.jsp
+
     - name: Mailstache
       url: https://mailstache.io
       twitter: mailstache
       img: mailstache.png
+      tfa: No
+
+    - name: Migadu
+      url: https://www.migadu.com/
+      email_address: contact@migadu.com
+      img: migadu.png
       tfa: No
 
     - name: Outlook.com
@@ -102,10 +124,10 @@ websites:
 
     - name: ProtonMail
       url: https://protonmail.com/
-      twitter: ProtonMail
-      facebook: protonmail
       img: protonmail.png
-      tfa: No
+      tfa: Yes
+      software: Yes
+      doc: https://protonmail.com/support/knowledge-base/two-factor-authentication/
 
     - name: Riseup Mail
       url: https://mail.riseup.net
