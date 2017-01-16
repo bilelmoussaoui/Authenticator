@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
-    <schema path="/org/gnome/Authenticator/preferences/" id="org.gnome.Authenticator.preferences" gettext-domain="Authenticator">
-        <key name="refresh-time" type="i">
-            <default>30</default>
-            <summary>Time to generate an other password</summary>
-            <description>
-                Time on seconds to generate a new password
-            </description>
-        </key>
+    <schema path="/org/gnome/Authenticator/" id="org.gnome.Authenticator" gettext-domain="Authenticator">
         <key name="auto-lock" type="b">
             <default>false</default>
             <summary>Auto lock the application</summary>
@@ -65,8 +58,13 @@
               Enable/disable night mode within the application
             </description>
         </key>
-    </schema>
-    <schema path="/org/gnome/Authenticator/login/" id="org.gnome.Authenticator.login" gettext-domain="Authenticator">
+        <key name="locked" type="b">
+            <default>false</default>
+            <summary>Define wether the application is locked or not</summary>
+            <description>
+                This only works if the password protection is enabled
+            </description>
+        </key>
         <key name="password" type="s">
             <default>""</default>
             <summary>Access code to user interface</summary>

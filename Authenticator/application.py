@@ -25,7 +25,7 @@ from gi.repository import Gtk, GLib, Gio, Gdk, GObject, GnomeKeyring as GK
 from Authenticator.widgets.window import Window
 from Authenticator.models.database import Database
 from Authenticator.widgets.settings import SettingsWindow
-from Authenticator.models.settings import SettingsReader
+from Authenticator.const import settings
 from Authenticator.interfaces.application_observrable import ApplicaitonObservable
 from Authenticator.utils import *
 import logging
@@ -37,7 +37,6 @@ from os import environ as env
 class Application(Gtk.Application):
     win = None
     alive = True
-    locked = False
     settings_action = None
 
     def __init__(self):
@@ -51,8 +50,6 @@ class Application(Gtk.Application):
 
         self.menu = Gio.Menu()
         self.db = Database()
-        self.cfg = SettingsReader()
-        self.locked = self.cfg.read("state", "login")
 
         result = GK.unlock_sync("org.gnome.Authenticator", None)
         if result == GK.Result.CANCELLED:
@@ -84,8 +81,6 @@ class Application(Gtk.Application):
         settings_content = Gio.Menu.new()
         settings_content.append_item(
             Gio.MenuItem.new(_("Settings"), "app.settings"))
-        self.is_dark_mode_menu = Gio.MenuItem.new(_("Night mode"), "app.night_mode")
-        settings_content.append_item(self.is_dark_mode_menu)
         settings_section = Gio.MenuItem.new_section(None, settings_content)
         self.menu.append_item(settings_section)
 
@@ -100,13 +95,9 @@ class Application(Gtk.Application):
         help_section = Gio.MenuItem.new_section(None, help_content)
         self.menu.append_item(help_section)
 
-        self.dark_mode_action = Gio.SimpleAction.new("night_mode", None)
-        self.dark_mode_action.connect("activate", self.enable_dark_mode)
-        self.add_action(self.dark_mode_action)
-
         self.settings_action = Gio.SimpleAction.new("settings", None)
         self.settings_action.connect("activate", self.on_settings)
-        self.settings_action.set_enabled(not self.locked)
+        self.settings_action.set_enabled(not settings.get_is_locked())
         self.add_action(self.settings_action)
 
         if Gtk.get_major_version() >= 3 and Gtk.get_minor_version() >= 20:
@@ -121,25 +112,9 @@ class Application(Gtk.Application):
         action = Gio.SimpleAction.new("quit", None)
         action.connect("activate", self.on_quit)
         self.add_action(action)
-        self.refresh_menu_night_mode()
         if not show_app_menu():
             self.set_app_menu(self.menu)
             logging.debug("Adding gnome shell menu")
-
-    def enable_dark_mode(self, *args):
-        is_dark_mode = self.cfg.read("night-mode", "preferences")
-        self.cfg.update("night-mode", not is_dark_mode, "preferences")
-        self.refresh_menu_night_mode()
-
-    def refresh_menu_night_mode(self):
-        is_dark_mode = self.cfg.read("night-mode", "preferences")
-        settings = Gtk.Settings.get_default()
-        settings.set_property("gtk-application-prefer-dark-theme", is_dark_mode)
-        if is_dark_mode:
-            self.is_dark_mode_menu.set_icon(Gio.ThemedIcon.new("emblem-ok-symbolic"))
-        else:
-            self.is_dark_mode_menu.set_icon(Gio.ThemedIcon.new(""))
-        #self.dark_mode_action.set_state(GLib.Variant.new_boolean(is_dark_mode))
 
     def do_activate(self, *args):
         if not self.win:
@@ -150,8 +125,7 @@ class Application(Gtk.Application):
             self.win.present()
 
     def refresh_menu(self):
-        is_enabled = self.settings_action.get_enabled()
-        self.settings_action.set_enabled(not self.locked)
+        self.settings_action.set_enabled(not settings.get_is_locked())
 
     def on_shortcuts(self, *args):
         """
@@ -197,7 +171,6 @@ class Application(Gtk.Application):
         """
         settings_window = SettingsWindow(self.win)
         settings_window.show_window()
-        settings_window.present()
 
     def on_quit(self, *args):
         """

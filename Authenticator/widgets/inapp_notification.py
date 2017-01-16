@@ -3,10 +3,12 @@ import logging
 from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gio, GLib
+from Authenticator.models.observer import Observer
 
 
-class InAppNotification(Gtk.Revealer):
+class InAppNotification(Gtk.Revealer, Observer):
     timer = 0
+    killed = False
 
     def __init__(self, message="", undo_action=None, timeout=5):
         Gtk.Revealer.__init__(self)
@@ -50,9 +52,11 @@ class InAppNotification(Gtk.Revealer):
     def hide(self):
         self.set_reveal_child(False)
 
-    def update(self, message, undo_action=None):
+    def set_message(self, message):
         self.message_label.set_text(message)
         self.timer = 0
+
+    def set_undo_action(self, undo_action):
         if undo_action:
             if not self.undo_button:
                 self.undo_button = self.infobar.add_button(
@@ -66,6 +70,11 @@ class InAppNotification(Gtk.Revealer):
                 self.undo_button.set_visible(False)
                 self.undo_button.set_no_show_all(True)
 
+    def update(self, *args, **kwargs):
+        is_alive = kwargs.pop("alive", None)
+        if not is_alive:
+            self.killed = True
+
     def response(self, infobar, response_id):
         if response_id == Gtk.ResponseType.CLOSE:
             self.hide()
@@ -73,10 +82,11 @@ class InAppNotification(Gtk.Revealer):
             self.undo_action()
 
     def update_timer(self):
-        if self.get_reveal_child():
+        if self.get_reveal_child() and not self.killed:
             if self.timer == self.timeout:
                 self.hide()
                 self.timer = 0
             else:
                 self.timer += 1
-        return True
+            return True
+        return False

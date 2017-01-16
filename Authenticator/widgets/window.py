@@ -20,6 +20,7 @@
 from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gio, Gdk, GObject, GLib
+from Authenticator.const import settings
 from Authenticator.widgets.add_account import AddAccount
 from Authenticator.widgets.accounts_window import AccountsWindow
 from Authenticator.widgets.login_window import LoginWindow
@@ -34,12 +35,12 @@ import logging
 
 class Window(Gtk.ApplicationWindow, GObject.GObject):
     __gsignals__ = {
-    'changed': (GObject.SignalFlags.RUN_LAST, None, (bool,)),
-    'locked': (GObject.SignalFlags.RUN_LAST, None, (bool,)),
-    'unlocked': (GObject.SignalFlags.RUN_LAST, None, (bool,)),
-    'view_mode_changed': (GObject.SignalFlags.RUN_LAST, None, (str,))
+        'changed': (GObject.SignalFlags.RUN_LAST, None, (bool,)),
+        'locked': (GObject.SignalFlags.RUN_LAST, None, (bool,)),
+        'unlocked': (GObject.SignalFlags.RUN_LAST, None, (bool,)),
+        'view_mode_changed': (GObject.SignalFlags.RUN_LAST, None, (str,))
     }
-    counter = 0
+    counter = 1
     main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
     is_select_mode = False
 
@@ -51,7 +52,7 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         self.generate_accounts_box()
         self.generate_no_accounts_box()
         self.generate_login_box()
-        if self.app.locked:
+        if settings.get_can_be_locked():
             self.emit("locked", True)
         else:
             self.emit("unlocked", True)
@@ -72,6 +73,7 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         self.connect("key_press_event", self.on_key_press)
         self.connect("delete-event", lambda x, y: self.app.on_quit())
         self.notification = InAppNotification()
+        self.observable.register(self.notification)
         self.main_box.pack_start(self.notification, False, False, 0)
         self.add(self.main_box)
 
@@ -80,8 +82,7 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
             Keyboard Listener handling
         """
         keyname = Gdk.keyval_name(key_event.keyval).lower()
-        if not self.is_locked():
-
+        if not settings.get_is_locked():
             if not self.no_account_box.is_visible():
                 if keyname == "s" or keyname == "escape":
                     if key_event.state == Gdk.ModifierType.CONTROL_MASK or not self.hb.select_button.get_visible():
@@ -96,18 +97,17 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
                 if key_event.state == Gdk.ModifierType.CONTROL_MASK:
                     self.hb.toggle_view_mode()
                     return True
-
         return False
 
     def refresh_counter(self):
         """
             Add a value to the counter each 60 seconds
         """
-        if not self.app.locked:
+        if settings.get_is_locked():
             self.counter += 1
-        if self.app.cfg.read("auto-lock", "preferences"):
-            if self.counter == self.app.cfg.read("auto-lock-time", "preferences") - 1:
-                self.counter = 0
+        if settings.get_auto_lock_status():
+            if self.counter == settings.get_auto_lock_time():
+                self.counter = 1
                 self.emit("locked", True)
         return True
 
@@ -115,9 +115,10 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         """
             Generate login form
         """
-        self.login_box = LoginWindow(self.app, self)
+        self.login_box = LoginWindow(self)
         self.observable.register(self.login_box)
-        self.hb.lock_button.connect("clicked", lambda x : self.emit("locked", True))
+        self.hb.lock_button.connect(
+            "clicked", lambda x: self.emit("locked", True))
         self.main_box.pack_start(self.login_box, True, False, 0)
 
     def generate_accounts_box(self):
@@ -125,8 +126,6 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         self.observable.register(self.accounts_box)
         self.accounts_list = self.accounts_box.get_accounts_list()
         self.accounts_grid = self.accounts_box.get_accounts_grid()
-        self.hb.remove_button.connect(
-            "clicked", self.accounts_list.remove_selected)
         self.search_bar = self.accounts_box.get_search_bar()
         self.main_box.pack_start(self.accounts_box, True, True, 0)
 
@@ -171,6 +170,10 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         self.main_box.pack_start(self.no_account_box, True, False, 0)
 
     def do_view_mode_changed(self, *args):
+        if args[0] == "list":
+            self.hb.remove_button.connect("clicked", self.accounts_list.remove_selected)
+        else:
+            self.hb.remove_button.connect("clicked", self.accounts_grid.remove_selected)
         self.observable.update_observers(view_mode=args[0])
 
     def do_changed(self, *args):
@@ -197,27 +200,21 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         """
             Save window position
         """
-        pos_x, pos_y = self.get_position()
-        size_x, size_y = self.get_size()
-        self.app.cfg.update("position-x", pos_x, "preferences")
-        self.app.cfg.update("position-y", pos_y, "preferences")
-        self.app.cfg.update("size-x", size_x, "preferences")
-        self.app.cfg.update("size-y", size_y, "preferences")
+        settings.set_window_postion(self.get_position())
+        settings.set_window_size(self.get_size())
 
     def move_latest_position(self):
         """
             move the application window to the latest position
         """
-        x = self.app.cfg.read("position-x", "preferences")
-        y = self.app.cfg.read("position-y", "preferences")
-        if x != 0 and y != 0:
-            self.move(x, y)
+        position_x, position_y = settings.get_window_position()
+        if position_x != 0 and position_y != 0:
+            self.move(position_x, position_y)
         else:
             self.set_position(Gtk.WindowPosition.CENTER)
 
     def use_latest_size(self):
-        x = self.app.cfg.read("size-x", "preferences")
-        y = self.app.cfg.read("size-y", "preferences")
-        self.resize(x, y)
-        self.props.width_request = 500
-        self.props.height_request = 650
+        width, height = settings.get_window_size()
+        default_width, default_height = settings.get_default_size()
+        self.resize(width, height)
+        self.set_size_request(default_width, default_height)

@@ -20,6 +20,7 @@
 from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gio
+from Authenticator.const import settings
 from Authenticator.utils import show_app_menu
 import logging
 from gettext import gettext as _
@@ -77,7 +78,6 @@ class HeaderBar(Gtk.HeaderBar, Observer):
         self.lock_button.set_tooltip_text(_("Lock the Application"))
         self.lock_button.set_image(lock_image)
 
-
         left_box.add(self.remove_button)
         left_box.add(self.add_button)
         left_box.add(self.lock_button)
@@ -85,7 +85,7 @@ class HeaderBar(Gtk.HeaderBar, Observer):
 
     def generate_right_box(self):
         count = self.app.db.count()
-        is_grid = self.app.cfg.read("view-mode", "preferences").lower() == "grid"
+        is_grid = settings.get_view_mode() == "grid"
         right_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         select_icon = Gio.ThemedIcon(name="object-select-symbolic")
         select_image = Gtk.Image.new_from_gicon(
@@ -155,7 +155,7 @@ class HeaderBar(Gtk.HeaderBar, Observer):
             self.select_button.set_no_show_all(not counter > 0)
             self.search_button.set_no_show_all(not counter > 0)
             self.add_button.set_no_show_all(False)
-            if self.app.cfg.read("state", "login"):
+            if settings.get_is_locked():
                 self.lock_button.set_visible(True)
                 self.lock_button.set_no_show_all(False)
             else:
@@ -163,13 +163,13 @@ class HeaderBar(Gtk.HeaderBar, Observer):
                 self.lock_button.set_no_show_all(True)
 
     def toggle_view_mode(self, *args):
-        is_grid = self.app.cfg.read("view-mode", "preferences").lower() == "grid"
+        is_grid = settings.get_view_mode() == "grid"
         if not is_grid:
             view_mode = "grid"
-            self.app.cfg.update("view-mode", "grid" , "preferences")
+            settings.set_view_mode("grid")
         else:
             view_mode = "list"
-            self.app.cfg.update("view-mode", "list" , "preferences")
+            settings.set_view_mode("list")
         self.set_toggle_view_mode_icon(not is_grid)
         self.window.emit("view_mode_changed", view_mode)
 
@@ -180,12 +180,13 @@ class HeaderBar(Gtk.HeaderBar, Observer):
         else:
             view_mode_icon = Gio.ThemedIcon(name="view-list-symbolic")
             self.view_mode_button.set_tooltip_text(_("List mode"))
-        view_mode_image = Gtk.Image.new_from_gicon(view_mode_icon, Gtk.IconSize.BUTTON)
+        view_mode_image = Gtk.Image.new_from_gicon(
+            view_mode_icon, Gtk.IconSize.BUTTON)
         self.view_mode_button.set_image(view_mode_image)
 
     def toggle_select_mode(self):
         is_select_mode = self.window.is_select_mode
-        pass_enabled = self.app.cfg.read("state", "login")
+        pass_enabled = settings.get_is_locked()
 
         self.remove_button.set_visible(is_select_mode)
         self.cancel_button.set_visible(is_select_mode)
@@ -209,18 +210,20 @@ class HeaderBar(Gtk.HeaderBar, Observer):
             self.settings_button.set_visible(visible)
             self.settings_button.set_no_show_all(not visible)
 
-
     def refresh(self):
-        is_locked = self.app.locked
-        pass_enabled = self.app.cfg.read("state", "login")
+        is_locked = settings.get_is_locked()
+        pass_enabled = settings.get_is_locked()
         can_be_locked = not is_locked and pass_enabled
         count = self.app.db.count()
         self.view_mode_button.set_visible(not count == 0 and not is_locked)
         self.select_button.set_visible(not count == 0 and not is_locked)
         self.search_button.set_visible(not count == 0 and not is_locked)
-        self.view_mode_button.set_no_show_all(not (not count == 0 and not is_locked))
-        self.select_button.set_no_show_all(not(not count == 0 and not is_locked))
-        self.search_button.set_no_show_all(not(not count == 0 and not is_locked))
+        self.view_mode_button.set_no_show_all(
+            not (not count == 0 and not is_locked))
+        self.select_button.set_no_show_all(
+            not(not count == 0 and not is_locked))
+        self.search_button.set_no_show_all(
+            not(not count == 0 and not is_locked))
         self.lock_button.set_visible(can_be_locked)
         self.add_button.set_visible(not is_locked)
         self.lock_button.set_no_show_all(not can_be_locked)

@@ -105,3 +105,4 @@ po/Makefile.in.in
 *.compiled
 *.desktop
 *.gresource
+*.ui~

@@ -24,6 +24,7 @@ import logging
 from gettext import gettext as _
 from Authenticator.models.observer import Observer
 
+
 class NoAccountWindow(Gtk.Box, Observer):
 
     def __init__(self):
@@ -46,19 +47,8 @@ class NoAccountWindow(Gtk.Box, Observer):
         locked = kwargs.pop("locked", None)
         counter = kwargs.pop("counter", None)
         if counter != 0 or locked:
-            self.hide()
+            self.set_visible(False)
+            self.set_no_show_all(True)
         elif unlocked or counter == 0:
-            self.show()
-
-    def toggle(self, visible):
-        self.set_visible(visible)
-        self.set_no_show_all(not visible)
-
-    def is_visible(self):
-        return self.get_visible()
-
-    def hide(self):
-        self.toggle(False)
-
-    def show(self):
-        self.toggle(True)
+            self.set_visible(True)
+            self.set_no_show_all(False)

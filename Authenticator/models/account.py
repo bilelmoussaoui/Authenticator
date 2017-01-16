@@ -1,4 +1,3 @@
-from Authenticator.models.settings import SettingsReader
 from Authenticator.models.code import Code
 from Authenticator.models.database import Database
 from Authenticator.models.observer import Observer
@@ -25,8 +24,7 @@ class Account(GObject.GObject, Thread, Observer):
         Thread.__init__(self)
         GObject.GObject.__init__(self)
         self.db = db
-        cfg = SettingsReader()
-        self.counter_max = cfg.read("refresh-time", "preferences")
+        self.counter_max = 30
         self.counter = self.counter_max
         self.account_id = app[0]
         self.account_name = app[1]

@@ -23,48 +23,42 @@ from gi.repository import Gtk, Gdk
 import logging
 from hashlib import sha256
 from gettext import gettext as _
+from Authenticator.const import settings
 from Authenticator.models.observer import Observer
 
-class LoginWindow(Gtk.Box, Observer):
-    password_entry = None
-    unlock_button = None
 
-    def __init__(self, application, window):
-        Gtk.Box.__init__(self, orientation=Gtk.Orientation.HORIZONTAL)
-        self.app = application
+class LoginWindow(Gtk.Box, Observer):
+
+    def __init__(self, window):
         self.window = window
-        self.password_entry = Gtk.Entry()
-        self.unlock_button = Gtk.Button()
         self.generate()
         self.window.connect("key-press-event", self.__on_key_press)
 
     def generate(self):
-        password_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-
-        self.password_entry.set_visibility(False)
-        self.password_entry.set_placeholder_text(_("Enter your password"))
-        password_box.pack_start(self.password_entry, False, False, 6)
-
-        self.unlock_button.set_label(_("Unlock"))
-        self.unlock_button.connect("clicked", self.on_unlock)
-
-        password_box.pack_start(self.unlock_button, False, False, 6)
-        self.pack_start(password_box, True, False, 6)
+        Gtk.Box.__init__(self)
+        self.builder = Gtk.Builder()
+        self.builder.connect_signals({
+            "on_unlock" : self.on_unlock
+        })
+        self.builder.add_from_resource('/org/gnome/Authenticator/login.ui')
+        login_window = self.builder.get_object("loginWindow")
+        self.pack_start(login_window, True, False, 0)
 
     def on_unlock(self, *args):
         """
             Password check and unlock
         """
-        typed_pass = self.password_entry.get_text()
+        password_entry = self.builder.get_object("passwordEntry")
+        typed_pass = password_entry.get_text()
         ecrypted_pass = sha256(typed_pass.encode("utf-8")).hexdigest()
-        login_pass = self.app.cfg.read("password", "login")
-        if ecrypted_pass == login_pass or login_pass == typed_pass == "":
-            self.password_entry.set_icon_from_icon_name(
+        if (settings.compare_password(typed_pass)
+            or settings.get_password() == typed_pass == ""):
+            password_entry.set_icon_from_icon_name(
                 Gtk.EntryIconPosition.SECONDARY, None)
             self.toggle_lock()
-            self.password_entry.set_text("")
+            password_entry.set_text("")
         else:
-            self.password_entry.set_icon_from_icon_name(
+            password_entry.set_icon_from_icon_name(
                 Gtk.EntryIconPosition.SECONDARY, "dialog-error-symbolic")
 
     def __on_key_press(self, widget, event):
@@ -74,7 +68,7 @@ class LoginWindow(Gtk.Box, Observer):
                 self.on_unlock()
                 return True
         else:
-            pass_enabled = self.app.cfg.read("state", "login")
+            pass_enabled = settings.get_can_be_locked()
             if keyname == "l" and pass_enabled:
                 if event.state & Gdk.ModifierType.CONTROL_MASK:
                     self.toggle_lock()
@@ -86,12 +80,12 @@ class LoginWindow(Gtk.Box, Observer):
         """
             Lock/unlock the application
         """
-        pass_enabled = self.app.cfg.read("state", "login")
+        pass_enabled = settings.get_can_be_locked()
         if pass_enabled:
-            self.app.locked = not self.app.locked
+            settings.set_is_locked(not settings.get_is_locked())
             self.window.counter = 0
-            if self.app.locked:
-                self.focus()
+            if settings.get_is_locked():
+                self.self.password_entry.grab_focus_without_selecting()
                 self.window.emit("locked", True)
             else:
                 self.window.emit("unlocked", True)
@@ -100,19 +94,10 @@ class LoginWindow(Gtk.Box, Observer):
         is_locked = kwargs.pop("locked", None)
         is_unlocked = kwargs.pop("unlocked", None)
         if is_locked:
-            self.show()
+            self.set_visible(True)
+            self.set_no_show_all(False)
+            settings.set_is_locked(True)
         elif is_unlocked:
-            self.hide()
-
-    def toggle(self, visible):
-        self.set_visible(visible)
-        self.set_no_show_all(not visible)
-
-    def hide(self):
-        self.toggle(False)
-
-    def show(self):
-        self.toggle(True)
-
-    def focus(self):
-        self.password_entry.grab_focus_without_selecting()
+            settings.set_is_locked(False)
+            self.set_visible(False)
+            self.set_no_show_all(True)
