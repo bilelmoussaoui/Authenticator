@@ -21,6 +21,7 @@ from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gio, Gdk
 import logging
+from Authenticator.const import settings
 
 
 class SearchBar(Gtk.Revealer):
@@ -61,8 +62,6 @@ class SearchBar(Gtk.Revealer):
         """
             Filter function, used to check if the entered data exists on the application ListBox
         """
-        if isinstance(row, Gtk.FlowBoxChild):
-            row = row.get_children()[0]
         app_label = row.get_name()
         data = data.lower()
         if len(data) > 0:
@@ -79,7 +78,7 @@ class SearchBar(Gtk.Revealer):
             else:
                 self.focus()
 
-        if not "is_locked" in dir(self.window) or not self.window.is_locked():
+        if not settings.get_is_locked():
             if keyname == "backspace":
                 if self.is_empty() and self.is_visible():
                     self.search_button.set_active(False)

@@ -17,52 +17,80 @@
  You should have received a copy of the GNU General Public License
  along with Gnome-TwoFactorAuth. If not, see <http://www.gnu.org/licenses/>.
 """
-from gi.repository import Gtk, Gio
 import logging
+from gi.repository import Gio, GLib
+from hashlib import sha256
 
 
-class SettingsReader:
-    path = "org.gnome.Authenticator"
+class Settings(Gio.Settings):
 
     def __init__(self):
-        try:
-            # Check if the gsettings path exists
-            self.source = Gio.SettingsSchemaSource.get_default()
-            self.source.lookup(self.path, True)
-        except Exception as e:
-            logging.critical("Couldn't load gsettings source %s " % str(e))
+        Gio.Settings.__init__(self)
 
-    def read(self, key, path):
-        """
-            Read a 'key' from org.gnome.Authenticator.'path'
-            :param key: (str) key to read
-            :param path: login/user
-            :return: value
-        """
-        gsettings = Gio.Settings.new(self.path + "." + path)
-        value = gsettings.get_value(key)
-        value_type = value.get_type_string()
-        value = str(value).strip("'")
-        if value_type == "i":
-            return int(value)
-        elif value_type == "b":
-            return value == "true"
-        else:
-            return value
+    def new():
+        gsettings = Gio.Settings.new("org.gnome.Authenticator")
+        gsettings.__class__ = Settings
+        return gsettings
 
-    def update(self, key, value, path):
-        """
-            Update 'key' value to 'value' from org.gnome.Authenticator.'path'
-            :param key: (str) key to read
-            :param value: updated value
-            :param path: login/user
-            :return: value
-        """
-        gsettings = Gio.Settings.new(self.path + "." + path)
-        if type(value) is int:
-            gsettings.set_int(key, value)
-        elif type(value) is bool:
-            gsettings.set_boolean(key, value)
-        else:
-            gsettings.set_string(key, value)
-        gsettings.apply()
+    def get_window_size(self):
+        return tuple(self.get_value('window-size'))
+
+    def set_window_size(self, size):
+        size = GLib.Variant('ai', list(size))
+        self.set_value('window-size', size)
+
+    def get_default_size(self):
+        return tuple(self.get_default_value('window-size'))
+
+    def get_window_position(self):
+        return tuple(self.get_value('window-position'))
+
+    def set_window_postion(self, position):
+        position = GLib.Variant('ai', list(position))
+        self.set_value('window-position', position)
+
+    def set_is_night_mode(self, statue):
+        self.set_boolean('night-mode', statue)
+
+    def get_is_night_mode(self):
+        return self.get_boolean('night-mode')
+
+    def set_can_be_locked(self, status):
+        self.set_boolean('state', status)
+
+    def get_can_be_locked(self):
+        return self.get_boolean('state')
+
+    def set_is_locked(self, statue):
+        self.set_boolean('locked', statue)
+
+    def get_is_locked(self):
+        return self.get_boolean('locked')
+
+    def set_password(self, password):
+        password = sha256(password.encode('utf-8')).hexdigest()
+        self.set_string("password", password)
+
+    def compare_password(self, password):
+        password = sha256(password.encode('utf-8')).hexdigest()
+        return password == self.get_password()
+
+    def is_password_set(self):
+        return len(self.get_password()) != 0
+
+    def get_password(self):
+        return self.get_string("password")
+
+    def get_auto_lock_status(self):
+        return self.get_boolean("auto-lock")
+
+    def set_auto_lock_status(self, status):
+        self.set_boolean("auto-lock", status)
+
+    def get_auto_lock_time(self):
+        return self.get_int("auto-lock-time")
+
+    def set_auto_lock_time(self, auto_lock_time):
+        if auto_lock_time < 1 or auto_lock_time > 15:
+            auto_lock_time = 3
+        self.set_int("auto-lock-time", auto_lock_time)
