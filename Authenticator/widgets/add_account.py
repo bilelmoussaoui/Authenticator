@@ -88,7 +88,7 @@ class AddAccount(Gtk.Window):
         self.apply_button.set_sensitive(False)
 
         qr_button = Gtk.Button()
-        qr_icon = Gio.ThemedIcon(name="camera-photo-symbolic")
+        qr_icon = Gio.ThemedIcon(name="qrscanner-symbolic")
         qr_image = Gtk.Image.new_from_gicon(qr_icon, Gtk.IconSize.BUTTON)
         qr_button.set_tooltip_text(_("Scan a QR code"))
         qr_button.set_image(qr_image)
