@@ -24,13 +24,10 @@ from Authenticator.const import settings
 from Authenticator.utils import show_app_menu
 import logging
 from gettext import gettext as _
-from Authenticator.models.observer import Observer
 
-
-class HeaderBar(Gtk.HeaderBar, Observer):
+class HeaderBar(Gtk.HeaderBar):
     search_button = Gtk.ToggleButton()
     add_button = Gtk.Button()
-    view_mode_button = Gtk.Button()
     settings_button = Gtk.Button()
     remove_button = Gtk.Button()
     cancel_button = Gtk.Button()
@@ -77,7 +74,7 @@ class HeaderBar(Gtk.HeaderBar, Observer):
         lock_image = Gtk.Image.new_from_gicon(lock_icon, Gtk.IconSize.BUTTON)
         self.lock_button.set_tooltip_text(_("Lock the Application"))
         self.lock_button.set_image(lock_image)
-
+        settings.connect('changed', self.bind_status)
         left_box.add(self.remove_button)
         left_box.add(self.add_button)
         left_box.add(self.lock_button)
@@ -85,7 +82,6 @@ class HeaderBar(Gtk.HeaderBar, Observer):
 
     def generate_right_box(self):
         count = self.app.db.count()
-        is_grid = settings.get_view_mode() == "grid"
         right_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         select_icon = Gio.ThemedIcon(name="object-select-symbolic")
         select_image = Gtk.Image.new_from_gicon(
@@ -100,13 +96,9 @@ class HeaderBar(Gtk.HeaderBar, Observer):
         self.search_button.set_image(search_image)
         self.search_button.set_visible(count > 0)
 
-        self.set_toggle_view_mode_icon(is_grid)
-        self.view_mode_button.connect("clicked", self.toggle_view_mode)
-
         self.cancel_button.set_label(_("Cancel"))
 
         right_box.add(self.search_button)
-        right_box.add(self.view_mode_button)
         right_box.add(self.select_button)
         right_box.add(self.cancel_button)
         return right_box
@@ -124,6 +116,14 @@ class HeaderBar(Gtk.HeaderBar, Observer):
         self.popover.props.width_request = 200
         box.add(self.settings_button)
 
+    def bind_status(self, settings, key_name):
+        if key_name == "locked":
+            settings.bind("locked", self.lock_button, "visible", Gio.SettingsBindFlags.INVERT_BOOLEAN)
+            settings.unbind(self.lock_button, "visible")
+        elif key_name == "state":
+            settings.bind("state", self.lock_button, "visible", Gio.SettingsBindFlags.GET)
+            settings.unbind(self.lock_button, "visible")
+
     def toggle_popover(self, *args):
         if self.popover:
             if self.popover.get_visible():
@@ -136,53 +136,19 @@ class HeaderBar(Gtk.HeaderBar, Observer):
         unlocked = kwargs.pop("unlocked", None)
         counter = kwargs.pop("counter", -1)
         if locked:
-            self.view_mode_button.set_visible(False)
             self.select_button.set_visible(False)
             self.search_button.set_visible(False)
             self.add_button.set_visible(False)
-            self.lock_button.set_visible(False)
-            self.lock_button.set_no_show_all(True)
-            self.view_mode_button.set_no_show_all(True)
             self.select_button.set_no_show_all(True)
             self.search_button.set_no_show_all(True)
             self.add_button.set_no_show_all(True)
         elif unlocked or counter >= 0:
-            self.view_mode_button.set_visible(counter > 0)
             self.select_button.set_visible(counter > 0)
             self.search_button.set_visible(counter > 0)
             self.add_button.set_visible(True)
-            self.view_mode_button.set_no_show_all(not counter > 0)
             self.select_button.set_no_show_all(not counter > 0)
             self.search_button.set_no_show_all(not counter > 0)
             self.add_button.set_no_show_all(False)
-            if settings.get_is_locked():
-                self.lock_button.set_visible(True)
-                self.lock_button.set_no_show_all(False)
-            else:
-                self.lock_button.set_visible(False)
-                self.lock_button.set_no_show_all(True)
-
-    def toggle_view_mode(self, *args):
-        is_grid = settings.get_view_mode() == "grid"
-        if not is_grid:
-            view_mode = "grid"
-            settings.set_view_mode("grid")
-        else:
-            view_mode = "list"
-            settings.set_view_mode("list")
-        self.set_toggle_view_mode_icon(not is_grid)
-        self.window.emit("view_mode_changed", view_mode)
-
-    def set_toggle_view_mode_icon(self, is_grid):
-        if not is_grid:
-            view_mode_icon = Gio.ThemedIcon(name="view-grid-symbolic")
-            self.view_mode_button.set_tooltip_text(_("Grid mode"))
-        else:
-            view_mode_icon = Gio.ThemedIcon(name="view-list-symbolic")
-            self.view_mode_button.set_tooltip_text(_("List mode"))
-        view_mode_image = Gtk.Image.new_from_gicon(
-            view_mode_icon, Gtk.IconSize.BUTTON)
-        self.view_mode_button.set_image(view_mode_image)
 
     def toggle_select_mode(self):
         is_select_mode = self.window.is_select_mode
@@ -215,18 +181,13 @@ class HeaderBar(Gtk.HeaderBar, Observer):
         pass_enabled = settings.get_is_locked()
         can_be_locked = not is_locked and pass_enabled
         count = self.app.db.count()
-        self.view_mode_button.set_visible(not count == 0 and not is_locked)
         self.select_button.set_visible(not count == 0 and not is_locked)
         self.search_button.set_visible(not count == 0 and not is_locked)
-        self.view_mode_button.set_no_show_all(
-            not (not count == 0 and not is_locked))
         self.select_button.set_no_show_all(
             not(not count == 0 and not is_locked))
         self.search_button.set_no_show_all(
             not(not count == 0 and not is_locked))
-        self.lock_button.set_visible(can_be_locked)
         self.add_button.set_visible(not is_locked)
-        self.lock_button.set_no_show_all(not can_be_locked)
         self.add_button.set_no_show_all(is_locked)
 
         self.toggle_settings_button(True)

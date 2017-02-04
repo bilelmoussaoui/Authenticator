@@ -35,10 +35,7 @@ import logging
 
 class Window(Gtk.ApplicationWindow, GObject.GObject):
     __gsignals__ = {
-        'changed': (GObject.SignalFlags.RUN_LAST, None, (bool,)),
-        'locked': (GObject.SignalFlags.RUN_LAST, None, (bool,)),
-        'unlocked': (GObject.SignalFlags.RUN_LAST, None, (bool,)),
-        'view_mode_changed': (GObject.SignalFlags.RUN_LAST, None, (str,))
+        'changed': (GObject.SignalFlags.RUN_LAST, None, (bool,))
     }
     counter = 1
     main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
@@ -53,11 +50,21 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         self.generate_no_accounts_box()
         self.generate_login_box()
         if settings.get_can_be_locked():
-            self.emit("locked", True)
-        else:
-            self.emit("unlocked", True)
-
+            self.login_box.on_lock()
+        settings.connect("changed", self.bind_view)
         GLib.timeout_add_seconds(60, self.refresh_counter)
+        self.main_box.show_all()
+
+    def bind_view(self, settings, key):
+        print(key)
+        if key == "locked":
+            count = self.app.db.count()
+            is_locked = settings.get_is_locked()
+            self.accounts_box.set_visible(not is_locked and count != 0)
+            self.accounts_box.set_no_show_all(not (not is_locked and count != 0))
+            self.no_account_box.set_visible(not is_locked and count == 0)
+            self.no_account_box.set_no_show_all(not(not is_locked and count == 0))
+            self.show_all()
 
     def generate_window(self, *args):
         """
@@ -116,16 +123,13 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
             Generate login form
         """
         self.login_box = LoginWindow(self)
-        self.observable.register(self.login_box)
-        self.hb.lock_button.connect(
-            "clicked", lambda x: self.emit("locked", True))
+        self.hb.lock_button.connect("clicked", self.login_box.on_lock)
         self.main_box.pack_start(self.login_box, True, False, 0)
 
     def generate_accounts_box(self):
         self.accounts_box = AccountsWindow(self.app, self)
         self.observable.register(self.accounts_box)
         self.accounts_list = self.accounts_box.get_accounts_list()
-        self.accounts_grid = self.accounts_box.get_accounts_grid()
         self.search_bar = self.accounts_box.get_search_bar()
         self.main_box.pack_start(self.accounts_box, True, True, 0)
 
@@ -134,23 +138,18 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
             Generate a header bar box
         """
         self.hb = HeaderBar(self.app, self)
-        self.observable.register(self.hb)
         # connect signals
         self.hb.cancel_button.connect("clicked", self.toggle_select)
         self.hb.select_button.connect("clicked", self.toggle_select)
         self.hb.add_button.connect("clicked", self.add_account)
         self.set_titlebar(self.hb)
-
+        
     def add_account(self, *args):
         """
             Create add application window
         """
         add_account = AddAccount(self)
         add_account.show_window()
-
-    def toggle_view_mode(self, is_grid):
-
-        self.accounts_box.set_mode_view(is_grid)
 
     def toggle_select(self, *args):
         """
@@ -159,7 +158,6 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         self.is_select_mode = not self.is_select_mode
         self.hb.toggle_select_mode()
         self.accounts_list.toggle_select_mode()
-        self.accounts_grid.toggle_select_mode()
 
     def generate_no_accounts_box(self):
         """
@@ -169,32 +167,9 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         self.observable.register(self.no_account_box)
         self.main_box.pack_start(self.no_account_box, True, False, 0)
 
-    def do_view_mode_changed(self, *args):
-        if args[0] == "list":
-            self.hb.remove_button.connect("clicked", self.accounts_list.remove_selected)
-        else:
-            self.hb.remove_button.connect("clicked", self.accounts_grid.remove_selected)
-        self.observable.update_observers(view_mode=args[0])
-
     def do_changed(self, *args):
         counter = self.app.db.count()
-        self.observable.update_observers(counter=counter)
         self.main_box.show_all()
-
-    def do_locked(self, *args):
-        self.app.locked = True
-        self.app.refresh_menu()
-        self.observable.update_observers(locked=True)
-
-    def do_unlocked(self, *args):
-        self.app.locked = False
-        self.app.refresh_menu()
-        counter = self.app.db.count()
-        self.observable.update_observers(unlocked=True, counter=counter)
-        self.main_box.show_all()
-
-    def is_locked(self):
-        return self.app.locked
 
     def save_window_state(self):
         """

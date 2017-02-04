@@ -23,31 +23,27 @@ require_version("Gtk", "3.0")
 import logging
 from Authenticator.const import settings
 from Authenticator.models.account import Account
-from Authenticator.models.observer import Observer
-from Authenticator.widgets.account_row import AccountRowGrid, AccountRowList
-from Authenticator.widgets.accounts import AccountsGrid, AccountsList
+from Authenticator.widgets.account_row import AccountRowList
+from Authenticator.widgets.accounts import AccountsList
 from Authenticator.widgets.search_bar import SearchBar
 from gettext import gettext as _
 from gi.repository import GLib, GObject, Gdk, Gio, Gtk
 from hashlib import sha256
 
 
-class AccountsWindow(Gtk.Box, Observer):
+class AccountsWindow(Gtk.Box):
 
     def __init__(self, application, window):
         Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL)
         self.app = application
         self.window = window
+        # hidden by default
+        self.set_visible(False)
+        self.set_no_show_all(True)
         self.generate()
 
     def generate(self):
-        self.stack = Gtk.Stack()
         self.scrolled_win = Gtk.ScrolledWindow()
-        self.stack.set_vexpand(False)
-        self.stack.set_hexpand(False)
-        self.stack.set_transition_duration(400)
-        self.stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE)
-
         self.generate_accounts_list()
         self.generate_search_bar()
 
@@ -61,26 +57,21 @@ class AccountsWindow(Gtk.Box, Observer):
         self.accounts = []
         for app in apps:
             account = Account(app, self.app.db)
-            account.row_observerable.register(self)
             self.accounts.append(account)
             self.app.observable.register(account)
 
         self.accounts_list = AccountsList(self.window, self.accounts)
-        self.accounts_grid = AccountsGrid(self.window, self.accounts)
 
-        self.stack.add_named(self.accounts_list, "list")
-        self.stack.add_named(self.accounts_grid, "grid")
-        self.scrolled_win.add_with_viewport(self.stack)
+        self.scrolled_win.add_with_viewport(self.accounts_list)
 
         self.pack_start(self.scrolled_win, True, True, 0)
-        self.set_mode_view(settings.get_view_mode(), True)
 
     def generate_search_bar(self):
         """
             Generate search bar box and entry
         """
         self.search_bar = SearchBar(self.window, self.window.hb.search_button,
-                                    [self.accounts_list, self.accounts_grid])
+                                    [self.accounts_list])
         self.pack_start(self.search_bar, False, True, 0)
         self.reorder_child(self.search_bar, 0)
 
@@ -98,21 +89,12 @@ class AccountsWindow(Gtk.Box, Observer):
             self.set_no_show_all(False)
         if removed_id:
             self.accounts_list.remove_by_id(removed_id)
-            self.accounts_grid.remove_by_id(removed_id)
             self.window.emit("changed", True)
         if view_mode:
             self.set_mode_view(view_mode)
 
     def get_accounts_list(self):
         return self.accounts_list
-
-    def get_accounts_grid(self):
-        return self.accounts_grid
-
-    def set_mode_view(self, view_mode, on_start=False):
-        self.stack.set_visible_child_name(view_mode)
-        if not on_start:
-            settings.set_view_mode(view_mode)
 
     def get_search_bar(self):
         return self.search_bar
@@ -123,9 +105,7 @@ class AccountsWindow(Gtk.Box, Observer):
         """
         if app:
             account = Account(app, self.app.db)
-            account.row_observerable.register(self)
             self.accounts.append(account)
             self.app.observable.register(account)
             self.accounts_list.append(account)
-            self.accounts_grid.append(account)
             self.window.emit("changed", True)

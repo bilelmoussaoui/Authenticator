@@ -3,10 +3,8 @@ import logging
 from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gio, GLib
-from Authenticator.models.observer import Observer
 
-
-class InAppNotification(Gtk.Revealer, Observer):
+class InAppNotification(Gtk.Revealer):
     timer = 0
     killed = False
 
@@ -69,11 +67,6 @@ class InAppNotification(Gtk.Revealer, Observer):
             if self.undo_button:
                 self.undo_button.set_visible(False)
                 self.undo_button.set_no_show_all(True)
-
-    def update(self, *args, **kwargs):
-        is_alive = kwargs.pop("alive", None)
-        if not is_alive:
-            self.killed = True
 
     def response(self, infobar, response_id):
         if response_id == Gtk.ResponseType.CLOSE:

@@ -19,7 +19,7 @@
 """
 from gi import require_version
 require_version("Gtk", "3.0")
-from gi.repository import Gtk, Gdk
+from gi.repository import Gtk, Gdk, Gio
 from Authenticator.const import settings
 from Authenticator.widgets.change_password import PasswordWindow
 from gettext import gettext as _
@@ -29,42 +29,33 @@ import logging
 class SettingsWindow:
 
     def __init__(self, parent):
-        self.parent = parent
 
         self.builder = Gtk.Builder.new_from_resource('/org/gnome/Authenticator/settings.ui')
         self.builder.connect_signals({
             "on_change_password" : self.__new_password_window,
-            "on_activate_auto_lock" : self.__on_auto_lock_activated,
+            'on_password_toggle': self.__on_password_activated,
             "on_change_auto_lock_time" : self.__on_auto_lock_time_changed,
-            "on_activate_password" : self.__on_password_activated,
             "on_key_press": self.__on_key_press,
-            "on_activate_night_mode": self.__on_night_mode_activated,
             "on_close_window": self.close_window
         })
         self.window = self.builder.get_object("SettingsWindow")
-        self.window.set_transient_for(self.parent)
+        self.window.set_transient_for(parent)
         logging.debug("Settings Window created")
 
         self.auto_lock_check = self.builder.get_object("AutoLockCheck")
         self.auto_lock_spin = self.builder.get_object("AutoLockSpin")
-        self.night_mode_check = self.builder.get_object("NightModeCheck")
         self.password_check = self.builder.get_object("PasswordCheck")
         self.password_button = self.builder.get_object("PasswordButton")
+
+        settings.bind('state', self.password_check, 'active', Gio.SettingsBindFlags.DEFAULT)
+        settings.bind('state', self.password_button, 'sensitive', Gio.SettingsBindFlags.INVERT_BOOLEAN)
+      
+        settings.bind('state', self.auto_lock_check, 'sensitive', Gio.SettingsBindFlags.GET)
+        settings.bind('auto-lock', self.auto_lock_check, 'active', Gio.SettingsBindFlags.DEFAULT)
+      
+        settings.bind('auto-lock', self.auto_lock_spin, 'sensitive', Gio.SettingsBindFlags.GET)
         # Restore settings
-        _can_be_locked = settings.get_can_be_locked()
-        _auto_lock_status = settings.get_auto_lock_status()
         _auto_lock_time = settings.get_auto_lock_time()
-        _night_mode = settings.get_is_night_mode()
-
-        self.night_mode_check.set_active(_night_mode)
-
-        self.password_check.set_active(_can_be_locked)
-        self.password_button.set_sensitive(_can_be_locked)
-
-        self.auto_lock_check.set_sensitive(_can_be_locked)
-        self.auto_lock_check.set_active(_can_be_locked)
-
-        self.auto_lock_spin.set_sensitive(_auto_lock_status)
         self.auto_lock_spin.set_value(_auto_lock_time)
 
     def show_window(self):
@@ -92,33 +83,14 @@ class SettingsWindow:
         settings.set_auto_lock_time(spin_button.get_value_as_int())
         logging.info("Auto lock time updated")
 
-    def __on_night_mode_activated(self, checkbutton, *args):
-        checkbutton_status = checkbutton.get_active()
-        settings.set_is_night_mode(checkbutton_status)
-        Gtk.Settings.get_default().set_property(
-            "gtk-application-prefer-dark-theme", checkbutton_status)
-
     def __on_password_activated(self, checkbutton, *args):
         """
             Update password state : enabled/disabled
         """
         checkbutton_status = checkbutton.get_active()
-        self.password_button.set_sensitive(checkbutton_status)
-        settings.set_is_locked(checkbutton_status)
         if checkbutton_status and not settings.is_password_set():
             self.__new_password_window()
-        self.auto_lock_check.set_sensitive(checkbutton_status)
         logging.info("Password enabled/disabled")
-        self.parent.emit("changed", True)
-
-    def __on_auto_lock_activated(self, checkbutton, *args):
-        """
-            Update auto-lock state : enabled/disabled
-        """
-        checkbutton_status = checkbutton.get_active()
-        self.auto_lock_spin.set_sensitive(checkbutton_status)
-        settings.set_auto_lock_status(checkbutton_status)
-        logging.info("Auto lock state updated")
 
     def close_window(self, *args):
         """

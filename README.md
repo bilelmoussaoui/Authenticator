@@ -9,7 +9,7 @@ version](https://img.shields.io/badge/python-3.3%2B-blue.svg)
 ### Dependecies
 - `Python 3.3+`
 - `Gtk 3.16+`
-- `meson` (works only with git version for now)
+- `meson 0.38+` 
 - `ninja`
 - `pyotp`
 - `pyaml`
@@ -57,7 +57,7 @@ git clone https://github.com/bil-elmoussaoui/Gnome-Authenticator && cd ./Gnome-A
 ```
 2 - Install Python dependecies
 ```bash
-sudo pip install pyotp zbarlight pyaml Pillow
+sudo pip install pyotp zbarlight pyaml Pillow meson ninja
 ```
 <sub>PS : In some distributions you will need to use `pip3` instead of `pip` to install the compatible version of the package with Python 3.</sub> <br>
 3 - Afterwards

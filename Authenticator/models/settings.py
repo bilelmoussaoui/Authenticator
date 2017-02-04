@@ -18,7 +18,7 @@
  along with Gnome-TwoFactorAuth. If not, see <http://www.gnu.org/licenses/>.
 """
 import logging
-from gi.repository import Gio
+from gi.repository import Gio, GLib
 from hashlib import sha256
 
 
@@ -33,65 +33,43 @@ class Settings(Gio.Settings):
         return gsettings
 
     def get_window_size(self):
-        width, height = self.get_int("size-x"), self.get_int("size-y")
-        return width, height
+        return tuple(self.get_value('window-size'))
 
     def set_window_size(self, size):
-        width, height = size
-        self.set_int('size-x', width)
-        self.set_int('size-y', height)
-        self.apply()
+        size = GLib.Variant('ai', list(size))
+        self.set_value('window-size', size)
 
     def get_default_size(self):
-        width, height = self.get_default_value(
-            'size-x'), self.get_default_value('size-y')
-        return width.get_int32(), height.get_int32()
+        return tuple(self.get_default_value('window-size'))
 
     def get_window_position(self):
-        x, y = self.get_int('position-x'), self.get_int('position-y')
-        return x, y
+        return tuple(self.get_value('window-position'))
 
     def set_window_postion(self, position):
-        x, y = position
-        self.set_int('position-x', x)
-        self.set_int('position-y', y)
-        self.apply()
+        position = GLib.Variant('ai', list(position))
+        self.set_value('window-position', position)
 
-    def set_view_mode(self, view_mode):
-        view_mode = view_mode.strip().lower()
-        if view_mode not in ["list", "grid"]:
-            view_mode = "list"
-        self.set_string("view-mode", view_mode)
-        self.apply()
+    def set_is_night_mode(self, statue):
+        self.set_boolean('night-mode', statue)
 
-    def get_view_mode(self):
-        return self.get_string('view-mode').lower()
+    def get_is_night_mode(self):
+        return self.get_boolean('night-mode')
 
     def set_can_be_locked(self, status):
         self.set_boolean('state', status)
-        self.apply()
 
     def get_can_be_locked(self):
         return self.get_boolean('state')
 
     def set_is_locked(self, statue):
         self.set_boolean('locked', statue)
-        self.apply()
 
     def get_is_locked(self):
         return self.get_boolean('locked')
 
-    def set_is_night_mode(self, statue):
-        self.set_boolean('night-mode', statue)
-        self.apply()
-
-    def get_is_night_mode(self):
-        return self.get_boolean('night-mode')
-
     def set_password(self, password):
         password = sha256(password.encode('utf-8')).hexdigest()
         self.set_string("password", password)
-        self.apply()
 
     def compare_password(self, password):
         password = sha256(password.encode('utf-8')).hexdigest()
@@ -108,7 +86,6 @@ class Settings(Gio.Settings):
 
     def set_auto_lock_status(self, status):
         self.set_boolean("auto-lock", status)
-        self.apply()
 
     def get_auto_lock_time(self):
         return self.get_int("auto-lock-time")
@@ -117,4 +94,3 @@ class Settings(Gio.Settings):
         if auto_lock_time < 1 or auto_lock_time > 15:
             auto_lock_time = 3
         self.set_int("auto-lock-time", auto_lock_time)
-        self.apply()

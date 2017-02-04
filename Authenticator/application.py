@@ -55,6 +55,9 @@ class Application(Gtk.Application):
         if result == GK.Result.CANCELLED:
             self.quit()
 
+        Gtk.Settings.get_default().set_property(
+            "gtk-application-prefer-dark-theme", settings.get_is_night_mode())
+
         if Gtk.get_major_version() >= 3 and Gtk.get_minor_version() >= 20:
             cssFileName = "org.gnome.Authenticator-post3.20.css"
         else:
@@ -86,6 +89,7 @@ class Application(Gtk.Application):
 
         # Help section
         help_content = Gio.Menu.new()
+        help_content.append_item(Gio.MenuItem.new(_("Night Mode"), "app.night_mode"))
         if Gtk.get_major_version() >= 3 and Gtk.get_minor_version() >= 20:
             help_content.append_item(Gio.MenuItem.new(
                 _("Shortcuts"), "app.shortcuts"))
@@ -98,7 +102,13 @@ class Application(Gtk.Application):
         self.settings_action = Gio.SimpleAction.new("settings", None)
         self.settings_action.connect("activate", self.on_settings)
         self.settings_action.set_enabled(not settings.get_is_locked())
+        settings.bind('locked', self.settings_action, 'enabled', Gio.SettingsBindFlags.INVERT_BOOLEAN)
         self.add_action(self.settings_action)
+
+
+        action = Gio.SimpleAction.new_stateful("night_mode", None, GLib.Variant.new_boolean(settings.get_is_night_mode()))
+        action.connect("change-state", self.on_night_mode)
+        self.add_action(action)
 
         if Gtk.get_major_version() >= 3 and Gtk.get_minor_version() >= 20:
             action = Gio.SimpleAction.new("shortcuts", None)
@@ -123,9 +133,14 @@ class Application(Gtk.Application):
             self.add_window(self.win)
         else:
             self.win.present()
+    
+    def on_night_mode(self, action, gvariant):
+        is_night_mode = not settings.get_is_night_mode()
+        action.set_state(GLib.Variant.new_boolean(is_night_mode))
+        settings.set_is_night_mode(is_night_mode)
+        Gtk.Settings.get_default().set_property(
+            "gtk-application-prefer-dark-theme", is_night_mode)
 
-    def refresh_menu(self):
-        self.settings_action.set_enabled(not settings.get_is_locked())
 
     def on_shortcuts(self, *args):
         """
@@ -182,7 +197,6 @@ class Application(Gtk.Application):
             clipboard.clear()
         except Exception as e:
             logging.error(str(e))
-        self.observable.update_observers(alive=False)
         if self.win:
             self.win.save_window_state()
             self.win.destroy()

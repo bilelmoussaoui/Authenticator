@@ -18,7 +18,6 @@
  along with Gnome-TwoFactorAuth. If not, see <http://www.gnu.org/licenses/>.
 """
 import logging
-from Authenticator.models.observer import Observer
 from Authenticator.utils import get_icon
 from Authenticator.widgets.confirmation import ConfirmationMessage
 from gettext import gettext as _
@@ -62,7 +61,7 @@ class RowEntryName(Gtk.Entry):
         self.grab_focus_without_selecting()
 
 
-class AccountRow(Observer):
+class AccountRow:
     notification = None
     timer = 0
     remove_timer = 0
@@ -72,7 +71,6 @@ class AccountRow(Observer):
         self.window = window
         self.parent = parent
         self.account = account
-        self.account.account_observerable.register(self)
         # Create needed widgets
         self.code_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         self.revealer = Gtk.Revealer()
@@ -80,7 +78,6 @@ class AccountRow(Observer):
         self.application_name = Gtk.Label(xalign=0)
         self.code_label = Gtk.Label(xalign=0)
         self.timer_label = Gtk.Label(xalign=0)
-        self.is_grid_view = isinstance(self, AccountRowGrid)
         self.accel = Gtk.AccelGroup()
         self.window.add_accel_group(self.accel)
         self.accel.connect(Gdk.keyval_from_name('C'), Gdk.ModifierType.CONTROL_MASK, 0, self.copy_code)
@@ -102,10 +99,7 @@ class AccountRow(Observer):
 
     def set_account_counter(self, counter):
         if counter:
-            if self.is_grid_view:
-                label = str(counter)
-            else:
-                label = _("Expires in %s seconds" % str(counter))
+            label = _("Expires in %s seconds" % str(counter))
             self.timer_label.set_label(label)
 
     def get_code_label(self):
@@ -360,78 +354,3 @@ class AccountRowList(Gtk.ListBoxRow, AccountRow):
         self.revealer.add(self.code_box)
         self.revealer.set_reveal_child(False)
         self.add(box)
-
-
-class AccountRowGrid(AccountRow, Gtk.FlowBoxChild):
-
-    def __init__(self, parent, window, account):
-        Gtk.FlowBoxChild.__init__(self)
-        AccountRow.__init__(self, parent, window, account)
-        self.create_row()
-
-    def create_row(self):
-        """
-            Create ListBoxRow
-        """
-        main_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        v_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-
-        # Checkbox
-        overlay_box = Gtk.Overlay()
-        checkbox_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        self.checkbox.set_visible(False)
-        self.checkbox.get_style_context().add_class("checkbutton-grid")
-        self.checkbox.set_no_show_all(True)
-        self.checkbox.connect("toggled", self.parent.select_account)
-        checkbox_box.pack_end(self.checkbox, False, False, 0)
-        overlay_box.add_overlay(checkbox_box)
-
-        # account logo
-        logo_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        auth_icon = get_icon(self.account.get_logo(), 96)
-        auth_logo = Gtk.Image(xalign=0)
-        auth_logo.set_from_pixbuf(auth_icon)
-        logo_box.add(auth_logo)
-        overlay_box.add(logo_box)
-
-        # Account name entry
-        name_entry_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        self.name_entry = RowEntryName(self.account.get_name())
-        name_entry_box.pack_start(self.name_entry, False, False, 6)
-        v_box.pack_start(name_entry_box, False, False, 0)
-        name_entry_box.set_visible(False)
-
-        # accout name
-        name_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        name_event = Gtk.EventBox()
-        self.application_name .get_style_context().add_class("application-name-grid")
-        self.application_name.set_ellipsize(Pango.EllipsizeMode.END)
-        self.set_account_name(self.account.get_name())
-        name_event.connect("button-press-event", self.toggle_code)
-        name_event.add(self.application_name)
-        name_box.pack_start(name_event, True, False, 6)
-
-        # timer
-        self.set_account_counter(self.account.get_counter())
-        self.timer_label.get_style_context().add_class("account-timer-grid")
-        self.code_box.pack_end(self.timer_label, False, True, 6)
-
-        # secret code
-        self.code_label.get_style_context().add_class("account-secret-code-grid")
-
-        self.code_box.pack_start(self.code_label, True, False, 6)
-        if self.account.code_generated:
-            self.set_account_code(self.account.get_code())
-        else:
-            self.set_account_code(_("Error during the generation of code"))
-
-        self.revealer.add(self.code_box)
-        self.revealer.set_reveal_child(False)
-
-        v_box.pack_start(overlay_box, False, False, 6)
-        v_box.pack_start(name_entry_box, False, False, 0)
-        v_box.pack_start(name_box, False, False, 0)
-        v_box.pack_start(self.revealer, False, False, 0)
-        main_box.pack_end(v_box, True, False, 0)
-        self.add(main_box)
-

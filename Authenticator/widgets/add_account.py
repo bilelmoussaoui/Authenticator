@@ -60,9 +60,8 @@ class AddAccount(Gtk.Window):
                             title=_("Add a new account"),
                             modal=True, destroy_with_parent=True)
         self.connect("delete-event", self.close_window)
-        self.resize(500, 400)
-        self.set_border_width(18)
-        self.set_size_request(500, 300)
+        self.resize(500, 350)
+        self.set_size_request(500, 350)
         self.set_position(Gtk.WindowPosition.CENTER_ON_PARENT)
         self.set_resizable(False)
         self.set_transient_for(self.parent)
@@ -110,6 +109,8 @@ class AddAccount(Gtk.Window):
         labels_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         logo_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+        logo_box.props.margin_top = 18
+
         hbox_name = Gtk.Box(
             orientation=Gtk.Orientation.HORIZONTAL, spacing=18)
         account_name = Gtk.Label()

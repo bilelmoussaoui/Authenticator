@@ -19,15 +19,13 @@
 """
 from gi import require_version
 require_version("Gtk", "3.0")
-from gi.repository import Gtk, Gdk
+from gi.repository import Gtk, Gdk, Gio
 import logging
 from hashlib import sha256
 from gettext import gettext as _
 from Authenticator.const import settings
-from Authenticator.models.observer import Observer
 
-
-class LoginWindow(Gtk.Box, Observer):
+class LoginWindow(Gtk.Box):
 
     def __init__(self, window):
         self.window = window
@@ -42,6 +40,8 @@ class LoginWindow(Gtk.Box, Observer):
         })
         self.builder.add_from_resource('/org/gnome/Authenticator/login.ui')
         login_window = self.builder.get_object("loginWindow")
+        settings.bind("locked", login_window, "no_show_all", Gio.SettingsBindFlags.INVERT_BOOLEAN)
+        settings.bind("locked", login_window, "visible", Gio.SettingsBindFlags.GET)
         self.pack_start(login_window, True, False, 0)
 
     def on_unlock(self, *args):
@@ -55,7 +55,7 @@ class LoginWindow(Gtk.Box, Observer):
             or settings.get_password() == typed_pass == ""):
             password_entry.set_icon_from_icon_name(
                 Gtk.EntryIconPosition.SECONDARY, None)
-            self.toggle_lock()
+            settings.set_is_locked(False)
             password_entry.set_text("")
         else:
             password_entry.set_icon_from_icon_name(
@@ -63,7 +63,7 @@ class LoginWindow(Gtk.Box, Observer):
 
     def __on_key_press(self, widget, event):
         keyname = Gdk.keyval_name(event.keyval).lower()
-        if self.window.is_locked():
+        if settings.get_is_locked():
             if keyname == "return":
                 self.on_unlock()
                 return True
@@ -71,33 +71,19 @@ class LoginWindow(Gtk.Box, Observer):
             pass_enabled = settings.get_can_be_locked()
             if keyname == "l" and pass_enabled:
                 if event.state & Gdk.ModifierType.CONTROL_MASK:
-                    self.toggle_lock()
+                    self.on_lock()
                     return True
 
         return False
 
-    def toggle_lock(self, *args):
+    def on_lock(self, *args):
         """
             Lock/unlock the application
         """
         pass_enabled = settings.get_can_be_locked()
         if pass_enabled:
-            settings.set_is_locked(not settings.get_is_locked())
-            self.window.counter = 0
-            if settings.get_is_locked():
-                self.self.password_entry.grab_focus_without_selecting()
-                self.window.emit("locked", True)
-            else:
-                self.window.emit("unlocked", True)
-
-    def update(self, *args, **kwargs):
-        is_locked = kwargs.pop("locked", None)
-        is_unlocked = kwargs.pop("unlocked", None)
-        if is_locked:
-            self.set_visible(True)
-            self.set_no_show_all(False)
             settings.set_is_locked(True)
-        elif is_unlocked:
-            settings.set_is_locked(False)
-            self.set_visible(False)
-            self.set_no_show_all(True)
+            self.window.counter = 0
+            password_entry = self.builder.get_object("passwordEntry")
+            password_entry.grab_focus_without_selecting()
+            settings.set_is_locked(True)
