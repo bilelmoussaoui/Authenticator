@@ -6,7 +6,9 @@ version](https://img.shields.io/badge/python-3.3%2B-blue.svg)
 # Gnome Authenticator
 <img src="https://raw.githubusercontent.com/bil-elmoussaoui/Gnome-Authenticator/master/data/icons/hicolor/32x32/apps/org.gnome.Authenticator.png" width="128" height="128" />
 <p>Two-factor authentication code generator for Gnome. Created with love using Python and Gtk.</p>
+
 ### Dependecies
+
 - `Python 3.3+`
 - `Gtk 3.16+`
 - `meson 0.38+` 
