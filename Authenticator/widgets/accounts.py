@@ -9,6 +9,7 @@
  by the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
 
+
  TwoFactorAuth is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -19,39 +20,32 @@
 """
 from gi import require_version
 require_version("Gtk", "3.0")
-from gi.repository import Gtk, Gio, Gdk, GObject, GLib
-from Authenticator.widgets.confirmation import ConfirmationMessage
-from Authenticator.widgets.account_row import AccountRowList
-from gettext import gettext as _
-from hashlib import sha256
 import logging
-
+from Authenticator.const import settings
+from Authenticator.widgets.account_row import AccountRowList
+from Authenticator.widgets.confirmation import ConfirmationMessage
+from gettext import gettext as _
+from gi.repository import GLib, GObject, Gdk, Gio, Gtk
+from hashlib import sha256
 
 class AccountsList(Gtk.ListBox):
-    scrolled_win = None
 
     def __init__(self, window, accounts):
         self.accounts = accounts
         self.window = window
         self.generate()
-        self.window.connect("key-press-event", self.on_key_press)
+        self.accel = Gtk.AccelGroup()
+        self.window.add_accel_group(self.accel)
         self.connect("row-activated", self.activate_row)
         self.connect("row-selected", self.selected_row)
-
-        GLib.timeout_add_seconds(1, self.refresh)
+        self.accel.connect(Gdk.keyval_from_name('Up'), Gdk.ModifierType.META_MASK, 0, self.navigate)
+        self.accel.connect(Gdk.keyval_from_name('Down'), Gdk.ModifierType.META_MASK, 0, self.navigate)
 
     def generate(self):
         Gtk.ListBox.__init__(self)
-        # Create a ScrolledWindow for accounts
-        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-
         self.get_style_context().add_class("applications-list")
         self.set_adjustment()
         self.set_selection_mode(Gtk.SelectionMode.SINGLE)
-        box.pack_start(self, True, True, 0)
-
-        self.scrolled_win = Gtk.ScrolledWindow()
-        self.scrolled_win.add_with_viewport(box)
 
         count = len(self.accounts)
 
@@ -60,7 +54,6 @@ class AccountsList(Gtk.ListBox):
 
         if count != 0:
             self.select_row(self.get_row_at_index(0))
-        self.show_all()
 
     def selected_row(self, account_list, selected_row):
         for row in self.get_children():
@@ -74,23 +67,22 @@ class AccountsList(Gtk.ListBox):
         if self.window.is_select_mode and selected_row:
             self.select_account(selected_row.get_checkbox())
 
-    def on_key_press(self, app, key_event):
+    def navigate(self, *args):
         """
             Keyboard Listener handling
         """
-        keyname = Gdk.keyval_name(key_event.keyval).lower()
-        if not self.window.is_locked():
-            if not self.window.no_account_box.is_visible():
-                if keyname == "up" or keyname == "down":
-                    count = len(self.get_children())
-                    dx = -1 if keyname == "up" else 1
-                    selected_row = self.get_selected_row()
-                    if selected_row is not None:
-                        index = selected_row.get_index()
-                        new_index = (index + dx) % count
-                        self.select_row(self.get_row_at_index(new_index))
-                        return True
+        keyname = Gdk.keyval_name(args[2]).lower()
+        if not settings.get_is_locked():
+            count = len(self.get_children())
+            dx = -1 if keyname == "up" else 1
+            selected_row = self.get_selected_row()
+            if selected_row is not None:
+                index = selected_row.get_index()
+                new_index = (index + dx) % count
+                self.select_row(self.get_row_at_index(new_index))
+                return True
         return False
+
 
     def toggle_select_mode(self):
         is_select_mode = self.window.is_select_mode
@@ -110,7 +102,8 @@ class AccountsList(Gtk.ListBox):
                 self.select_account(checkbox)
                 style_context.add_class("application-secret-code-select-mode")
             else:
-                style_context.remove_class("application-secret-code-select-mode")
+                style_context.remove_class(
+                    "application-secret-code-select-mode")
             row.toggle_action_box(visible)
             checkbox.set_visible(not visible)
             checkbox.set_no_show_all(visible)
@@ -125,7 +118,6 @@ class AccountsList(Gtk.ListBox):
                 row.remove()
         self.unselect_all()
         self.window.toggle_select()
-
 
     def select_account(self, checkbutton):
         """
@@ -149,28 +141,6 @@ class AccountsList(Gtk.ListBox):
         else:
             return None
 
-    def get_scrolled_win(self):
-        return self.scrolled_win
-
-    def toggle(self, visible):
-        self.get_scrolled_win().set_visible(visible)
-        self.get_scrolled_win().set_no_show_all(not visible)
-        self.set_visible(visible)
-        self.set_no_show_all(not visible)
-
-    def is_visible(self):
-        return self.get_visible()
-
-    def hide(self):
-        self.toggle(False)
-
-    def show(self):
-        self.toggle(True)
-
-    def refresh(self):
-        self.scrolled_win.hide()
-        self.scrolled_win.show_all()
-
     def append(self, account):
         self.add(AccountRowList(self, self.window, account))
 
@@ -179,4 +149,3 @@ class AccountsList(Gtk.ListBox):
             if row.account.get_id() == _id:
                 self.remove(row)
                 break
-        self.refresh()

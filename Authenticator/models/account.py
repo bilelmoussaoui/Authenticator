@@ -1,14 +1,12 @@
-from Authenticator.models.settings import SettingsReader
 from Authenticator.models.code import Code
 from Authenticator.models.database import Database
-from Authenticator.models.observer import Observer
 from Authenticator.interfaces.account_observrable import AccountObservable, AccountRowObservable
 from gi.repository import GObject
 from threading import Thread
 from time import sleep
 import logging
 
-class Account(GObject.GObject, Thread, Observer):
+class Account(GObject.GObject, Thread):
     __gsignals__ = {
         'code_updated': (GObject.SignalFlags.RUN_LAST, None, (bool,)),
         'name_updated': (GObject.SignalFlags.RUN_LAST, None, (bool,)),
@@ -25,8 +23,7 @@ class Account(GObject.GObject, Thread, Observer):
         Thread.__init__(self)
         GObject.GObject.__init__(self)
         self.db = db
-        cfg = SettingsReader()
-        self.counter_max = cfg.read("refresh-time", "preferences")
+        self.counter_max = 30
         self.counter = self.counter_max
         self.account_id = app[0]
         self.account_name = app[1]
@@ -38,25 +35,8 @@ class Account(GObject.GObject, Thread, Observer):
             logging.error("Could not read the secret code,"
                           "the keyring keys were reset manually")
         self.logo = app[3]
-        self.account_observerable = AccountObservable()
-        self.row_observerable = AccountRowObservable()
         self.start()
 
-    def do_name_updated(self, *args):
-        self.account_observerable.update_observers(name=self.get_name())
-
-    def do_counter_updated(self, *args):
-        self.account_observerable.update_observers(counter=self.get_counter())
-
-    def do_code_updated(self, *args):
-        self.account_observerable.update_observers(code=self.get_code())
-
-    def do_removed(self, *args):
-        self.row_observerable.update_observers(removed=self.get_id())
-
-    def update(self, alive):
-        if not alive:
-            self.kill()
 
     def run(self):
         while self.code_generated and self.alive:

@@ -19,16 +19,20 @@
 """
 from gi import require_version
 require_version("Gtk", "3.0")
-from gi.repository import Gtk
+from gi.repository import Gtk, Gio
 import logging
 from gettext import gettext as _
-from Authenticator.models.observer import Observer
+from Authenticator.const import settings
 
-class NoAccountWindow(Gtk.Box, Observer):
+class NoAccountWindow(Gtk.Box):
 
     def __init__(self):
         Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL,
-                         spacing=6)
+                         spacing=6)        
+        # hidden by default
+        self.set_visible(False)
+        self.set_no_show_all(True)
+
         self.generate()
 
     def generate(self):
@@ -40,25 +44,3 @@ class NoAccountWindow(Gtk.Box, Observer):
 
         self.pack_start(logo_image, False, False, 6)
         self.pack_start(no_apps_label, False, False, 6)
-
-    def update(self, *args, **kwargs):
-        unlocked = kwargs.pop("unlocked", None)
-        locked = kwargs.pop("locked", None)
-        counter = kwargs.pop("counter", None)
-        if counter != 0 or locked:
-            self.hide()
-        elif unlocked or counter == 0:
-            self.show()
-
-    def toggle(self, visible):
-        self.set_visible(visible)
-        self.set_no_show_all(not visible)
-
-    def is_visible(self):
-        return self.get_visible()
-
-    def hide(self):
-        self.toggle(False)
-
-    def show(self):
-        self.toggle(True)

@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
-    <schema path="/org/gnome/Authenticator/preferences/" id="org.gnome.Authenticator.preferences" gettext-domain="Authenticator">
-        <key name="refresh-time" type="i">
-            <default>30</default>
-            <summary>Time to generate an other password</summary>
-            <description>
-                Time on seconds to generate a new password
-            </description>
-        </key>
+    <schema path="/org/gnome/Authenticator/" id="org.gnome.Authenticator" gettext-domain="Authenticator">
         <key name="auto-lock" type="b">
             <default>false</default>
             <summary>Auto lock the application</summary>
@@ -22,40 +15,18 @@
                 Auto lock the application after a x seconds
             </description>
         </key>
-        <key name="position-x" type="i">
-            <default>0</default>
-            <summary>Default window postiton on x axes</summary>
+        <key name="window-position" type="ai">
+            <default>[0,0]</default>
+            <summary>Default window postiton</summary>
             <description>
-                Default window postiton on x axes
+                Default window postiton
             </description>
         </key>
-        <key name="position-y" type="i">
-            <default>0</default>
-            <summary>Default window postiton on y axes</summary>
+        <key name="window-size" type="ai">
+            <default>[500,650]</default>
+            <summary>Default window size</summary>
             <description>
-                Default window postiton on y axes
-            </description>
-        </key>
-
-        <key name="size-x" type="i">
-            <default>500</default>
-            <summary>Default window postiton on x axes</summary>
-            <description>
-                Default window postiton on x axes
-            </description>
-        </key>
-        <key name="size-y" type="i">
-            <default>650</default>
-            <summary>Default window postiton on y axes</summary>
-            <description>
-                Default window postiton on y axes
-            </description>
-        </key>
-        <key name="view-mode" type="s">
-            <default>"list"</default>
-            <summary>Default view mode grid/list</summary>
-            <description>
-              The way the generated codes will be shown list/grid mode
+                Default window size
             </description>
         </key>
         <key name="night-mode" type="b">
@@ -65,8 +36,13 @@
               Enable/disable night mode within the application
             </description>
         </key>
-    </schema>
-    <schema path="/org/gnome/Authenticator/login/" id="org.gnome.Authenticator.login" gettext-domain="Authenticator">
+        <key name="locked" type="b">
+            <default>false</default>
+            <summary>Define wether the application is locked or not</summary>
+            <description>
+                This only works if the password protection is enabled
+            </description>
+        </key>
         <key name="password" type="s">
             <default>""</default>
             <summary>Access code to user interface</summary>

@@ -1,15 +1,19 @@
 <a href="https://hosted.weblate.org/engage/gnome-twofactorauth/?utm_source=widget">
 <img src="https://hosted.weblate.org/widgets/gnome-twofactorauth/-/svg-badge.svg" alt="Translation status" />
 </a>
+
 ![Status](https://img.shields.io/badge/status-stable-green.svg) [![Version](https://img.shields.io/badge/version-0.1.1-green.svg)](https://github.com/bil-elmoussaoui/Gnome-TwoFactorAuth/releases) ![Python
 version](https://img.shields.io/badge/python-3.3%2B-blue.svg)
+
 # Gnome Authenticator
 <img src="https://raw.githubusercontent.com/bil-elmoussaoui/Gnome-Authenticator/master/data/icons/hicolor/32x32/apps/org.gnome.Authenticator.png" width="128" height="128" />
 <p>Two-factor authentication code generator for Gnome. Created with love using Python and Gtk.</p>
+
 ### Dependecies
+
 - `Python 3.3+`
 - `Gtk 3.16+`
-- `meson` (works only with git version for now)
+- `meson 0.38+` 
 - `ninja`
 - `pyotp`
 - `pyaml`
@@ -57,7 +61,7 @@ git clone https://github.com/bil-elmoussaoui/Gnome-Authenticator && cd ./Gnome-A
 ```
 2 - Install Python dependecies
 ```bash
-sudo pip install pyotp zbarlight pyaml Pillow
+sudo pip install pyotp zbarlight pyaml Pillow meson ninja
 ```
 <sub>PS : In some distributions you will need to use `pip3` instead of `pip` to install the compatible version of the package with Python 3.</sub> <br>
 3 - Afterwards
