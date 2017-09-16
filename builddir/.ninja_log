@@ -1,0 +1,5 @@
+# ninja log v5
+0	14	1505591732	data/org.gnome.Authenticator.gresource	fd57c3acaee948ca
+0	311	1505591733	data/org.gnome.Authenticator.desktop	556a0bbc0713cc6f
+1	369	1505591733	data/org.gnome.Authenticator.appdata.xml	5fc44cb141b567c3
+369	2657	0	meson-install	22c31c1b02b20ab3

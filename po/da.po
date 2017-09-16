@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-13 00:20+0100\n"
+"POT-Creation-Date: 2017-12-13 00:20+0100\n"
 "PO-Revision-Date: 2017-09-14 19:54+0000\n"
 "Last-Translator: Jakob Bo Kristensen <jakobbo@gmail.com>\n"
 "Language-Team: Danish <https://hosted.weblate.org/projects/gnome-"
@@ -201,7 +201,7 @@ msgstr "Lås applikationen automatisk (m):"
 
 #: ../data/gnome-twofactorauth.appdata.xml.in.h:1
 #: ../data/gnome-twofactorauth.desktop.in.h:1
-msgid "Gnome TwoFactorAuth"
+msgid "Gnome Authenticator"
 msgstr "Gnome TofaktorAutentifikation"
 
 #: ../data/gnome-twofactorauth.appdata.xml.in.h:2
@@ -225,7 +225,7 @@ msgid "Two-Factor Authentication code generator"
 msgstr "TofaktorAutentifikation kodegenerator"
 
 #: ../data/gnome-twofactorauth.desktop.in.h:4
-msgid "About Gnome TwoFactorAuth"
+msgid "About Gnome Authenticator"
 msgstr "Om Gnome TofaktorAutentifikation"
 
 #: ../gnome-twofactorauth.in:50

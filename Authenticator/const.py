@@ -1,5 +1,5 @@
 """
- Copyright © 2016 Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>
+ Copyright © 2017 Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>
 
  This file is part of Gnome-TwoFactorAuth.
 

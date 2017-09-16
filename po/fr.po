@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>, 2016
+# Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: TwoFactorAuth\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-02 23:11+0200\n"
-"PO-Revision-Date: 2016-12-12 23:38+0000\n"
+"POT-Creation-Date: 2017-06-02 23:11+0200\n"
+"PO-Revision-Date: 2017-12-12 23:38+0000\n"
 "Last-Translator: Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/gnome-"
 "twofactorauth/translation/fr/>\n"

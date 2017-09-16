@@ -1,0 +1,29 @@
+Build started at 2017-09-16T21:55:31.921662
+Python binary: /usr/bin/python
+Python system: Linux
+The Meson build system
+Version: 0.42.1
+Source dir: /home/bilal/Gnome-Authenticator
+Build dir: /home/bilal/Gnome-Authenticator/builddir
+Build type: native build
+Project name: org.gnome.Authenticator
+Build machine cpu family: x86_64
+Build machine cpu: x86_64
+Message: Looking for dependencies
+Found pkg-config: /usr/bin/pkg-config (0.29.2)
+Determining dependency 'glib-2.0' with pkg-config executable '/usr/bin/pkg-config'
+Native dependency glib-2.0 found: YES 2.54.0
+Determining dependency 'gobject-2.0' with pkg-config executable '/usr/bin/pkg-config'
+Native dependency gobject-2.0 found: YES 2.54.0
+Determining dependency 'gobject-introspection-1.0' with pkg-config executable '/usr/bin/pkg-config'
+Native dependency gobject-introspection-1.0 found: YES 1.54.0
+Determining dependency 'gtk+-3.0' with pkg-config executable '/usr/bin/pkg-config'
+Native dependency gtk+-3.0 found: YES 3.22.21
+Message: TODO: Compiling resources
+Determining dependency 'glib-2.0' with pkg-config executable '/usr/bin/pkg-config'
+Native dependency glib-2.0 found: YES 2.54.0
+Message: Compiling schemas
+Message: TODO: Making a list of icons
+Configuring gnome-authenticator using configuration
+Program tools/build/meson_post_install.py found: YES (/home/bilal/Gnome-Authenticator/tools/build/meson_post_install.py)
+Build targets in project: 6

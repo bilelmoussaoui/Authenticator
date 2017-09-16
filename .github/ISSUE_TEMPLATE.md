@@ -6,7 +6,7 @@
  * Desktop environment -
  ```
 
-**Gnome TwoFactorAuth version**
+**Gnome Authenticator version**
 
 
 **Actual issue**

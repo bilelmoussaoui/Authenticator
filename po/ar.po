@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-13 00:20+0100\n"
+"POT-Creation-Date: 2017-12-13 00:20+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -198,7 +198,7 @@ msgstr ""
 
 #: ../data/gnome-twofactorauth.appdata.xml.in.h:1
 #: ../data/gnome-twofactorauth.desktop.in.h:1
-msgid "Gnome TwoFactorAuth"
+msgid "Gnome Authenticator"
 msgstr ""
 
 #: ../data/gnome-twofactorauth.appdata.xml.in.h:2
@@ -220,7 +220,7 @@ msgid "Two-Factor Authentication code generator"
 msgstr ""
 
 #: ../data/gnome-twofactorauth.desktop.in.h:4
-msgid "About Gnome TwoFactorAuth"
+msgid "About Gnome Authenticator"
 msgstr ""
 
 #: ../gnome-twofactorauth.in:50
