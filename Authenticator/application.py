@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
  Copyright © 2016 Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>
 
@@ -133,7 +131,7 @@ class Application(Gtk.Application):
             self.add_window(self.win)
         else:
             self.win.present()
-    
+
     def on_night_mode(self, action, gvariant):
         is_night_mode = not settings.get_is_night_mode()
         action.set_state(GLib.Variant.new_boolean(is_night_mode))

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
  Copyright © 2016 Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>
 
@@ -49,10 +48,10 @@ class SettingsWindow:
 
         settings.bind('state', self.password_check, 'active', Gio.SettingsBindFlags.DEFAULT)
         settings.bind('state', self.password_button, 'sensitive', Gio.SettingsBindFlags.INVERT_BOOLEAN)
-      
+
         settings.bind('state', self.auto_lock_check, 'sensitive', Gio.SettingsBindFlags.GET)
         settings.bind('auto-lock', self.auto_lock_check, 'active', Gio.SettingsBindFlags.DEFAULT)
-      
+
         settings.bind('auto-lock', self.auto_lock_spin, 'sensitive', Gio.SettingsBindFlags.GET)
         # Restore settings
         _auto_lock_time = settings.get_auto_lock_time()

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
  Copyright © 2016 Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>
 
@@ -143,7 +142,7 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         self.hb.select_button.connect("clicked", self.toggle_select)
         self.hb.add_button.connect("clicked", self.add_account)
         self.set_titlebar(self.hb)
-        
+
     def add_account(self, *args):
         """
             Create add application window

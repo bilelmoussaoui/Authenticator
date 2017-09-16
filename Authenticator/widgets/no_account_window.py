@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
  Copyright © 2016 Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>
 
@@ -28,7 +27,7 @@ class NoAccountWindow(Gtk.Box):
 
     def __init__(self):
         Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL,
-                         spacing=6)        
+                         spacing=6)
         # hidden by default
         self.set_visible(False)
         self.set_no_show_all(True)

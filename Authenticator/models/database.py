@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
  Copyright © 2016 Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>
 

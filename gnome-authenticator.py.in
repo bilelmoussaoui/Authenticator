@@ -19,25 +19,26 @@
  along with Gnome-TwoFactorAuth. If not, see <http://www.gnu.org/licenses/>.
 """
 import sys
-sys.path.insert(1, '@PYTHONDIR@')
-from gi.repository import Gio
-from Authenticator.application import Application
-import logging
-import locale
-import gettext
-_ = gettext.gettext
 import argparse
 import faulthandler
 from os import path, environ as env
+import logging
+import locale
+import gettext
+from gi.repository import Gio
+
+sys.path.insert(1, '@PYTHONDIR@')
+from Authenticator.application import Application
+
+_ = gettext.gettext
 
 if __name__ == "__main__":
     locale.bindtextdomain('Authenticator', '@LOCALE_DIR@')
     locale.textdomain('Authenticator')
     gettext.bindtextdomain('Authenticator', '@LOCALE_DIR@')
     gettext.textdomain('Authenticator')
-    GIT_VERSION = "@GITVERSION@"
     VERSION = "@VERSION@"
-    env["DATA_DIR"] =  "@DATADIR@"
+    env["DATA_DIR"] = "@DATADIR@"
     env["LOCALE_DIR"] = '@LOCALE_DIR@'
 
     parser = argparse.ArgumentParser(prog="Gnome Authenticator")
@@ -58,11 +59,9 @@ if __name__ == "__main__":
                         datefmt='%Y-%m-%d %H:%M:%S')
 
     resource = Gio.resource_load(path.join('@DATADIR@',
-                                            'org.gnome.Authenticator.gresource'))
+                                           'org.gnome.Authenticator.gresource'))
     Gio.Resource._register(resource)
     if args.version:
-        if GIT_VERSION:
-            print("Git current commit : " + str(GIT_VERSION))
         sys.exit("Version : " + str(VERSION))
     elif args.about:
         about_dialog = Application.about_dialog()

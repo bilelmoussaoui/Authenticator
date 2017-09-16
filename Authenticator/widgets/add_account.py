@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
  Copyright © 2016 Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>
 
@@ -308,16 +307,6 @@ class ApplicationChooserWindow(Thread, GObject.GObject):
         main_box.pack_start(self.search_bar, False, True, 0)
         main_box.reorder_child(self.search_bar, 0)
 
-
-    def is_valid_app(self, app):
-        """
-            Check if the application supports tfa
-        """
-        if set(["tfa", "software"]).issubset(app.keys()):
-            return app["tfa"] and app["software"]
-        else:
-            return False
-
     def on_key_press(self, label, key_event):
         """
             Keyboard listener handling
@@ -350,29 +339,6 @@ class ApplicationChooserWindow(Thread, GObject.GObject):
         self.stack.set_visible_child(self.stack.get_child_by_name("applicationsliststack"))
         self.listbox.show_all()
         logging.debug("UI updated")
-
-    def read_database(self):
-        """
-            Read .yml database files provided by 2factorauth guys!
-        """
-        db_dir = path.join(env.get("DATA_DIR"), "applications") + "/data/*.yml"
-        logging.debug("Database folder is {0}".format(db_dir))
-        db_files = glob(db_dir)
-        logging.debug("Reading database files started")
-        for db_file in db_files:
-            logging.debug("Reading database file {0}".format(db_file))
-            with open(db_file, 'r') as data:
-                try:
-                    websites = yaml.load(data)["websites"]
-                    for app in websites:
-                        if self.is_valid_app(app):
-                            self.db.append(app)
-                except yaml.YAMLError as error:
-                    logging.error("Error loading yml file {0} : {1}".format(
-                        db_file, str(error)))
-                except TypeError:
-                    logging.error("Not a valid yml file {0}".format(db_file))
-        logging.debug("Reading database files finished")
 
     def add_apps(self):
         """
