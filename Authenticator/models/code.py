@@ -26,19 +26,17 @@ except ImportError:
 
 
 class Code:
-    password = None
 
-    def __init__(self, secret_code):
-        self.secret_code = secret_code
+    def __init__(self, token):
+        self._token = token
+        self._secret_code = None
         self.create()
 
     @staticmethod
-    def is_valid(code):
-        """
-            Check if the secret code is a valid one
-        """
+    def is_valid(token):
+        """Validate a token."""
         try:
-            b32decode(code, casefold=True)
+            b32decode(token, casefold=True)
             return True
         except (binascii.Error, ValueError):
             return False
@@ -48,8 +46,8 @@ class Code:
             Create a tfa code
         """
         try:
-            self.totp = TOTP(self.secret_code)
-            self.password = self.totp.now()
+            self._totp = TOTP(self._token)
+            self._secret_code = self._totp.now()
         except Exception as e:
             logging.error("Couldn't generate two factor code : %s" % str(e))
 
@@ -57,14 +55,10 @@ class Code:
         """
             Update the code
         """
-        self.password = self.totp.now()
+        self._secret_code = self._totp.now()
 
-    def get_secret_code(self):
-        try:
-            if self.password:
-                return self.password
-            else:
-                raise AttributeError
-        except AttributeError as e:
-            logging.error("Couldn't generate the code : %s " % str(e))
-            return None
+    @property
+    def secret_code(self):
+        if self._secret_code:
+            return self._secret_code
+        return None

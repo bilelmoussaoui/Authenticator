@@ -8,6 +8,7 @@ tags
 *.so
 
 # Distribution / packaging
+builddir/
 .Python
 .idea/
 env/

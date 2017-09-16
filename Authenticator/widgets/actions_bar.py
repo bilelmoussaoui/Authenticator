@@ -23,22 +23,10 @@ require_version("Gtk", "3.0")
 from gi.repository import Gtk
 
 
-class AboutDialog(Gtk.AboutDialog):
-    """AboutDialog Widget."""
+class ActionsBar(Gtk.ActionBar):
 
-    def __init__(self):
-        Gtk.AboutDialog.__init__(self)
-        self.set_modal(True)
-        self._build_widgets()
+	def __init__(self):
+		Gtk.ActionBar.__init__(self)
+		self._build_widgets()
 
-    def _build_widgets(self):
-        """Build the AboutDialog widget."""
-        self.set_authors(["Bilal Elmoussaoui"])
-        self.set_artists(["Alexandros Felekidis"])
-        self.set_logo_icon_name("org.gnome.Authenticator")
-        self.set_license_type(Gtk.License.GPL_3_0)
-        self.set_program_name(_("Gnome Authenticator"))
-        self.set_translator_credits(_("translator-credits"))
-        self.set_version("0.2")
-        self.set_comments(_("Two factor authentication codes generator."))
-        self.set_website("https://github.com/bil-elmoussaoui/Gnome-Authenticator")
+	

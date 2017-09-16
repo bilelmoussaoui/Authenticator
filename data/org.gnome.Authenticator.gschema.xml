@@ -23,7 +23,7 @@
       </description>
     </key>
     <key name="window-size" type="ai">
-      <default>[500,650]</default>
+      <default>[400,600]</default>
       <summary>Default window size</summary>
       <description>
         Default window size
