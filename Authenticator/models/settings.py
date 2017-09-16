@@ -23,6 +23,9 @@ from hashlib import sha256
 
 
 class Settings(Gio.Settings):
+    """Settings handler."""
+    # Default Settings instance
+    instance = None
 
     def __init__(self):
         Gio.Settings.__init__(self)
@@ -32,65 +35,104 @@ class Settings(Gio.Settings):
         gsettings.__class__ = Settings
         return gsettings
 
-    def get_window_size(self):
+    @staticmethod
+    def get_default():
+        """Return the default instance of Settings."""
+        if Settings.instance is None:
+            Settings.instance = Settings.new()
+        return Settings.instance
+
+    @property
+    def window_size(self):
+        """Return the window size."""
         return tuple(self.get_value('window-size'))
 
-    def set_window_size(self, size):
+    @window_size.setter
+    def window_size(self, size):
+        """Set the window size."""
         size = GLib.Variant('ai', list(size))
         self.set_value('window-size', size)
 
-    def get_default_size(self):
+    @property
+    def default_size(self):
+        """Return the default window size."""
         return tuple(self.get_default_value('window-size'))
 
-    def get_window_position(self):
+    @property
+    def window_position(self):
+        """Return the window's position."""
         return tuple(self.get_value('window-position'))
 
-    def set_window_postion(self, position):
+    @window_position.setter
+    def window_postion(self, position):
+        """Set the window postion."""
         position = GLib.Variant('ai', list(position))
         self.set_value('window-position', position)
 
-    def set_is_night_mode(self, statue):
-        self.set_boolean('night-mode', statue)
+    @is_night_mode.setter
+    def is_night_mode(self, status):
+        """Set the night mode."""
+        self.set_boolean('night-mode', status)
 
-    def get_is_night_mode(self):
+    @property
+    def is_night_mode(self):
+        """Is night mode?"""
         return self.get_boolean('night-mode')
 
-    def set_can_be_locked(self, status):
+    @can_be_locked.setter
+    def can_be_locked(self, status):
+        """set the app to be locked."""
         self.set_boolean('state', status)
 
-    def get_can_be_locked(self):
+    @property
+    def can_be_locked(self):
+        """Return if the app can be locked or not."""
         return self.get_boolean('state')
 
-    def set_is_locked(self, statue):
-        self.set_boolean('locked', statue)
+    @is_locked.status
+    def is_locked(self, status):
+        """Set the app to be locked."""
+        self.set_boolean('locked', status)
 
-    def get_is_locked(self):
+    @property
+    def is_locked(self):
+        """Return if the app is locked."""
         return self.get_boolean('locked')
 
-    def set_password(self, password):
+    @password.setter
+    def password(self, password):
+        """Set a new password."""
         password = sha256(password.encode('utf-8')).hexdigest()
         self.set_string("password", password)
 
     def compare_password(self, password):
+        """Compare a password with the current one."""
         password = sha256(password.encode('utf-8')).hexdigest()
-        return password == self.get_password()
+        return password == self.password
 
-    def is_password_set(self):
-        return len(self.get_password()) != 0
-
-    def get_password(self):
+    @property
+    def password(self):
+        """Return the password."""
         return self.get_string("password")
 
-    def get_auto_lock_status(self):
+    @property
+    def auto_lock(self):
+        """Return the Auto lock status."""
         return self.get_boolean("auto-lock")
 
-    def set_auto_lock_status(self, status):
+    @auto_lock.setter
+    def auto_lock(self, status):
+        """Set the auto lock status."""
         self.set_boolean("auto-lock", status)
 
-    def get_auto_lock_time(self):
+    @property
+    def auto_lock_time(self):
+        """Get auto lock time."""
         return self.get_int("auto-lock-time")
 
-    def set_auto_lock_time(self, auto_lock_time):
+    @auto_lock_time.setter
+    def auto_lock_time(self, auto_lock_time):
+        """Set the auto lock time."""
         if auto_lock_time < 1 or auto_lock_time > 15:
             auto_lock_time = 3
         self.set_int("auto-lock-time", auto_lock_time)

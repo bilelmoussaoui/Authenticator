@@ -12,33 +12,38 @@ version](https://img.shields.io/badge/python-3.3%2B-blue.svg)
 - `meson 0.38+`
 - `ninja`
 - `pyotp`
-- `pyaml`
 - `Pillow`
 - `zbarlight` depends on `zbar`
-    - `libzbar-dev` on Ubuntu
-    - `zbar` on Arch
+  - `libzbar-dev` on Ubuntu
+  - `zbar` on Arch
 - `gnome-keyring`
 - `gnome-screenshot`
 
-<sub>PS: The application was only tested on Arch with Gtk 3.20+, but it should work nicely with older versions too. Keyboard shortcuts widget won't be shown for older versions.</sub>
+<sub>
+PS: The application was only tested on Arch with Gtk 3.20+, but it should work nicely with older versions too. Keyboard shortcuts widget won't be shown for older versions.
+</sub>
 
 ### Screenshots
 
 <img src="screenshots/screenshot7.png" width="280" /> <img src="screenshots/screenshot1.png" width="280" /> <img src="screenshots/screenshot2.png" width="280" />
 
 ### Features
+
 - QR code scanner
 - Beautiful UI
 - Handy shortcuts
 - Huge database of (290+) websites/applications
 
 ### Installation
+
 - On Arch :
+
 ```bash
 yaourt -S gnome-twofactorauth
 ```
 
 - On Ubuntu (xenial/yakkety) using GetDeb Apps PPA:
+
 ```bash
  wget -q -O - http://archive.getdeb.net/getdeb-archive.key | sudo apt-key add -
 sudo sh -c 'echo "deb http://archive.getdeb.net/ubuntu xenial-getdeb apps" >> /etc/apt/sources.list.d/getdeb.list'
@@ -47,36 +52,47 @@ sudo apt install gnome-twofactorauth
  ```
 
 ### Credits
+
 - Websites and application icons are from Paper theme, created by [Sam Hewitt](https://github.com/snwh)
 - Applications/Websites database are from [twofactorauth](https://github.com/2factorauth/twofactorauth), by 2factorauth team
 
 ### How to build from source
+
 1 - Clone the repository
+
 ```bash
 git clone https://github.com/bil-elmoussaoui/Gnome-Authenticator && cd ./Gnome-Authenticator
 ```
+
 2 - Install Python dependecies
+
 ```bash
 sudo pip install pyotp zbarlight pyaml Pillow meson ninja
 ```
+
 <sub>PS : In some distributions you will need to use `pip3` instead of `pip` to install the compatible version of the package with Python 3.</sub> <br>
+
 3 - Afterwards
+
 ```bash
-mkdir build && cd build
-meson ..
-ninja
-sudo ninja install
+meson builddir
+sudo ninja -C builddir install
 ```
+
 4 - You can run the application from the desktop file or from terminal using
 ```bash
 gnome-authenticator
 ```
+
 <sub>Arch users can build from source directly using AUR `yaourt -S gnome-twofactorauth-git`</sub>
 
 ### Flags
-- `--debug` <br/>
-    Open the application with debug flags
-- `--version`<br/>
-    Shows the version number of the application
-- `--about`<br/>
-    Shows the about dialog
+
+- `--debug`
+  Open the application with debug flags
+
+- `--version`
+  Shows the version number of the application
+
+- `--about`
+  Shows the about dialog

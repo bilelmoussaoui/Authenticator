@@ -1,7 +1,7 @@
 [Desktop Entry]
-_Name=Gnome Authenticator
-_GenericName=Two Factor Authentication
-_Comment=Two-Factor Authentication code generator
+Name=Gnome Authenticator
+GenericName=Two Factor Authentication
+Comment=Two-Factor Authentication code generator
 Type=Application
 Exec=gnome-authenticator
 Terminal=false
@@ -16,4 +16,4 @@ Actions=AboutDialog;
 
 [Desktop Action AboutDialog]
 Exec=gnome-authenticator --about
-_Name=About Gnome Authenticator
+Name=About Gnome Authenticator

@@ -18,13 +18,10 @@
  You should have received a copy of the GNU General Public License
  along with Gnome-TwoFactorAuth. If not, see <http://www.gnu.org/licenses/>.
 """
-from gi import require_version
-require_version("Gtk", "3.0")
-from gi.repository import Gtk
 import sys
 sys.path.insert(1, '@PYTHONDIR@')
 from gi.repository import Gio
-from Authenticator import application
+from Authenticator.application import Application
 import logging
 import locale
 import gettext
@@ -68,13 +65,13 @@ if __name__ == "__main__":
             print("Git current commit : " + str(GIT_VERSION))
         sys.exit("Version : " + str(VERSION))
     elif args.about:
-        about_dialog = application.Application.about_dialog()
+        about_dialog = Application.about_dialog()
         about_dialog.run()
         about_dialog.destroy()
         sys.exit()
     else:
         try:
-            app = application.Application()
+            app = Application()
             exit_status = app.run(None)
             sys.exit(exit_status)
         except KeyboardInterrupt:

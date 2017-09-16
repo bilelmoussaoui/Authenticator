@@ -17,10 +17,11 @@
  You should have received a copy of the GNU General Public License
  along with Gnome-TwoFactorAuth. If not, see <http://www.gnu.org/licenses/>.
 """
+from hashlib import sha256
 import sqlite3
 import logging
+
 from gi.repository import GnomeKeyring as GK, GLib
-from hashlib import sha256
 from Authenticator.utils import create_file
 
 

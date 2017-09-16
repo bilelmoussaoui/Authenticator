@@ -8,8 +8,6 @@ TwoFactorAuth/widgets/inapp_notification.py
 TwoFactorAuth/widgets/login_window.py
 TwoFactorAuth/widgets/no_account_window.py
 TwoFactorAuth/widgets/settings.py
-data/about.ui
 data/gnome-twofactorauth.appdata.xml.in
 data/gnome-twofactorauth.desktop.in
-data/shortcuts.ui
-gnome-twofactorauth.in
+gnome-twofactorauth.py.in
