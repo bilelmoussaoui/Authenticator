@@ -105,14 +105,14 @@ class AccountRow(Gtk.ListBoxRow):
         # Two Factor Code
         self._code_revealer = Gtk.Revealer()
         code_container = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        secret_code = self.account.secret_code    
+        secret_code = self.account.secret_code
         self.code_lbl = Gtk.Label()
         if secret_code:
             self.code_lbl.set_text(secret_code)
         else:
             self.code_lbl.set_text(_("Couldn't generate the secret code"))
         self.code_lbl.set_halign(Gtk.Align.START)
-        
+
         # Counter
         self.counter_lbl = Gtk.Label()
         if secret_code:
@@ -131,15 +131,14 @@ class AccountRow(Gtk.ListBoxRow):
         actions = ActionsBox()
         container.pack_end(actions, False, False, 6)
 
-
         self.add(container)
 
     def toggle_secret_code(self):
         is_visible = self._code_revealer.get_reveal_child()
-        self._code_revealer.set_reveal_child(not is_visible) 
+        self._code_revealer.set_reveal_child(not is_visible)
 
     def update_counter(self):
-        counter = self.account.counter    
+        counter = self.account.counter
         self.counter_lbl.set_text("Expires in {} seconds".format(counter))
 
     def _on_code_updated(self, *args):

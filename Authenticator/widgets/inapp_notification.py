@@ -22,6 +22,7 @@ from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gio, GLib
 
+
 class InAppNotification(Gtk.Revealer):
     timer = 0
     killed = False

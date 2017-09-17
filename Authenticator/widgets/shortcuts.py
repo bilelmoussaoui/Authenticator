@@ -23,5 +23,5 @@ from gi.repository import Gtk
 
 class ShortcutsWindow:
 
-	def __init__(self):
-		pass
+    def __init__(self):
+        pass

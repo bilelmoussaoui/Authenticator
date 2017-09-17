@@ -25,32 +25,32 @@ from ...models import Database, Account
 
 
 class AccountsList(Gtk.ListBox):
-	"""Accounts List."""
+    """Accounts List."""
 
-	# Default instance of accounts list
-	instance = None
+    # Default instance of accounts list
+    instance = None
 
-	def __init__(self):
-		Gtk.ListBox.__init__(self)
-		self.set_selection_mode(Gtk.SelectionMode.NONE)
-		self.connect("row-activated", self._on_row_activated)
-		self.get_style_context().add_class("applications-list")
+    def __init__(self):
+        Gtk.ListBox.__init__(self)
+        self.set_selection_mode(Gtk.SelectionMode.NONE)
+        self.connect("row-activated", self._on_row_activated)
+        self.get_style_context().add_class("applications-list")
 
-		self.__fill_data()
+        self.__fill_data()
 
-	@staticmethod
-	def get_default():
-		"""Return the default instance of AccountsList."""
-		if AccountsList.instance is None:
-			AccountsList.instance = AccountsList()
-		return AccountsList.instance
+    @staticmethod
+    def get_default():
+        """Return the default instance of AccountsList."""
+        if AccountsList.instance is None:
+            AccountsList.instance = AccountsList()
+        return AccountsList.instance
 
-	def __fill_data(self):
-		"""Fill the Accounts List with accounts."""
-		accounts = Database.get_default().accounts
-		for account in accounts:
-			self.add(AccountRow(Account(account)))
+    def __fill_data(self):
+        """Fill the Accounts List with accounts."""
+        accounts = Database.get_default().accounts
+        for account in accounts:
+            self.add(AccountRow(Account(account)))
 
-	def _on_row_activated(self, accounts_list, account_row):
-		"""On row activated signal override."""
-		account_row.toggle_secret_code()
+    def _on_row_activated(self, accounts_list, account_row):
+        """On row activated signal override."""
+        account_row.toggle_secret_code()

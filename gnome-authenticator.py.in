@@ -1,1 +1,67 @@
-#!/usr/bin/env python3# -*- coding: utf-8 -*-""" Copyright © 2017 Bilal Elmoussaoui <bil.elmoussaoui@gmail.com> This file is part of Gnome-TwoFactorAuth. TwoFactorAuth is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. Gnome-TwoFactorAuth is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with Gnome-TwoFactorAuth. If not, see <http://www.gnu.org/licenses/>."""import argparseimport faulthandlerimport gettextimport localefrom os import pathimport sysfrom gi.repository import Giosys.path.insert(1, '@PYTHON_DIR@')from Authenticator import Applicationfrom Authenticator.models import Logger_ = gettext.gettextif __name__ == "__main__":    locale.bindtextdomain('Authenticator', '@LOCALE_DIR@')    locale.textdomain('Authenticator')    gettext.bindtextdomain('Authenticator', '@LOCALE_DIR@')    gettext.textdomain('Authenticator')    VERSION = "@VERSION@"    parser = argparse.ArgumentParser(prog="Gnome Authenticator")    parser.add_argument("--debug", "-d", action="store_true",                        help=_("Start in debug mode"))    parser.add_argument("--version", "-v", action="store_true",                        help=_("Gnome Authenticator version number"))    args = parser.parse_args()    level = Logger.ERROR    if args.debug:        level = Logger.DEBUG        Logger.setLevel(level)        faulthandler.enable()    resource = Gio.resource_load(path.join('@DATA_DIR@',                                           'org.gnome.Authenticator.gresource'))    Gio.Resource._register(resource)    if args.version:        sys.exit("Version : " + str(VERSION))    else:        try:            app = Application()            exit_status = app.run(None)            sys.exit(exit_status)        except KeyboardInterrupt:            exit()
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+ Copyright © 2017 Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>
+
+ This file is part of Gnome-TwoFactorAuth.
+
+ TwoFactorAuth is free software: you can redistribute it and/or
+ modify it under the terms of the GNU General Public License as published
+ by the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ Gnome-TwoFactorAuth is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with Gnome-TwoFactorAuth. If not, see <http://www.gnu.org/licenses/>.
+"""
+
+import argparse
+import faulthandler
+import gettext
+import locale
+from os import path
+import sys
+from gi.repository import Gio
+
+sys.path.insert(1, '@PYTHON_DIR@')
+from Authenticator import Application
+from Authenticator.models import Logger
+
+_ = gettext.gettext
+
+if __name__ == "__main__":
+    locale.bindtextdomain('Authenticator', '@LOCALE_DIR@')
+    locale.textdomain('Authenticator')
+    gettext.bindtextdomain('Authenticator', '@LOCALE_DIR@')
+    gettext.textdomain('Authenticator')
+    VERSION = "@VERSION@"
+
+    parser = argparse.ArgumentParser(prog="Gnome Authenticator")
+    parser.add_argument("--debug", "-d", action="store_true",
+                        help=_("Start in debug mode"))
+    parser.add_argument("--version", "-v", action="store_true",
+                        help=_("Gnome Authenticator version number"))
+    args = parser.parse_args()
+
+    level = Logger.ERROR
+    if args.debug:
+        level = Logger.DEBUG
+        Logger.setLevel(level)
+        faulthandler.enable()
+
+    resource = Gio.resource_load(path.join('@DATA_DIR@',
+                                           'org.gnome.Authenticator.gresource'))
+    Gio.Resource._register(resource)
+    if args.version:
+        sys.exit("Version : " + str(VERSION))
+    else:
+        try:
+            app = Application()
+            exit_status = app.run(None)
+            sys.exit(exit_status)
+        except KeyboardInterrupt:
+            exit()
