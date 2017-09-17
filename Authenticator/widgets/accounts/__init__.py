@@ -16,5 +16,6 @@
  You should have received a copy of the GNU General Public License
  along with Gnome Authenticator. If not, see <http://www.gnu.org/licenses/>.
 """
+from .add import AddAcountWindow
 from .list import AccountsList
 from .row import AccountRow

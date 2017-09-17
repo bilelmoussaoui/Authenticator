@@ -6,7 +6,9 @@
   color: @theme_fg_selected_color;
 }
 
-.application-name, .application-name-grid {
+.account-name,
+.application-name,
+.application-name-grid {
   font-weight: bold;
   font-size: 14px;
 }

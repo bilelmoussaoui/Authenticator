@@ -133,7 +133,7 @@ class Application(Gtk.Application):
         window.show_all()
         window.present()
 
-    def on_night_mode(self, action, gvariant):
+    def on_night_mode(self, action, *args):
         """Switch night mode."""
         settings = Settings.get_default()
         is_night_mode = not settings.is_night_mode
@@ -172,10 +172,12 @@ class Application(Gtk.Application):
         Close the application, stops all threads
         and clear clipboard for safety reasons
         """
-        try:
-            Clipboard.clear()
-        except Exception as e:
-            Logger.error(str(e))
+        Clipboard.clear()
+        from .widgets.accounts.list import AccountsList
+        accounts = AccountsList.get_default()
+        for account_row in accounts:
+            account_row.account.kill()
+
         window = Window.get_default()
         window.save_state()
         window.destroy()

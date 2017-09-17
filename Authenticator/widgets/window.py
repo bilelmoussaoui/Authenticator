@@ -22,7 +22,7 @@ from gi.repository import Gtk, Gio, Gdk, GObject, GLib
 from ..models import Logger, Settings
 from .headerbar import HeaderBar
 from .inapp_notification import InAppNotification
-from .accounts import AccountsList
+from .accounts import AccountsList, AddAcountWindow
 
 
 class Window(Gtk.ApplicationWindow, GObject.GObject):
@@ -126,7 +126,10 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         self.add(self.main_container)
 
     def add_account(self, *args):
-        print(args)
+        add_window = AddAcountWindow()
+        add_window.set_transient_for(self)
+        add_window.show_all()
+        add_window.present()
 
     def toggle_select(self, *args):
         """

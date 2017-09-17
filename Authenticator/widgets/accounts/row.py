@@ -141,8 +141,8 @@ class AccountRow(Gtk.ListBoxRow):
         counter = self.account.counter
         self.counter_lbl.set_text("Expires in {} seconds".format(counter))
 
-    def _on_code_updated(self, *args):
-        print(args)
+    def _on_code_updated(self, account, code):
+        self.code_lbl.set_label(code)
 
     def _on_name_updated(self, *args):
         print(args)
