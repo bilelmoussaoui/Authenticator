@@ -1,19 +1,15 @@
-<a href="https://hosted.weblate.org/engage/gnome-twofactorauth/?utm_source=widget">
-<img src="https://hosted.weblate.org/widgets/gnome-twofactorauth/-/svg-badge.svg" alt="Translation status" />
-</a>
-
-![Status](https://img.shields.io/badge/status-stable-green.svg) [![Version](https://img.shields.io/badge/version-0.1.1-green.svg)](https://github.com/bil-elmoussaoui/Gnome-TwoFactorAuth/releases) ![Python
+<a href="https://hosted.weblate.org/engage/gnome-twofactorauth/?utm_source=widget"><img src="https://hosted.weblate.org/widgets/gnome-twofactorauth/-/svg-badge.svg" alt="Translation status" /></a> ![Status](https://img.shields.io/badge/status-stable-green.svg) [![Version](https://img.shields.io/badge/version-0.1.1-green.svg)](https://github.com/bil-elmoussaoui/Gnome-TwoFactorAuth/releases) ![Python
 version](https://img.shields.io/badge/python-3.3%2B-blue.svg)
 
 # Gnome Authenticator
-<img src="https://raw.githubusercontent.com/bil-elmoussaoui/Gnome-Authenticator/master/data/icons/hicolor/32x32/apps/org.gnome.Authenticator.png" width="128" height="128" />
+<img src="https://raw.githubusercontent.com/bil-elmoussaoui/Gnome-Authenticator/master/data/icons/hicolor/256x256/apps/org.gnome.Authenticator.png" width="128" height="128" />
 <p>Two-factor authentication code generator for Gnome. Created with love using Python and Gtk.</p>
 
 ### Dependecies
 
 - `Python 3.3+`
 - `Gtk 3.16+`
-- `meson 0.38+` 
+- `meson 0.38+`
 - `ninja`
 - `pyotp`
 - `pyaml`
@@ -68,7 +64,7 @@ sudo pip install pyotp zbarlight pyaml Pillow meson ninja
 ```bash
 mkdir build && cd build
 meson ..
-ninja 
+ninja
 sudo ninja install
 ```
 4 - You can run the application from the desktop file or from terminal using
