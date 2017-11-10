@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-12-13 00:20+0100\n"
-"PO-Revision-Date: 2017-11-10 22:16+0000\n"
+"PO-Revision-Date: 2017-11-11 22:48+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/gnome-"
 "twofactorauth/translation/nb_NO/>\n"
@@ -206,22 +206,22 @@ msgstr "Gnome To-faktorbekreftelse"
 
 #: ../data/gnome-twofactorauth.appdata.xml.in.h:2
 msgid "Two Factor Authentication code generator"
-msgstr "Kodegenerator for to-faktorbekreftelse"
+msgstr "Kodegenerator for to-trinnsbekreftelse"
 
 #: ../data/gnome-twofactorauth.appdata.xml.in.h:3
 msgid ""
 "Simple application that generates two-factor authentication code, created "
 "for Gnome"
 msgstr ""
-"Enkelt program som genererer to-faktorbekreftelseskoder, laget for Gnome"
+"Enkelt program som genererer to-trinnsbekreftelseskoder, laget for Gnome"
 
 #: ../data/gnome-twofactorauth.desktop.in.h:2
 msgid "Two Factor Authentication"
-msgstr "To-faktorbekreftelse"
+msgstr "To-trinnsbekreftelse"
 
 #: ../data/gnome-twofactorauth.desktop.in.h:3
 msgid "Two-Factor Authentication code generator"
-msgstr "Kodegenerator for to-faktorbekreftelse"
+msgstr "Kodegenerator for to-trinnsbekreftelse"
 
 #: ../data/gnome-twofactorauth.desktop.in.h:4
 msgid "About Gnome TwoFactorAuth"
