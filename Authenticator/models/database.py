@@ -31,8 +31,8 @@ class Database:
     instance = None
 
     def __init__(self):
-        database_file = path.join(
-            GLib.get_home_dir(), '.config/Authenticator/database.db')
+        database_file = path.join(GLib.get_user_config_dir(), 
+                                  'Authenticator/database.db')
         makedirs(path.dirname(database_file), exist_ok=True)
         if not path.exists(database_file):
             with open(database_file, 'w') as file_obj:

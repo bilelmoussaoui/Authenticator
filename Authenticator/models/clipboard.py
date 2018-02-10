@@ -37,3 +37,4 @@ class Clipboard:
         Set a new value on the clipboard
         :param value: string; the value to set
         """
+        pass

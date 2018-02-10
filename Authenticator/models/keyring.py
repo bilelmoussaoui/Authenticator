@@ -26,7 +26,7 @@ class Keyring:
 
     @staticmethod
     def unlock():
-        result = GK.unlock_sync("org.gnome.Authenticator", None)
+        result = GK.unlock_sync(Keyring.ID, None)
         return result != GK.Result.CANCELLED
 
     @staticmethod
