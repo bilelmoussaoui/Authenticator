@@ -1,95 +1,81 @@
-# -*- coding: utf-8 -*-
 """
- Copyright © 2016 Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>
+ Copyright © 2017 Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>
 
- This file is part of Gnome-TwoFactorAuth.
+ This file is part of Authenticator.
 
- Gnome-TwoFactorAuth is free software: you can redistribute it and/or
+ Authenticator is free software: you can redistribute it and/or
  modify it under the terms of the GNU General Public License as published
  by the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
 
- TwoFactorAuth is distributed in the hope that it will be useful,
+ Authenticator is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
 
  You should have received a copy of the GNU General Public License
- along with Gnome-TwoFactorAuth. If not, see <http://www.gnu.org/licenses/>.
+ along with Authenticator. If not, see <http://www.gnu.org/licenses/>.
 """
 from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gio, Gdk, GObject, GLib
-from Authenticator.const import settings
-from Authenticator.widgets.add_account import AddAccount
-from Authenticator.widgets.accounts_window import AccountsWindow
-from Authenticator.widgets.login_window import LoginWindow
-from Authenticator.widgets.no_account_window import NoAccountWindow
-from Authenticator.widgets.headerbar import HeaderBar
-from Authenticator.widgets.inapp_notification import InAppNotification
-from Authenticator.interfaces.observable import Observable
-from hashlib import sha256
-from gettext import gettext as _
-import logging
-
+from ..models import Logger, Settings, Database
+from .headerbar import HeaderBar, HeaderBarState
+from .inapp_notification import InAppNotification
+from .accounts import AccountsList, AccountsListState, AddAcountWindow, EmptyAccountsList
+from .search_bar import SearchBar
+from .actions_bar import ActionsBar
 
 class Window(Gtk.ApplicationWindow, GObject.GObject):
+    """Main Window object."""
     __gsignals__ = {
         'changed': (GObject.SignalFlags.RUN_LAST, None, (bool,))
     }
     counter = 1
-    main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-    is_select_mode = False
 
-    def __init__(self, application):
-        self.app = application
-        self.observable = Observable()
-        self.generate_window()
-        self.generate_header_bar()
-        self.generate_accounts_box()
-        self.generate_no_accounts_box()
-        self.generate_login_box()
-        if settings.get_can_be_locked():
-            self.login_box.on_lock()
-        settings.connect("changed", self.bind_view)
+    # Default Window instance
+    instance = None
+
+    def __init__(self):
+        Gtk.ApplicationWindow.__init__(self, type=Gtk.WindowType.TOPLEVEL)
+        self.set_wmclass("com.github.bilelmoussaoui.Authenticator", "Authenticator")
+        self.set_icon_name("com.github.bilelmoussaoui.Authenticator")
+        self.set_size_request(400, 600)
+        self.resize(400, 600)        
+        self.restore_state()
+        self.set_resizable(False)
+        self._build_widgets()
+        #self.connect("key_press_event", self.on_key_press)
+
+        self.show_all()
+        Settings.get_default().connect("changed", self.bind_view)
         GLib.timeout_add_seconds(60, self.refresh_counter)
-        self.main_box.show_all()
+
+    @staticmethod
+    def get_default():
+        """Return the default instance of Window."""
+        if Window.instance is None:
+            Window.instance = Window()
+        return Window.instance
 
     def bind_view(self, settings, key):
-        print(key)
         if key == "locked":
             count = self.app.db.count()
             is_locked = settings.get_is_locked()
             self.accounts_box.set_visible(not is_locked and count != 0)
-            self.accounts_box.set_no_show_all(not (not is_locked and count != 0))
+            self.accounts_box.set_no_show_all(
+                not (not is_locked and count != 0))
             self.no_account_box.set_visible(not is_locked and count == 0)
-            self.no_account_box.set_no_show_all(not(not is_locked and count == 0))
+            self.no_account_box.set_no_show_all(
+                not(not is_locked and count == 0))
             self.show_all()
-
-    def generate_window(self, *args):
-        """
-            Generate application window (Gtk.Window)
-        """
-        Gtk.ApplicationWindow.__init__(self, type=Gtk.WindowType.TOPLEVEL,
-                                       application=self.app)
-        self.move_latest_position()
-        self.set_wmclass("org.gnome.Authenticator", "Gnome Authenticator")
-        self.set_icon_name("org.gnome.Authenticator")
-        self.use_latest_size()
-        self.set_resizable(True)
-        self.connect("key_press_event", self.on_key_press)
-        self.connect("delete-event", lambda x, y: self.app.on_quit())
-        self.notification = InAppNotification()
-        self.observable.register(self.notification)
-        self.main_box.pack_start(self.notification, False, False, 0)
-        self.add(self.main_box)
 
     def on_key_press(self, app, key_event):
         """
             Keyboard Listener handling
         """
         keyname = Gdk.keyval_name(key_event.keyval).lower()
-        if not settings.get_is_locked():
+        if not Settings.get_default().is_locked:
             if not self.no_account_box.is_visible():
                 if keyname == "s" or keyname == "escape":
                     if key_event.state == Gdk.ModifierType.CONTROL_MASK or not self.hb.select_button.get_visible():
@@ -110,86 +96,124 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         """
             Add a value to the counter each 60 seconds
         """
-        if settings.get_is_locked():
+        settings = Settings.get_default()
+        if settings.auto_lock and not settings.is_locked:
             self.counter += 1
-        if settings.get_auto_lock_status():
-            if self.counter == settings.get_auto_lock_time():
+            if self.counter == settings.auto_lock_time:
                 self.counter = 1
                 self.emit("locked", True)
         return True
 
-    def generate_login_box(self):
-        """
-            Generate login form
-        """
-        self.login_box = LoginWindow(self)
-        self.hb.lock_button.connect("clicked", self.login_box.on_lock)
-        self.main_box.pack_start(self.login_box, True, False, 0)
-
-    def generate_accounts_box(self):
-        self.accounts_box = AccountsWindow(self.app, self)
-        self.observable.register(self.accounts_box)
-        self.accounts_list = self.accounts_box.get_accounts_list()
-        self.search_bar = self.accounts_box.get_search_bar()
-        self.main_box.pack_start(self.accounts_box, True, True, 0)
-
-    def generate_header_bar(self):
-        """
-            Generate a header bar box
-        """
-        self.hb = HeaderBar(self.app, self)
+    def _build_widgets(self):
+        """Build main window widgets."""
+        # HeaderBar
+        headerbar = HeaderBar.get_default()
         # connect signals
-        self.hb.cancel_button.connect("clicked", self.toggle_select)
-        self.hb.select_button.connect("clicked", self.toggle_select)
-        self.hb.add_button.connect("clicked", self.add_account)
-        self.set_titlebar(self.hb)
+        headerbar.select_btn.connect("clicked", self.toggle_select)
+        headerbar.add_btn.connect("clicked", self.add_account)
+        headerbar.cancel_btn.connect("clicked", self.toggle_select)
+
+        self.set_titlebar(headerbar)
+
+        # Main Container
+        self.main_container = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+
+        # In App Notifications
+        # TODO: replace this with the gtk4 implementation
+        self.notification = InAppNotification()
+        self.main_container.pack_start(self.notification, False, False, 0)
+
+        self.main_stack = Gtk.Stack()
+
+        # Accounts List
+        account_list_cntr = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         
+        accounts_list = AccountsList.get_default()
+        accounts_list.connect("changed", self._do_update_view)
+        
+        search_bar = SearchBar()
+        search_bar.search_button = headerbar.search_btn
+        search_bar.search_list = [accounts_list]
+
+        actions_bar = ActionsBar.get_default()
+        actions_bar.delete_btn.connect("clicked", accounts_list.delete_selected)
+
+        account_list_cntr.pack_start(search_bar, False, False, 0)
+        account_list_cntr.pack_start(accounts_list, True, True, 0)
+        account_list_cntr.pack_start(actions_bar, False, False, 0)
+
+        self.main_stack.add_named(account_list_cntr, 
+                                "accounts-list")
+        
+
+        # Empty accounts list 
+        self.main_stack.add_named(EmptyAccountsList.get_default(),
+                                "empty-accounts-list")
+
+        self.main_container.pack_start(self.main_stack, True, True, 0)
+        self.add(self.main_container)
+        self._do_update_view()
+
+        actions_bar.bind_property("visible", headerbar.cancel_btn, "visible",  GObject.BindingFlags.BIDIRECTIONAL )
+        actions_bar.bind_property("no_show_all", headerbar.cancel_btn, "no_show_all",  GObject.BindingFlags.BIDIRECTIONAL )
+
+
     def add_account(self, *args):
-        """
-            Create add application window
-        """
-        add_account = AddAccount(self)
-        add_account.show_window()
+        add_window = AddAcountWindow()
+        add_window.set_transient_for(self)
+        add_window.show_all()
+        add_window.present()
+
+    def _do_update_view(self, *args):
+        #FIXME: Don't use Database object here.
+        headerbar = HeaderBar.get_default()
+        count = Database.get_default().count
+        if count != 0:
+            child_name = "accounts-list"
+            headerbar.set_state(HeaderBarState  .NORMAL)
+        else:
+            headerbar.set_state(HeaderBarState.EMPTY)
+            child_name = "empty-accounts-list"
+        child = self.main_stack.get_child_by_name(child_name)
+        child.show_all()
+        self.main_stack.set_visible_child(child)
 
     def toggle_select(self, *args):
         """
             Toggle select mode
         """
-        self.is_select_mode = not self.is_select_mode
-        self.hb.toggle_select_mode()
-        self.accounts_list.toggle_select_mode()
+        if HeaderBar.get_default().state == HeaderBarState.NORMAL:
+            HeaderBar.get_default().set_state(HeaderBarState.SELECT)
+            AccountsList.get_default().set_state(AccountsListState.SELECT)
+        else:
+            HeaderBar.get_default().set_state(HeaderBarState.NORMAL)
+            AccountsList.get_default().set_state(AccountsListState.NORMAL)
 
-    def generate_no_accounts_box(self):
-        """
-            Generate a box with no accounts message
-        """
-        self.no_account_box = NoAccountWindow()
-        self.observable.register(self.no_account_box)
-        self.main_box.pack_start(self.no_account_box, True, False, 0)
 
-    def do_changed(self, *args):
-        counter = self.app.db.count()
-        self.main_box.show_all()
+    def save_state(self):
+        """Save window position & size."""
+        settings = Settings.get_default()
+        settings.window_position = self.get_position()
+        settings.window_size = self.get_size()
 
-    def save_window_state(self):
-        """
-            Save window position
-        """
-        settings.set_window_postion(self.get_position())
-        settings.set_window_size(self.get_size())
-
-    def move_latest_position(self):
-        """
-            move the application window to the latest position
-        """
-        position_x, position_y = settings.get_window_position()
+    def restore_state(self):
+        """Restore the window's state."""
+        settings = Settings.get_default()
+        # Restore the window position
+        position_x, position_y = settings.window_position
         if position_x != 0 and position_y != 0:
             self.move(position_x, position_y)
+            Logger.debug("[Window] Restore postion x: {}, y: {}".format(position_x,
+                                                                        position_y))
         else:
+            # Fallback to the center
             self.set_position(Gtk.WindowPosition.CENTER)
-
-    def use_latest_size(self):
-        width, height = settings.get_window_size()
-        default_width, default_height = settings.get_default_size()
+        # Restore window's size
+        """
+        width, height = settings.window_size
+        default_width, default_height = settings.default_size
+        Logger.debug("[Window] Restore size width: {}, height: {}".format(width,
+                                                                          height))
         self.resize(width, height)
         self.set_size_request(default_width, default_height)
+        """

@@ -2,16 +2,18 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+.flatpak-builder/
+authenticator/
 tags
 # C extensions
 *.so
+*.po~
 
 # Distribution / packaging
+builddir/
 .Python
 .idea/
 env/
-build/
 develop-eggs/
 dist/
 downloads/
@@ -64,46 +66,10 @@ target/
 #Ipython Notebook
 .ipynb_checkpoints
 
-# Unneeded files
-NEWS
-README
-AUTHORS
-ChangeLog
-COPYING
-INSTALL
-aclocal.m4
-py-compile
-install-sh
-gnome-twofactorauth
-stamp-h1
-config.h
-missing
-ltmain.sh
-configure
-config.status
-config.log
-config.h.in
-Makefile
-Makefile.in
-TwoFactorAuth/Makefile
-TwoFactorAuth/Makefile.in
-TwoFactorAuth/widgets/Makefile
-TwoFactorAuth/widgets/Makefile.in
-TwoFactorAuth/models/Makefile
-TwoFactorAuth/models/Makefile.in
-data/Makefile
-data/Makefile.in
-data/applications/Makefile
-data/applications/Makefile.in
-schemas/Makefile.in
-schemas/Makefile
-schemas/*.valid
-po/stamp-it
-po/*.gmo
-po/POTFILES
-po/Makefile.in.in
+
 *.valid
 *.compiled
 *.desktop
 *.gresource
 *.ui~
+.vscode/

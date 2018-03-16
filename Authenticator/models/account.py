@@ -1,90 +1,97 @@
-from Authenticator.models.code import Code
-from Authenticator.models.database import Database
-from Authenticator.interfaces.account_observrable import AccountObservable, AccountRowObservable
-from gi.repository import GObject
+"""
+ Copyright © 2017 Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>
+
+ This file is part of Authenticator.
+
+ Authenticator is free software: you can redistribute it and/or
+ modify it under the terms of the GNU General Public License as published
+ by the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ Authenticator is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with Authenticator. If not, see <http://www.gnu.org/licenses/>.
+"""
 from threading import Thread
 from time import sleep
-import logging
+from hashlib import sha256
+
+from gi.repository import GObject
+from .clipboard import Clipboard
+from .code import Code
+from .database import Database
+from .keyring import Keyring
+from .logger import Logger
+
 
 class Account(GObject.GObject, Thread):
     __gsignals__ = {
-        'code_updated': (GObject.SignalFlags.RUN_LAST, None, (bool,)),
-        'name_updated': (GObject.SignalFlags.RUN_LAST, None, (bool,)),
-        'counter_updated': (GObject.SignalFlags.RUN_LAST, None, (bool,)),
-        'removed': (GObject.SignalFlags.RUN_LAST, None, (bool,)),
+        'code_updated': (GObject.SignalFlags.RUN_LAST, None, (str,)),
+        'counter_updated': (GObject.SignalFlags.RUN_LAST, None, (str,)),
+        'removed': (GObject.SignalFlags.RUN_LAST, None, ()),
     }
-    counter_max = 30
-    counter = 30
-    alive = True
-    code_generated = True
 
-
-    def __init__(self, app, db):
+    def __init__(self, _id, name, secret_id, logo):
         Thread.__init__(self)
         GObject.GObject.__init__(self)
-        self.db = db
         self.counter_max = 30
+        self._alive = True
         self.counter = self.counter_max
-        self.account_id = app[0]
-        self.account_name = app[1]
-        self.secret_code = Database.fetch_secret_code(app[2])
-        if self.secret_code:
-            self.code = Code(self.secret_code)
+        self._id = _id
+        self.name = name
+        self._secret_id = secret_id
+        _secret = Keyring.get_by_id(self._secret_id)
+        if _secret:
+            self._code = Code(_secret)
+            self._code_generated = True
         else:
-            self.code_generated = False
-            logging.error("Could not read the secret code,"
-                          "the keyring keys were reset manually")
-        self.logo = app[3]
+            self._code = None
+            self._code_generated = False
+            Logger.error("Could not read the secret code,"
+                         "the keyring keys were reset manually")
+        self.logo = logo
         self.start()
 
+    @staticmethod
+    def create(name, secret_id, logo):
+        encrypted_secret = sha256(secret_id.encode('utf-8')).hexdigest()
+        Keyring.insert(encrypted_secret, secret_id)
+        _id = Database.get_default().insert(name, encrypted_secret, logo)["id"]
+        return Account(_id, name, encrypted_secret, logo)
+
+    @property
+    def secret_code(self):
+        if self._code_generated:
+            return self._code.secret_code
+        return None
 
     def run(self):
-        while self.code_generated and self.alive:
+        while self._code_generated and self._alive:
             self.counter -= 1
             if self.counter == 0:
                 self.counter = self.counter_max
-                self.code.update()
-                self.emit("code_updated", True)
-            self.emit("counter_updated", True)
+                self._code.update()
+                self.emit("code_updated", self.secret_code)
+            self.emit("counter_updated", self.counter)
             sleep(1)
-
-    def get_id(self):
-        """
-            Get the application id
-            :return: (int): row id
-        """
-        return self.account_id
-
-    def get_name(self):
-        """
-            Get the application name
-            :return: (str): application name
-        """
-        return self.account_name
-
-    def get_logo(self):
-        return self.logo
-
-    def get_code(self):
-        return self.code.get_secret_code()
-
-    def get_counter(self):
-        return self.counter
-
-    def get_counter_max(self):
-        return self.counter_max
 
     def kill(self):
         """
             Kill the row thread once it's removed
-        """
-        self.alive = False
+        """ 
+        self._alive = False
 
     def remove(self):
-        self.db.remove_by_id(self.get_id())
-        self.emit("removed", True)
-
-    def set_name(self, name):
-        self.db.update_name_by_id(self.get_id(), name)
-        self.account_name = name
-        self.emit("name_updated", True)
+        self.kill()
+        Database.get_default().remove(self._id)
+        Keyring.remove(self._secret_id)
+        self.emit("removed")
+        Logger.debug("Account '{}' with id {} was removed".format(self.name,
+                                                                  self._id))
+    def copy_token(self):
+        """Copy the secret token to the clipboard."""
+        Clipboard.set(self._code.secret_code)

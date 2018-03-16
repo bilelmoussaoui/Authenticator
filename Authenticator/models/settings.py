@@ -1,96 +1,81 @@
-# -*- coding: utf-8 -*-
 """
- Copyright © 2016 Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>
+ Copyright © 2017 Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>
 
- This file is part of Gnome-TwoFactorAuth.
+ This file is part of Authenticator.
 
- Gnome-TwoFactorAuth is free software: you can redistribute it and/or
+ Authenticator is free software: you can redistribute it and/or
  modify it under the terms of the GNU General Public License as published
  by the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
 
- TwoFactorAuth is distributed in the hope that it will be useful,
+ Authenticator is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
 
  You should have received a copy of the GNU General Public License
- along with Gnome-TwoFactorAuth. If not, see <http://www.gnu.org/licenses/>.
+ along with Authenticator. If not, see <http://www.gnu.org/licenses/>.
 """
-import logging
 from gi.repository import Gio, GLib
-from hashlib import sha256
+
+from .logger import Logger
 
 
 class Settings(Gio.Settings):
+    """Settings handler."""
+    # Default Settings instance
+    instance = None
 
     def __init__(self):
         Gio.Settings.__init__(self)
 
+    @staticmethod
     def new():
-        gsettings = Gio.Settings.new("org.gnome.Authenticator")
-        gsettings.__class__ = Settings
-        return gsettings
+        """Create a new Settings object"""
+        g_settings = Gio.Settings.new("com.github.bilelmoussaoui.Authenticator")
+        g_settings.__class__ = Settings
+        return g_settings
 
-    def get_window_size(self):
+    @staticmethod
+    def get_default():
+        """Return the default instance of Settings."""
+        if Settings.instance is None:
+            Settings.instance = Settings.new()
+        return Settings.instance
+
+    @property
+    def window_size(self):
+        """Return the window size."""
         return tuple(self.get_value('window-size'))
 
-    def set_window_size(self, size):
+    @window_size.setter
+    def window_size(self, size):
+        """Set the window size."""
         size = GLib.Variant('ai', list(size))
         self.set_value('window-size', size)
 
-    def get_default_size(self):
+    @property
+    def default_size(self):
+        """Return the default window size."""
         return tuple(self.get_default_value('window-size'))
 
-    def get_window_position(self):
+    @property
+    def window_position(self):
+        """Return the window's position."""
         return tuple(self.get_value('window-position'))
 
-    def set_window_postion(self, position):
+    @window_position.setter
+    def window_position(self, position):
+        """Set the window position."""
         position = GLib.Variant('ai', list(position))
         self.set_value('window-position', position)
 
-    def set_is_night_mode(self, statue):
-        self.set_boolean('night-mode', statue)
-
-    def get_is_night_mode(self):
+    @property
+    def is_night_mode(self):
+        """Is night mode?"""
         return self.get_boolean('night-mode')
 
-    def set_can_be_locked(self, status):
-        self.set_boolean('state', status)
-
-    def get_can_be_locked(self):
-        return self.get_boolean('state')
-
-    def set_is_locked(self, statue):
-        self.set_boolean('locked', statue)
-
-    def get_is_locked(self):
-        return self.get_boolean('locked')
-
-    def set_password(self, password):
-        password = sha256(password.encode('utf-8')).hexdigest()
-        self.set_string("password", password)
-
-    def compare_password(self, password):
-        password = sha256(password.encode('utf-8')).hexdigest()
-        return password == self.get_password()
-
-    def is_password_set(self):
-        return len(self.get_password()) != 0
-
-    def get_password(self):
-        return self.get_string("password")
-
-    def get_auto_lock_status(self):
-        return self.get_boolean("auto-lock")
-
-    def set_auto_lock_status(self, status):
-        self.set_boolean("auto-lock", status)
-
-    def get_auto_lock_time(self):
-        return self.get_int("auto-lock-time")
-
-    def set_auto_lock_time(self, auto_lock_time):
-        if auto_lock_time < 1 or auto_lock_time > 15:
-            auto_lock_time = 3
-        self.set_int("auto-lock-time", auto_lock_time)
+    @is_night_mode.setter
+    def is_night_mode(self, status):
+        """Set the night mode."""
+        self.set_boolean('night-mode', status)

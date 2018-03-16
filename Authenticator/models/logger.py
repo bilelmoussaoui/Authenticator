@@ -1,0 +1,75 @@
+"""
+ Copyright © 2017 Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>
+
+ This file is part of Authenticator.
+
+ Authenticator is free software: you can redistribute it and/or
+ modify it under the terms of the GNU General Public License as published
+ by the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ Authenticator is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with Authenticator. If not, see <http://www.gnu.org/licenses/>.
+"""
+import logging
+
+
+class Logger:
+    """Logging handler."""
+    DEBUG = logging.DEBUG
+    ERROR = logging.ERROR
+    # Default instance of Logger
+    instance = None
+    # Message format
+    FORMAT = "[%(levelname)-s] %(asctime)s %(message)s"
+    # Date format
+    DATE = "%Y-%m-%d %H:%M:%S"
+
+    @staticmethod
+    def new():
+        """Create a new instance of Logger."""
+        logger = logging.getLogger('authenticator')
+        handler = logging.StreamHandler()
+        formater = logging.Formatter(Logger.FORMAT, Logger.DATE)
+        handler.setFormatter(formater)
+        logger.setLevel(logging.DEBUG)
+        logger.addHandler(handler)
+        return logger
+
+    @staticmethod
+    def get_default():
+        """Return the default instance of Logger."""
+        if Logger.instance is None:
+            # Init the Logger
+            Logger.instance = Logger.new()
+        return Logger.instance
+
+    @staticmethod
+    def setLevel(level):
+        """Set the logging level."""
+        Logger.get_default().setLevel(level)
+
+    @staticmethod
+    def warning(msg):
+        """Log a warning message."""
+        Logger.get_default().warning(msg)
+
+    @staticmethod
+    def debug(msg):
+        """Log a debug message."""
+        Logger.get_default().debug(msg)
+
+    @staticmethod
+    def info(msg):
+        """Log an info message."""
+        Logger.get_default().info(msg)
+
+    @staticmethod
+    def error(msg):
+        """Log an error message."""
+        Logger.get_default().error(msg)

@@ -7,11 +7,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-07-19 12:39+0100\n"
-"PO-Revision-Date: 2016-09-04 10:58+0000\n"
+"POT-Creation-Date: 2018-03-16 04:03+0100\n"
+"PO-Revision-Date: 2017-09-04 10:58+0000\n"
 "Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
 "Language-Team: Hungarian <https://hosted.weblate.org/projects/gnome-"
-"twofactorauth/translation/hu/>\n"
+"Authenticator/translation/hu/>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,238 +19,269 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 2.8\n"
 
-#: data/shortcuts.ui:13
-msgctxt "shortcut window"
-msgid "General"
-msgstr "Általános"
-
-#: data/shortcuts.ui:17
-msgctxt "shortcut window"
-msgid "Search"
-msgstr "Keresés"
-
-#: data/shortcuts.ui:24
-msgctxt "shortcut window"
-msgid "Add a new account"
-msgstr "Új fiók hozzáadása"
-
-#: data/shortcuts.ui:31
-msgctxt "shortcut window"
-msgid "Selection mode"
-msgstr "Kijelölés mód"
-
-#: data/shortcuts.ui:38
-msgctxt "shortcut window"
-msgid "Lock the application"
-msgstr "Az alkalmazás zárolása"
-
-#: data/shortcuts.ui:47
-msgctxt "shortcut window"
-msgid "Account list"
-msgstr "Fióklista"
-
-#: data/shortcuts.ui:51
-msgctxt "shortcut window"
-msgid "Copy"
-msgstr "Másolás"
-
-#: data/shortcuts.ui:58
-msgctxt "shortcut window"
-msgid "Delete"
-msgstr "Törlés"
-
-#: data/shortcuts.ui:65
-msgctxt "shortcut window"
-msgid "Select next/previous account"
-msgstr "Következő vagy előző fiók kiválasztása"
-
-#: data/shortcuts.ui:74
-msgctxt "shortcut window"
-msgid "Add Account"
-msgstr "Fiók hozzáadása"
-
-#: data/shortcuts.ui:78
-msgctxt "shortcut window"
-msgid "Scan QR code"
-msgstr "QR-kód beolvasása"
-
-#: data/shortcuts.ui:85
-msgctxt "shortcut window"
-msgid "Close"
-msgstr "Bezárás"
-
-#: data/about.ui:14
-msgid "Simple application to generate two-factor authentication code"
-msgstr "Egyszerű alkalmazás kétlépcsős hitelesítő kód előállításához"
-
-#: data/about.ui:15
-msgid ""
-"This program comes with absolutely no warranty. See the <a href=\"http://www."
-"gnu.org/licenses/gpl-3.0.html\">GNU General Public License, version 3 or "
-"later</a> for details."
-msgstr ""
-"Ez a program mindenféle garancia nélkül érkezik. A részletekért nézze meg a <"
-"a href=\"http://www.gnu.org/licenses/gpl-3.0.html\">GNU General Public "
-"License 3. vagy újabb verzióját</a>."
-
-#: data/about.ui:20
-msgid "Github"
-msgstr "GitHub"
-
-#: TwoFactorAuth/widgets/headerbar.py:64
-msgid "Remove selected accounts"
-msgstr "Kijelölt fiókok eltávolítása"
-
-#: TwoFactorAuth/widgets/headerbar.py:71
-#: TwoFactorAuth/widgets/add_account.py:49
-#: TwoFactorAuth/widgets/add_account.py:64
-msgid "Add a new account"
-msgstr "Új fiók hozzáadása"
-
-#: TwoFactorAuth/widgets/headerbar.py:78
-msgid "Lock the Application"
-msgstr "Az alkalmazás zárolása"
-
-#: TwoFactorAuth/widgets/headerbar.py:94
-msgid "Selection mode"
-msgstr "Kijelölés mód"
-
-#: TwoFactorAuth/widgets/headerbar.py:101
-#: TwoFactorAuth/widgets/applications_list.py:121
-msgid "Search"
-msgstr "Keresés"
-
-#: TwoFactorAuth/widgets/headerbar.py:105
-#: TwoFactorAuth/widgets/add_account.py:69
-#: TwoFactorAuth/widgets/change_password.py:162
-#: TwoFactorAuth/widgets/applications_list.py:114
-msgid "Cancel"
-msgstr "Mégse"
-
-#: TwoFactorAuth/widgets/headerbar.py:117 TwoFactorAuth/widgets/settings.py:42
-#: TwoFactorAuth/application.py:78
-msgid "Settings"
-msgstr "Beállítások"
-
-#: TwoFactorAuth/widgets/no_account_window.py:39
-msgid "There's no account at the moment"
-msgstr "Nincs fiók ebben a pillanatban"
-
-#: TwoFactorAuth/widgets/add_account.py:74
-msgid "Add"
-msgstr "Hozzáadás"
-
-#: TwoFactorAuth/widgets/add_account.py:82
-msgid "Scan a QR code"
-msgstr "QR-kód beolvasása"
-
-#: TwoFactorAuth/widgets/add_account.py:104
-msgid "Account Name"
-msgstr "Fiók neve"
-
-#: TwoFactorAuth/widgets/add_account.py:112
-msgid "Secret Code"
-msgstr "Titkos kód"
-
-#: TwoFactorAuth/widgets/change_password.py:36
-msgid "Apply"
-msgstr "Alkalmaz"
-
-#: TwoFactorAuth/widgets/change_password.py:46
-msgid "Change password"
-msgstr "Jelszó módosítása"
-
-#: TwoFactorAuth/widgets/change_password.py:78
-msgid "Old password"
-msgstr "Régi jelszó"
-
-#: TwoFactorAuth/widgets/change_password.py:88
-msgid "New password"
-msgstr "Új jelszó"
-
-#: TwoFactorAuth/widgets/change_password.py:98
-msgid "Repeat new password"
-msgstr "Új jelszó ismétlése"
-
-#: TwoFactorAuth/widgets/applications_list.py:109
-msgid "Select an application"
-msgstr "Alkalmazás kiválasztása"
-
-#: TwoFactorAuth/widgets/applications_list.py:124
-msgid "Next"
-msgstr "Következő"
-
-#: TwoFactorAuth/widgets/login_window.py:45
-msgid "Enter your password"
-msgstr "Adja meg a jelszavát"
-
-#: TwoFactorAuth/widgets/login_window.py:48
-msgid "Unlock"
-msgstr "Feloldás"
-
-#: TwoFactorAuth/widgets/account_row.py:219
-msgid "Remove the account"
-msgstr "A fiók eltávolítása"
-
-#: TwoFactorAuth/widgets/account_row.py:229
-msgid "Copy the generated code"
-msgstr "Az előállított kód másolása"
-
-#: TwoFactorAuth/widgets/account_row.py:239
-msgid "Edit the account"
-msgstr "A fiók szerkesztése"
-
-#: TwoFactorAuth/widgets/account_row.py:249
-msgid "Save the new account name"
-msgstr "Az új fióknév mentése"
-
-#: TwoFactorAuth/widgets/account_row.py:257
-#: TwoFactorAuth/widgets/account_row.py:381
-#, python-format
-msgid "Expires in %s seconds"
-msgstr "Lejár %s másodperc múlva"
-
-#: TwoFactorAuth/widgets/account_row.py:263
-msgid "Error during the generation of code"
-msgstr "Hiba kód előállítása közben"
-
-#: TwoFactorAuth/widgets/account_row.py:308
-msgid "Couldn't generate the secret code"
-msgstr "Nem sikerült előállítani a titkos kódot"
-
-#: TwoFactorAuth/widgets/account_row.py:370
-#, python-format
-msgid "Do you really want to remove \"%s\"?"
-msgstr "Valóban el szeretné távolítani a következőt: „%s”?"
-
-#: TwoFactorAuth/widgets/settings.py:70
-msgid "Behavior"
-msgstr "Viselkedés"
-
-#: TwoFactorAuth/widgets/settings.py:75
-msgid "Account"
-msgstr "Fiók"
-
-#: TwoFactorAuth/widgets/settings.py:89
-msgid "Password protection"
-msgstr "Jelszavas védelem"
-
-#: TwoFactorAuth/widgets/settings.py:113
-msgid "Auto-lock the application (m):"
-msgstr "Az alkalmazás automatikus zárolása (m):"
-
-#: TwoFactorAuth/application.py:46
-msgid "TwoFactorAuth"
+#: Authenticator/application.py:36 Authenticator/widgets/about.py:40
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:5
+#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:3
+msgid "Authenticator"
 msgstr "Kétlépcsős hitelesítés"
 
-#: TwoFactorAuth/application.py:86
-msgid "Shortcuts"
-msgstr "Gyorsbillentyűk"
+#. Night mode action
+#: Authenticator/application.py:79
+msgid "Night Mode"
+msgstr ""
 
-#: TwoFactorAuth/application.py:88
+#: Authenticator/application.py:82
 msgid "About"
 msgstr "Névjegy"
 
-#: TwoFactorAuth/application.py:89
+#: Authenticator/application.py:83
 msgid "Quit"
 msgstr "Kilépés"
+
+#: Authenticator/widgets/accounts/add.py:51
+#: Authenticator/widgets/headerbar.py:101
+msgid "Add a new account"
+msgstr "Új fiók hozzáadása"
+
+#: Authenticator/widgets/accounts/add.py:60
+#: Authenticator/widgets/headerbar.py:99
+msgid "Search"
+msgstr "Keresés"
+
+#: Authenticator/widgets/accounts/add.py:64
+#, fuzzy
+msgid "Scan QR code"
+msgstr "QR-kód beolvasása"
+
+#: Authenticator/widgets/accounts/add.py:99
+msgid "Next"
+msgstr "Következő"
+
+#: Authenticator/widgets/accounts/add.py:100
+#, fuzzy
+msgid "Close"
+msgstr "Bezárás"
+
+#: Authenticator/widgets/accounts/add.py:108
+msgid "Add"
+msgstr "Hozzáadás"
+
+#: Authenticator/widgets/accounts/add.py:109
+msgid "Back"
+msgstr ""
+
+#: Authenticator/widgets/accounts/add.py:245
+#, fuzzy
+msgid "Account name"
+msgstr "Fiók neve"
+
+#: Authenticator/widgets/accounts/add.py:247
+#, fuzzy
+msgid "Secret Token"
+msgstr "Titkos kód"
+
+#: Authenticator/widgets/accounts/add.py:293
+#, fuzzy
+msgid "Invalid QR code"
+msgstr "QR-kód beolvasása"
+
+#. Label
+#: Authenticator/widgets/accounts/list.py:121
+#, fuzzy
+msgid "There's no account yet..."
+msgstr "Nincs fiók ebben a pillanatban"
+
+#: Authenticator/widgets/accounts/row.py:53
+#, fuzzy
+msgid "Copy"
+msgstr "Másolás"
+
+#: Authenticator/widgets/accounts/row.py:118
+msgid "Couldn't generate the secret code"
+msgstr "Nem sikerült előállítani a titkos kódot"
+
+#: Authenticator/widgets/about.py:41
+msgid "translator-credits"
+msgstr ""
+
+#: Authenticator/widgets/about.py:43
+msgid "Two factor authentication codes generator."
+msgstr ""
+
+#: Authenticator/widgets/actions_bar.py:45
+#, fuzzy
+msgid "Delete"
+msgstr "Törlés"
+
+#: Authenticator/widgets/headerbar.py:103
+msgid "Settings"
+msgstr "Beállítások"
+
+#: Authenticator/widgets/headerbar.py:105
+msgid "Selection mode"
+msgstr "Kijelölés mód"
+
+#: Authenticator/widgets/headerbar.py:107
+msgid "Cancel"
+msgstr "Mégse"
+
+#: Authenticator/widgets/headerbar.py:187
+msgid "Click on items to select them"
+msgstr ""
+
+#: Authenticator/widgets/inapp_notification.py:51
+#: Authenticator/widgets/inapp_notification.py:79
+msgid "Undo"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:6
+msgid "Two Factor Authentication code generator"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:8
+#, fuzzy
+msgid ""
+"Simple application that generates 2 factor authentication code, created for "
+"Gnome"
+msgstr "Egyszerű alkalmazás kétlépcsős hitelesítő kód előállításához"
+
+#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:4
+#, fuzzy
+msgid "Two Factor Authentication"
+msgstr "Kétlépcsős hitelesítés"
+
+#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:5
+msgid "Two-Factor Authentication code generator"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:10
+msgid "Gnome;GTK;Verification;"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:11
+msgid "com.github.bilelmoussaoui.Authenticator"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:20
+#, fuzzy
+msgid "About Authenticator"
+msgstr "Kétlépcsős hitelesítés"
+
+#: authenticator.py.in:45
+msgid "Start in debug mode"
+msgstr ""
+
+#: authenticator.py.in:47
+#, fuzzy
+msgid "Authenticator version number"
+msgstr "Kétlépcsős hitelesítés"
+
+#~ msgctxt "shortcut window"
+#~ msgid "General"
+#~ msgstr "Általános"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Search"
+#~ msgstr "Keresés"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Add a new account"
+#~ msgstr "Új fiók hozzáadása"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Selection mode"
+#~ msgstr "Kijelölés mód"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Lock the application"
+#~ msgstr "Az alkalmazás zárolása"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Account list"
+#~ msgstr "Fióklista"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Select next/previous account"
+#~ msgstr "Következő vagy előző fiók kiválasztása"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Add Account"
+#~ msgstr "Fiók hozzáadása"
+
+#~ msgid ""
+#~ "This program comes with absolutely no warranty. See the <a href=\"http://"
+#~ "www.gnu.org/licenses/gpl-3.0.html\">GNU General Public License, version 3 "
+#~ "or later</a> for details."
+#~ msgstr ""
+#~ "Ez a program mindenféle garancia nélkül érkezik. A részletekért nézze meg "
+#~ "a <a href=\"http://www.gnu.org/licenses/gpl-3.0.html\">GNU General Public "
+#~ "License 3. vagy újabb verzióját</a>."
+
+#~ msgid "Github"
+#~ msgstr "GitHub"
+
+#~ msgid "Remove selected accounts"
+#~ msgstr "Kijelölt fiókok eltávolítása"
+
+#~ msgid "Lock the Application"
+#~ msgstr "Az alkalmazás zárolása"
+
+#~ msgid "Apply"
+#~ msgstr "Alkalmaz"
+
+#~ msgid "Change password"
+#~ msgstr "Jelszó módosítása"
+
+#~ msgid "Old password"
+#~ msgstr "Régi jelszó"
+
+#~ msgid "New password"
+#~ msgstr "Új jelszó"
+
+#~ msgid "Repeat new password"
+#~ msgstr "Új jelszó ismétlése"
+
+#~ msgid "Select an application"
+#~ msgstr "Alkalmazás kiválasztása"
+
+#~ msgid "Enter your password"
+#~ msgstr "Adja meg a jelszavát"
+
+#~ msgid "Unlock"
+#~ msgstr "Feloldás"
+
+#~ msgid "Remove the account"
+#~ msgstr "A fiók eltávolítása"
+
+#~ msgid "Copy the generated code"
+#~ msgstr "Az előállított kód másolása"
+
+#~ msgid "Edit the account"
+#~ msgstr "A fiók szerkesztése"
+
+#~ msgid "Save the new account name"
+#~ msgstr "Az új fióknév mentése"
+
+#~ msgid "Expires in %s seconds"
+#~ msgstr "Lejár %s másodperc múlva"
+
+#~ msgid "Error during the generation of code"
+#~ msgstr "Hiba kód előállítása közben"
+
+#~ msgid "Do you really want to remove \"%s\"?"
+#~ msgstr "Valóban el szeretné távolítani a következőt: „%s”?"
+
+#~ msgid "Behavior"
+#~ msgstr "Viselkedés"
+
+#~ msgid "Account"
+#~ msgstr "Fiók"
+
+#~ msgid "Password protection"
+#~ msgstr "Jelszavas védelem"
+
+#~ msgid "Auto-lock the application (m):"
+#~ msgstr "Az alkalmazás automatikus zárolása (m):"
+
+#~ msgid "Shortcuts"
+#~ msgstr "Gyorsbillentyűk"

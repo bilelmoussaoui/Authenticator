@@ -7,11 +7,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-07-19 12:39+0100\n"
-"PO-Revision-Date: 2016-09-28 15:01+0000\n"
+"POT-Creation-Date: 2018-03-16 04:03+0100\n"
+"PO-Revision-Date: 2017-09-28 15:01+0000\n"
 "Last-Translator: Nathan Follens <nathan@email.is>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/gnome-"
-"twofactorauth/translation/nl/>\n"
+"Authenticator/translation/nl/>\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,239 +19,270 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 2.9-dev\n"
 
-#: data/shortcuts.ui:13
-msgctxt "shortcut window"
-msgid "General"
-msgstr "Algemeen"
+#: Authenticator/application.py:36 Authenticator/widgets/about.py:40
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:5
+#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:3
+msgid "Authenticator"
+msgstr "Authenticator"
 
-#: data/shortcuts.ui:17
-msgctxt "shortcut window"
-msgid "Search"
-msgstr "Zoeken"
-
-#: data/shortcuts.ui:24
-msgctxt "shortcut window"
-msgid "Add a new account"
-msgstr "Nieuwe account toevoegen"
-
-#: data/shortcuts.ui:31
-msgctxt "shortcut window"
-msgid "Selection mode"
-msgstr "Selectiemodus"
-
-#: data/shortcuts.ui:38
-msgctxt "shortcut window"
-msgid "Lock the application"
-msgstr "Toepassing vergrendelen"
-
-#: data/shortcuts.ui:47
-msgctxt "shortcut window"
-msgid "Account list"
-msgstr "Accountlijst"
-
-#: data/shortcuts.ui:51
-msgctxt "shortcut window"
-msgid "Copy"
-msgstr "Kopiëren"
-
-#: data/shortcuts.ui:58
-msgctxt "shortcut window"
-msgid "Delete"
-msgstr "Verwijderen"
-
-#: data/shortcuts.ui:65
-msgctxt "shortcut window"
-msgid "Select next/previous account"
-msgstr "Volgende/vorige account selecteren"
-
-#: data/shortcuts.ui:74
-msgctxt "shortcut window"
-msgid "Add Account"
-msgstr "Account toevoegen"
-
-#: data/shortcuts.ui:78
-msgctxt "shortcut window"
-msgid "Scan QR code"
-msgstr "QR-code scannen"
-
-#: data/shortcuts.ui:85
-msgctxt "shortcut window"
-msgid "Close"
-msgstr "Sluiten"
-
-#: data/about.ui:14
-msgid "Simple application to generate two-factor authentication code"
+#. Night mode action
+#: Authenticator/application.py:79
+msgid "Night Mode"
 msgstr ""
-"Eenvoudige toepassing voor het aanmaken van two-factor-authenticatiecodes"
 
-#: data/about.ui:15
-msgid ""
-"This program comes with absolutely no warranty. See the <a href=\"http://www."
-"gnu.org/licenses/gpl-3.0.html\">GNU General Public License, version 3 or "
-"later</a> for details."
-msgstr ""
-"Dit programma komt zonder enige vorm van garantie. Zie de <a href=\""
-"http://www.gnu.org/licenses/gpl-3.0.html\">GNU General Public License, "
-"versie 3 of later</a> voor meer informatie."
-
-#: data/about.ui:20
-msgid "Github"
-msgstr "GitHub"
-
-#: TwoFactorAuth/widgets/headerbar.py:64
-msgid "Remove selected accounts"
-msgstr "Geselecteerde accounts verwijderen"
-
-#: TwoFactorAuth/widgets/headerbar.py:71
-#: TwoFactorAuth/widgets/add_account.py:49
-#: TwoFactorAuth/widgets/add_account.py:64
-msgid "Add a new account"
-msgstr "Nieuwe account toevoegen"
-
-#: TwoFactorAuth/widgets/headerbar.py:78
-msgid "Lock the Application"
-msgstr "Toepassing vergrendelen"
-
-#: TwoFactorAuth/widgets/headerbar.py:94
-msgid "Selection mode"
-msgstr "Selectiemodus"
-
-#: TwoFactorAuth/widgets/headerbar.py:101
-#: TwoFactorAuth/widgets/applications_list.py:121
-msgid "Search"
-msgstr "Zoeken"
-
-#: TwoFactorAuth/widgets/headerbar.py:105
-#: TwoFactorAuth/widgets/add_account.py:69
-#: TwoFactorAuth/widgets/change_password.py:162
-#: TwoFactorAuth/widgets/applications_list.py:114
-msgid "Cancel"
-msgstr "Annuleren"
-
-#: TwoFactorAuth/widgets/headerbar.py:117 TwoFactorAuth/widgets/settings.py:42
-#: TwoFactorAuth/application.py:78
-msgid "Settings"
-msgstr "Instellingen"
-
-#: TwoFactorAuth/widgets/no_account_window.py:39
-msgid "There's no account at the moment"
-msgstr "Er zijn momenteel geen accounts"
-
-#: TwoFactorAuth/widgets/add_account.py:74
-msgid "Add"
-msgstr "Toevoegen"
-
-#: TwoFactorAuth/widgets/add_account.py:82
-msgid "Scan a QR code"
-msgstr "QR-code scannen"
-
-#: TwoFactorAuth/widgets/add_account.py:104
-msgid "Account Name"
-msgstr "Accountnaam"
-
-#: TwoFactorAuth/widgets/add_account.py:112
-msgid "Secret Code"
-msgstr "Geheime code"
-
-#: TwoFactorAuth/widgets/change_password.py:36
-msgid "Apply"
-msgstr "Toepassen"
-
-#: TwoFactorAuth/widgets/change_password.py:46
-msgid "Change password"
-msgstr "Wachtwoord veranderen"
-
-#: TwoFactorAuth/widgets/change_password.py:78
-msgid "Old password"
-msgstr "Oud wachtwoord"
-
-#: TwoFactorAuth/widgets/change_password.py:88
-msgid "New password"
-msgstr "Nieuw wachtwoord"
-
-#: TwoFactorAuth/widgets/change_password.py:98
-msgid "Repeat new password"
-msgstr "Herhaal nieuw wachtwoord"
-
-#: TwoFactorAuth/widgets/applications_list.py:109
-msgid "Select an application"
-msgstr "Kies een toepassing"
-
-#: TwoFactorAuth/widgets/applications_list.py:124
-msgid "Next"
-msgstr "Volgende"
-
-#: TwoFactorAuth/widgets/login_window.py:45
-msgid "Enter your password"
-msgstr "Voer je wachtwoord in"
-
-#: TwoFactorAuth/widgets/login_window.py:48
-msgid "Unlock"
-msgstr "Ontgrendelen"
-
-#: TwoFactorAuth/widgets/account_row.py:219
-msgid "Remove the account"
-msgstr "Account verwijderen"
-
-#: TwoFactorAuth/widgets/account_row.py:229
-msgid "Copy the generated code"
-msgstr "Aangemaakte code kopiëren"
-
-#: TwoFactorAuth/widgets/account_row.py:239
-msgid "Edit the account"
-msgstr "Account bewerken"
-
-#: TwoFactorAuth/widgets/account_row.py:249
-msgid "Save the new account name"
-msgstr "Nieuwe accountnaam opslaan"
-
-#: TwoFactorAuth/widgets/account_row.py:257
-#: TwoFactorAuth/widgets/account_row.py:381
-#, python-format
-msgid "Expires in %s seconds"
-msgstr "Verloopt over %s seconden"
-
-#: TwoFactorAuth/widgets/account_row.py:263
-msgid "Error during the generation of code"
-msgstr "Fout tijdens aanmaken van code"
-
-#: TwoFactorAuth/widgets/account_row.py:308
-msgid "Couldn't generate the secret code"
-msgstr "Aanmaken van geheime code mislukt"
-
-#: TwoFactorAuth/widgets/account_row.py:370
-#, python-format
-msgid "Do you really want to remove \"%s\"?"
-msgstr "Wil je \"%s\" echt verwijderen?"
-
-#: TwoFactorAuth/widgets/settings.py:70
-msgid "Behavior"
-msgstr "Gedrag"
-
-#: TwoFactorAuth/widgets/settings.py:75
-msgid "Account"
-msgstr "Account"
-
-#: TwoFactorAuth/widgets/settings.py:89
-msgid "Password protection"
-msgstr "Wachtwoordbescherming"
-
-#: TwoFactorAuth/widgets/settings.py:113
-msgid "Auto-lock the application (m):"
-msgstr "Vergrendel de toepassing automatisch (m):"
-
-#: TwoFactorAuth/application.py:46
-msgid "TwoFactorAuth"
-msgstr "TwoFactorAuth"
-
-#: TwoFactorAuth/application.py:86
-msgid "Shortcuts"
-msgstr "Sneltoetsen"
-
-#: TwoFactorAuth/application.py:88
+#: Authenticator/application.py:82
 msgid "About"
 msgstr "Over"
 
-#: TwoFactorAuth/application.py:89
+#: Authenticator/application.py:83
 msgid "Quit"
 msgstr "Afsluiten"
+
+#: Authenticator/widgets/accounts/add.py:51
+#: Authenticator/widgets/headerbar.py:101
+msgid "Add a new account"
+msgstr "Nieuwe account toevoegen"
+
+#: Authenticator/widgets/accounts/add.py:60
+#: Authenticator/widgets/headerbar.py:99
+msgid "Search"
+msgstr "Zoeken"
+
+#: Authenticator/widgets/accounts/add.py:64
+#, fuzzy
+msgid "Scan QR code"
+msgstr "QR-code scannen"
+
+#: Authenticator/widgets/accounts/add.py:99
+msgid "Next"
+msgstr "Volgende"
+
+#: Authenticator/widgets/accounts/add.py:100
+#, fuzzy
+msgid "Close"
+msgstr "Sluiten"
+
+#: Authenticator/widgets/accounts/add.py:108
+msgid "Add"
+msgstr "Toevoegen"
+
+#: Authenticator/widgets/accounts/add.py:109
+msgid "Back"
+msgstr ""
+
+#: Authenticator/widgets/accounts/add.py:245
+#, fuzzy
+msgid "Account name"
+msgstr "Accountnaam"
+
+#: Authenticator/widgets/accounts/add.py:247
+#, fuzzy
+msgid "Secret Token"
+msgstr "Geheime code"
+
+#: Authenticator/widgets/accounts/add.py:293
+#, fuzzy
+msgid "Invalid QR code"
+msgstr "QR-code scannen"
+
+#. Label
+#: Authenticator/widgets/accounts/list.py:121
+#, fuzzy
+msgid "There's no account yet..."
+msgstr "Er zijn momenteel geen accounts"
+
+#: Authenticator/widgets/accounts/row.py:53
+#, fuzzy
+msgid "Copy"
+msgstr "Kopiëren"
+
+#: Authenticator/widgets/accounts/row.py:118
+msgid "Couldn't generate the secret code"
+msgstr "Aanmaken van geheime code mislukt"
+
+#: Authenticator/widgets/about.py:41
+msgid "translator-credits"
+msgstr ""
+
+#: Authenticator/widgets/about.py:43
+msgid "Two factor authentication codes generator."
+msgstr ""
+
+#: Authenticator/widgets/actions_bar.py:45
+#, fuzzy
+msgid "Delete"
+msgstr "Verwijderen"
+
+#: Authenticator/widgets/headerbar.py:103
+msgid "Settings"
+msgstr "Instellingen"
+
+#: Authenticator/widgets/headerbar.py:105
+msgid "Selection mode"
+msgstr "Selectiemodus"
+
+#: Authenticator/widgets/headerbar.py:107
+msgid "Cancel"
+msgstr "Annuleren"
+
+#: Authenticator/widgets/headerbar.py:187
+msgid "Click on items to select them"
+msgstr ""
+
+#: Authenticator/widgets/inapp_notification.py:51
+#: Authenticator/widgets/inapp_notification.py:79
+msgid "Undo"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:6
+msgid "Two Factor Authentication code generator"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:8
+#, fuzzy
+msgid ""
+"Simple application that generates 2 factor authentication code, created for "
+"Gnome"
+msgstr ""
+"Eenvoudige toepassing voor het aanmaken van two-factor-authenticatiecodes"
+
+#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:4
+#, fuzzy
+msgid "Two Factor Authentication"
+msgstr "Authenticator"
+
+#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:5
+msgid "Two-Factor Authentication code generator"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:10
+msgid "Gnome;GTK;Verification;"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:11
+msgid "com.github.bilelmoussaoui.Authenticator"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:20
+#, fuzzy
+msgid "About Authenticator"
+msgstr "Authenticator"
+
+#: authenticator.py.in:45
+msgid "Start in debug mode"
+msgstr ""
+
+#: authenticator.py.in:47
+#, fuzzy
+msgid "Authenticator version number"
+msgstr "Authenticator"
+
+#~ msgctxt "shortcut window"
+#~ msgid "General"
+#~ msgstr "Algemeen"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Search"
+#~ msgstr "Zoeken"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Add a new account"
+#~ msgstr "Nieuwe account toevoegen"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Selection mode"
+#~ msgstr "Selectiemodus"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Lock the application"
+#~ msgstr "Toepassing vergrendelen"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Account list"
+#~ msgstr "Accountlijst"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Select next/previous account"
+#~ msgstr "Volgende/vorige account selecteren"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Add Account"
+#~ msgstr "Account toevoegen"
+
+#~ msgid ""
+#~ "This program comes with absolutely no warranty. See the <a href=\"http://"
+#~ "www.gnu.org/licenses/gpl-3.0.html\">GNU General Public License, version 3 "
+#~ "or later</a> for details."
+#~ msgstr ""
+#~ "Dit programma komt zonder enige vorm van garantie. Zie de <a href="
+#~ "\"http://www.gnu.org/licenses/gpl-3.0.html\">GNU General Public License, "
+#~ "versie 3 of later</a> voor meer informatie."
+
+#~ msgid "Github"
+#~ msgstr "GitHub"
+
+#~ msgid "Remove selected accounts"
+#~ msgstr "Geselecteerde accounts verwijderen"
+
+#~ msgid "Lock the Application"
+#~ msgstr "Toepassing vergrendelen"
+
+#~ msgid "Apply"
+#~ msgstr "Toepassen"
+
+#~ msgid "Change password"
+#~ msgstr "Wachtwoord veranderen"
+
+#~ msgid "Old password"
+#~ msgstr "Oud wachtwoord"
+
+#~ msgid "New password"
+#~ msgstr "Nieuw wachtwoord"
+
+#~ msgid "Repeat new password"
+#~ msgstr "Herhaal nieuw wachtwoord"
+
+#~ msgid "Select an application"
+#~ msgstr "Kies een toepassing"
+
+#~ msgid "Enter your password"
+#~ msgstr "Voer je wachtwoord in"
+
+#~ msgid "Unlock"
+#~ msgstr "Ontgrendelen"
+
+#~ msgid "Remove the account"
+#~ msgstr "Account verwijderen"
+
+#~ msgid "Copy the generated code"
+#~ msgstr "Aangemaakte code kopiëren"
+
+#~ msgid "Edit the account"
+#~ msgstr "Account bewerken"
+
+#~ msgid "Save the new account name"
+#~ msgstr "Nieuwe accountnaam opslaan"
+
+#~ msgid "Expires in %s seconds"
+#~ msgstr "Verloopt over %s seconden"
+
+#~ msgid "Error during the generation of code"
+#~ msgstr "Fout tijdens aanmaken van code"
+
+#~ msgid "Do you really want to remove \"%s\"?"
+#~ msgstr "Wil je \"%s\" echt verwijderen?"
+
+#~ msgid "Behavior"
+#~ msgstr "Gedrag"
+
+#~ msgid "Account"
+#~ msgstr "Account"
+
+#~ msgid "Password protection"
+#~ msgstr "Wachtwoordbescherming"
+
+#~ msgid "Auto-lock the application (m):"
+#~ msgstr "Vergrendel de toepassing automatisch (m):"
+
+#~ msgid "Shortcuts"
+#~ msgstr "Sneltoetsen"

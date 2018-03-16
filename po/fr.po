@@ -1,18 +1,18 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
-# Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>, 2016
+# Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>, 2017
 msgid ""
 msgstr ""
-"Project-Id-Version: TwoFactorAuth\n"
+"Project-Id-Version: Authenticator\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-02 23:11+0200\n"
-"PO-Revision-Date: 2016-12-12 23:38+0000\n"
+"POT-Creation-Date: 2018-03-16 04:03+0100\n"
+"PO-Revision-Date: 2017-12-12 23:38+0000\n"
 "Last-Translator: Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/gnome-"
-"twofactorauth/translation/fr/>\n"
+"Authenticator/translation/fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,206 +20,257 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: Weblate 2.10-dev\n"
 
-#: data/shortcuts.ui:13
-msgctxt "shortcut window"
-msgid "General"
-msgstr "Généralité"
-
-#: data/shortcuts.ui:17
-msgctxt "shortcut window"
-msgid "Search"
-msgstr "Rechercher"
-
-#: data/shortcuts.ui:24
-msgctxt "shortcut window"
-msgid "Copy"
-msgstr "Copier"
-
-#: data/shortcuts.ui:31
-msgctxt "shortcut window"
-msgid "Add a new application"
-msgstr "Ajouter une nouvelle application"
-
-#: data/shortcuts.ui:38
-msgctxt "shortcut window"
-msgid "Delete"
-msgstr "Supprimer"
-
-#: data/shortcuts.ui:50
-msgctxt "shortcut window"
-msgid "Select next application"
-msgstr "Sélectionner l'application suivante"
-
-#: data/shortcuts.ui:57
-msgctxt "shortcut window"
-msgid "Select previous application"
-msgstr "Sélectionner l'application précédente"
-
-#: data/shortcuts.ui:65
-msgctxt "shortcut window"
-msgid "Selection mode"
-msgstr "Mode de sélection"
-
-#: data/about.ui:14
-msgid "Simple application to generate two-factor authentication code"
-msgstr "Une simple application pour générer les codes de validation en 2 étapes"
-
-#: data/about.ui:15
-msgid ""
-"This program comes with absolutely no warranty. See the <a "
-"href=\"http://www.gnu.org/licenses/gpl-3.0.html\">GNU General Public "
-"License, version 3 or later</a> for details."
+#: Authenticator/application.py:36 Authenticator/widgets/about.py:40
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:5
+#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:3
+msgid "Authenticator"
 msgstr ""
-"Ce programme est fourni sans aucune garantie. Pour plus de détails, visitez  "
-"<a href=\"http://www.gnu.org/licenses/gpl-3.0.html\">Licence publique "
-"générale limitée GNU, version 2.1 ou ultérieure</a>."
 
-#: TwoFactorAuth/widgets/window.py:157
-msgid "Do you really want to remove selected applications?"
-msgstr "Vouliez-vous vraiment supprimer les applications sélectionnées ?"
+#. Night mode action
+#: Authenticator/application.py:79
+msgid "Night Mode"
+msgstr ""
 
-#: TwoFactorAuth/widgets/window.py:180
-msgid "Enter your password"
-msgstr "Entrez votre mot de passe"
-
-#: TwoFactorAuth/widgets/window.py:184
-msgid "Unlock"
-msgstr "Déverrouiller"
-
-#: TwoFactorAuth/widgets/window.py:247
-msgid "Remove selected applications"
-msgstr "Supprimer les applications sélectionnées"
-
-#: TwoFactorAuth/widgets/window.py:255
-#: TwoFactorAuth/widgets/add_application.py:28
-msgid "Add a new application"
-msgstr "Ajouter une nouvelle application"
-
-#: TwoFactorAuth/widgets/window.py:264
-msgid "Lock the Application"
-msgstr "Verrouiller l'application"
-
-#: TwoFactorAuth/widgets/window.py:275
-msgid "Selection mode"
-msgstr "Mode de séléction"
-
-#: TwoFactorAuth/widgets/window.py:283
-msgid "Search"
-msgstr "Chercher"
-
-#: TwoFactorAuth/widgets/window.py:289
-#: TwoFactorAuth/widgets/change_password.py:139
-#: TwoFactorAuth/widgets/applications_list.py:91
-#: TwoFactorAuth/widgets/add_application.py:48
-msgid "Cancel"
-msgstr "Annuler"
-
-#: TwoFactorAuth/widgets/window.py:308 TwoFactorAuth/widgets/window.py:322
-#: TwoFactorAuth/widgets/settings.py:24 TwoFactorAuth/application.py:69
-msgid "Settings"
-msgstr "Préférenes"
-
-#: TwoFactorAuth/widgets/window.py:336 TwoFactorAuth/application.py:76
-msgid "Shortcuts"
-msgstr "Raccourcis clavier"
-
-#: TwoFactorAuth/widgets/window.py:344 TwoFactorAuth/application.py:78
+#: Authenticator/application.py:82
 msgid "About"
 msgstr "A propos"
 
-#: TwoFactorAuth/widgets/window.py:349 TwoFactorAuth/application.py:79
+#: Authenticator/application.py:83
 msgid "Quit"
 msgstr "Quitter"
 
-#: TwoFactorAuth/widgets/window.py:515
-msgid "There's no application at the moment"
-msgstr "Y a aucune application pour le moment"
+#: Authenticator/widgets/accounts/add.py:51
+#: Authenticator/widgets/headerbar.py:101
+#, fuzzy
+msgid "Add a new account"
+msgstr "Ajouter une nouvelle application"
 
-#: TwoFactorAuth/widgets/window.py:611
-msgid "Do you really want to remove the application?"
-msgstr "Voulez vous vraiment supprimer cet application ?"
+#: Authenticator/widgets/accounts/add.py:60
+#: Authenticator/widgets/headerbar.py:99
+msgid "Search"
+msgstr "Chercher"
 
-#: TwoFactorAuth/widgets/change_password.py:17
-msgid "Apply"
-msgstr "Appliquer"
+#: Authenticator/widgets/accounts/add.py:64
+msgid "Scan QR code"
+msgstr ""
 
-#: TwoFactorAuth/widgets/change_password.py:27
-msgid "Change password"
-msgstr "Changer le mot de passe"
-
-#: TwoFactorAuth/widgets/change_password.py:59
-msgid "Old password"
-msgstr "Ancien mot de passe"
-
-#: TwoFactorAuth/widgets/change_password.py:69
-msgid "New password"
-msgstr "Nouveau mot de passe"
-
-#: TwoFactorAuth/widgets/change_password.py:79
-msgid "Repeat new password"
-msgstr "Répétez le nouveau mot de passe"
-
-#: TwoFactorAuth/widgets/applications_list.py:86
-msgid "Select an application"
-msgstr "Choisir une application"
-
-#: TwoFactorAuth/widgets/applications_list.py:96
+#: Authenticator/widgets/accounts/add.py:99
 msgid "Next"
 msgstr "Suivant"
 
-#: TwoFactorAuth/widgets/settings.py:51
-msgid "Behavior"
-msgstr "Comportement"
+#: Authenticator/widgets/accounts/add.py:100
+msgid "Close"
+msgstr ""
 
-#: TwoFactorAuth/widgets/settings.py:55
-msgid "Account"
-msgstr "Compte"
-
-#: TwoFactorAuth/widgets/settings.py:69
-msgid "Password protection"
-msgstr "Mot de passe de protection"
-
-#: TwoFactorAuth/widgets/settings.py:93
-msgid "Auto-lock the application (m):"
-msgstr "Auto-verrouillage de l'application (m) :"
-
-#: TwoFactorAuth/widgets/settings.py:112
-msgid "Secret code generation time (s) :"
-msgstr "Temps de génération du code secret (s) :"
-
-#: TwoFactorAuth/widgets/listrow.py:173
-msgid "Copy the generated code"
-msgstr "Copier le mot de passe généré"
-
-#: TwoFactorAuth/widgets/listrow.py:182
-msgid "Remove the application"
-msgstr "Supprimer l'application"
-
-#: TwoFactorAuth/widgets/listrow.py:188 TwoFactorAuth/widgets/listrow.py:247
-#, python-format
-msgid "Expires in %s seconds"
-msgstr "Expires dans %s secondes"
-
-#: TwoFactorAuth/widgets/listrow.py:194
-msgid "Error during the generation of code"
-msgstr "Erreur durant la génération du code secret"
-
-#: TwoFactorAuth/widgets/listrow.py:243
-msgid "Couldn't generate the secret code"
-msgstr "Le code secret n'a pas pu être généré"
-
-#: TwoFactorAuth/widgets/add_application.py:43
-msgid "Add an application"
-msgstr "Ajouter une application"
-
-#: TwoFactorAuth/widgets/add_application.py:53
+#: Authenticator/widgets/accounts/add.py:108
 msgid "Add"
 msgstr "Ajouter"
 
-#: TwoFactorAuth/widgets/add_application.py:73
-msgid "Application Name"
-msgstr "Nom d'application"
+#: Authenticator/widgets/accounts/add.py:109
+msgid "Back"
+msgstr ""
 
-#: TwoFactorAuth/widgets/add_application.py:80
-msgid "Secret Code"
+#: Authenticator/widgets/accounts/add.py:245
+#, fuzzy
+msgid "Account name"
+msgstr "Compte"
+
+#: Authenticator/widgets/accounts/add.py:247
+#, fuzzy
+msgid "Secret Token"
 msgstr "Code secret"
+
+#: Authenticator/widgets/accounts/add.py:293
+msgid "Invalid QR code"
+msgstr ""
+
+#. Label
+#: Authenticator/widgets/accounts/list.py:121
+#, fuzzy
+msgid "There's no account yet..."
+msgstr "Y a aucune application pour le moment"
+
+#: Authenticator/widgets/accounts/row.py:53
+#, fuzzy
+msgid "Copy"
+msgstr "Copier"
+
+#: Authenticator/widgets/accounts/row.py:118
+msgid "Couldn't generate the secret code"
+msgstr "Le code secret n'a pas pu être généré"
+
+#: Authenticator/widgets/about.py:41
+msgid "translator-credits"
+msgstr ""
+
+#: Authenticator/widgets/about.py:43
+msgid "Two factor authentication codes generator."
+msgstr ""
+
+#: Authenticator/widgets/actions_bar.py:45
+#, fuzzy
+msgid "Delete"
+msgstr "Supprimer"
+
+#: Authenticator/widgets/headerbar.py:103
+msgid "Settings"
+msgstr "Préférenes"
+
+#: Authenticator/widgets/headerbar.py:105
+msgid "Selection mode"
+msgstr "Mode de séléction"
+
+#: Authenticator/widgets/headerbar.py:107
+msgid "Cancel"
+msgstr "Annuler"
+
+#: Authenticator/widgets/headerbar.py:187
+msgid "Click on items to select them"
+msgstr ""
+
+#: Authenticator/widgets/inapp_notification.py:51
+#: Authenticator/widgets/inapp_notification.py:79
+msgid "Undo"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:6
+msgid "Two Factor Authentication code generator"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:8
+#, fuzzy
+msgid ""
+"Simple application that generates 2 factor authentication code, created for "
+"Gnome"
+msgstr ""
+"Une simple application pour générer les codes de validation en 2 étapes"
+
+#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:4
+msgid "Two Factor Authentication"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:5
+msgid "Two-Factor Authentication code generator"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:10
+msgid "Gnome;GTK;Verification;"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:11
+msgid "com.github.bilelmoussaoui.Authenticator"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:20
+msgid "About Authenticator"
+msgstr ""
+
+#: authenticator.py.in:45
+msgid "Start in debug mode"
+msgstr ""
+
+#: authenticator.py.in:47
+msgid "Authenticator version number"
+msgstr ""
+
+#~ msgctxt "shortcut window"
+#~ msgid "General"
+#~ msgstr "Généralité"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Search"
+#~ msgstr "Rechercher"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Add a new application"
+#~ msgstr "Ajouter une nouvelle application"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Select next application"
+#~ msgstr "Sélectionner l'application suivante"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Select previous application"
+#~ msgstr "Sélectionner l'application précédente"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Selection mode"
+#~ msgstr "Mode de sélection"
+
+#~ msgid ""
+#~ "This program comes with absolutely no warranty. See the <a href=\"http://"
+#~ "www.gnu.org/licenses/gpl-3.0.html\">GNU General Public License, version 3 "
+#~ "or later</a> for details."
+#~ msgstr ""
+#~ "Ce programme est fourni sans aucune garantie. Pour plus de détails, "
+#~ "visitez  <a href=\"http://www.gnu.org/licenses/gpl-3.0.html\">Licence "
+#~ "publique générale limitée GNU, version 2.1 ou ultérieure</a>."
+
+#~ msgid "Do you really want to remove selected applications?"
+#~ msgstr "Vouliez-vous vraiment supprimer les applications sélectionnées ?"
+
+#~ msgid "Enter your password"
+#~ msgstr "Entrez votre mot de passe"
+
+#~ msgid "Unlock"
+#~ msgstr "Déverrouiller"
+
+#~ msgid "Remove selected applications"
+#~ msgstr "Supprimer les applications sélectionnées"
+
+#~ msgid "Lock the Application"
+#~ msgstr "Verrouiller l'application"
+
+#~ msgid "Shortcuts"
+#~ msgstr "Raccourcis clavier"
+
+#~ msgid "Do you really want to remove the application?"
+#~ msgstr "Voulez vous vraiment supprimer cet application ?"
+
+#~ msgid "Apply"
+#~ msgstr "Appliquer"
+
+#~ msgid "Change password"
+#~ msgstr "Changer le mot de passe"
+
+#~ msgid "Old password"
+#~ msgstr "Ancien mot de passe"
+
+#~ msgid "New password"
+#~ msgstr "Nouveau mot de passe"
+
+#~ msgid "Repeat new password"
+#~ msgstr "Répétez le nouveau mot de passe"
+
+#~ msgid "Select an application"
+#~ msgstr "Choisir une application"
+
+#~ msgid "Behavior"
+#~ msgstr "Comportement"
+
+#~ msgid "Password protection"
+#~ msgstr "Mot de passe de protection"
+
+#~ msgid "Auto-lock the application (m):"
+#~ msgstr "Auto-verrouillage de l'application (m) :"
+
+#~ msgid "Secret code generation time (s) :"
+#~ msgstr "Temps de génération du code secret (s) :"
+
+#~ msgid "Copy the generated code"
+#~ msgstr "Copier le mot de passe généré"
+
+#~ msgid "Remove the application"
+#~ msgstr "Supprimer l'application"
+
+#~ msgid "Expires in %s seconds"
+#~ msgstr "Expires dans %s secondes"
+
+#~ msgid "Error during the generation of code"
+#~ msgstr "Erreur durant la génération du code secret"
+
+#~ msgid "Add an application"
+#~ msgstr "Ajouter une application"
+
+#~ msgid "Application Name"
+#~ msgstr "Nom d'application"

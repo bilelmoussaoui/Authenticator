@@ -1,0 +1,61 @@
+ <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="svg5314"
+   version="1.1"
+   viewBox="0 0 4.2333332 4.2333335"
+   height="16"
+   width="16"
+   sodipodi:docname="com.github.bilelmoussaoui.Authenticator-symbolic.svg"
+   inkscape:version="0.92.0 unknown">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1366"
+     inkscape:window-height="705"
+     id="namedview7"
+     showgrid="false"
+     inkscape:zoom="11.711456"
+     inkscape:cx="3.3358491"
+     inkscape:cy="8"
+     inkscape:window-x="0"
+     inkscape:window-y="30"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg5314" />
+  <defs
+     id="defs5308" />
+  <metadata
+     id="metadata5311">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(0,-292.76665)"
+     id="layer1"
+     style="fill:#000000">
+    <path
+       id="path4218-06-8"
+       transform="matrix(0.26458333,0,0,0.26458333,0,292.76665)"
+       d="M 8 0 C 6.3431402 0 5 1.2721969 5 2.8417969 L 5 4.8105469 A 5.9999999 5.9999999 0 0 0 2 10 A 5.9999999 5.9999999 0 0 0 8 16 A 5.9999999 5.9999999 0 0 0 14 10 A 5.9999999 5.9999999 0 0 0 11 4.8125 L 11 2.8417969 C 11 1.2721969 9.65685 -5.9211895e-16 8 0 z M 8 1 C 9.1598002 1 10 1.9012913 10 3 L 10 4.3496094 A 5.9999999 5.9999999 0 0 0 8 4 A 5.9999999 5.9999999 0 0 0 6 4.3496094 L 6 3 C 6 1.9012913 6.8402002 1 8 1 z M 8 6 A 3.9999998 3.9999998 0 0 1 12 10 A 3.9999998 3.9999998 0 0 1 8 14 A 3.9999998 3.9999998 0 0 1 4 10 A 3.9999998 3.9999998 0 0 1 8 6 z M 8 6 L 6.796875 8.40625 A 1.9999999 1.9999999 0 0 0 6 10 A 1.9999999 1.9999999 0 0 0 8 12 A 1.9999999 1.9999999 0 0 0 10 10 A 1.9999999 1.9999999 0 0 0 9.2011719 8.4023438 L 8 6 z "
+       style="display:inline;opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.12687249;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.6;enable-background:new" />
+  </g>
+</svg>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+  <id type="desktop">com.github.bilelmoussaoui.Authenticator.desktop</id>
+  <licence>GPL3</licence>
+  <name>Authenticator</name>
+  <summary>Two Factor Authentication code generator</summary>
+  <description>
+    <p>Simple application that generates 2 factor authentication code, created for Gnome</p>
+  </description>
+  <screenshots>
+    <screenshot type="default" width="350" height="500">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/screenshots/screenshot1.png</screenshot>
+    <screenshot width="350" height="500">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/screenshots/screenshot2.png</screenshot>
+    <screenshot width="350" height="500">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/screenshots/screenshot7.png</screenshot>
+  </screenshots>
+  <url type="homepage">https://github.com/bilelmoussaoui/Authenticator</url>
+  <updatecontact>bil.elmoussaoui@gmail.com</updatecontact>
+</component>
