@@ -63,8 +63,8 @@ class Database:
             self.conn.execute(query, [name, secret, image])
             self.conn.commit()
             return OrderedDict([
-                ("id", self.latest_id,)
-                ("name", name,
+                ("id", self.latest_id),
+                ("name", name),
                 ("secret_id", secret),
                 ("image", image)
             ])
