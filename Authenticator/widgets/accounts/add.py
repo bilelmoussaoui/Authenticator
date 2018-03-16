@@ -173,7 +173,9 @@ class AccountsList(Gtk.Box):
         file = Gio.File.new_for_uri(uri)
         content = str(file.load_contents(None)[1].decode("utf-8"))
         data = json.loads(content)
-        for name, logo in data.items():
+        data = sorted([(name, logo) for name, logo in data.items()], lambda entry: entry[0])
+        for entry in data:
+            name, logo = entry
             self._listbox.add(AccountRow(name, logo))
 
 
