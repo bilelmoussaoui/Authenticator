@@ -90,6 +90,8 @@ class AccountsList(Gtk.ListBox, GObject.GObject):
                 child.account.remove()
                 self.remove(child)
         self.emit("changed", True) 
+        self.set_state(AccountsListState.NORMAL)
+
 
 class EmptyAccountsList(Gtk.Box):
     """
