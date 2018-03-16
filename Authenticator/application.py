@@ -59,8 +59,6 @@ class Application(Gtk.Application):
         """Startup the application."""
         Gtk.Application.do_startup(self)
         # Unlock the keyring
-        if not Keyring.unlock():
-            self.on_quit()
         self.generate_menu()
         self.setup_css()
 

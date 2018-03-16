@@ -17,28 +17,34 @@
  along with Authenticator. If not, see <http://www.gnu.org/licenses/>.
 """
 from gi import require_version
-require_version("GnomeKeyring", "1.0")
-from gi.repository import GnomeKeyring as GK
+require_version('Secret', '1')
+from gi.repository import Secret
 
 
 class Keyring:
     ID = "com.github.bilelmoussaoui.Authenticator"
+    instance = None
+
+
+    def __init__(self):
+        self.schema = Secret.Schema.new(Keyring.ID, 
+        Secret.SchemaFlags.NONE,
+        {
+            "id": Secret.SchemaAttributeType.STRING
+        })
 
     @staticmethod
-    def unlock():
-        result = GK.unlock_sync(Keyring.ID, None)
-        return result != GK.Result.CANCELLED
+    def get_default():
+        if Keyring.instance is None:
+            Keyring.instance = Keyring()
+        return Keyring.instance
 
     @staticmethod
     def get_by_id(id_):
         """Return the secret code"""
-        attr = GK.Attribute.list_new()
-        GK.Attribute.list_append_string(attr, 'id', id_)
-        result, value = GK.find_items_sync(GK.ItemType.GENERIC_SECRET,
-                                           attr)
-        if result == GK.Result.OK:
-            return value[0].secret
-        return None
+        schema = Keyring.get_default().schema
+        password = Secret.password_lookup_sync(schema, { "id": id_ }, None)
+        return password
 
     @staticmethod
     def insert(id_, secret_code):
@@ -47,12 +53,10 @@ class Keyring:
         :param id_: the encrypted id
         :param secret_code: the secret code
         """
-        GK.create_sync(Keyring.ID, None)
-        attr = GK.Attribute.list_new()
-        GK.Attribute.list_append_string(attr, 'id', id_)
-        GK.Attribute.list_append_string(attr, 'secret_code', secret_code)
-        GK.item_create_sync(Keyring.ID, GK.ItemType.GENERIC_SECRET,
-                            repr(id), attr, secret_code, False)
+        schema = Keyring.get_default().schema
+        Secret.password_store_sync(schema, {
+            "id": id_,
+        }, Secret.COLLECTION_DEFAULT, "", secret_code, None)
 
     @staticmethod
     def remove(id_):
@@ -61,14 +65,6 @@ class Keyring:
         :param id_: the encrypted secret code.
         :return: bool
         """
-        found = False
-        (result, ids) = GK.list_item_ids_sync(Keyring.ID)
-        gid = None
-        for gid in ids:
-            (result, item) = GK.item_get_info_sync(Keyring.ID, gid)
-            if result == GK.Result.OK and \
-                    item.get_display_name().strip("'") == id_:
-                found = True
-                break
-        if found and gid:
-            GK.item_delete_sync(Keyring.ID, gid)
+        schema = Keyring.get_default().schema
+        removed = Secret.password_clear_sync(schema, { "id": id_ }, None)
+        return removed

@@ -126,7 +126,6 @@
          "sha256": "92329b5496c7a86f2103f1ee15b1269dcff6011cb096948efafd349473b955a9"
        }]
      },
-
      {
        "name": "gnome-screenshot",
        "sources": [{
@@ -141,7 +140,7 @@
        "sources": [{
          "type": "git",
          "url": "https://github.com/bilelmoussaoui/Authenticator"
-       }]
+-       }]
      }
    ]
  }

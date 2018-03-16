@@ -16,7 +16,7 @@ version](https://img.shields.io/badge/python-3.3%2B-blue.svg)
 - `zbarlight` depends on `zbar`
   - `libzbar-dev` on Ubuntu
   - `zbar` on Arch
-- `gnome-keyring`
+- `libsecret`
 - `gnome-screenshot`
 
 <sub>
