@@ -36,12 +36,11 @@ class SearchBar(Gtk.Revealer):
     @property
     def search_list(self):
         return self._search_list
-        
+
     @search_list.setter
     def search_list(self, value):
         if value:
             self._search_list = value
-
 
     @property
     def search_button(self):
@@ -51,7 +50,7 @@ class SearchBar(Gtk.Revealer):
     def search_button(self, widget):
         if widget:
             self._search_button = widget
-            self._search_button.connect("toggled", 
+            self._search_button.connect("toggled",
                                         self.toggle)
 
     def _build_widgets(self):
@@ -62,9 +61,9 @@ class SearchBar(Gtk.Revealer):
         box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
 
         self.search_entry.set_width_chars(28)
-        self.search_entry.connect("search-changed", 
-                                self.set_filter_func, 
-                                self.filter_func)
+        self.search_entry.connect("search-changed",
+                                  self.set_filter_func,
+                                  self.filter_func)
 
         box.pack_start(self.search_entry, True, False, 12)
 
@@ -75,6 +74,7 @@ class SearchBar(Gtk.Revealer):
         if self.is_visible():
             self.search_entry.set_text("")
             self.set_reveal_child(False)
+
             def filter_func(*args):
                 return True
             self.set_filter_func(self.search_entry, filter_func)

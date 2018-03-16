@@ -29,7 +29,7 @@ class Code:
 
     def __init__(self, token):
         self._token = token
-        self._secret_code  = None
+        self._secret_code = None
         self.create()
 
     @staticmethod

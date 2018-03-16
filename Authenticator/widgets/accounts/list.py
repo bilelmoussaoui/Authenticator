@@ -40,7 +40,6 @@ class AccountsList(Gtk.ListBox, GObject.GObject):
     # Default instance of accounts list
     instance = None
 
-
     def __init__(self):
         GObject.GObject.__init__(self)
         Gtk.ListBox.__init__(self)
@@ -68,11 +67,11 @@ class AccountsList(Gtk.ListBox, GObject.GObject):
         account = Account.create(name, secret_id, logo)
         self.add(AccountRow(account))
         self.emit("changed", True)
-    
+
     def delete(self, row):
         # Remove an account from the list
         self.emit("changed", False)
-        
+
     def _on_row_activated(self, accounts_list, account_row):
         """On row activated signal override."""
         account_row.toggle_secret_code()
@@ -89,7 +88,7 @@ class AccountsList(Gtk.ListBox, GObject.GObject):
             if check_btn.props.active:
                 child.account.remove()
                 self.remove(child)
-        self.emit("changed", True) 
+        self.emit("changed", True)
         self.set_state(AccountsListState.NORMAL)
 
 
@@ -115,7 +114,7 @@ class EmptyAccountsList(Gtk.Box):
         self.set_valign(Gtk.Align.CENTER)
         self.set_halign(Gtk.Align.CENTER)
 
-        # Image 
+        # Image
         gicon = Gio.ThemedIcon(name="dialog-information-symbolic")
         img = Gtk.Image.new_from_gicon(gicon, Gtk.IconSize.DIALOG)
 
@@ -124,7 +123,3 @@ class EmptyAccountsList(Gtk.Box):
 
         self.pack_start(img, False, False, 6)
         self.pack_start(label, False, False, 6)
-
-
-
-        

@@ -48,8 +48,8 @@ class InAppNotification(Gtk.Revealer):
         action_area = self.infobar.get_action_area()
         self.undo_button = None
         if self.undo_action:
-            self.undo_button = self.infobar.add_button(_("Undo"), 
-                                                        Gtk.ResponseType.CANCEL)
+            self.undo_button = self.infobar.add_button(_("Undo"),
+                                                       Gtk.ResponseType.CANCEL)
 
         self.message_label = Gtk.Label()
         self.message_label.set_text(self.message)
@@ -76,8 +76,8 @@ class InAppNotification(Gtk.Revealer):
     def set_undo_action(self, undo_action):
         if undo_action:
             if not self.undo_button:
-                self.undo_button = self.infobar.add_button(_("Undo"), 
-                                                            Gtk.ResponseType.CANCEL)
+                self.undo_button = self.infobar.add_button(_("Undo"),
+                                                           Gtk.ResponseType.CANCEL)
             else:
                 self.undo_button.set_visible(True)
                 self.undo_button.set_no_show_all(False)

@@ -42,7 +42,7 @@ class QRReader:
         if self._codes:
             otpauth_url = self._codes[0].decode()
             self._codes = dict(parse_qsl(urlparse(otpauth_url)[4]))
-            return self._codes.get("secret" )
+            return self._codes.get("secret")
         else:
             Logger.error("Invalid QR image")
             return None

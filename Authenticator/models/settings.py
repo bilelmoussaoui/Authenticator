@@ -32,7 +32,8 @@ class Settings(Gio.Settings):
     @staticmethod
     def new():
         """Create a new Settings object"""
-        g_settings = Gio.Settings.new("com.github.bilelmoussaoui.Authenticator")
+        g_settings = Gio.Settings.new(
+            "com.github.bilelmoussaoui.Authenticator")
         g_settings.__class__ = Settings
         return g_settings
 
@@ -42,22 +43,6 @@ class Settings(Gio.Settings):
         if Settings.instance is None:
             Settings.instance = Settings.new()
         return Settings.instance
-
-    @property
-    def window_size(self):
-        """Return the window size."""
-        return tuple(self.get_value('window-size'))
-
-    @window_size.setter
-    def window_size(self, size):
-        """Set the window size."""
-        size = GLib.Variant('ai', list(size))
-        self.set_value('window-size', size)
-
-    @property
-    def default_size(self):
-        """Return the default window size."""
-        return tuple(self.get_default_value('window-size'))
 
     @property
     def window_position(self):

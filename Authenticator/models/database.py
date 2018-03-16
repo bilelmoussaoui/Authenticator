@@ -30,7 +30,7 @@ class Database:
     instance = None
 
     def __init__(self):
-        database_file = path.join(GLib.get_user_config_dir(), 
+        database_file = path.join(GLib.get_user_config_dir(),
                                   'Authenticator/database.db')
         makedirs(path.dirname(database_file), exist_ok=True)
         if not path.exists(database_file):
@@ -139,11 +139,11 @@ class Database:
         try:
             data = self.conn.cursor().execute(query)
             accounts = data.fetchall()
-            return [ {"id": account[0], 
-                      "name": account[1], 
-                      "secret_id": account[2], 
-                      "logo": account[3]
-                      } for account in accounts]
+            return [{"id": account[0],
+                     "name": account[1],
+                     "secret_id": account[2],
+                     "logo": account[3]
+                     } for account in accounts]
         except Exception as error:
             Logger.error("[SQL] Couldn't fetch accounts list")
             Logger.error(str(error))

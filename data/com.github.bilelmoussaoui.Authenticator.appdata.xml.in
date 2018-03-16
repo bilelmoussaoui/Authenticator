@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop">
   <id type="desktop">com.github.bilelmoussaoui.Authenticator.desktop</id>
-  <licence>GPL3</licence>
+  <metadata_license>CC0</metadata_license>
+  <project_license>GPL-3.0+</project_license>
   <name>Authenticator</name>
   <summary>Two Factor Authentication code generator</summary>
   <description>
-    <p>Simple application that generates 2 factor authentication code, created for Gnome</p>
+    <p>Simple application that generates 2 factor authentication code, created for GNOME.</p>
   </description>
   <screenshots>
-    <screenshot type="default" width="350" height="500">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/screenshots/screenshot1.png</screenshot>
-    <screenshot width="350" height="500">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/screenshots/screenshot2.png</screenshot>
-    <screenshot width="350" height="500">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/screenshots/screenshot7.png</screenshot>
+    <screenshot type="default" width="376" height="574">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/screenshots/screenshot1.png</screenshot>
+    <screenshot width="376" height="574">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/screenshots/data/screenshot2.png</screenshot>
+    <screenshot width="376" height="574">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/screenshots/data/screenshot3.png</screenshot>
+    <screenshot width="376" height="574">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/screenshots/data/screenshot4.png</screenshot>
   </screenshots>
   <url type="homepage">https://github.com/bilelmoussaoui/Authenticator</url>
+  <url type="bugtracker">https://github.com/bilelmoussaoui/Authenticator/issues</url>
+  <developer_name>Bilal Elmoussaoui</developer_name>
   <updatecontact>bil.elmoussaoui@gmail.com</updatecontact>
+   <translation type="gettext">Authenticator</translation>
 </component>

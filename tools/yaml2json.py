@@ -25,7 +25,7 @@ if path.exists(TMP_FOLDER):
 call(["git", "clone", GIT_CLONE_URI, TMP_FOLDER])
 
 if path.exists(OUTPUT_DIR):
-    remove(OUTPUT_DIR)  
+    remove(OUTPUT_DIR)
 
 
 def is_valid(provider):

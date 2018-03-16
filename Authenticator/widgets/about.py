@@ -28,7 +28,7 @@ class AboutDialog(Gtk.AboutDialog):
 
     def __init__(self):
         Gtk.AboutDialog.__init__(self)
-        self.set_modal(True)   
+        self.set_modal(True)
         self._build_widgets()
 
     def _build_widgets(self):

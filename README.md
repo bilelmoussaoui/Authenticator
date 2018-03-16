@@ -25,31 +25,14 @@ PS: The application was only tested on Arch with Gtk 3.20+, but it should work n
 
 ### Screenshots
 
-<img src="screenshots/screenshot7.png" width="280" /> <img src="screenshots/screenshot1.png" width="280" /> <img src="screenshots/screenshot2.png" width="280" />
+<img src="data/screenshots/screenshot1.png" width="280" /> <img src="data/screenshots/screenshot4.png" width="280" /><br>
+<img src="data/screenshots/screenshot2.png" width="280" /><img src="data/screenshots/screenshot3.png" width="280" />
 
 ### Features
 
 - QR code scanner
 - Beautiful UI
-- Handy shortcuts
 - Huge database of (290+) websites/applications
-
-### Installation
-
-- On Arch :
-
-```bash
-yaourt -S Authenticator
-```
-
-- On Ubuntu (xenial/yakkety) using GetDeb Apps PPA:
-
-```bash
- wget -q -O - http://archive.getdeb.net/getdeb-archive.key | sudo apt-key add -
-sudo sh -c 'echo "deb http://archive.getdeb.net/ubuntu xenial-getdeb apps" >> /etc/apt/sources.list.d/getdeb.list'
-sudo apt update
-sudo apt install Authenticator
- ```
 
 ### Credits
 
@@ -83,8 +66,6 @@ sudo ninja -C builddir install
 ```bash
 authenticator
 ```
-
-<sub>Arch users can build from source directly using AUR `yaourt -S Authenticator-git`</sub>
 
 ### Flags
 

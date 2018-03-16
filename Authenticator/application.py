@@ -44,7 +44,8 @@ class Application(Gtk.Application):
             filename = "post3.20.css"
         else:
             filename = "pre3.20.css"
-        uri = 'resource:///com/github/bilelmoussaoui/Authenticator/{}'.format(filename)
+        uri = 'resource:///com/github/bilelmoussaoui/Authenticator/{}'.format(
+            filename)
         provider_file = Gio.File.new_for_uri(uri)
         provider = Gtk.CssProvider()
         screen = Gdk.Screen.get_default()
@@ -78,12 +79,11 @@ class Application(Gtk.Application):
         # Night mode action
         help_content.append_item(Gio.MenuItem.new(_("Night Mode"),
                                                   "app.night_mode"))
-    
+
         help_content.append_item(Gio.MenuItem.new(_("About"), "app.about"))
         help_content.append_item(Gio.MenuItem.new(_("Quit"), "app.quit"))
         help_section = Gio.MenuItem.new_section(None, help_content)
         self.menu.append_item(help_section)
-
 
         is_night_mode = settings.is_night_mode
         gv_is_night_mode = GLib.Variant.new_boolean(is_night_mode)
@@ -92,7 +92,6 @@ class Application(Gtk.Application):
         action.connect("change-state", self.on_night_mode)
         self.add_action(action)
 
-
         action = Gio.SimpleAction.new("about", None)
         action.connect("activate", self.on_about)
         self.add_action(action)
@@ -100,7 +99,7 @@ class Application(Gtk.Application):
         action = Gio.SimpleAction.new("quit", None)
         action.connect("activate", self.on_quit)
         self.add_action(action)
-        #FIXME: only do that on gnome
+        # FIXME: only do that on gnome
         self.set_app_menu(self.menu)
         Logger.debug("Adding Application Menu")
 

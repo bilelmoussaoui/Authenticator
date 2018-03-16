@@ -82,7 +82,7 @@ class Account(GObject.GObject, Thread):
     def kill(self):
         """
             Kill the row thread once it's removed
-        """ 
+        """
         self._alive = False
 
     def remove(self):
@@ -92,6 +92,7 @@ class Account(GObject.GObject, Thread):
         self.emit("removed")
         Logger.debug("Account '{}' with id {} was removed".format(self.name,
                                                                   self._id))
+
     def copy_token(self):
         """Copy the secret token to the clipboard."""
         Clipboard.set(self._code.secret_code)

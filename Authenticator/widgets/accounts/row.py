@@ -156,4 +156,3 @@ class AccountRow(Gtk.ListBoxRow):
     def _on_counter_updated(self, *args):
         if self.account.secret_code:
             self.update_counter()
- 

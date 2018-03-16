@@ -41,7 +41,7 @@ def screenshot_area():
                          stdout=PIPE, stderr=PIPE).communicate()
         if error:
             error = error.decode("utf-8").split("\n")
-            logging.error("\n".join([e for e in error])) 
+            logging.error("\n".join([e for e in error]))
         if not path.isfile(file_name):
             logging.debug("The screenshot was not token")
             return None

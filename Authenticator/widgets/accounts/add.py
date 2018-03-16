@@ -111,6 +111,7 @@ class AddAcountWindow(Gtk.Window):
             account = self.accounts_list.get_selected_row()
             self.account_config.set_account(account)
             self.account_config.name_entry.emit("changed")
+            self.next_btn.set_sensitive(False)
             self._signals["back"] = self.back_btn.connect("clicked",
                                                           lambda x: self._set_step(1))
             self._signals["next"] = self.next_btn.connect("clicked",
@@ -133,8 +134,6 @@ class AddAcountWindow(Gtk.Window):
         if self.account_config:
             self.account_config.scan_qr()
 
-
-
     def _on_account_config_changed(self, widget, state):
         self.next_btn.set_sensitive(state)
 
@@ -146,6 +145,7 @@ class AddAcountWindow(Gtk.Window):
         name, secret, logo = self.account_config.account.values()
         AccountsList.get_default().append(name, secret, logo)
         self.destroy()
+
 
 class AccountsList(Gtk.Box):
 
@@ -167,7 +167,6 @@ class AccountsList(Gtk.Box):
 
     def get_selected_row(self):
         return self._listbox.get_selected_row()
-
 
     def _fill_data(self):
         uri = 'resource:///com/github/bilelmoussaoui/Authenticator/data.json'
@@ -217,7 +216,7 @@ class AccountConfig(Gtk.Box, GObject.GObject):
     def __init__(self):
         Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL)
         GObject.GObject.__init__(self)
-        
+
         self.notification = InAppNotification()
         self.logo_img = Gtk.Image()
         self.name_entry = Gtk.Entry()

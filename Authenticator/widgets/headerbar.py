@@ -83,8 +83,6 @@ class HeaderBarToggleButton(Gtk.ToggleButton, HeaderBarBtn):
         HeaderBarBtn.__init__(self, icon_name, tooltip)
 
 
-
-
 class HeaderBar(Gtk.HeaderBar):
     """
     HeaderBar widget
@@ -105,7 +103,7 @@ class HeaderBar(Gtk.HeaderBar):
                                           _("Selection mode"))
 
         self.cancel_btn = Gtk.Button(label=_("Cancel"))
-        
+
         self.popover = None
 
         self._build_widgets()
@@ -154,14 +152,12 @@ class HeaderBar(Gtk.HeaderBar):
         self.popover.props.width_request = 200
         box.add(self.settings_btn)
 
-
     def toggle_popover(self, *args):
         if self.popover:
             if self.popover.get_visible():
                 self.popover.hide_()
             else:
                 self.popover.show_all()
-
 
     def toggle_settings_button(self, visible):
         if not is_gnome():

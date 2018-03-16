@@ -23,7 +23,7 @@ require_version("Gtk", "3.0")
 from gi.repository import Gtk
 
 
-class ActionsBar(Gtk.ActionBar): 
+class ActionsBar(Gtk.ActionBar):
 
     instance = None
 
@@ -39,7 +39,6 @@ class ActionsBar(Gtk.ActionBar):
         if ActionsBar.instance is None:
             ActionsBar.instance = ActionsBar()
         return ActionsBar.instance
-
 
     def _build_widgets(self):
         self.delete_btn = Gtk.Button(label=_("Delete"))

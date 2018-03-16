@@ -19,4 +19,3 @@
 from .add import AddAcountWindow
 from .list import AccountsList, EmptyAccountsList, AccountsListState
 from .row import AccountRow
- 
