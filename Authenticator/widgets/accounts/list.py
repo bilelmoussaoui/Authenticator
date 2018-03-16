@@ -61,6 +61,7 @@ class AccountsList(Gtk.ListBox, GObject.GObject):
         accounts = Database.get_default().accounts
         for account in accounts:
             _id, name, secret_id, logo = account.values()
+            print(account.values())
             self.add(AccountRow(Account(_id, name, secret_id, logo)))
 
     def append(self, name, secret_id, logo):

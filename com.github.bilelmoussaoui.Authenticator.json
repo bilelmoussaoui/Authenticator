@@ -141,7 +141,8 @@
        "buildsystem": "meson",
        "sources": [{
          "type": "git",
-         "url": "https://github.com/bilelmoussaoui/Authenticator"
+         "url": "https://github.com/bilelmoussaoui/Authenticator",
+         "branch": "beta"
        }]
      }
    ]
