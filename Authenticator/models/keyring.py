@@ -43,7 +43,7 @@ class Keyring:
     def get_by_id(id_):
         """Return the secret code"""
         schema = Keyring.get_default().schema
-        password = Secret.password_lookup_sync(schema, { "id": id_ }, None)
+        password = Secret.password_lookup_sync(schema, { "id": str(id_)}, None)
         return password
 
     @staticmethod
@@ -55,7 +55,7 @@ class Keyring:
         """
         schema = Keyring.get_default().schema
         Secret.password_store_sync(schema, {
-            "id": id_,
+            "id": str(id_),
         }, Secret.COLLECTION_DEFAULT, "", secret_code, None)
 
     @staticmethod
@@ -66,5 +66,5 @@ class Keyring:
         :return: bool
         """
         schema = Keyring.get_default().schema
-        removed = Secret.password_clear_sync(schema, { "id": id_ }, None)
+        removed = Secret.password_clear_sync(schema, { "id": str(id_)}, None)
         return removed
