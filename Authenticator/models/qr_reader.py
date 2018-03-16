@@ -37,6 +37,7 @@ class QRReader:
         with open(self.filename, 'rb') as image_file:
             image = Image.open(image_file)
             image.load()
+        print(zbarlight)
         self._codes = zbarlight.scan_codes('qrcode', image)
         self.remove()
         if self._codes:
