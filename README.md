@@ -1,8 +1,8 @@
-<a href="https://hosted.weblate.org/engage/gnome-twofactorauth/?utm_source=widget"><img src="https://hosted.weblate.org/widgets/gnome-twofactorauth/-/svg-badge.svg" alt="Translation status" /></a> ![Status](https://img.shields.io/badge/status-stable-green.svg) [![Version](https://img.shields.io/badge/version-0.1.1-green.svg)](https://github.com/bil-elmoussaoui/Gnome-TwoFactorAuth/releases) ![Python
+<a href="https://hosted.weblate.org/engage/Authenticator/?utm_source=widget"><img src="https://hosted.weblate.org/widgets/Authenticator/-/svg-badge.svg" alt="Translation status" /></a> ![Status](https://img.shields.io/badge/status-stable-green.svg) [![Version](https://img.shields.io/badge/version-0.1.1-green.svg)](https://github.com/bilelmoussaoui/Authenticator/releases) ![Python
 version](https://img.shields.io/badge/python-3.3%2B-blue.svg)
 
-# Gnome Authenticator
-<img src="https://raw.githubusercontent.com/bil-elmoussaoui/Gnome-Authenticator/master/data/icons/hicolor/scalable/apps/org.gnome.Authenticator.svg" width="128" height="128" />
+# Authenticator
+<img src="https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/icons/hicolor/scalable/apps/com.github.bilelmoussaoui.Authenticator.svg" width="128" height="128" />
 <p>Two-factor authentication code generator for Gnome. Created with love using Python and Gtk.</p>
 
 ### Dependecies
@@ -39,7 +39,7 @@ PS: The application was only tested on Arch with Gtk 3.20+, but it should work n
 - On Arch :
 
 ```bash
-yaourt -S gnome-twofactorauth
+yaourt -S Authenticator
 ```
 
 - On Ubuntu (xenial/yakkety) using GetDeb Apps PPA:
@@ -48,20 +48,20 @@ yaourt -S gnome-twofactorauth
  wget -q -O - http://archive.getdeb.net/getdeb-archive.key | sudo apt-key add -
 sudo sh -c 'echo "deb http://archive.getdeb.net/ubuntu xenial-getdeb apps" >> /etc/apt/sources.list.d/getdeb.list'
 sudo apt update
-sudo apt install gnome-twofactorauth
+sudo apt install Authenticator
  ```
 
 ### Credits
 
 - Websites and application icons are from Paper theme, created by [Sam Hewitt](https://github.com/snwh)
-- Applications/Websites database are from [twofactorauth](https://github.com/2factorauth/twofactorauth), by 2factorauth team
+- Applications/Websites database are from [Authenticator](https://github.com/2factorauth/Authenticator), by 2factorauth team
 
 ### How to build from source
 
 1 - Clone the repository
 
 ```bash
-git clone https://github.com/bil-elmoussaoui/Gnome-Authenticator && cd ./Gnome-Authenticator
+git clone https://github.com/bilelmoussaoui/Authenticator && cd ./Authenticator
 ```
 
 2 - Install Python dependecies
@@ -81,10 +81,10 @@ sudo ninja -C builddir install
 
 4 - You can run the application from the desktop file or from terminal using
 ```bash
-gnome-authenticator
+authenticator
 ```
 
-<sub>Arch users can build from source directly using AUR `yaourt -S gnome-twofactorauth-git`</sub>
+<sub>Arch users can build from source directly using AUR `yaourt -S Authenticator-git`</sub>
 
 ### Flags
 

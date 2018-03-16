@@ -1,20 +1,20 @@
 """
  Copyright © 2017 Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>
 
- This file is part of Gnome Authenticator.
+ This file is part of Authenticator.
 
- Gnome Authenticator is free software: you can redistribute it and/or
+ Authenticator is free software: you can redistribute it and/or
  modify it under the terms of the GNU General Public License as published
  by the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
 
- TwoFactorAuth is distributed in the hope that it will be useful,
+ Authenticator is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
 
  You should have received a copy of the GNU General Public License
- along with Gnome Authenticator. If not, see <http://www.gnu.org/licenses/>.
+ along with Authenticator. If not, see <http://www.gnu.org/licenses/>.
 """
 from gi import require_version
 require_version("Gtk", "3.0")
@@ -27,14 +27,32 @@ class SearchBar(Gtk.Revealer):
         Search Bar widget.
     """
 
-    def __init__(self, window, search_button, *args):
+    def __init__(self, search_button=None, search_list=[]):
         self.search_entry = Gtk.SearchEntry()
-        self.search_list = args[0]
+        self.search_list = search_list
         self.search_button = search_button
-        self.window = window
         self._build_widgets()
-        self.search_button.connect("toggled", self.toggle)
-        self.window.connect("key-press-event", self.__on_key_press)
+
+    @property
+    def search_list(self):
+        return self._search_list
+        
+    @search_list.setter
+    def search_list(self, value):
+        if value:
+            self._search_list = value
+
+
+    @property
+    def search_button(self):
+        return self._search_button
+
+    @search_button.setter
+    def search_button(self, widget):
+        if widget:
+            self._search_button = widget
+            self._search_button.connect("toggled", 
+                                        self.toggle)
 
     def _build_widgets(self):
         """
@@ -44,11 +62,11 @@ class SearchBar(Gtk.Revealer):
         box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
 
         self.search_entry.set_width_chars(28)
-        self.search_entry.connect(
-            "search-changed", self.set_filter_func, self.filter_func)
+        self.search_entry.connect("search-changed", 
+                                self.set_filter_func, 
+                                self.filter_func)
 
         box.pack_start(self.search_entry, True, False, 12)
-        box.props.margin = 6
 
         self.add(box)
         self.set_reveal_child(False)
@@ -57,7 +75,9 @@ class SearchBar(Gtk.Revealer):
         if self.is_visible():
             self.search_entry.set_text("")
             self.set_reveal_child(False)
-            self.set_filter_func(lambda x, y, z: True)
+            def filter_func(*args):
+                return True
+            self.set_filter_func(self.search_entry, filter_func)
         else:
             self.set_reveal_child(True)
             self.focus()
@@ -76,7 +96,8 @@ class SearchBar(Gtk.Revealer):
 
     def __on_key_press(self, widget, event):
         key_name = Gdk.keyval_name(event.keyval).lower()
-        if key_name == 'escape' and self.search_button.get_active():
+        is_activez = self.search_button.get_active()
+        if key_name == 'escape' and is_active:
             if self.search_entry.is_focus():
                 self.search_button.set_active(False)
                 self.search_entry.set_text("")
@@ -91,8 +112,7 @@ class SearchBar(Gtk.Revealer):
 
             if event.state & Gdk.ModifierType.CONTROL_MASK:
                 if key_name == 'f':
-                    self.search_button.set_active(
-                        not self.search_button.get_active())
+                    self.search_button.set_active(is_active)
                     return True
         return False
 

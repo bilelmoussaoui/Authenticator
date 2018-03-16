@@ -2,10 +2,12 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+.flatpak-builder/
+authenticator/
 tags
 # C extensions
 *.so
+*.po~
 
 # Distribution / packaging
 builddir/

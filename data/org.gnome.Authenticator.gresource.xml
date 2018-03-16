@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gresources>
-  <gresource prefix="/org/gnome/Authenticator">
-    <file>org.gnome.Authenticator-post3.20.css</file>
-    <file>org.gnome.Authenticator-pre3.20.css</file>
-    <file>data.json</file>
-  </gresource>
-</gresources>

@@ -12,8 +12,8 @@ from collections import OrderedDict
 
 import yaml
 
-GIT_CLONE_URI = "https://github.com/2factorauth/twofactorauth.git"
-TMP_FOLDER = path.join(tempfile.gettempdir(), "twofactorauth")
+GIT_CLONE_URI = "https://github.com/2factorauth/Authenticator.git"
+TMP_FOLDER = path.join(tempfile.gettempdir(), "Authenticator")
 DATA_DIR = path.join(TMP_FOLDER, "_data")
 OUTPUT_DIR = path.join(path.dirname(
     path.realpath(__file__)), "../data/data.json")
@@ -25,7 +25,7 @@ if path.exists(TMP_FOLDER):
 call(["git", "clone", GIT_CLONE_URI, TMP_FOLDER])
 
 if path.exists(OUTPUT_DIR):
-    remove(DATA_DIR)
+    remove(OUTPUT_DIR)  
 
 
 def is_valid(provider):

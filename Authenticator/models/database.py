@@ -1,23 +1,22 @@
 """
  Copyright © 2017 Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>
 
- This file is part of Gnome Authenticator.
+ This file is part of Authenticator.
 
- Gnome Authenticator is free software: you can redistribute it and/or
+ Authenticator is free software: you can redistribute it and/or
  modify it under the terms of the GNU General Public License as published
  by the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
 
- TwoFactorAuth is distributed in the hope that it will be useful,
+ Authenticator is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
 
- You should have received a copy of the GNU General Public License
- along with Gnome Authenticator. If not, see <http://www.gnu.org/licenses/>.
+ You  ould have received a copy of the GNU General Public License
+ along with Authenticator. If not, see <http://www.gnu.org/licenses/>.
 """
 import sqlite3
-from hashlib import sha256
 from os import path, makedirs
 
 from gi.repository import GLib
@@ -50,23 +49,22 @@ class Database:
             Database.instance = Database()
         return Database.instance
 
-    def insert(self, name, secret_code, image):
+    def insert(self, name, secret, image):
         """
         Insert a new account to the database
         :param name: Account name
-        :param secret_code: the secret code
+        :param secret: the secret code
         :param image: the image name/url
         :return: a dict with id, name, image & encrypted_secret
         """
-        encrypted_secret = sha256(secret_code.encode('utf-8')).hexdigest()
         query = "INSERT INTO accounts (name, secret_code, image) VALUES (?, ?, ?)"
         try:
-            self.conn.execute(query, [name, secret_code, image])
+            self.conn.execute(query, [name, secret, image])
             self.conn.commit()
             return {
                 "id": self.latest_id,
                 "name": name,
-                "encrypted_secret": encrypted_secret,
+                "secret_id": secret,
                 "image": image
             }
         except Exception as error:
@@ -140,7 +138,12 @@ class Database:
         query = "SELECT * FROM accounts"
         try:
             data = self.conn.cursor().execute(query)
-            return data.fetchall()
+            accounts = data.fetchall()
+            return [ {"id": account[0], 
+                      "name": account[1], 
+                      "secret_id": account[2], 
+                      "logo": account[3]
+                      } for account in accounts]
         except Exception as error:
             Logger.error("[SQL] Couldn't fetch accounts list")
             Logger.error(str(error))

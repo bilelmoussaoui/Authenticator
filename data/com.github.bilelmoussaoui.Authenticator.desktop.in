@@ -1,19 +1,19 @@
 [Desktop Entry]
-Name=Gnome Authenticator
+Name=Authenticator
 GenericName=Two Factor Authentication
 Comment=Two-Factor Authentication code generator
 Type=Application
-Exec=gnome-authenticator
+Exec=authenticator
 Terminal=false
 Categories=GNOME;GTK;
 Keywords=Gnome;GTK;Verification;
-Icon=Gnome Authenticator
+Icon=com.github.bilelmoussaoui.Authenticator
 StartupNotify=true
 X-GNOME-Gettext-Domain=Authenticator
-StartupWMClass=org.gnome.Authenticator
+StartupWMClass=com.github.bilelmoussaoui.Authenticator
 Actions=AboutDialog;
 
 
 [Desktop Action AboutDialog]
-Exec=gnome-authenticator --about
-Name=About Gnome Authenticator
+Exec=authenticator --about
+Name=About Authenticator

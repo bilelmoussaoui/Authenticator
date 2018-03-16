@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+ <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
@@ -12,7 +12,7 @@
    viewBox="0 0 4.2333332 4.2333335"
    height="16"
    width="16"
-   sodipodi:docname="org.gnome.Authenticator-symbolic.svg"
+   sodipodi:docname="com.github.bilelmoussaoui.Authenticator-symbolic.svg"
    inkscape:version="0.92.0 unknown">
   <sodipodi:namedview
      pagecolor="#ffffff"

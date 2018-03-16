@@ -1,20 +1,20 @@
 """
 Copyright © 2017 Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>
 
-This file is part of Gnome Authenticator.
+This file is part of Authenticator.
 
-Gnome Authenticator is free software: you can redistribute it and/or
+Authenticator is free software: you can redistribute it and/or
 modify it under the terms of the GNU General Public License as published
 by the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-TwoFactorAuth is distributed in the hope that it will be useful,
+Authenticator is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Gnome Authenticator. If not, see <http://www.gnu.org/licenses/>.
+along with Authenticator. If not, see <http://www.gnu.org/licenses/>.
 """
 from gettext import gettext as _
 
@@ -23,8 +23,25 @@ require_version("Gtk", "3.0")
 from gi.repository import Gtk
 
 
-class ActionsBar(Gtk.ActionBar):
+class ActionsBar(Gtk.ActionBar): 
+
+    instance = None
 
     def __init__(self):
         Gtk.ActionBar.__init__(self)
         self._build_widgets()
+        self.show_all()
+        self.set_visible(False)
+        self.set_no_show_all(True)
+
+    @staticmethod
+    def get_default():
+        if ActionsBar.instance is None:
+            ActionsBar.instance = ActionsBar()
+        return ActionsBar.instance
+
+
+    def _build_widgets(self):
+        self.delete_btn = Gtk.Button(label=_("Delete"))
+
+        self.pack_end(self.delete_btn)

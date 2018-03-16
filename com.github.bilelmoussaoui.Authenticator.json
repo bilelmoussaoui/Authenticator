@@ -1,0 +1,115 @@
+ {
+  "app-id": "com.github.bilelmoussaoui.Authenticator",
+  "runtime": "org.gnome.Platform",
+  "runtime-version": "3.26",
+  "sdk": "org.gnome.Sdk",
+  "command": "gnome-authenticator",
+  "separate-locales": false,
+  "finish-args": [
+    "--socket=x11",
+    "--filesystem=host",
+    "--talk-name=org.freedesktop.Notifications",
+    "--talk-name=org.freedesktop.secrets",
+    "--talk-name=ca.desrt.dconf"
+  ],
+  "modules": [{
+      "name": "imagemagick",
+      "config-opts": [
+        "--enable-static=no",
+        "--disable-docs",
+        "--disable-deprecated",
+        "--without-autotrace",
+        "--without-bzlib",
+        "--without-djvu",
+        "--without-dps",
+        "--without-fftw",
+        "--without-fontconfig",
+        "--without-fpx",
+        "--without-freetype",
+        "--without-gvc",
+        "--without-jbig",
+        "--without-jpeg",
+        "--without-lcms",
+        "--without-lzma",
+        "--without-magick-plus-plus",
+        "--without-openexr",
+        "--without-openjp2",
+        "--without-pango",
+        "--without-raqm",
+        "--without-tiff",
+        "--without-webp",
+        "--without-wmf",
+        "--without-x",
+        "--without-xml",
+        "--without-zlib"
+      ],
+      "sources": [{
+        "type": "archive",
+        "url": "https://www.imagemagick.org/download/ImageMagick-7.0.7-25.tar.xz",
+        "sha256": "3538c33b2bb44d55ba146271e7584d79c1d2d10ab592a6efa49264ad630bf961"
+      }]
+    }, {
+      "name": "zbar",
+      "config-opts": [
+        "--prefix=/usr",
+        "--without-qt",
+        "--without-gtk",
+        "--disable-video",
+        "CFLAGS=-DNDEBUG"
+      ],
+      "sources": [{
+        "type": "archive",
+        "url": "http://downloads.sourceforge.net/project/zbar/zbar/0.10/zbar-0.10.tar.bz2",
+        "sha256": "234efb39dbbe5cef4189cc76f37afbe3cfcfb45ae52493bfe8e191318bdbadc6"
+      }]
+    },
+    {
+      "name": "pyotp",
+      "sources": [{
+        "type": "archive",
+        "url": "https://pypi.python.org/packages/ac/0c/bd96508e36956ae627e527a7a7fba486865a738b4682e7290cd0e7c34f52/pyotp-2.2.4.tar.gz#md5=16cb1a08d38777ca74b5e9c7803810b6",
+        "sha256": "92c3973ba91273e7e4a7fd4a1020ae4b050ccd2e149b554911e1b45ca458ac2d"
+      }]
+    },
+    {
+      "name": "pyaml",
+      "sources": [{
+        "type": "archive",
+        "url": "https://pypi.python.org/packages/aa/bc/68c34bd6c5a7bd6d2ecf94ba7cd2337c9f9be58d670e2edef16fa1e0d6a2/pyaml-16.12.2.tar.gz#md5=3f2f2f113b65be2e33272ffff411ecc2",
+        "sha256": "b865e4f53a85f4d8a092e7701f759a3237fb3ee8a928627401914aafadc00907"
+      }]
+    },
+    {
+      "name": "Pillow",
+      "sources": [{
+        "type": "archive",
+        "url": "https://pypi.python.org/packages/8d/80/eca7a2d1a3c2dafb960f32f844d570de988e609f5fd17de92e1cf6a01b0a/Pillow-4.0.0.tar.gz#md5=d5af224b0fa2c66dacc9814785fef9e7",
+        "sha256": "ee26d2d7e7e300f76ba7b796014c04011394d0c4a5ed9a288264a3e443abca50"
+      }]
+    },
+    {
+      "name": "gnome-screenshot",
+      "sources": [{
+        "type": "git",
+        "url": "https://git.gnome.org/browse/gnome-screenshot",
+        "branch": "gnome-3-22"
+      }]
+    },
+    {
+      "name": "gnome-keyring",
+      "sources": [{
+        "type": "git",
+        "url": "https://git.gnome.org/browse/gnome-keyring/",
+        "branch": "gnome-3-20"
+      }]
+    },
+    {
+      "name": "Authenticator",
+      "buildsystem": "meson",
+      "sources": [{
+        "type": "url",
+        "url": "file://home/bilal/Gnome-Authenticator/"
+      }]
+    }
+  ]
+}

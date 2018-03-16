@@ -1,20 +1,20 @@
 """
  Copyright © 2017 Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>
 
- This file is part of Gnome Authenticator.
+ This file is part of Authenticator.
 
- Gnome Authenticator is free software: you can redistribute it and/or
+ Authenticator is free software: you can redistribute it and/or
  modify it under the terms of the GNU General Public License as published
  by the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
 
- TwoFactorAuth is distributed in the hope that it will be useful,
+ Authenticator is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
 
  You should have received a copy of the GNU General Public License
- along with Gnome Authenticator. If not, see <http://www.gnu.org/licenses/>.
+ along with Authenticator. If not, see <http://www.gnu.org/licenses/>.
 """
 from os import path, environ
 import logging
@@ -41,7 +41,7 @@ def screenshot_area():
                          stdout=PIPE, stderr=PIPE).communicate()
         if error:
             error = error.decode("utf-8").split("\n")
-            logging.error("\n".join([e for e in error]))
+            logging.error("\n".join([e for e in error])) 
         if not path.isfile(file_name):
             logging.debug("The screenshot was not token")
             return None

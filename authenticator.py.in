@@ -3,20 +3,20 @@
 """
  Copyright © 2017 Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>
 
- This file is part of Gnome-TwoFactorAuth.
+ This file is part of Authenticator.
 
- TwoFactorAuth is free software: you can redistribute it and/or
+ Authenticator is free software: you can redistribute it and/or
  modify it under the terms of the GNU General Public License as published
  by the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
 
- Gnome-TwoFactorAuth is distributed in the hope that it will be useful,
+ Authenticator is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
 
  You should have received a copy of the GNU General Public License
- along with Gnome-TwoFactorAuth. If not, see <http://www.gnu.org/licenses/>.
+ along with Authenticator. If not, see <http://www.gnu.org/licenses/>.
 """
 
 import argparse
@@ -40,11 +40,11 @@ if __name__ == "__main__":
     gettext.textdomain('Authenticator')
     VERSION = "@VERSION@"
 
-    parser = argparse.ArgumentParser(prog="Gnome Authenticator")
+    parser = argparse.ArgumentParser(prog="Authenticator")
     parser.add_argument("--debug", "-d", action="store_true",
                         help=_("Start in debug mode"))
     parser.add_argument("--version", "-v", action="store_true",
-                        help=_("Gnome Authenticator version number"))
+                        help=_("Authenticator version number"))
     args = parser.parse_args()
 
     level = Logger.ERROR
@@ -54,7 +54,7 @@ if __name__ == "__main__":
         faulthandler.enable()
 
     resource = Gio.resource_load(path.join('@DATA_DIR@',
-                                           'org.gnome.Authenticator.gresource'))
+                                           'com.github.bilelmoussaoui.Authenticator.gresource'))
     Gio.Resource._register(resource)
     if args.version:
         sys.exit("Version : " + str(VERSION))

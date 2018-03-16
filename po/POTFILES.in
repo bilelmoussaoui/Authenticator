@@ -1,13 +1,13 @@
-TwoFactorAuth/application.py
-TwoFactorAuth/widgets/account_row.py
-TwoFactorAuth/widgets/add_account.py
-TwoFactorAuth/widgets/applications_list.py
-TwoFactorAuth/widgets/change_password.py
-TwoFactorAuth/widgets/headerbar.py
-TwoFactorAuth/widgets/inapp_notification.py
-TwoFactorAuth/widgets/login_window.py
-TwoFactorAuth/widgets/no_account_window.py
-TwoFactorAuth/widgets/settings.py
-data/Gnome Authenticator.appdata.xml.in
-data/Gnome Authenticator.desktop.in
-Gnome Authenticator.py.in
+Authenticator/application.py
+Authenticator/widgets/accounts/add.py
+Authenticator/widgets/accounts/list.py
+Authenticator/widgets/accounts/row.py
+Authenticator/widgets/about.py
+Authenticator/widgets/actions_bar.py
+Authenticator/widgets/headerbar.py
+Authenticator/widgets/inapp_notification.py
+Authenticator/widgets/search_bar.py
+Authenticator/widgets/window.py
+data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in
+data/com.github.bilelmoussaoui.Authenticator.desktop.in
+authenticator.py.in

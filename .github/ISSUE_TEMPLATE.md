@@ -6,7 +6,7 @@
  * Desktop environment -
  ```
 
-**Gnome Authenticator version**
+**Authenticator version**
 
 
 **Actual issue**

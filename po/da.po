@@ -7,11 +7,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-13 00:20+0100\n"
+"POT-Creation-Date: 2018-03-16 04:03+0100\n"
 "PO-Revision-Date: 2017-09-14 19:54+0000\n"
 "Last-Translator: Jakob Bo Kristensen <jakobbo@gmail.com>\n"
 "Language-Team: Danish <https://hosted.weblate.org/projects/gnome-"
-"twofactorauth/translation/da/>\n"
+"Authenticator/translation/da/>\n"
 "Language: da\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,223 +19,237 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 2.17-dev\n"
 
-#: ../TwoFactorAuth/application.py:46
-msgid "TwoFactorAuth"
+#: Authenticator/application.py:36 Authenticator/widgets/about.py:40
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:5
+#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:3
+msgid "Authenticator"
 msgstr "TofaktorAutentifikation"
 
-#: ../TwoFactorAuth/application.py:82 ../TwoFactorAuth/widgets/headerbar.py:117
-#: ../TwoFactorAuth/widgets/settings.py:42
-msgid "Settings"
-msgstr "Indstillinger"
+#. Night mode action
+#: Authenticator/application.py:79
+msgid "Night Mode"
+msgstr ""
 
-#: ../TwoFactorAuth/application.py:90
-msgid "Shortcuts"
-msgstr "Genveje"
-
-#: ../TwoFactorAuth/application.py:92
+#: Authenticator/application.py:82
 msgid "About"
 msgstr "Om"
 
-#: ../TwoFactorAuth/application.py:93
+#: Authenticator/application.py:83
 msgid "Quit"
 msgstr "Afslut"
 
-#: ../TwoFactorAuth/widgets/account_row.py:157
-#, python-format
-msgid "Code \"%s\" copied to clipboard"
-msgstr "Kode \"%s\" kopieret til clipboard"
-
-#: ../TwoFactorAuth/widgets/account_row.py:222
-msgid "Remove the account"
-msgstr "Fjern kontoen"
-
-#: ../TwoFactorAuth/widgets/account_row.py:232
-msgid "Copy the generated code"
-msgstr "Kopier den genererede kode"
-
-#: ../TwoFactorAuth/widgets/account_row.py:242
-msgid "Edit the account"
-msgstr "Redigér kontoen"
-
-#: ../TwoFactorAuth/widgets/account_row.py:252
-msgid "Save the new account name"
-msgstr "Gem det nye kontonavn"
-
-#: ../TwoFactorAuth/widgets/account_row.py:260
-#: ../TwoFactorAuth/widgets/account_row.py:386
-#, python-format
-msgid "Expires in %s seconds"
-msgstr "Udløber om %s sekunder"
-
-#: ../TwoFactorAuth/widgets/account_row.py:266
-msgid "Error during the generation of code"
-msgstr "Fejl under generering af kode"
-
-#: ../TwoFactorAuth/widgets/account_row.py:311
-msgid "Couldn't generate the secret code"
-msgstr "Kunne ikke generere den hemmelige kode"
-
-#: ../TwoFactorAuth/widgets/account_row.py:373
-#, python-format
-msgid "Do you really want to remove \"%s\"?"
-msgstr "Er du sikker på, at du vil slette \"%s\"?"
-
-#: ../TwoFactorAuth/widgets/account_row.py:377
-#, python-format
-msgid "\"%s\" was removed"
-msgstr "\"%s\" blev slettet"
-
-#: ../TwoFactorAuth/widgets/add_account.py:50
-#: ../TwoFactorAuth/widgets/add_account.py:67
-#: ../TwoFactorAuth/widgets/headerbar.py:71
+#: Authenticator/widgets/accounts/add.py:51
+#: Authenticator/widgets/headerbar.py:101
 msgid "Add a new account"
 msgstr "Tilføj en ny konto"
 
-#: ../TwoFactorAuth/widgets/add_account.py:72
-#: ../TwoFactorAuth/widgets/applications_list.py:115
-#: ../TwoFactorAuth/widgets/change_password.py:162
-#: ../TwoFactorAuth/widgets/headerbar.py:105
-msgid "Cancel"
-msgstr "Afbryd"
-
-#: ../TwoFactorAuth/widgets/add_account.py:77
-msgid "Add"
-msgstr "Tilføj"
-
-#: ../TwoFactorAuth/widgets/add_account.py:85
-msgid "Scan a QR code"
-msgstr "Indskan en QR-kode"
-
-#: ../TwoFactorAuth/widgets/add_account.py:107
-msgid "Account Name"
-msgstr "Kontonavn"
-
-#: ../TwoFactorAuth/widgets/add_account.py:115
-msgid "Secret Code"
-msgstr "Hemmelig kode"
-
-#: ../TwoFactorAuth/widgets/add_account.py:145
-msgid "Selected area is not a valid QR code"
-msgstr "Det valgte område er ikke en valid QR-kode"
-
-#: ../TwoFactorAuth/widgets/applications_list.py:110
-msgid "Select an application"
-msgstr "Vælg en applikation"
-
-#: ../TwoFactorAuth/widgets/applications_list.py:122
-#: ../TwoFactorAuth/widgets/headerbar.py:101
+#: Authenticator/widgets/accounts/add.py:60
+#: Authenticator/widgets/headerbar.py:99
 msgid "Search"
 msgstr "Søg"
 
-#: ../TwoFactorAuth/widgets/applications_list.py:125
+#: Authenticator/widgets/accounts/add.py:64
+#, fuzzy
+msgid "Scan QR code"
+msgstr "Indskan en QR-kode"
+
+#: Authenticator/widgets/accounts/add.py:99
 msgid "Next"
 msgstr "Næste"
 
-#: ../TwoFactorAuth/widgets/change_password.py:36
-msgid "Apply"
+#: Authenticator/widgets/accounts/add.py:100
+msgid "Close"
+msgstr ""
+
+#: Authenticator/widgets/accounts/add.py:108
+msgid "Add"
 msgstr "Tilføj"
 
-#: ../TwoFactorAuth/widgets/change_password.py:46
-msgid "Change password"
-msgstr "Skift password"
+#: Authenticator/widgets/accounts/add.py:109
+msgid "Back"
+msgstr ""
 
-#: ../TwoFactorAuth/widgets/change_password.py:78
-msgid "Old password"
-msgstr "Gammelt password"
+#: Authenticator/widgets/accounts/add.py:245
+#, fuzzy
+msgid "Account name"
+msgstr "Kontonavn"
 
-#: ../TwoFactorAuth/widgets/change_password.py:88
-msgid "New password"
-msgstr "Nyt password"
+#: Authenticator/widgets/accounts/add.py:247
+#, fuzzy
+msgid "Secret Token"
+msgstr "Hemmelig kode"
 
-#: ../TwoFactorAuth/widgets/change_password.py:98
-msgid "Repeat new password"
-msgstr "Gentag nyt password"
+#: Authenticator/widgets/accounts/add.py:293
+#, fuzzy
+msgid "Invalid QR code"
+msgstr "Indskan en QR-kode"
 
-#: ../TwoFactorAuth/widgets/headerbar.py:64
-msgid "Remove selected accounts"
-msgstr "Fjern valgte konti"
+#. Label
+#: Authenticator/widgets/accounts/list.py:121
+#, fuzzy
+msgid "There's no account yet..."
+msgstr "Der er ingen konto i øjeblikket"
 
-#: ../TwoFactorAuth/widgets/headerbar.py:78
-msgid "Lock the Application"
-msgstr "Lås applikationen"
+#: Authenticator/widgets/accounts/row.py:53
+msgid "Copy"
+msgstr ""
 
-#: ../TwoFactorAuth/widgets/headerbar.py:94
+#: Authenticator/widgets/accounts/row.py:118
+msgid "Couldn't generate the secret code"
+msgstr "Kunne ikke generere den hemmelige kode"
+
+#: Authenticator/widgets/about.py:41
+msgid "translator-credits"
+msgstr ""
+
+#: Authenticator/widgets/about.py:43
+#, fuzzy
+msgid "Two factor authentication codes generator."
+msgstr "TofaktorAutentifikation kodegenerator"
+
+#: Authenticator/widgets/actions_bar.py:45
+msgid "Delete"
+msgstr ""
+
+#: Authenticator/widgets/headerbar.py:103
+msgid "Settings"
+msgstr "Indstillinger"
+
+#: Authenticator/widgets/headerbar.py:105
 msgid "Selection mode"
 msgstr "Udvælgelsesindstilling"
 
-#: ../TwoFactorAuth/widgets/inapp_notification.py:28
+#: Authenticator/widgets/headerbar.py:107
+msgid "Cancel"
+msgstr "Afbryd"
+
+#: Authenticator/widgets/headerbar.py:187
+msgid "Click on items to select them"
+msgstr ""
+
+#: Authenticator/widgets/inapp_notification.py:51
+#: Authenticator/widgets/inapp_notification.py:79
 msgid "Undo"
 msgstr "Fortryd"
 
-#: ../TwoFactorAuth/widgets/inapp_notification.py:39
-msgid "Hide notification"
-msgstr "Skjul beskeder"
-
-#: ../TwoFactorAuth/widgets/login_window.py:45
-msgid "Enter your password"
-msgstr "Indtast dit password"
-
-#: ../TwoFactorAuth/widgets/login_window.py:48
-msgid "Unlock"
-msgstr "Lås op"
-
-#: ../TwoFactorAuth/widgets/no_account_window.py:39
-msgid "There's no account at the moment"
-msgstr "Der er ingen konto i øjeblikket"
-
-#: ../TwoFactorAuth/widgets/settings.py:70
-msgid "Behavior"
-msgstr "Adfærd"
-
-#: ../TwoFactorAuth/widgets/settings.py:75
-msgid "Account"
-msgstr "Konto"
-
-#: ../TwoFactorAuth/widgets/settings.py:89
-msgid "Password protection"
-msgstr "Passwordbeskyttelse"
-
-#: ../TwoFactorAuth/widgets/settings.py:113
-msgid "Auto-lock the application (m):"
-msgstr "Lås applikationen automatisk (m):"
-
-#: ../data/gnome-twofactorauth.appdata.xml.in.h:1
-#: ../data/gnome-twofactorauth.desktop.in.h:1
-msgid "Gnome Authenticator"
-msgstr "Gnome TofaktorAutentifikation"
-
-#: ../data/gnome-twofactorauth.appdata.xml.in.h:2
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:6
 msgid "Two Factor Authentication code generator"
 msgstr "TofaktorAutentifikation kodegenerator"
 
-#: ../data/gnome-twofactorauth.appdata.xml.in.h:3
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:8
+#, fuzzy
 msgid ""
-"Simple application that generates two-factor authentication code, created "
-"for Gnome"
+"Simple application that generates 2 factor authentication code, created for "
+"Gnome"
 msgstr ""
 "Enkel applikation som genererer to-faktor autentifikationskode, lavet til "
 "Gnome"
 
-#: ../data/gnome-twofactorauth.desktop.in.h:2
+#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:4
 msgid "Two Factor Authentication"
 msgstr "TofaktorAutentifikation"
 
-#: ../data/gnome-twofactorauth.desktop.in.h:3
+#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:5
 msgid "Two-Factor Authentication code generator"
 msgstr "TofaktorAutentifikation kodegenerator"
 
-#: ../data/gnome-twofactorauth.desktop.in.h:4
-msgid "About Gnome Authenticator"
+#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:10
+msgid "Gnome;GTK;Verification;"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:11
+msgid "com.github.bilelmoussaoui.Authenticator"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:20
+msgid "About Authenticator"
 msgstr "Om Gnome TofaktorAutentifikation"
 
-#: ../gnome-twofactorauth.in:50
+#: authenticator.py.in:45
 msgid "Start in debug mode"
 msgstr "Start i debug-tilstand"
 
-#: ../gnome-twofactorauth.in:52
-msgid "Gnome-TwoFactorAuth version number"
+#: authenticator.py.in:47
+msgid "Authenticator version number"
 msgstr "Gnome-TofaktorAutentifikation versionsnummer"
 
-#: ../gnome-twofactorauth.in:54
-msgid "Show about dialog"
-msgstr "Vis Om dialog"
+#~ msgid "Shortcuts"
+#~ msgstr "Genveje"
+
+#~ msgid "Code \"%s\" copied to clipboard"
+#~ msgstr "Kode \"%s\" kopieret til clipboard"
+
+#~ msgid "Remove the account"
+#~ msgstr "Fjern kontoen"
+
+#~ msgid "Copy the generated code"
+#~ msgstr "Kopier den genererede kode"
+
+#~ msgid "Edit the account"
+#~ msgstr "Redigér kontoen"
+
+#~ msgid "Save the new account name"
+#~ msgstr "Gem det nye kontonavn"
+
+#~ msgid "Expires in %s seconds"
+#~ msgstr "Udløber om %s sekunder"
+
+#~ msgid "Error during the generation of code"
+#~ msgstr "Fejl under generering af kode"
+
+#~ msgid "Do you really want to remove \"%s\"?"
+#~ msgstr "Er du sikker på, at du vil slette \"%s\"?"
+
+#~ msgid "\"%s\" was removed"
+#~ msgstr "\"%s\" blev slettet"
+
+#~ msgid "Selected area is not a valid QR code"
+#~ msgstr "Det valgte område er ikke en valid QR-kode"
+
+#~ msgid "Select an application"
+#~ msgstr "Vælg en applikation"
+
+#~ msgid "Apply"
+#~ msgstr "Tilføj"
+
+#~ msgid "Change password"
+#~ msgstr "Skift password"
+
+#~ msgid "Old password"
+#~ msgstr "Gammelt password"
+
+#~ msgid "New password"
+#~ msgstr "Nyt password"
+
+#~ msgid "Repeat new password"
+#~ msgstr "Gentag nyt password"
+
+#~ msgid "Remove selected accounts"
+#~ msgstr "Fjern valgte konti"
+
+#~ msgid "Lock the Application"
+#~ msgstr "Lås applikationen"
+
+#~ msgid "Hide notification"
+#~ msgstr "Skjul beskeder"
+
+#~ msgid "Enter your password"
+#~ msgstr "Indtast dit password"
+
+#~ msgid "Unlock"
+#~ msgstr "Lås op"
+
+#~ msgid "Behavior"
+#~ msgstr "Adfærd"
+
+#~ msgid "Account"
+#~ msgstr "Konto"
+
+#~ msgid "Password protection"
+#~ msgstr "Passwordbeskyttelse"
+
+#~ msgid "Auto-lock the application (m):"
+#~ msgstr "Lås applikationen automatisk (m):"
+
+#~ msgid "Show about dialog"
+#~ msgstr "Vis Om dialog"

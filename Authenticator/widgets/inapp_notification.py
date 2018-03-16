@@ -1,20 +1,20 @@
 """
  Copyright © 2017 Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>
 
- This file is part of Gnome Authenticator.
+ This file is part of Authenticator.
 
- Gnome Authenticator is free software: you can redistribute it and/or
+ Authenticator is free software: you can redistribute it and/or
  modify it under the terms of the GNU General Public License as published
  by the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
 
- TwoFactorAuth is distributed in the hope that it will be useful,
+ Authenticator is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
 
  You should have received a copy of the GNU General Public License
- along with Gnome Authenticator. If not, see <http://www.gnu.org/licenses/>.
+ along with Authenticator. If not, see <http://www.gnu.org/licenses/>.
 """
 from gettext import gettext as _
 import logging
@@ -48,8 +48,8 @@ class InAppNotification(Gtk.Revealer):
         action_area = self.infobar.get_action_area()
         self.undo_button = None
         if self.undo_action:
-            self.undo_button = self.infobar.add_button(
-                _("Undo"), Gtk.ResponseType.CANCEL)
+            self.undo_button = self.infobar.add_button(_("Undo"), 
+                                                        Gtk.ResponseType.CANCEL)
 
         self.message_label = Gtk.Label()
         self.message_label.set_text(self.message)
@@ -76,8 +76,8 @@ class InAppNotification(Gtk.Revealer):
     def set_undo_action(self, undo_action):
         if undo_action:
             if not self.undo_button:
-                self.undo_button = self.infobar.add_button(
-                    _("Undo"), Gtk.ResponseType.CANCEL)
+                self.undo_button = self.infobar.add_button(_("Undo"), 
+                                                            Gtk.ResponseType.CANCEL)
             else:
                 self.undo_button.set_visible(True)
                 self.undo_button.set_no_show_all(False)

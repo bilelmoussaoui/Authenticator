@@ -1,27 +1,27 @@
 """
  Copyright © 2017 Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>
 
- This file is part of Gnome Authenticator.
+ This file is part of Authenticator.
 
- Gnome Authenticator is free software: you can redistribute it and/or
+ Authenticator is free software: you can redistribute it and/or
  modify it under the terms of the GNU General Public License as published
  by the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
 
- TwoFactorAuth is distributed in the hope that it will be useful,
+ Authenticator is distr  ibuted in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
 
  You should have received a copy of the GNU General Public License
- along with Gnome Authenticator. If not, see <http://www.gnu.org/licenses/>.
+ along with Authenticator. If not, see <http://www.gnu.org/licenses/>.
 """
 from gettext import gettext as _
 
 from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, GLib, Gio, Gdk, GObject
-from .widgets import SettingsWindow, Window, AboutDialog, ShortcutsWindow
+from .widgets import Window, AboutDialog
 from .models import Settings, Keyring, Clipboard, Logger
 from .utils import is_gnome
 
@@ -31,20 +31,20 @@ class Application(Gtk.Application):
 
     def __init__(self):
         Gtk.Application.__init__(self,
-                                 application_id="org.gnome.Authenticator",
+                                 application_id="com.github.bilelmoussaoui.Authenticator",
                                  flags=Gio.ApplicationFlags.FLAGS_NONE)
-        GLib.set_application_name(_("Gnome Authenticator"))
-        GLib.set_prgname("Gnome Authenticator")
+        GLib.set_application_name(_("Authenticator"))
+        GLib.set_prgname("Authenticator")
         self.alive = True
         self.menu = Gio.Menu()
 
     def setup_css(self):
         """Setup the CSS and load it."""
         if Gtk.get_major_version() >= 3 and Gtk.get_minor_version() >= 20:
-            filename = "org.gnome.Authenticator-post3.20.css"
+            filename = "post3.20.css"
         else:
-            filename = "org.gnome.Authenticator-pre3.20.css"
-        uri = 'resource:///org/gnome/Authenticator/{}'.format(filename)
+            filename = "pre3.20.css"
+        uri = 'resource:///com/github/bilelmoussaoui/Authenticator/{}'.format(filename)
         provider_file = Gio.File.new_for_uri(uri)
         provider = Gtk.CssProvider()
         screen = Gdk.Screen.get_default()
@@ -72,34 +72,18 @@ class Application(Gtk.Application):
     def generate_menu(self):
         """Generate application menu."""
         settings = Settings.get_default()
-        # Settings section
-        settings_content = Gio.Menu.new()
-        settings_content.append_item(Gio.MenuItem.new(_("Settings"),
-                                                      "app.settings"))
-        settings_section = Gio.MenuItem.new_section(None, settings_content)
-        self.menu.append_item(settings_section)
 
         # Help section
         help_content = Gio.Menu.new()
         # Night mode action
         help_content.append_item(Gio.MenuItem.new(_("Night Mode"),
                                                   "app.night_mode"))
-        # Shortcuts action
-        if Gtk.get_major_version() >= 3 and Gtk.get_minor_version() >= 20:
-            help_content.append_item(Gio.MenuItem.new(_("Shortcuts"),
-                                                      "app.shortcuts"))
-
+    
         help_content.append_item(Gio.MenuItem.new(_("About"), "app.about"))
         help_content.append_item(Gio.MenuItem.new(_("Quit"), "app.quit"))
         help_section = Gio.MenuItem.new_section(None, help_content)
         self.menu.append_item(help_section)
 
-        action = Gio.SimpleAction.new("settings", None)
-        action.connect("activate", self.on_settings)
-        action.set_enabled(not settings.is_locked)
-        settings.bind('locked', action, 'enabled',
-                      Gio.SettingsBindFlags.INVERT_BOOLEAN)
-        self.add_action(action)
 
         is_night_mode = settings.is_night_mode
         gv_is_night_mode = GLib.Variant.new_boolean(is_night_mode)
@@ -108,10 +92,6 @@ class Application(Gtk.Application):
         action.connect("change-state", self.on_night_mode)
         self.add_action(action)
 
-        if Gtk.get_major_version() >= 3 and Gtk.get_minor_version() >= 20:
-            action = Gio.SimpleAction.new("shortcuts", None)
-            action.connect("activate", self.on_shortcuts)
-            self.add_action(action)
 
         action = Gio.SimpleAction.new("about", None)
         action.connect("activate", self.on_about)
@@ -120,12 +100,14 @@ class Application(Gtk.Application):
         action = Gio.SimpleAction.new("quit", None)
         action.connect("activate", self.on_quit)
         self.add_action(action)
-        if is_gnome():
-            self.set_app_menu(self.menu)
-            Logger.debug("Adding Application Menu")
+        #FIXME: only do that on gnome
+        self.set_app_menu(self.menu)
+        Logger.debug("Adding Application Menu")
 
     def do_activate(self, *args):
         """On activate signal override."""
+        resources_path = "/com/github/bilelmoussaoui/Authenticator/"
+        Gtk.IconTheme.get_default().add_resource_path(resources_path)
         window = Window.get_default()
         window.set_application(self)
         window.connect("delete-event", lambda x, y: self.on_quit())
@@ -142,13 +124,6 @@ class Application(Gtk.Application):
         gtk_settings = Gtk.Settings.get_default()
         gtk_settings.set_property("gtk-application-prefer-dark-theme",
                                   is_night_mode)
-
-    def on_shortcuts(self, *args):
-        """Shows keyboard shortcuts."""
-        if Gtk.get_major_version() >= 3 and Gtk.get_minor_version() >= 20:
-            shortcuts = ShortcutsWindow()
-            shortcuts.set_transient_for(Window.get_default())
-            shortcuts.show()
 
     def on_about(self, *args):
         """

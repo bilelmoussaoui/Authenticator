@@ -1,23 +1,21 @@
 """
  Copyright © 2017 Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>
 
- This file is part of Gnome Authenticator.
+ This file is part of Authenticator.
 
- Gnome Authenticator is free software: you can redistribute it and/or
+ Authenticator is free software: you can redistribute it and/or
  modify it under the terms of the GNU General Public License as published
  by the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
 
- TwoFactorAuth is distributed in the hope that it will be useful,
+ Authenticator is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
 
  You should have received a copy of the GNU General Public License
- along with Gnome Authenticator. If not, see <http://www.gnu.org/licenses/>.
+ along with Authenticator. If not, see <http://www.gnu.org/licenses/>.
 """
-from hashlib import sha256
-
 from gi.repository import Gio, GLib
 
 from .logger import Logger
@@ -34,7 +32,7 @@ class Settings(Gio.Settings):
     @staticmethod
     def new():
         """Create a new Settings object"""
-        g_settings = Gio.Settings.new("org.gnome.Authenticator")
+        g_settings = Gio.Settings.new("com.github.bilelmoussaoui.Authenticator")
         g_settings.__class__ = Settings
         return g_settings
 
@@ -81,61 +79,3 @@ class Settings(Gio.Settings):
     def is_night_mode(self, status):
         """Set the night mode."""
         self.set_boolean('night-mode', status)
-
-    @property
-    def can_be_locked(self):
-        """Return if the app can be locked or not."""
-        return self.get_boolean('state')
-
-    @can_be_locked.setter
-    def can_be_locked(self, status):
-        """set the app to be locked."""
-        self.set_boolean('state', status)
-
-    @property
-    def is_locked(self):
-        """Return if the app is locked."""
-        return self.get_boolean('locked')
-
-    @is_locked.setter
-    def is_locked(self, status):
-        """Set the app to be locked."""
-        self.set_boolean('locked', status)
-
-    def compare_password(self, password):
-        """Compare a password with the current one."""
-        password = sha256(password.encode('utf-8')).hexdigest()
-        return password == self.password
-
-    @property
-    def password(self):
-        """Return the password."""
-        return self.get_string("password")
-
-    @password.setter
-    def password(self, password):
-        """Set a new password."""
-        password = sha256(password.encode('utf-8')).hexdigest()
-        self.set_string("password", password)
-
-    @property
-    def auto_lock(self):
-        """Return the Auto lock status."""
-        return self.get_boolean("auto-lock")
-
-    @auto_lock.setter
-    def auto_lock(self, status):
-        """Set the auto lock status."""
-        self.set_boolean("auto-lock", status)
-
-    @property
-    def auto_lock_time(self):
-        """Get auto lock time."""
-        return self.get_int("auto-lock-time")
-
-    @auto_lock_time.setter
-    def auto_lock_time(self, auto_lock_time):
-        """Set the auto lock time."""
-        if auto_lock_time < 1 or auto_lock_time > 15:
-            auto_lock_time = 3
-        self.set_int("auto-lock-time", auto_lock_time)

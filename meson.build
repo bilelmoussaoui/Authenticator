@@ -1,4 +1,4 @@
-project('org.gnome.Authenticator',
+project('com.github.bilelmoussaoui.Authenticator',
 	version: '0.1.2',
   meson_version: '>= 0.40',
   license: 'GPL+-3.0',
@@ -37,8 +37,8 @@ install_subdir(
 )
 
 configure_file(
-  input: 'gnome-authenticator.py.in',
-  output: 'gnome-authenticator',
+  input: 'authenticator.py.in',
+  output: 'authenticator',
   configuration: conf,
   install_dir: join_paths(get_option('prefix'), get_option('bindir'))
 )

@@ -1,20 +1,20 @@
 """
  Copyright © 2017 Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>
 
- This file is part of Gnome Authenticator.
+ This file is part of Authenticator.
 
- Gnome Authenticator is free software: you can redistribute it and/or
+ Authenticator is free software: you can redistribute it and/or
  modify it under the terms of the GNU General Public License as published
  by the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
 
- TwoFactorAuth is distributed in the hope that it will be useful,
+ Authenticator is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
 
  You should have received a copy of the GNU General Public License
- along with Gnome Authenticator. If not, see <http://www.gnu.org/licenses/>.
+ along with Authenticator. If not, see <http://www.gnu.org/licenses/>.
 """
 import logging
 from os import remove, path
@@ -23,7 +23,8 @@ from urllib.parse import urlparse, parse_qsl
 from PIL import Image
 from zbarlight import scan_codes
 
-from Authenticator.models.code import Code
+from .code import Code
+from .logger import Logger
 
 
 class QRReader:
@@ -41,9 +42,9 @@ class QRReader:
         if self._codes:
             otpauth_url = self._codes[0].decode()
             self._codes = dict(parse_qsl(urlparse(otpauth_url)[4]))
-            return self._codes
+            return self._codes.get("secret" )
         else:
-            logging.error("Invalid QR image")
+            Logger.error("Invalid QR image")
             return None
 
     def remove(self):
@@ -52,7 +53,7 @@ class QRReader:
         """
         if path.isfile(self.filename):
             remove(self.filename)
-            logging.debug("QR code image was removed for security reasons")
+            Logger.debug("QR code image was removed for security reasons")
 
     def is_valid(self):
         """
