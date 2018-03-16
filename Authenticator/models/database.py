@@ -16,6 +16,7 @@
  You  ould have received a copy of the GNU General Public License
  along with Authenticator. If not, see <http://www.gnu.org/licenses/>.
 """
+from collections import OrderedDict
 import sqlite3
 from os import path, makedirs
 
@@ -61,12 +62,12 @@ class Database:
         try:
             self.conn.execute(query, [name, secret, image])
             self.conn.commit()
-            return {
-                "id": self.latest_id,
-                "name": name,
-                "secret_id": secret,
-                "image": image
-            }
+            return OrderedDict([
+                ("id", self.latest_id),
+                ("name", name),
+                ("secret_id", secret),
+                ("image", image)
+            ])
         except Exception as error:
             Logger.error("[SQL] Couldn't add a new account")
             Logger.error(str(error))
@@ -139,11 +140,12 @@ class Database:
         try:
             data = self.conn.cursor().execute(query)
             accounts = data.fetchall()
-            return [{"id": account[0],
-                     "name": account[1],
-                     "secret_id": account[2],
-                     "logo": account[3]
-                     } for account in accounts]
+            return [OrderedDict([
+                    ("id", account[0]),
+                    ("name", account[1]),
+                    ("secret_id", account[2]),
+                    ("logo", account[3])
+                    ]) for account in accounts]
         except Exception as error:
             Logger.error("[SQL] Couldn't fetch accounts list")
             Logger.error(str(error))

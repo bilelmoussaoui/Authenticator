@@ -21,7 +21,7 @@ from os import remove, path
 from urllib.parse import urlparse, parse_qsl
 
 from PIL import Image
-import zbarlight
+from pyzbar.pyzbar import decode
 
 from .code import Code
 from .logger import Logger
@@ -34,26 +34,16 @@ class QRReader:
         self._codes = None
 
     def read(self):
-        with open(self.filename, 'rb') as image_file:
-            image = Image.open(image_file)
-            image.load()
-        self._codes = zbarlight.scan_codes('qrcode', image)
-        self.remove()
+        self._codes = decode(Image.open(self.filename))
+        if path.isfile(self.filename):
+            remove(self.filename)
         if self._codes:
-            otpauth_url = self._codes[0].decode()
+            otpauth_url = self._codes[0].data.decode()
             self._codes = dict(parse_qsl(urlparse(otpauth_url)[4]))
             return self._codes.get("secret")
         else:
             Logger.error("Invalid QR image")
             return None
-
-    def remove(self):
-        """
-            remove image file for security reasons
-        """
-        if path.isfile(self.filename):
-            remove(self.filename)
-            Logger.debug("QR code image was removed for security reasons")
 
     def is_valid(self):
         """
