@@ -13,7 +13,7 @@ version](https://img.shields.io/badge/python-3.3%2B-blue.svg)
 - `ninja`
 - `pyotp`
 - `Pillow`
-- `zbarlight` depends on `zbar`
+- `pyzbar` depends on `zbar`
   - `libzbar-dev` on Ubuntu
   - `zbar` on Arch
 - `libsecret`

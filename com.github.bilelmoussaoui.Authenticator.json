@@ -17,18 +17,6 @@
      "--filesystem=xdg-run/dconf", "--filesystem=~/.config/dconf:ro",
      "--talk-name=ca.desrt.dconf", "--env=DCONF_USER_CONFIG_DIR=.config/dconf"
    ],
-   "cleanup": [
-     "/include",
-     "/lib/pkgconfig",
-     "/share/pkgconfig",
-     "/share/aclocal",
-     "/man",
-     "/share/man",
-     "/share/gtk-doc",
-     "/share/vala",
-     "*.la",
-     "*.a"
-   ],
    "build-options": {
      "cflags": "-O2 -g",
      "cxxflags": "-O2 -g",
@@ -39,12 +27,10 @@
    "modules": [{
        "name": "zbar",
        "config-opts": [
-         "--prefix=/app",
          "--without-qt",
          "--without-gtk",
          "--without-imagemagick",
-         "--disable-video",
-         "CFLAGS=-DNDEBUG"
+         "--disable-video"
        ],
        "sources": [{
          "type": "archive",
@@ -104,28 +90,15 @@
        ]
      },
      {
-       "name": "setuptools",
-       "buildsystem": "simple",
-       "build-commands": [
-         "python3 bootstrap.py",
-         "python3 setup.py install --prefix=/app --root=/"
-       ],
-       "sources": [{
-         "type": "archive",
-         "url": "https://github.com/pypa/setuptools/archive/38.2.5.tar.gz",
-         "sha256": "999acfc0f6eae7309b4a78118573e5948478cfda68061a5719cf9d475ddced0a"
-       }]
-     },
-     {
-       "name": "zbarlight",
+       "name": "pyzbar",
        "buildsystem": "simple",
        "build-commands": [
          "python3 setup.py install --prefix=/app --root=/"
        ],
        "sources": [{
          "type": "archive",
-         "url": "https://github.com/Polyconseil/zbarlight/archive/2.0.tar.gz",
-         "sha256": "92329b5496c7a86f2103f1ee15b1269dcff6011cb096948efafd349473b955a9"
+         "url": "https://github.com/NaturalHistoryMuseum/pyzbar/archive/v0.1.4.tar.gz",
+         "sha256": "7387899656e4e9564b7e507b2c26729c4863b7a79bbaf29c80c956a5654d2ee0"
        }]
      },
      {
