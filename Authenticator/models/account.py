@@ -61,6 +61,7 @@ class Account(GObject.GObject, Thread):
         encrypted_secret = sha256(secret_id.encode('utf-8')).hexdigest()
         Keyring.insert(encrypted_secret, secret_id)
         _id = Database.get_default().insert(name, encrypted_secret, logo)["id"]
+        print(name, secret_id, logo ,encrypted_secret, _id)
         return Account(_id, name, encrypted_secret, logo)
 
     @property
