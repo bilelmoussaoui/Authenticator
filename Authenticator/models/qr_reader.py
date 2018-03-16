@@ -21,7 +21,7 @@ from os import remove, path
 from urllib.parse import urlparse, parse_qsl
 
 from PIL import Image
-from zbarlight import scan_codes
+import zbarlight
 
 from .code import Code
 from .logger import Logger
@@ -37,7 +37,7 @@ class QRReader:
         with open(self.filename, 'rb') as image_file:
             image = Image.open(image_file)
             image.load()
-        self._codes = scan_codes('qrcode', image)
+        self._codes = zbarlight.scan_codes('qrcode', image)
         self.remove()
         if self._codes:
             otpauth_url = self._codes[0].decode()
