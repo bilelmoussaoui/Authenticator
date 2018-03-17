@@ -8,16 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-03-16 04:03+0100\n"
-"PO-Revision-Date: 2017-07-20 17:29+0000\n"
+"PO-Revision-Date: 2018-03-17 10:36+0000\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
-"Language-Team: Swedish <https://hosted.weblate.org/projects/gnome-"
-"Authenticator/translation/sv/>\n"
+"Language-Team: Swedish <https://hosted.weblate.org/projects/"
+"gnome-twofactorauth/translation/sv/>\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.8-dev\n"
+"X-Generator: Weblate 2.20-dev\n"
 
 #: Authenticator/application.py:36 Authenticator/widgets/about.py:40
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:5
@@ -28,7 +28,7 @@ msgstr "Authenticator"
 #. Night mode action
 #: Authenticator/application.py:79
 msgid "Night Mode"
-msgstr ""
+msgstr "Nattläge"
 
 #: Authenticator/application.py:82
 msgid "About"
@@ -49,7 +49,6 @@ msgid "Search"
 msgstr "Sök"
 
 #: Authenticator/widgets/accounts/add.py:64
-#, fuzzy
 msgid "Scan QR code"
 msgstr "Läs av QR-kod"
 
@@ -58,7 +57,6 @@ msgid "Next"
 msgstr "Nästa"
 
 #: Authenticator/widgets/accounts/add.py:100
-#, fuzzy
 msgid "Close"
 msgstr "Stäng"
 
@@ -68,31 +66,26 @@ msgstr "Lägg till"
 
 #: Authenticator/widgets/accounts/add.py:109
 msgid "Back"
-msgstr ""
+msgstr "Bakåt"
 
 #: Authenticator/widgets/accounts/add.py:245
-#, fuzzy
 msgid "Account name"
 msgstr "Kontonamn"
 
 #: Authenticator/widgets/accounts/add.py:247
-#, fuzzy
 msgid "Secret Token"
-msgstr "Hemlig kod"
+msgstr "Hemlig token"
 
 #: Authenticator/widgets/accounts/add.py:293
-#, fuzzy
 msgid "Invalid QR code"
-msgstr "Läs av en QR-kod"
+msgstr "Ogiltig QR-kod"
 
 #. Label
 #: Authenticator/widgets/accounts/list.py:121
-#, fuzzy
 msgid "There's no account yet..."
-msgstr "Det finns inget konto för tillfället"
+msgstr "Det finns inget konto ännu…"
 
 #: Authenticator/widgets/accounts/row.py:53
-#, fuzzy
 msgid "Copy"
 msgstr "Kopiera"
 
@@ -102,14 +95,13 @@ msgstr "Kunde inte generera den hemliga koden"
 
 #: Authenticator/widgets/about.py:41
 msgid "translator-credits"
-msgstr ""
+msgstr "Anders Jonsson <anders.jonsson@norsjovallen.se>"
 
 #: Authenticator/widgets/about.py:43
 msgid "Two factor authentication codes generator."
-msgstr ""
+msgstr "Generator för tvåfaktorsautentiseringskoder."
 
 #: Authenticator/widgets/actions_bar.py:45
-#, fuzzy
 msgid "Delete"
 msgstr "Ta bort"
 
@@ -127,54 +119,51 @@ msgstr "Avbryt"
 
 #: Authenticator/widgets/headerbar.py:187
 msgid "Click on items to select them"
-msgstr ""
+msgstr "Klicka på objekt för att välja dem"
 
 #: Authenticator/widgets/inapp_notification.py:51
 #: Authenticator/widgets/inapp_notification.py:79
 msgid "Undo"
-msgstr ""
+msgstr "Ångra"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:6
 msgid "Two Factor Authentication code generator"
-msgstr ""
+msgstr "Generator för tvåfaktorsautentiseringskod"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:8
-#, fuzzy
 msgid ""
 "Simple application that generates 2 factor authentication code, created for "
 "Gnome"
-msgstr "Enkelt program för att generera tvåfaktorsautentiseringskod"
+msgstr ""
+"Enkelt program för att generera tvåfaktorsautentiseringskod, skapat för GNOME"
 
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:4
-#, fuzzy
 msgid "Two Factor Authentication"
-msgstr "Authenticator"
+msgstr "Tvåfaktorsautentisering"
 
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:5
 msgid "Two-Factor Authentication code generator"
-msgstr ""
+msgstr "Generator för tvåfaktorsautentiseringskod"
 
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:10
 msgid "Gnome;GTK;Verification;"
-msgstr ""
+msgstr "GNOME;GTK;Bekräftelse;Verifiering;"
 
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:11
 msgid "com.github.bilelmoussaoui.Authenticator"
-msgstr ""
+msgstr "com.github.bilelmoussaoui.Authenticator"
 
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:20
-#, fuzzy
 msgid "About Authenticator"
-msgstr "Authenticator"
+msgstr "Om Authenticator"
 
 #: authenticator.py.in:45
 msgid "Start in debug mode"
-msgstr ""
+msgstr "Starta i felsökningsläge"
 
 #: authenticator.py.in:47
-#, fuzzy
 msgid "Authenticator version number"
-msgstr "Authenticator"
+msgstr "Versionsnummer för Authenticator"
 
 #~ msgctxt "shortcut window"
 #~ msgid "General"
