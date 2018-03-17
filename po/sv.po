@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-03-16 04:03+0100\n"
-"PO-Revision-Date: 2018-03-17 10:36+0000\n"
+"PO-Revision-Date: 2018-03-18 10:42+0000\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <https://hosted.weblate.org/projects/"
 "gnome-twofactorauth/translation/sv/>\n"
@@ -74,7 +74,7 @@ msgstr "Kontonamn"
 
 #: Authenticator/widgets/accounts/add.py:247
 msgid "Secret Token"
-msgstr "Hemlig token"
+msgstr "Hemligt igenkänningstecken"
 
 #: Authenticator/widgets/accounts/add.py:293
 msgid "Invalid QR code"
