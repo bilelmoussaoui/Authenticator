@@ -7,8 +7,7 @@ version](https://img.shields.io/badge/python-3.3%2B-blue.svg)
 
 ## Screenshots
 
-<img src="data/screenshots/screenshot1.png" width="280" /> <img src="data/screenshots/screenshot2.png" width="280" />
-<br><img src="data/screenshots/screenshot3.png" width="280" />
+<img src="data/screenshots/screenshot1.png" width="280" /> <img src="data/screenshots/screenshot2.png" width="280" /> <img src="data/screenshots/screenshot3.png" width="280" />
 
 ## Features
 
@@ -81,5 +80,4 @@ authenticator
 
 ## Credits
 
-- Websites and application icons are from Paper theme, created by [Sam Hewitt](https://github.com/snwh)
 - Applications/Websites database are from [Authenticator](https://github.com/2factorauth/Authenticator), by 2factorauth team
