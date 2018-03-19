@@ -7,8 +7,8 @@ version](https://img.shields.io/badge/python-3.3%2B-blue.svg)
 
 ## Screenshots
 
-<img src="data/screenshots/screenshot1.png" width="280" /> <img src="data/screenshots/screenshot4.png" width="280" /><br>
-<img src="data/screenshots/screenshot2.png" width="280" /><img src="data/screenshots/screenshot3.png" width="280" />
+<img src="data/screenshots/screenshot1.png" width="280" /> <img src="data/screenshots/screenshot2.png" width="280" />
+<br><img src="data/screenshots/screenshot3.png" width="280" />
 
 ## Features
 
