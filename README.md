@@ -1,5 +1,4 @@
-[![Translation status](https://hosted.weblate.org/widgets/authenticator/-/svg-badge.svg)](https://hosted.weblate.org/engage/authenticator/?utm_source=widget) ![Status](https://img.shields.io/badge/status-stable-green.svg) [![Version](https://img.shields.io/badge/version-0.1.1-green.svg)](https://github.com/bilelmoussaoui/Authenticator/releases) ![Python
-version](https://img.shields.io/badge/python-3.3%2B-blue.svg)
+[![Translation status](https://hosted.weblate.org/widgets/authenticator/-/svg-badge.svg)](https://hosted.weblate.org/engage/authenticator/?utm_source=widget) [![Version](https://img.shields.io/badge/version-0.2.1-green.svg)](https://github.com/bilelmoussaoui/Authenticator/releases)
 
 # Authenticator
 <img src="https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/icons/hicolor/256x256/apps/com.github.bilelmoussaoui.Authenticator.png" width="128" height="128" />
@@ -18,7 +17,7 @@ version](https://img.shields.io/badge/python-3.3%2B-blue.svg)
 ## Installation
 
 ### Flatpak
-You can install the flatpak package of the application from flathub using 
+You can install the flatpak package of the application from flathub using
 ```
 flatpak install flathub com.github.bilelmoussaoui.Authenticator
 ```

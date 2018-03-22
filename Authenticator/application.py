@@ -28,6 +28,7 @@ from .utils import is_gnome
 
 class Application(Gtk.Application):
     """Authenticator application object."""
+    instance = None
 
     def __init__(self):
         Gtk.Application.__init__(self,
@@ -37,6 +38,12 @@ class Application(Gtk.Application):
         GLib.set_prgname("Authenticator")
         self.alive = True
         self.menu = Gio.Menu()
+
+    @staticmethod
+    def get_default():
+        if Application.instance is None:
+            Application.instance = Application()
+        return Application.instance
 
     def setup_css(self):
         """Setup the CSS and load it."""

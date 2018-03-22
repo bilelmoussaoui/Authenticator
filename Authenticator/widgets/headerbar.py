@@ -146,9 +146,11 @@ class HeaderBar(Gtk.HeaderBar):
         self.pack_end(right_box)
 
     def generate_popover(self, box):
+        from ..application import Application
+        menu = Application.get_default().menu
         self.settings_btn.connect("clicked", self.toggle_popover)
         self.popover = Gtk.Popover.new_from_model(self.settings_btn,
-                                                  self.app.menu)
+                                                  menu)
         self.popover.props.width_request = 200
         box.add(self.settings_btn)
 

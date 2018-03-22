@@ -60,7 +60,7 @@ if __name__ == "__main__":
         sys.exit("Version : " + str(VERSION))
     else:
         try:
-            app = Application()
+            app = Application.get_default()
             exit_status = app.run(None)
             sys.exit(exit_status)
         except KeyboardInterrupt:
