@@ -8,27 +8,27 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-03-16 04:03+0100\n"
-"PO-Revision-Date: 2017-09-04 10:58+0000\n"
+"PO-Revision-Date: 2018-03-22 19:06+0000\n"
 "Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
-"Language-Team: Hungarian <https://hosted.weblate.org/projects/gnome-"
-"Authenticator/translation/hu/>\n"
+"Language-Team: Hungarian <https://hosted.weblate.org/projects/authenticator/"
+"translation/hu/>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.8\n"
+"X-Generator: Weblate 2.20-dev\n"
 
 #: Authenticator/application.py:36 Authenticator/widgets/about.py:40
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:5
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:3
 msgid "Authenticator"
-msgstr "Kétlépcsős hitelesítés"
+msgstr "Hitelesítő"
 
 #. Night mode action
 #: Authenticator/application.py:79
 msgid "Night Mode"
-msgstr ""
+msgstr "Éjszakai mód"
 
 #: Authenticator/application.py:82
 msgid "About"
@@ -49,7 +49,6 @@ msgid "Search"
 msgstr "Keresés"
 
 #: Authenticator/widgets/accounts/add.py:64
-#, fuzzy
 msgid "Scan QR code"
 msgstr "QR-kód beolvasása"
 
@@ -58,7 +57,6 @@ msgid "Next"
 msgstr "Következő"
 
 #: Authenticator/widgets/accounts/add.py:100
-#, fuzzy
 msgid "Close"
 msgstr "Bezárás"
 
@@ -68,31 +66,26 @@ msgstr "Hozzáadás"
 
 #: Authenticator/widgets/accounts/add.py:109
 msgid "Back"
-msgstr ""
+msgstr "Vissza"
 
 #: Authenticator/widgets/accounts/add.py:245
-#, fuzzy
 msgid "Account name"
 msgstr "Fiók neve"
 
 #: Authenticator/widgets/accounts/add.py:247
-#, fuzzy
 msgid "Secret Token"
-msgstr "Titkos kód"
+msgstr "Titkos jelsor"
 
 #: Authenticator/widgets/accounts/add.py:293
-#, fuzzy
 msgid "Invalid QR code"
-msgstr "QR-kód beolvasása"
+msgstr "Érvénytelen QR-kód"
 
 #. Label
 #: Authenticator/widgets/accounts/list.py:121
-#, fuzzy
 msgid "There's no account yet..."
-msgstr "Nincs fiók ebben a pillanatban"
+msgstr "Még nincsenek fiókok…"
 
 #: Authenticator/widgets/accounts/row.py:53
-#, fuzzy
 msgid "Copy"
 msgstr "Másolás"
 
@@ -102,14 +95,13 @@ msgstr "Nem sikerült előállítani a titkos kódot"
 
 #: Authenticator/widgets/about.py:41
 msgid "translator-credits"
-msgstr ""
+msgstr "Úr Balázs <urbalazs@gmail.com>, 2018."
 
 #: Authenticator/widgets/about.py:43
 msgid "Two factor authentication codes generator."
-msgstr ""
+msgstr "Kétlépcsős hitelesítő kódok előállítója."
 
 #: Authenticator/widgets/actions_bar.py:45
-#, fuzzy
 msgid "Delete"
 msgstr "Törlés"
 
@@ -127,54 +119,52 @@ msgstr "Mégse"
 
 #: Authenticator/widgets/headerbar.py:187
 msgid "Click on items to select them"
-msgstr ""
+msgstr "Kattintson az elemekre a kijelölésükhöz"
 
 #: Authenticator/widgets/inapp_notification.py:51
 #: Authenticator/widgets/inapp_notification.py:79
 msgid "Undo"
-msgstr ""
+msgstr "Visszavonás"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:6
 msgid "Two Factor Authentication code generator"
-msgstr ""
+msgstr "Kétlépcsős hitelesítő kód előállító"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:8
-#, fuzzy
 msgid ""
 "Simple application that generates 2 factor authentication code, created for "
 "Gnome"
-msgstr "Egyszerű alkalmazás kétlépcsős hitelesítő kód előállításához"
+msgstr ""
+"Egyszerű alkalmazása a GNOME asztali környezethez, amely kétlépcsős "
+"hitelesítő kódot állít elő"
 
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:4
-#, fuzzy
 msgid "Two Factor Authentication"
 msgstr "Kétlépcsős hitelesítés"
 
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:5
 msgid "Two-Factor Authentication code generator"
-msgstr ""
+msgstr "Kétlépcsős hitelesítő kód előállító"
 
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:10
 msgid "Gnome;GTK;Verification;"
-msgstr ""
+msgstr "GNOME;GTK;Ellenőrzés;"
 
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:11
 msgid "com.github.bilelmoussaoui.Authenticator"
-msgstr ""
+msgstr "com.github.bilelmoussaoui.Authenticator"
 
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:20
-#, fuzzy
 msgid "About Authenticator"
-msgstr "Kétlépcsős hitelesítés"
+msgstr "A Hitelesítő névjegye"
 
 #: authenticator.py.in:45
 msgid "Start in debug mode"
-msgstr ""
+msgstr "Indítás hibakeresési módban"
 
 #: authenticator.py.in:47
-#, fuzzy
 msgid "Authenticator version number"
-msgstr "Kétlépcsős hitelesítés"
+msgstr "Hitelesítő verziószáma"
 
 #~ msgctxt "shortcut window"
 #~ msgid "General"
