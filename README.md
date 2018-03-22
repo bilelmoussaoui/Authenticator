@@ -1,4 +1,4 @@
-[![Translation status](https://hosted.weblate.org/widgets/gnome-twofactorauth/-/svg-badge.svg)](https://hosted.weblate.org/engage/gnome-twofactorauth/?utm_source=widget) ![Status](https://img.shields.io/badge/status-stable-green.svg) [![Version](https://img.shields.io/badge/version-0.1.1-green.svg)](https://github.com/bilelmoussaoui/Authenticator/releases) ![Python
+[![Translation status](https://hosted.weblate.org/widgets/authenticator/-/svg-badge.svg)](https://hosted.weblate.org/engage/authenticator/?utm_source=widget) ![Status](https://img.shields.io/badge/status-stable-green.svg) [![Version](https://img.shields.io/badge/version-0.1.1-green.svg)](https://github.com/bilelmoussaoui/Authenticator/releases) ![Python
 version](https://img.shields.io/badge/python-3.3%2B-blue.svg)
 
 # Authenticator
