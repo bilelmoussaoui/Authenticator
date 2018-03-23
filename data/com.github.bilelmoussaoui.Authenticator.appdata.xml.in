@@ -9,10 +9,10 @@
     <p>Simple application that generates 2 factor authentication code, created for GNOME.</p>
   </description>
   <screenshots>
-    <screenshot type="default" width="376" height="574">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/screenshots/screenshot1.png</screenshot>
-    <screenshot width="376" height="574">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/screenshots/data/screenshot2.png</screenshot>
-    <screenshot width="376" height="574">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/screenshots/data/screenshot3.png</screenshot>
-    <screenshot width="376" height="574">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/screenshots/data/screenshot4.png</screenshot>
+    <screenshot type="default" width="376" height="574">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/screenshots/screenshot1.png</screenshot>
+    <screenshot width="376" height="574">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/screenshots/screenshot2.png</screenshot>
+    <screenshot width="376" height="574">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/screenshots/screenshot3.png</screenshot>
+    <screenshot width="376" height="574">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/screenshots/screenshot4.png</screenshot>
   </screenshots>
   <url type="homepage">https://github.com/bilelmoussaoui/Authenticator</url>
   <url type="bugtracker">https://github.com/bilelmoussaoui/Authenticator/issues</url>
