@@ -1,162 +1,163 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the Authenticator package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
 msgid ""
 msgstr ""
-"Project-Id-Version: Authenticator\n"
+"Project-Id-Version: Serbian (Authenticator)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-16 04:03+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"POT-Creation-Date: 2018-03-24 21:54+0200\n"
+"PO-Revision-Date: 2018-03-24 20:59+0000\n"
+"Last-Translator: Slobodan Terzić <githzerai06@gmail.com>\n"
+"Language-Team: Serbian (latin) <https://hosted.weblate.org/projects/"
+"authenticator/translation/sr_Latn/>\n"
 "Language: sr_Latn\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<="
+"4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 2.20-dev\n"
 
 #: Authenticator/application.py:36 Authenticator/widgets/about.py:40
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:5
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:3
 msgid "Authenticator"
-msgstr ""
+msgstr "Autentifikator"
 
 #. Night mode action
 #: Authenticator/application.py:79
 msgid "Night Mode"
-msgstr ""
+msgstr "Noćni režim"
 
 #: Authenticator/application.py:82
 msgid "About"
-msgstr ""
+msgstr "O programu"
 
 #: Authenticator/application.py:83
 msgid "Quit"
-msgstr ""
+msgstr "Napusti"
 
 #: Authenticator/widgets/accounts/add.py:51
 #: Authenticator/widgets/headerbar.py:101
 msgid "Add a new account"
-msgstr ""
+msgstr "Dodaj novi nalog"
 
 #: Authenticator/widgets/accounts/add.py:60
 #: Authenticator/widgets/headerbar.py:99
 msgid "Search"
-msgstr ""
+msgstr "Pretraži"
 
 #: Authenticator/widgets/accounts/add.py:64
 msgid "Scan QR code"
-msgstr ""
+msgstr "Skeniraj QR kod"
 
 #: Authenticator/widgets/accounts/add.py:99
 msgid "Next"
-msgstr ""
+msgstr "Sledeće"
 
 #: Authenticator/widgets/accounts/add.py:100
 msgid "Close"
-msgstr ""
+msgstr "Zatvori"
 
 #: Authenticator/widgets/accounts/add.py:108
 msgid "Add"
-msgstr ""
+msgstr "Dodaj"
 
 #: Authenticator/widgets/accounts/add.py:109
 msgid "Back"
-msgstr ""
+msgstr "Nazad"
 
 #: Authenticator/widgets/accounts/add.py:245
 msgid "Account name"
-msgstr ""
+msgstr "Ime naloga"
 
 #: Authenticator/widgets/accounts/add.py:247
 msgid "Secret Token"
-msgstr ""
+msgstr "Tajni token"
 
 #: Authenticator/widgets/accounts/add.py:293
 msgid "Invalid QR code"
-msgstr ""
+msgstr "Neispravan QR kod"
 
 #. Label
 #: Authenticator/widgets/accounts/list.py:121
 msgid "There's no account yet..."
-msgstr ""
+msgstr "Još uvek nema naloga..."
 
 #: Authenticator/widgets/accounts/row.py:53
 msgid "Copy"
-msgstr ""
+msgstr "Umnoži"
 
 #: Authenticator/widgets/accounts/row.py:118
 msgid "Couldn't generate the secret code"
-msgstr ""
+msgstr "Ne mogu da napravim tajni kod"
 
 #: Authenticator/widgets/about.py:41
 msgid "translator-credits"
-msgstr ""
+msgstr "Slobodan Terzić <githzerai06@gmail.com>"
 
 #: Authenticator/widgets/about.py:43
 msgid "Two factor authentication codes generator."
-msgstr ""
+msgstr "Stvaralac kodova za dvofaktornu autentifikaciju."
 
 #: Authenticator/widgets/actions_bar.py:45
 msgid "Delete"
-msgstr ""
+msgstr "Obriši"
 
 #: Authenticator/widgets/headerbar.py:103
 msgid "Settings"
-msgstr ""
+msgstr "Podešavanja"
 
 #: Authenticator/widgets/headerbar.py:105
 msgid "Selection mode"
-msgstr ""
+msgstr "Režim izbora"
 
 #: Authenticator/widgets/headerbar.py:107
 msgid "Cancel"
-msgstr ""
+msgstr "Otkaži"
 
 #: Authenticator/widgets/headerbar.py:187
 msgid "Click on items to select them"
-msgstr ""
+msgstr "Kliknite na stavke da ih izaberete"
 
 #: Authenticator/widgets/inapp_notification.py:51
 #: Authenticator/widgets/inapp_notification.py:79
 msgid "Undo"
-msgstr ""
+msgstr "Opozovi"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:6
 msgid "Two Factor Authentication code generator"
-msgstr ""
+msgstr "Stvaralac koda za dvofaktornu autentifikaciju"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:8
 msgid ""
 "Simple application that generates 2 factor authentication code, created for "
 "Gnome"
 msgstr ""
+"Jednostavan program koji stvara kod za dvofaktornu autentifikaciju, "
+"napravljen za Gnom"
 
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:4
 msgid "Two Factor Authentication"
-msgstr ""
+msgstr "Dvofaktorna autentifikacija"
 
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:5
 msgid "Two-Factor Authentication code generator"
-msgstr ""
+msgstr "Stvaralac koda za dvofaktornu autentifikaciju"
 
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:10
 msgid "Gnome;GTK;Verification;"
-msgstr ""
+msgstr "Gnome;GTK;Verification;Overa;"
 
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:11
 msgid "com.github.bilelmoussaoui.Authenticator"
-msgstr ""
+msgstr "com.github.bilelmoussaoui.Authenticator"
 
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:20
 msgid "About Authenticator"
-msgstr ""
+msgstr "O Autentifikatoru"
 
 #: authenticator.py.in:45
 msgid "Start in debug mode"
-msgstr ""
+msgstr "Pokreni u režimu za ispravljanje grešaka"
 
 #: authenticator.py.in:47
 msgid "Authenticator version number"
-msgstr ""
+msgstr "Verzija Autentifikatora"
