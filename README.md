@@ -2,7 +2,7 @@
 
 # Authenticator
 <img src="https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/icons/hicolor/256x256/apps/com.github.bilelmoussaoui.Authenticator.png" width="128" height="128" />
-<p>Two-factor authentication code generator for Gnome. Created with love using Python and Gtk.</p>
+<p>Two-factor authentication code generator for GNOME. Created with love using Python and Gtk.</p>
 
 ## Screenshots
 
@@ -36,7 +36,6 @@ flatpak install flathub com.github.bilelmoussaoui.Authenticator
   - `libzbar-dev` on Ubuntu
   - `zbar` on Arch
 - `libsecret`
-- `gnome-screenshot`
 
 1 - Clone the repository
 

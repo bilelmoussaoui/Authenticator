@@ -42,7 +42,7 @@ class QRReader:
             query_params = parse_qsl(url.query)
             self._codes =  dict(query_params)
             return self._codes.get("secret")
-        except KeyError:
+        except (KeyError, IndexError):
             Logger.error("Invalid QR image")
             return None
 

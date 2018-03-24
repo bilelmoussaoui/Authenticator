@@ -19,7 +19,6 @@
 from os import path, environ
 import logging
 from subprocess import PIPE, Popen, call
-from tempfile import NamedTemporaryFile, gettempdir
 
 
 def is_gnome():
@@ -27,26 +26,3 @@ def is_gnome():
         Check if the current distro is gnome
     """
     return environ.get("XDG_CURRENT_DESKTOP").lower() == "gnome"
-
-
-def screenshot_area():
-    """
-        Screenshot an area of the screen using gnome-screenshot
-        used to QR scan
-    """
-    ink_flag = call(['which', 'gnome-screenshot'], stdout=PIPE, stderr=PIPE)
-    if ink_flag == 0:
-        file_name = path.join(gettempdir(), NamedTemporaryFile().name)
-        _, error = Popen(["gnome-screenshot", "-a", "-f", file_name],
-                         stdout=PIPE, stderr=PIPE).communicate()
-        if error:
-            error = error.decode("utf-8").split("\n")
-            logging.error("\n".join([e for e in error]))
-        if not path.isfile(file_name):
-            logging.debug("The screenshot was not taken")
-            return None
-        return file_name
-    else:
-        logging.error("Couldn't find gnome-screenshot"
-                      ", please install it first")
-    return None

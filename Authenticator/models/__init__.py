@@ -24,3 +24,4 @@ from .account import Account
 from .logger import Logger
 from .keyring import Keyring
 from .clipboard import Clipboard
+from .screenshot import GNOMEScreenshot

@@ -17,4 +17,4 @@
  along with Authenticator. If not, see <http://www.gnu.org/licenses/>.
 """
 from .application import Application
-from .utils import is_gnome, screenshot_area
+from .utils import is_gnome

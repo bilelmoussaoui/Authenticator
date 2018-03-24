@@ -26,8 +26,7 @@ from gi.repository import Gio, Gtk, GObject
 from ..headerbar import HeaderBarButton, HeaderBarToggleButton
 from ..inapp_notification import InAppNotification
 from ..search_bar import SearchBar
-from ...models import Code, QRReader
-from ...utils import screenshot_area
+from ...models import Code, QRReader, GNOMEScreenshot
 
 
 class AddAcountWindow(Gtk.Window):
@@ -294,9 +293,9 @@ class AccountConfig(Gtk.Box, GObject.GObject):
                                              Gtk.IconSize.DIALOG)
 
     def scan_qr(self):
-        screenshot_file = screenshot_area()
-        if screenshot_file:
-            qr_reader = QRReader(screenshot_file)
+        filename = GNOMEScreenshot.area()
+        if filename:
+            qr_reader = QRReader(filename)
             secret = qr_reader.read()
             if not qr_reader.is_valid():
                 self.notification.set_message(_("Invalid QR code"))
