@@ -43,7 +43,7 @@ def screenshot_area():
             error = error.decode("utf-8").split("\n")
             logging.error("\n".join([e for e in error]))
         if not path.isfile(file_name):
-            logging.debug("The screenshot was not token")
+            logging.debug("The screenshot was not taken")
             return None
         return file_name
     else:

@@ -79,4 +79,4 @@ authenticator
 
 ## Credits
 
-- Applications/Websites database are from [Authenticator](https://github.com/2factorauth/Authenticator), by 2factorauth team
+- Applications/Websites database are from [twofactorauth](https://github.com/2factorauth/twofactorauth), by 2factorauth team
