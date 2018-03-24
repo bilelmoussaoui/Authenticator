@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Authenticator\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-03-16 04:03+0100\n"
-"PO-Revision-Date: 2018-03-24 20:52+0000\n"
+"PO-Revision-Date: 2018-03-25 14:53+0000\n"
 "Last-Translator: Slobodan Terzić <githzerai06@gmail.com>\n"
 "Language-Team: Serbian <https://hosted.weblate.org/projects/authenticator/"
 "translation/sr/>\n"
@@ -149,7 +149,7 @@ msgstr "Стваралац кода за двофакторну аутентиф
 
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:10
 msgid "Gnome;GTK;Verification;"
-msgstr "Gnome;GTK;Verification;"
+msgstr "Gnome;GTK;Verification;Овера;"
 
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:11
 msgid "com.github.bilelmoussaoui.Authenticator"
