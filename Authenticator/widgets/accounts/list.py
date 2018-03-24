@@ -60,11 +60,15 @@ class AccountsList(Gtk.ListBox, GObject.GObject):
         """Fill the Accounts List with accounts."""
         accounts = Database.get_default().accounts
         for account in accounts:
-            _id, name, secret_id, logo = account.values()
-            self.add(AccountRow(Account(_id, name, secret_id, logo)))
+            _id = account["id"]
+            name = account["name"]
+            provider = account["provider"]
+            secret_id = account["secret_id"]
+            logo = account["logo"]
+            self.add(AccountRow(Account(_id, name, provider, secret_id, logo)))
 
-    def append(self, name, secret_id, logo):
-        account = Account.create(name, secret_id, logo)
+    def append(self, name, provider, secret_id, logo):
+        account = Account.create(name, provider, secret_id, logo)
         self.add(AccountRow(account))
         self.emit("changed", True)
 

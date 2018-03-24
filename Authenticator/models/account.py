@@ -35,7 +35,7 @@ class Account(GObject.GObject, Thread):
         'removed': (GObject.SignalFlags.RUN_LAST, None, ()),
     }
 
-    def __init__(self, _id, name, secret_id, logo):
+    def __init__(self, _id, name, provider, secret_id, logo):
         Thread.__init__(self)
         GObject.GObject.__init__(self)
         self.counter_max = 30
@@ -43,6 +43,7 @@ class Account(GObject.GObject, Thread):
         self.counter = self.counter_max
         self._id = _id
         self.name = name
+        self.provider = provider
         self._secret_id = secret_id
         _secret = Keyring.get_by_id(self._secret_id)
         if _secret:
@@ -57,11 +58,11 @@ class Account(GObject.GObject, Thread):
         self.start()
 
     @staticmethod
-    def create(name, secret_id, logo):
+    def create(name, provider, secret_id, logo):
         encrypted_secret = sha256(secret_id.encode('utf-8')).hexdigest()
         Keyring.insert(encrypted_secret, secret_id)
-        _id = Database.get_default().insert(name, encrypted_secret, logo)["id"]
-        return Account(_id, name, encrypted_secret, logo)
+        _id = Database.get_default().insert(name, provider, encrypted_secret, logo)["id"]
+        return Account(_id, name, provider, encrypted_secret, logo)
 
     @property
     def secret_code(self):

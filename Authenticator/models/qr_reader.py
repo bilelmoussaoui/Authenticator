@@ -34,14 +34,15 @@ class QRReader:
         self._codes = None
 
     def read(self):
-        self._codes = decode(Image.open(self.filename))
+        decoded_data = decode(Image.open(self.filename))
         if path.isfile(self.filename):
             remove(self.filename)
-        if self._codes:
-            otpauth_url = self._codes[0].data.decode()
-            self._codes = dict(parse_qsl(urlparse(otpauth_url)[4]))
+        try:
+            url = urlparse(decoded_data[0].data.decode())
+            query_params = parse_qsl(url.query)
+            self._codes =  dict(query_params)
             return self._codes.get("secret")
-        else:
+        except KeyError:
             Logger.error("Invalid QR image")
             return None
 
@@ -50,9 +51,5 @@ class QRReader:
             Validate if the QR code is a valid tfa
         """
         if isinstance(self._codes, dict):
-            if set(["issuer", "secret"]).issubset(self._codes.keys()):
-                return Code.is_valid(self._codes["secret"])
-            else:
-                return False
-        else:
-            return False
+            return Code.is_valid(self._codes.get("secret"))
+        return False

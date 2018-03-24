@@ -107,6 +107,11 @@ class AccountRow(Gtk.ListBoxRow):
         self.name_lbl.set_halign(Gtk.Align.START)
         self.name_lbl.get_style_context().add_class("application-name")
 
+        # Service Provider
+        self.provider_lbl = Gtk.Label(label=self.account.provider)
+        self.provider_lbl.set_halign(Gtk.Align.START)
+        self.provider_lbl.get_style_context().add_class("provider-lbl")
+
         # Two Factor Code
         self._code_revealer = Gtk.Revealer()
         code_container = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
@@ -117,24 +122,28 @@ class AccountRow(Gtk.ListBoxRow):
         else:
             self.code_lbl.set_text(_("Couldn't generate the secret code"))
         self.code_lbl.set_halign(Gtk.Align.START)
-
+        self.code_lbl.get_style_context().add_class("token-label")
         # Counter
         self.counter_lbl = Gtk.Label()
         if secret_code:
             self.update_counter()
         else:
             self.counter_lbl.set_text("")
+        self.counter_lbl.get_style_context().add_class("counter-label")
         code_container.pack_start(self.code_lbl, False, False, 0)
         code_container.pack_end(self.counter_lbl, False, False, 0)
         self._code_revealer.add(code_container)
 
+        info_container.pack_start(self.provider_lbl, False, False, 0)
         info_container.pack_start(self.name_lbl, False, False, 0)
         info_container.pack_start(self._code_revealer, True, True, 0)
+        info_container.set_valign(Gtk.Align.CENTER)
         container.pack_start(info_container, True, True, 6)
 
         # Actions container
         actions = ActionsBox()
         actions.copy_btn.connect("clicked", self._on_copy)
+        actions.set_valign(Gtk.Align.CENTER)
         container.pack_end(actions, False, False, 6)
 
         self.add(container)

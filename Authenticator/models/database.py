@@ -29,15 +29,16 @@ class Database:
 
     # Default instance
     instance = None
+    db_version = 2
 
     def __init__(self):
-        database_file = path.join(GLib.get_user_config_dir(),
-                                  'Authenticator/database.db')
-        makedirs(path.dirname(database_file), exist_ok=True)
-        if not path.exists(database_file):
-            with open(database_file, 'w') as file_obj:
+        db_dir = path.join(GLib.get_user_config_dir(), 'Authenticator/')
+        db_file = path.join(db_dir, 'database-{}.db'.format(str(Database.db_version)))
+        makedirs(path.dirname(db_dir), exist_ok=True)
+        if not path.exists(db_file):
+            with open(db_file, 'w') as file_obj:
                 file_obj.write('')
-        self.conn = sqlite3.connect(database_file)
+        self.conn = sqlite3.connect(db_file)
         if not self.is_table_exists():
             Logger.debug("SQL: Table 'accounts' does not exists")
             self.create_table()
@@ -50,21 +51,23 @@ class Database:
             Database.instance = Database()
         return Database.instance
 
-    def insert(self, name, secret, image):
+    def insert(self, name, provider, secret, image):
         """
         Insert a new account to the database
         :param name: Account name
+        :param provider: Service provider
         :param secret: the secret code
         :param image: the image name/url
         :return: a dict with id, name, image & encrypted_secret
         """
-        query = "INSERT INTO accounts (name, secret_code, image) VALUES (?, ?, ?)"
+        query = "INSERT INTO accounts (name, provider, secret_code, image) VALUES (?, ?, ?, ?)"
         try:
-            self.conn.execute(query, [name, secret, image])
+            self.conn.execute(query, [name, provider, secret, image])
             self.conn.commit()
             return OrderedDict([
                 ("id", self.latest_id),
                 ("name", name),
+                ("provider", provider),
                 ("secret_id", secret),
                 ("image", image)
             ])
@@ -143,8 +146,9 @@ class Database:
             return [OrderedDict([
                     ("id", account[0]),
                     ("name", account[1]),
-                    ("secret_id", account[2]),
-                    ("logo", account[3])
+                    ("provider", account[2]),
+                    ("secret_id", account[3]),
+                    ("logo", account[4])
                     ]) for account in accounts]
         except Exception as error:
             Logger.error("[SQL] Couldn't fetch accounts list")
@@ -171,7 +175,8 @@ class Database:
         query = '''CREATE TABLE "accounts" (
             "uid" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE ,
             "name" VARCHAR NOT NULL ,
-            "secret_code" VARCHAR NOT NULL ,
+            "provider" VARCHAR NOT NULL,
+            "secret_code" VARCHAR NOT NULL UNIQUE,
             "image" TEXT NOT NULL
         )'''
         try:

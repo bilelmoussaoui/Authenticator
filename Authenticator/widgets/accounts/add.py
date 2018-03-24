@@ -142,8 +142,8 @@ class AddAcountWindow(Gtk.Window):
 
     def _on_add(self, *args):
         from .list import AccountsList
-        name, secret, logo = self.account_config.account.values()
-        AccountsList.get_default().append(name, secret, logo)
+        name, provider, secret, logo = self.account_config.account.values()
+        AccountsList.get_default().append(name, provider, secret, logo)
         self.destroy()
 
 
@@ -173,7 +173,7 @@ class AccountsList(Gtk.Box):
         file = Gio.File.new_for_uri(uri)
         content = str(file.load_contents(None)[1].decode("utf-8"))
         data = json.loads(content)
-        data = sorted([(name, logo) for name, logo in data.items()], key=lambda entry: entry[0])
+        data = sorted([(name, logo) for name, logo in data.items()], key=lambda entry: entry[0].lower())
         for entry in data:
             name, logo = entry
             self._listbox.add(AccountRow(name, logo))
@@ -222,6 +222,7 @@ class AccountConfig(Gtk.Box, GObject.GObject):
         self.notification = InAppNotification()
         self.logo_img = Gtk.Image()
         self.name_entry = Gtk.Entry()
+        self.provider_entry = Gtk.Entry()
         self.secret_entry = Gtk.Entry()
         self._build_widgets()
 
@@ -231,17 +232,23 @@ class AccountConfig(Gtk.Box, GObject.GObject):
             Return an instance of Account for the new account.
         """
         account_name = self.name_entry.get_text()
+        provider = self.provider_entry.get_text()
         secret = self.secret_entry.get_text()
         logo = self.logo_img.props.file
         if not logo:
             logo = self.logo_img.props.icon_name
-        return {"name": account_name, "secret": secret, "logo": logo}
+        return {"name": account_name,
+                "provider": provider,
+                "secret": secret,
+                "logo": logo}
 
     def _build_widgets(self):
         self.pack_start(self.notification, False, False, 0)
 
         container = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         container.set_border_width(18)
+
+        self.provider_entry.set_sensitive(False)
 
         self.name_entry.set_placeholder_text(_("Account name"))
         self.name_entry.connect("changed", self._validate)
@@ -251,6 +258,7 @@ class AccountConfig(Gtk.Box, GObject.GObject):
         container.pack_start(self.logo_img, False, False, 6)
         container.pack_end(self.secret_entry, False, False, 6)
         container.pack_end(self.name_entry, False, False, 6)
+        container.pack_end(self.provider_entry, False, False, 6)
 
         self.pack_start(container, False, False, 6)
 
@@ -276,7 +284,7 @@ class AccountConfig(Gtk.Box, GObject.GObject):
         name = account.name
         logo = account.logo
 
-        self.name_entry.set_text(name)
+        self.provider_entry.set_text(name)
         theme = Gtk.IconTheme.get_default()
         if theme.has_icon(logo):
             self.logo_img.set_from_icon_name(logo,

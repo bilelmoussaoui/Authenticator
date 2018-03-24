@@ -16,13 +16,12 @@
  You should have received a copy of the GNU General Public License
  along with Authenticator. If not, see <http://www.gnu.org/licenses/>.
 """
-import logging
+from .logger import Logger
 import binascii
-from base64 import b32decode
 try:
     from pyotp import TOTP
 except ImportError:
-    logging.error("Impossible to import TOTP, please install PyOTP first")
+    Logger.error("Impossible to import TOTP, please install PyOTP first")
 
 
 class Code:
@@ -36,7 +35,7 @@ class Code:
     def is_valid(token):
         """Validate a token."""
         try:
-            b32decode(token, casefold=True)
+            TOTP(token).now()
             return True
         except (binascii.Error, ValueError):
             return False
@@ -49,7 +48,7 @@ class Code:
             self._totp = TOTP(self._token)
             self._secret_code = self._totp.now()
         except Exception as e:
-            logging.error("Couldn't generate two factor code : %s" % str(e))
+            Logger.error("Couldn't generate two factor code : %s" % str(e))
 
     def update(self):
         """
