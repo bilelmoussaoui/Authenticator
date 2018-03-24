@@ -47,7 +47,7 @@ git clone https://github.com/bilelmoussaoui/Authenticator && cd ./Authenticator
 2 - Install Python dependecies
 
 ```bash
-sudo pip install pyotp pyzbar pyaml Pillow meson ninja
+sudo pip install pyotp pyzbar Pillow meson ninja
 ```
 
 <sub>PS : In some distributions you will need to use `pip3` instead of `pip` to install the compatible version of the package with Python 3.</sub> <br>
