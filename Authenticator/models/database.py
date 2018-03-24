@@ -40,7 +40,7 @@ class Database:
                 file_obj.write('')
         self.conn = sqlite3.connect(db_file)
         if not self.is_table_exists():
-            Logger.debug("SQL: Table 'accounts' does not exists")
+            Logger.debug("SQL: Table 'accounts' does not exist")
             self.create_table()
             Logger.debug("SQL: Table 'accounts' created successfully")
 
