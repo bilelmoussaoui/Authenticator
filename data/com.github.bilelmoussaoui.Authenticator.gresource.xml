@@ -5,5 +5,21 @@
     <file alias="pre3.20.css">com.github.bilelmoussaoui.Authenticator-pre3.20.css</file>
     <file>data.json</file>
     <file alias="qrscanner-symbolic.svg">icons/hicolor/symbolic/actions/qrscanner-symbolic.svg</file>
+
+    <!-- Accounts logo fallback -->
+    <file alias="authenticator-fallback">icons/hicolor/48x48/apps/com.github.bilelmoussaoui.Authenticator.png</file>
+
+    <!-- Default pre-shipped icons -->
+    <file alias="amazon.svg">icons/hicolor/48x48/apps/amazon.svg</file>
+    <file alias="discord.svg">icons/hicolor/48x48/apps/discord.svg</file>
+    <file alias="dropbox.svg">icons/hicolor/48x48/apps/dropbox.svg</file>
+    <file alias="facebook.svg">icons/hicolor/48x48/apps/facebook.svg</file>
+    <file alias="github.svg">icons/hicolor/48x48/apps/github.svg</file>
+    <file alias="gmail.svg">icons/hicolor/48x48/apps/gmail.svg</file>
+    <file alias="nextcloud.svg">icons/hicolor/48x48/apps/nextcloud.svg</file>
+    <file alias="owncloud.svg">icons/hicolor/48x48/apps/owncloud.svg</file>
+    <file alias="twitter.svg">icons/hicolor/48x48/apps/twitter.svg</file>
+    <file alias="youtube.svg">icons/hicolor/48x48/apps/youtube.svg</file>
+
   </gresource>
 </gresources>

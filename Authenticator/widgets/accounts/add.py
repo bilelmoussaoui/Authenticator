@@ -21,7 +21,7 @@ import json
 
 from gi import require_version
 require_version("Gtk", "3.0")
-from gi.repository import Gio, Gtk, GObject
+from gi.repository import Gio, Gtk, GObject, GLib
 
 from ..headerbar import HeaderBarButton, HeaderBarToggleButton
 from ..inapp_notification import InAppNotification
@@ -194,12 +194,12 @@ class AccountRow(Gtk.ListBoxRow):
         container = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
 
         theme = Gtk.IconTheme.get_default()
-        if theme.has_icon(self.logo):
-            icon_name = self.logo
-        else:
-            icon_name = "image-missing"
-        logo_img = Gtk.Image.new_from_icon_name(icon_name,
-                                                Gtk.IconSize.DIALOG)
+        try:
+            pixbuf = theme.load_icon(self.logo, 48, 0)
+            logo_img = Gtk.Image.new_from_pixbuf(pixbuf)
+        except GLib.Error:
+            logo_img = Gtk.Image.new_from_icon_name("com.github.bilelmoussaoui.Authenticator", Gtk.IconSize.DIALOG)
+
         container.pack_start(logo_img, False, False, 6)
 
         name_lbl = Gtk.Label(label=self.name)
@@ -285,12 +285,11 @@ class AccountConfig(Gtk.Box, GObject.GObject):
 
         self.provider_entry.set_text(name)
         theme = Gtk.IconTheme.get_default()
-        if theme.has_icon(logo):
-            self.logo_img.set_from_icon_name(logo,
-                                             Gtk.IconSize.DIALOG)
-        else:
-            self.logo_img.set_from_icon_name("image-missing",
-                                             Gtk.IconSize.DIALOG)
+        try:
+            pixbuf = theme.load_icon(logo, 48, 0)
+            self.logo_img.set_from_pixbuf(pixbuf)
+        except GLib.Error:
+            self.logo_img.set_from_icon_name("com.github.bilelmoussaoui.Authenticator", Gtk.IconSize.DIALOG)
 
     def scan_qr(self):
         filename = GNOMEScreenshot.area()
