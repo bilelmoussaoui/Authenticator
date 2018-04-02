@@ -25,4 +25,5 @@ def is_gnome():
     """
         Check if the current distro is gnome
     """
-    return environ.get("XDG_CURRENT_DESKTOP").lower() == "gnome"
+    current_desktop = environ.get("XDG_CURRENT_DESKTOP")
+    return current_desktop and current_desktop.lower() == "gnome"
