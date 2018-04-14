@@ -9,16 +9,16 @@ msgstr ""
 "Project-Id-Version: Authenticator\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-03-16 04:03+0100\n"
-"PO-Revision-Date: 2017-12-12 23:38+0000\n"
-"Last-Translator: Bilal Elmoussaoui <bil.elmoussaoui@gmail.com>\n"
-"Language-Team: French <https://hosted.weblate.org/projects/gnome-"
-"Authenticator/translation/fr/>\n"
+"PO-Revision-Date: 2018-04-15 14:36+0000\n"
+"Last-Translator: Sylvain <dev@sylvainmetayer.fr>\n"
+"Language-Team: French <https://hosted.weblate.org/projects/authenticator/"
+"translation/fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 2.10-dev\n"
+"X-Generator: Weblate 3.0-dev\n"
 
 #: Authenticator/application.py:36 Authenticator/widgets/about.py:40
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:5
@@ -29,7 +29,7 @@ msgstr ""
 #. Night mode action
 #: Authenticator/application.py:79
 msgid "Night Mode"
-msgstr ""
+msgstr "Mode nuit"
 
 #: Authenticator/application.py:82
 msgid "About"
@@ -41,9 +41,8 @@ msgstr "Quitter"
 
 #: Authenticator/widgets/accounts/add.py:51
 #: Authenticator/widgets/headerbar.py:101
-#, fuzzy
 msgid "Add a new account"
-msgstr "Ajouter une nouvelle application"
+msgstr "Ajouter un nouveau compte"
 
 #: Authenticator/widgets/accounts/add.py:60
 #: Authenticator/widgets/headerbar.py:99
@@ -52,7 +51,7 @@ msgstr "Chercher"
 
 #: Authenticator/widgets/accounts/add.py:64
 msgid "Scan QR code"
-msgstr ""
+msgstr "Scanner un QR code"
 
 #: Authenticator/widgets/accounts/add.py:99
 msgid "Next"
@@ -60,7 +59,7 @@ msgstr "Suivant"
 
 #: Authenticator/widgets/accounts/add.py:100
 msgid "Close"
-msgstr ""
+msgstr "Fermer"
 
 #: Authenticator/widgets/accounts/add.py:108
 msgid "Add"
@@ -68,30 +67,26 @@ msgstr "Ajouter"
 
 #: Authenticator/widgets/accounts/add.py:109
 msgid "Back"
-msgstr ""
+msgstr "Retour"
 
 #: Authenticator/widgets/accounts/add.py:245
-#, fuzzy
 msgid "Account name"
 msgstr "Compte"
 
 #: Authenticator/widgets/accounts/add.py:247
-#, fuzzy
 msgid "Secret Token"
 msgstr "Code secret"
 
 #: Authenticator/widgets/accounts/add.py:293
 msgid "Invalid QR code"
-msgstr ""
+msgstr "QR Code invalide"
 
 #. Label
 #: Authenticator/widgets/accounts/list.py:121
-#, fuzzy
 msgid "There's no account yet..."
-msgstr "Y a aucune application pour le moment"
+msgstr "Il n'y a aucun compte pour le moment..."
 
 #: Authenticator/widgets/accounts/row.py:53
-#, fuzzy
 msgid "Copy"
 msgstr "Copier"
 
