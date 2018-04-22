@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Authenticator\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-03-16 04:03+0100\n"
-"PO-Revision-Date: 2018-04-10 19:36+0000\n"
+"PO-Revision-Date: 2018-04-23 23:37+0000\n"
 "Last-Translator: Nathan Follens <nathan@email.is>\n"
 "Language-Team: Flemish <https://hosted.weblate.org/projects/authenticator/"
 "translation/nl_BE/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.20\n"
+"X-Generator: Weblate 3.0-dev\n"
 
 #: Authenticator/application.py:36 Authenticator/widgets/about.py:40
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:5
@@ -119,7 +119,7 @@ msgstr "Annuleren"
 
 #: Authenticator/widgets/headerbar.py:187
 msgid "Click on items to select them"
-msgstr "Klik op items om ze te selecteren"
+msgstr "Klikt op items voor ze te selecteren"
 
 #: Authenticator/widgets/inapp_notification.py:51
 #: Authenticator/widgets/inapp_notification.py:79
