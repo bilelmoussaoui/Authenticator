@@ -36,6 +36,7 @@ class AccountsList(Gtk.ListBox, GObject.GObject):
 
     __gsignals__ = {
         'changed': (GObject.SignalFlags.RUN_LAST, None, (bool,)),
+        'selected-count-rows-changed': (GObject.SignalFlags.RUN_LAST, None, (int, )),
     }
     # Default instance of accounts list
     instance = None
@@ -65,7 +66,9 @@ class AccountsList(Gtk.ListBox, GObject.GObject):
             provider = account["provider"]
             secret_id = account["secret_id"]
             logo = account["logo"]
-            self.add(AccountRow(Account(_id, name, provider, secret_id, logo)))
+            row = AccountRow(Account(_id, name, provider, secret_id, logo))
+            row.connect("on_selected", self.on_row_checked)
+            self.add(row)
 
     def append(self, name, provider, secret_id, logo):
         account = Account.create(name, provider, secret_id, logo)
@@ -75,6 +78,14 @@ class AccountsList(Gtk.ListBox, GObject.GObject):
     def delete(self, row):
         # Remove an account from the list
         self.emit("changed", False)
+
+    def on_row_checked(self, row):
+        count_selected_rows = 0
+        for _row in self.get_children():
+            if _row.checked:
+                count_selected_rows += 1
+        self.emit("selected-count-rows-changed", count_selected_rows)
+
 
     def _on_row_activated(self, accounts_list, account_row):
         """On row activated signal override."""

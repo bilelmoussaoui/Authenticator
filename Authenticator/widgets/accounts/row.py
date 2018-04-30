@@ -20,7 +20,7 @@ from gettext import gettext as _
 
 from gi import require_version
 require_version("Gtk", "3.0")
-from gi.repository import Gio, Gtk
+from gi.repository import Gio, Gtk, GObject
 
 
 class ActionButton(Gtk.Button):
@@ -58,8 +58,12 @@ class ActionsBox(Gtk.Box):
         self.pack_start(self.copy_btn, False, False, 0)
 
 
-class AccountRow(Gtk.ListBoxRow):
-    """Account Row widget."""
+class AccountRow(Gtk.ListBoxRow, GObject.GObject):
+    """Accounts List."""
+
+    __gsignals__ = {
+        'on_selected': (GObject.SignalFlags.RUN_LAST, None, ()),
+    }
 
     def __init__(self, account):
         Gtk.ListBoxRow.__init__(self)
@@ -75,6 +79,10 @@ class AccountRow(Gtk.ListBoxRow):
     def account(self):
         return self._account
 
+    @property
+    def checked(self):
+        return self.check_btn.get_active()
+
     def get_name(self):
         """
             Required by SearchBar
@@ -88,6 +96,7 @@ class AccountRow(Gtk.ListBoxRow):
 
         container.pack_start(self.check_btn, False, False, 0)
         self.check_btn.set_visible(False)
+        self.check_btn.connect("toggled", self._on_toggled)
         self.check_btn.set_no_show_all(True)
 
         # Account Image
@@ -147,6 +156,9 @@ class AccountRow(Gtk.ListBoxRow):
         container.pack_end(actions, False, False, 6)
 
         self.add(container)
+
+    def _on_toggled(self, *args):
+        self.emit("on_selected")
 
     def _on_copy(self, *args):
         self._account.copy_token()
