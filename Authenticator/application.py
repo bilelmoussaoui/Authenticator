@@ -104,8 +104,8 @@ class Application(Gtk.Application):
         action = Gio.SimpleAction.new("quit", None)
         action.connect("activate", self.on_quit)
         self.add_action(action)
-        # FIXME: only do that on gnome
-        self.set_app_menu(self.menu)
+        if is_gnome():
+            self.set_app_menu(self.menu)
         Logger.debug("Adding Application Menu")
 
     def do_activate(self, *args):

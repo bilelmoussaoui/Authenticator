@@ -101,12 +101,12 @@ class AccountRow(Gtk.ListBoxRow, GObject.GObject):
 
         # Account Image
         theme = Gtk.IconTheme.get_default()
-        if theme.has_icon(self.account.logo):
-            icon_name = self.account.logo
-        else:
-            # TODO: replace this icon name with something else
-            icon_name = "image-missing"
-        image = Gtk.Image.new_from_icon_name(icon_name, Gtk.IconSize.DIALOG)
+        try:
+            pixbuf = theme.load_icon(self.account.logo, 48, 0)
+            image = Gtk.Image.new_from_pixbuf(pixbuf)
+        except GLib.Error:
+            image = Gtk.Image.new_from_icon_name("com.github.bilelmoussaoui.Authenticator", Gtk.IconSize.DIALOG)
+
         container.pack_start(image, False, False, 6)
 
         # Account Name & Two factor code:
