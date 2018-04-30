@@ -87,8 +87,9 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         search_bar.search_list = [accounts_list]
 
         actions_bar = ActionsBar.get_default()
-        actions_bar.delete_btn.connect(
-            "clicked", accounts_list.delete_selected)
+        actions_bar.delete_btn.connect("clicked", accounts_list.delete_selected)
+        accounts_list.connect("selected-count-rows-changed",
+                                actions_bar.on_selected_rows_changed)
 
         account_list_cntr.pack_start(search_bar, False, False, 0)
         account_list_cntr.pack_start(accounts_list, True, True, 0)

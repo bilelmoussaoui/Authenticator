@@ -42,5 +42,8 @@ class ActionsBar(Gtk.ActionBar):
 
     def _build_widgets(self):
         self.delete_btn = Gtk.Button(label=_("Delete"))
-
+        self.delete_btn.set_sensitive(False)
         self.pack_end(self.delete_btn)
+
+    def on_selected_rows_changed(self, accounts_list, selected_rows):
+        self.delete_btn.set_sensitive(selected_rows > 0)
