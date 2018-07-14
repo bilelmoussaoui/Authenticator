@@ -151,7 +151,7 @@ class HeaderBar(Gtk.HeaderBar):
     def toggle_popover(self, *args):
         if self.popover:
             if self.popover.get_visible():
-                self.popover.hide_()
+                self.popover.hide()
             else:
                 self.popover.show_all()
 
@@ -176,11 +176,13 @@ class HeaderBar(Gtk.HeaderBar):
             self.get_style_context().add_class("selection-mode")
             self.cancel_btn.set_visible(True)
             self.cancel_btn.set_no_show_all(False)
+            self.settings_btn.hide_()
             self.set_title(_("Click on items to select them"))
         else:
             self.search_btn.show_()
             self.add_btn.show_()
             self.select_btn.show_()
+            self.settings_btn.show_()
         if self.state == HeaderBarState.SELECT:
             self.get_style_context().remove_class("selection-mode")
             self.set_show_close_button(True)

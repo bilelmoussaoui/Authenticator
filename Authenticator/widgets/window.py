@@ -93,6 +93,7 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         """Save window position & size."""
         settings = Settings.get_default()
         settings.window_position = self.get_position()
+        settings.window_maximized = self.is_maximized()
 
     def restore_state(self):
         """Restore the window's state."""
@@ -106,6 +107,10 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         else:
             # Fallback to the center
             self.set_position(Gtk.WindowPosition.CENTER)
+
+        if settings.window_maximized:
+            self.maximize()
+
 
     def _build_widgets(self):
         """Build main window widgets."""

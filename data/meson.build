@@ -16,7 +16,7 @@ gnome.compile_resources(
 message('Compiling schemas')
 install_data(
   meson.project_name() + '.gschema.xml',
-  install_dir : join_paths(get_option('prefix'), 'share/glib-2.0/schemas')
+  install_dir : join_paths(get_option('prefix'),get_option('datadir'), 'glib-2.0/schemas')
 )
 
 i18n.merge_file(

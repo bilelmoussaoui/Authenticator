@@ -15,5 +15,11 @@
         Enable/disable night mode within the application
       </description>
     </key>
+    <key name="is-maximized" type="b">
+      <default>false</default>
+      <summary>Default window maximized behaviour</summary>
+      <description>
+      </description>
+    </key>
   </schema>
 </schemalist>
