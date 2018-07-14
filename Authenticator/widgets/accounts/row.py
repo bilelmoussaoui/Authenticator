@@ -20,7 +20,7 @@ from gettext import gettext as _
 
 from gi import require_version
 require_version("Gtk", "3.0")
-from gi.repository import Gio, Gtk, GObject
+from gi.repository import Gio, Gtk, GObject, GLib
 
 
 class ActionButton(Gtk.Button):
@@ -70,6 +70,7 @@ class AccountRow(Gtk.ListBoxRow, GObject.GObject):
         self.get_style_context().add_class("application-list-row")
         self._account = account
         self.check_btn = Gtk.CheckButton()
+        self.counter_lbl = Gtk.Label()
         self._account.connect("code_updated", self._on_code_updated)
         self._account.connect("counter_updated", self._on_counter_updated)
         self._build_widget()
@@ -105,7 +106,8 @@ class AccountRow(Gtk.ListBoxRow, GObject.GObject):
             pixbuf = theme.load_icon(self.account.logo, 48, 0)
             image = Gtk.Image.new_from_pixbuf(pixbuf)
         except GLib.Error:
-            image = Gtk.Image.new_from_icon_name("com.github.bilelmoussaoui.Authenticator", Gtk.IconSize.DIALOG)
+            image = Gtk.Image.new_from_icon_name(
+                "com.github.bilelmoussaoui.Authenticator", Gtk.IconSize.DIALOG)
 
         container.pack_start(image, False, False, 6)
 
@@ -133,7 +135,6 @@ class AccountRow(Gtk.ListBoxRow, GObject.GObject):
         self.code_lbl.set_halign(Gtk.Align.START)
         self.code_lbl.get_style_context().add_class("token-label")
         # Counter
-        self.counter_lbl = Gtk.Label()
         if secret_code:
             self.update_counter()
         else:

@@ -86,7 +86,6 @@ class AccountsList(Gtk.ListBox, GObject.GObject):
                 count_selected_rows += 1
         self.emit("selected-count-rows-changed", count_selected_rows)
 
-
     def _on_row_activated(self, accounts_list, account_row):
         """On row activated signal override."""
         account_row.toggle_secret_code()

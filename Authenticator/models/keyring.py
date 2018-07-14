@@ -25,13 +25,12 @@ class Keyring:
     ID = "com.github.bilelmoussaoui.Authenticator"
     instance = None
 
-
     def __init__(self):
-        self.schema = Secret.Schema.new(Keyring.ID, 
-        Secret.SchemaFlags.NONE,
-        {
-            "id": Secret.SchemaAttributeType.STRING
-        })
+        self.schema = Secret.Schema.new(Keyring.ID,
+                                        Secret.SchemaFlags.NONE,
+                                        {
+                                            "id": Secret.SchemaAttributeType.STRING
+                                        })
 
     @staticmethod
     def get_default():
@@ -43,7 +42,7 @@ class Keyring:
     def get_by_id(id_):
         """Return the secret code"""
         schema = Keyring.get_default().schema
-        password = Secret.password_lookup_sync(schema, { "id": str(id_)}, None)
+        password = Secret.password_lookup_sync(schema, {"id": str(id_)}, None)
         return password
 
     @staticmethod
@@ -66,5 +65,5 @@ class Keyring:
         :return: bool
         """
         schema = Keyring.get_default().schema
-        removed = Secret.password_clear_sync(schema, { "id": str(id_)}, None)
+        removed = Secret.password_clear_sync(schema, {"id": str(id_)}, None)
         return removed

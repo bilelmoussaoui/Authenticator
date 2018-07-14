@@ -137,22 +137,16 @@ class HeaderBar(Gtk.HeaderBar):
         right_box.add(self.search_btn)
         right_box.add(self.select_btn)
         right_box.add(self.cancel_btn)
-
-        if not is_gnome():
-            # add settings menu
-            self.generate_popover(right_box)
+        right_box.add(self.settings_btn)
 
         self.pack_start(left_box)
         self.pack_end(right_box)
 
-    def generate_popover(self, box):
-        from ..application import Application
-        menu = Application.get_default().menu
+    def generate_popover_menu(self, menu):
         self.settings_btn.connect("clicked", self.toggle_popover)
         self.popover = Gtk.Popover.new_from_model(self.settings_btn,
                                                   menu)
         self.popover.props.width_request = 200
-        box.add(self.settings_btn)
 
     def toggle_popover(self, *args):
         if self.popover:

@@ -44,7 +44,6 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         self.set_size_request(400, 600)
         self.resize(400, 600)
         self.restore_state()
-        self.set_resizable(False)
         self._build_widgets()
         self.show_all()
 
@@ -55,61 +54,9 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
             Window.instance = Window()
         return Window.instance
 
-    def _build_widgets(self):
-        """Build main window widgets."""
-        # HeaderBar
-        headerbar = HeaderBar.get_default()
-        # connect signals
-        headerbar.select_btn.connect("clicked", self.toggle_select)
-        headerbar.add_btn.connect("clicked", self.add_account)
-        headerbar.cancel_btn.connect("clicked", self.toggle_select)
-
-        self.set_titlebar(headerbar)
-
-        # Main Container
-        self.main_container = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-
-        # In App Notifications
-        # TODO: replace this with the gtk4 implementation
-        self.notification = InAppNotification()
-        self.main_container.pack_start(self.notification, False, False, 0)
-
-        self.main_stack = Gtk.Stack()
-
-        # Accounts List
-        account_list_cntr = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-
-        accounts_list = AccountsList.get_default()
-        accounts_list.connect("changed", self._do_update_view)
-
-        search_bar = SearchBar()
-        search_bar.search_button = headerbar.search_btn
-        search_bar.search_list = [accounts_list]
-
-        actions_bar = ActionsBar.get_default()
-        actions_bar.delete_btn.connect("clicked", accounts_list.delete_selected)
-        accounts_list.connect("selected-count-rows-changed",
-                                actions_bar.on_selected_rows_changed)
-
-        account_list_cntr.pack_start(search_bar, False, False, 0)
-        account_list_cntr.pack_start(accounts_list, True, True, 0)
-        account_list_cntr.pack_start(actions_bar, False, False, 0)
-
-        self.main_stack.add_named(account_list_cntr,
-                                  "accounts-list")
-
-        # Empty accounts list
-        self.main_stack.add_named(EmptyAccountsList.get_default(),
-                                  "empty-accounts-list")
-
-        self.main_container.pack_start(self.main_stack, True, True, 0)
-        self.add(self.main_container)
-        self._do_update_view()
-
-        actions_bar.bind_property(
-            "visible", headerbar.cancel_btn, "visible",  GObject.BindingFlags.BIDIRECTIONAL)
-        actions_bar.bind_property(
-            "no_show_all", headerbar.cancel_btn, "no_show_all",  GObject.BindingFlags.BIDIRECTIONAL)
+    def set_menu(self, gio_menu):
+        """Set Headerbar popover menu."""
+        HeaderBar.get_default().generate_popover_menu(gio_menu)
 
     def add_account(self, *args):
         add_window = AddAcountWindow()
@@ -159,3 +106,62 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         else:
             # Fallback to the center
             self.set_position(Gtk.WindowPosition.CENTER)
+
+    def _build_widgets(self):
+        """Build main window widgets."""
+        # HeaderBar
+        headerbar = HeaderBar.get_default()
+        # connect signals
+        headerbar.select_btn.connect("clicked", self.toggle_select)
+        headerbar.add_btn.connect("clicked", self.add_account)
+        headerbar.cancel_btn.connect("clicked", self.toggle_select)
+
+        self.set_titlebar(headerbar)
+
+        # Main Container
+        self.main_container = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+
+        # In App Notifications
+        # TODO: replace this with the gtk4 implementation
+        self.notification = InAppNotification()
+        self.main_container.pack_start(self.notification, False, False, 0)
+
+        self.main_stack = Gtk.Stack()
+
+        # Accounts List
+        account_list_cntr = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+
+        accounts_list = AccountsList.get_default()
+        accounts_list.connect("changed", self._do_update_view)
+
+        search_bar = SearchBar()
+        search_bar.search_button = headerbar.search_btn
+        search_bar.search_list = [accounts_list]
+
+        actions_bar = ActionsBar.get_default()
+        actions_bar.delete_btn.connect("clicked",
+                                       accounts_list.delete_selected)
+        accounts_list.connect("selected-count-rows-changed",
+                              actions_bar.on_selected_rows_changed)
+
+        account_list_cntr.pack_start(search_bar, False, False, 0)
+        account_list_cntr.pack_start(accounts_list, True, True, 0)
+        account_list_cntr.pack_start(actions_bar, False, False, 0)
+
+        self.main_stack.add_named(account_list_cntr,
+                                  "accounts-list")
+
+        # Empty accounts list
+        self.main_stack.add_named(EmptyAccountsList.get_default(),
+                                  "empty-accounts-list")
+
+        self.main_container.pack_start(self.main_stack, True, True, 0)
+        self.add(self.main_container)
+        self._do_update_view()
+
+        actions_bar.bind_property("visible", headerbar.cancel_btn,
+                                  "visible",
+                                  GObject.BindingFlags.BIDIRECTIONAL)
+        actions_bar.bind_property("no_show_all", headerbar.cancel_btn,
+                                  "no_show_all",
+                                  GObject.BindingFlags.BIDIRECTIONAL)

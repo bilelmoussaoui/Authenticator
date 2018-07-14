@@ -36,7 +36,6 @@ class AddAcountWindow(Gtk.Window):
     def __init__(self):
         Gtk.Window.__init__(self)
         self.set_position(Gtk.WindowPosition.CENTER_ON_PARENT)
-        self.set_resizable(False)
         self.set_size_request(400, 600)
         self.resize(400, 600)
         self._signals = {}
@@ -172,7 +171,8 @@ class AccountsList(Gtk.Box):
         file = Gio.File.new_for_uri(uri)
         content = str(file.load_contents(None)[1].decode("utf-8"))
         data = json.loads(content)
-        data = sorted([(name, logo) for name, logo in data.items()], key=lambda entry: entry[0].lower())
+        data = sorted([(name, logo) for name, logo in data.items()],
+                      key=lambda entry: entry[0].lower())
         for entry in data:
             name, logo = entry
             self._listbox.add(AccountRow(name, logo))
@@ -198,7 +198,8 @@ class AccountRow(Gtk.ListBoxRow):
             pixbuf = theme.load_icon(self.logo, 48, 0)
             logo_img = Gtk.Image.new_from_pixbuf(pixbuf)
         except GLib.Error:
-            logo_img = Gtk.Image.new_from_icon_name("com.github.bilelmoussaoui.Authenticator", Gtk.IconSize.DIALOG)
+            logo_img = Gtk.Image.new_from_icon_name(
+                "com.github.bilelmoussaoui.Authenticator", Gtk.IconSize.DIALOG)
 
         container.pack_start(logo_img, False, False, 6)
 
@@ -223,6 +224,7 @@ class AccountConfig(Gtk.Box, GObject.GObject):
         self.name_entry = Gtk.Entry()
         self.provider_entry = Gtk.Entry()
         self.secret_entry = Gtk.Entry()
+        self._logo = None
         self._build_widgets()
 
     @property
@@ -233,13 +235,11 @@ class AccountConfig(Gtk.Box, GObject.GObject):
         account_name = self.name_entry.get_text()
         provider = self.provider_entry.get_text()
         secret = self.secret_entry.get_text()
-        logo = self.logo_img.props.file
-        if not logo:
-            logo = self.logo_img.props.icon_name
+
         return {"name": account_name,
                 "provider": provider,
                 "secret": secret,
-                "logo": logo}
+                "logo": self._logo}
 
     def _build_widgets(self):
         self.pack_start(self.notification, False, False, 0)
@@ -281,15 +281,16 @@ class AccountConfig(Gtk.Box, GObject.GObject):
 
     def set_account(self, account):
         name = account.name
-        logo = account.logo
+        self._logo = account.logo
 
         self.provider_entry.set_text(name)
         theme = Gtk.IconTheme.get_default()
         try:
-            pixbuf = theme.load_icon(logo, 48, 0)
+            pixbuf = theme.load_icon(self._logo, 48, 0)
             self.logo_img.set_from_pixbuf(pixbuf)
         except GLib.Error:
-            self.logo_img.set_from_icon_name("com.github.bilelmoussaoui.Authenticator", Gtk.IconSize.DIALOG)
+            self.logo_img.set_from_icon_name("com.github.bilelmoussaoui.Authenticator",
+                                             Gtk.IconSize.DIALOG)
 
     def scan_qr(self):
         filename = GNOMEScreenshot.area()

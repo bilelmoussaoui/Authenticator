@@ -2,6 +2,7 @@ import dbus
 from os import path
 from tempfile import NamedTemporaryFile, gettempdir
 
+
 class GNOMEScreenshot:
 
     interface = "org.gnome.Shell.Screenshot"
@@ -12,7 +13,7 @@ class GNOMEScreenshot:
             filename = path.join(gettempdir(), NamedTemporaryFile().name)
         bus = dbus.SessionBus()
         shell_obj = bus.get_object(GNOMEScreenshot.interface,
-                                    "/org/gnome/Shell/Screenshot")
+                                   "/org/gnome/Shell/Screenshot")
         screen_intf = dbus.Interface(shell_obj, GNOMEScreenshot.interface)
 
         area = screen_intf.SelectArea()

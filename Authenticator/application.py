@@ -23,7 +23,6 @@ require_version("Gtk", "3.0")
 from gi.repository import Gtk, GLib, Gio, Gdk, GObject
 from .widgets import Window, AboutDialog
 from .models import Settings, Keyring, Clipboard, Logger
-from .utils import is_gnome
 
 
 class Application(Gtk.Application):
@@ -37,7 +36,7 @@ class Application(Gtk.Application):
         GLib.set_application_name(_("Authenticator"))
         GLib.set_prgname("Authenticator")
         self.alive = True
-        self.menu = Gio.Menu()
+        self._menu = Gio.Menu()
 
     @staticmethod
     def get_default():
@@ -88,7 +87,7 @@ class Application(Gtk.Application):
         help_content.append_item(Gio.MenuItem.new(_("About"), "app.about"))
         help_content.append_item(Gio.MenuItem.new(_("Quit"), "app.quit"))
         help_section = Gio.MenuItem.new_section(None, help_content)
-        self.menu.append_item(help_section)
+        self._menu.append_item(help_section)
 
         is_night_mode = settings.is_night_mode
         gv_is_night_mode = GLib.Variant.new_boolean(is_night_mode)
@@ -104,9 +103,6 @@ class Application(Gtk.Application):
         action = Gio.SimpleAction.new("quit", None)
         action.connect("activate", self.on_quit)
         self.add_action(action)
-        if is_gnome():
-            self.set_app_menu(self.menu)
-        Logger.debug("Adding Application Menu")
 
     def do_activate(self, *args):
         """On activate signal override."""
@@ -114,6 +110,7 @@ class Application(Gtk.Application):
         Gtk.IconTheme.get_default().add_resource_path(resources_path)
         window = Window.get_default()
         window.set_application(self)
+        window.set_menu(self._menu)
         window.connect("delete-event", lambda x, y: self.on_quit())
         self.add_window(window)
         window.show_all()
