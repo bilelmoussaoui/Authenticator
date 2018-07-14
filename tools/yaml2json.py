@@ -12,7 +12,7 @@ from collections import OrderedDict
 
 import yaml
 
-GIT_CLONE_URI = "https://github.com/2factorauth/Authenticator.git"
+GIT_CLONE_URI = "https://github.com/2factorauth/twofactorauth"
 TMP_FOLDER = path.join(tempfile.gettempdir(), "Authenticator")
 DATA_DIR = path.join(TMP_FOLDER, "_data")
 OUTPUT_DIR = path.join(path.dirname(
