@@ -53,6 +53,10 @@ sudo pip install pyotp pyzbar Pillow meson ninja
 
 3 - Install System dependencies
 
+The following packages must be installed to successfully build Authenticator.
+
+- Debian / Ubuntu
+
 ```bash
 sudo apt install gobject-introspection libgirepository1.0-dev libgtk-3-dev
 ```
