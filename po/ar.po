@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: Authenticator\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-03-16 04:03+0100\n"
-"PO-Revision-Date: 2018-07-14 19:34+0000\n"
-"Last-Translator: alaazghoul <a.z9@live.com>\n"
+"PO-Revision-Date: 2018-08-13 20:38+0000\n"
+"Last-Translator: ButterflyOfFire <ButterflyOfFire@protonmail.com>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/authenticator/"
 "translation/ar/>\n"
 "Language: ar\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 3.1-dev\n"
+"X-Generator: Weblate 3.2-dev\n"
 
 #: Authenticator/application.py:36 Authenticator/widgets/about.py:40
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:5
@@ -36,9 +36,8 @@ msgid "About"
 msgstr "عن"
 
 #: Authenticator/application.py:83
-#, fuzzy
 msgid "Quit"
-msgstr "مغادرة"
+msgstr "خروج"
 
 #: Authenticator/widgets/accounts/add.py:51
 #: Authenticator/widgets/headerbar.py:101
@@ -84,9 +83,8 @@ msgstr "رمز QR خاطئ"
 
 #. Label
 #: Authenticator/widgets/accounts/list.py:121
-#, fuzzy
 msgid "There's no account yet..."
-msgstr "وسم"
+msgstr "ليس هناك حساب بعد …"
 
 #: Authenticator/widgets/accounts/row.py:53
 msgid "Copy"
