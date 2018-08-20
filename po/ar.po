@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Authenticator\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-03-16 04:03+0100\n"
-"PO-Revision-Date: 2018-08-13 20:38+0000\n"
+"PO-Revision-Date: 2018-08-21 09:34+0000\n"
 "Last-Translator: ButterflyOfFire <ButterflyOfFire@protonmail.com>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/authenticator/"
 "translation/ar/>\n"
@@ -95,9 +95,8 @@ msgid "Couldn't generate the secret code"
 msgstr "لم يتم توليد المفتاح السري"
 
 #: Authenticator/widgets/about.py:41
-#, fuzzy
 msgid "translator-credits"
-msgstr "فضل المترجم"
+msgstr "translator-credits"
 
 #: Authenticator/widgets/about.py:43
 msgid "Two factor authentication codes generator."
@@ -152,7 +151,7 @@ msgstr ""
 
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:11
 msgid "com.github.bilelmoussaoui.Authenticator"
-msgstr ""
+msgstr "com.github.bilelmoussaoui.Authenticator"
 
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:20
 msgid "About Authenticator"
