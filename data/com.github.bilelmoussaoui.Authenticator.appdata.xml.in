@@ -7,16 +7,49 @@
   <summary>Two Factor Authentication code generator</summary>
   <description>
     <p>Simple application that generates 2 factor authentication code, created for GNOME.</p>
+    <p>Features:</p>
+    <ul>
+      <li>QR code scanner</li>
+      <li>Beautiful UI</li>
+      <li>Huge database of (290+) websites/applications</li>
+    </ul>
   </description>
   <screenshots>
-    <screenshot type="default" width="376" height="574">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/screenshots/screenshot1.png</screenshot>
-    <screenshot width="376" height="574">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/screenshots/screenshot2.png</screenshot>
-    <screenshot width="376" height="574">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/screenshots/screenshot3.png</screenshot>
-    <screenshot width="376" height="574">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/screenshots/screenshot4.png</screenshot>
+    <screenshot type="default"><image width="376" height="574">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/screenshots/screenshot1.png</image></screenshot>
+    <screenshot><image width="376" height="574">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/screenshots/screenshot2.png</image></screenshot>
+    <screenshot><image width="376" height="574">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/screenshots/screenshot3.png</image></screenshot>
+    <screenshot><image width="376" height="574">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/screenshots/screenshot4.png</image></screenshot>
   </screenshots>
   <url type="homepage">https://github.com/bilelmoussaoui/Authenticator</url>
   <url type="bugtracker">https://github.com/bilelmoussaoui/Authenticator/issues</url>
-  <developer_name>Bilal Elmoussaoui</developer_name>
-  <updatecontact>bil.elmoussaoui@gmail.com</updatecontact>
-   <translation type="gettext">Authenticator</translation>
+  <url type="translate">https://hosted.weblate.org/projects/authenticator/translation/</url>
+  <categories>
+    <category>Utility</category>
+  </categories>
+  <releases>
+    <release version="0.2.1" date="2018-03-22">
+      <description>
+        <ul>
+          <li>HOTFIX: App not running in DE other than GNOME</li>
+        </ul>
+      </description>
+    </release>
+    <release version="0.2" date="2018-03-16">
+      <description>
+        <ul>
+          <li>Rename project to Authenticator</li>
+          <li>Cleaner code base</li>
+          <li>Faster startup</li>
+          <li>Remove unneeded features</li>
+          <li>Switch to pyzbar instead of zbarlight</li>
+          <li>Flatpak pacakge</li>
+        </ul>
+      </description>
+    </release>
+    <release version="0.1.1" date="2016-06-28" />
+    <release version="0.1.0" date="2016-06-22" />
+</releases>
+<developer_name>Bilal Elmoussaoui</developer_name>
+<update_contact>bil.elmoussaoui@gmail.com</update_contact>
+ <translation type="gettext">Authenticator</translation>
 </component>
