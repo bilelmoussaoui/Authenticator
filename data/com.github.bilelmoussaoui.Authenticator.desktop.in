@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Authenticator
-GenericName=Two Factor Authentication
-Comment=Two-Factor Authentication code generator
+GenericName=Two-factor authentication
+Comment=Two-factor authentication code generator
 Type=Application
 Exec=authenticator
 Terminal=false
