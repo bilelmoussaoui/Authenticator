@@ -22,6 +22,11 @@ You can install the flatpak package of the application from flathub using
 flatpak install flathub com.github.bilelmoussaoui.Authenticator
 ```
 
+### Gentoo
+Installing Authenticator in Gentoo Linux is as easy as follows:
+```
+emerge sys-auth/authenticator
+```
 
 ### Building from source code
 #### Dependecies
