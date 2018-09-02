@@ -58,14 +58,24 @@ sudo pip install pyotp pyzbar Pillow meson ninja
 
 <sub>PS : In some distributions you will need to use `pip3` instead of `pip` to install the compatible version of the package with Python 3.</sub> <br>
 
-3 - Afterwards
+3 - Install System dependencies
+
+The following packages must be installed to successfully build Authenticator.
+
+- Debian / Ubuntu
+
+```bash
+sudo apt install gobject-introspection libgirepository1.0-dev libgtk-3-dev
+```
+
+4 - Afterwards
 
 ```bash
 meson builddir
 sudo ninja -C builddir install
 ```
 
-4 - You can run the application from the desktop file or from terminal using
+5 - You can run the application from the desktop file or from terminal using
 ```bash
 authenticator
 ```
