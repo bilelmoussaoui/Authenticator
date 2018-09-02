@@ -28,6 +28,7 @@ from .models import Settings, Keyring, Clipboard, Logger
 class Application(Gtk.Application):
     """Authenticator application object."""
     instance = None
+    USE_QRSCANNER = True
 
     def __init__(self):
         Gtk.Application.__init__(self,
@@ -46,12 +47,7 @@ class Application(Gtk.Application):
 
     def setup_css(self):
         """Setup the CSS and load it."""
-        if Gtk.get_major_version() >= 3 and Gtk.get_minor_version() >= 20:
-            filename = "post3.20.css"
-        else:
-            filename = "pre3.20.css"
-        uri = 'resource:///com/github/bilelmoussaoui/Authenticator/{}'.format(
-            filename)
+        uri = 'resource:///com/github/bilelmoussaoui/Authenticator/style.css'
         provider_file = Gio.File.new_for_uri(uri)
         provider = Gtk.CssProvider()
         screen = Gdk.Screen.get_default()
@@ -115,6 +111,9 @@ class Application(Gtk.Application):
         self.add_window(window)
         window.show_all()
         window.present()
+
+    def set_use_qrscanner(self, state):
+        Application.USE_QRSCANNER = state
 
     def on_night_mode(self, action, *args):
         """Switch night mode."""

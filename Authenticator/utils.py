@@ -8,7 +8,7 @@
  by the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
 
- Authenticator is distributed in the hope that it will be useful,
+ Authenticator is distr  ibuted in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
@@ -16,5 +16,9 @@
  You should have received a copy of the GNU General Public License
  along with Authenticator. If not, see <http://www.gnu.org/licenses/>.
 """
-from .application import Application
-from .utils import can_use_qrscanner
+from os import environ
+
+
+def can_use_qrscanner():
+    desktop = environ.get("XDG_CURRENT_DESKTOP", "").lower()
+    return desktop == "gnome"

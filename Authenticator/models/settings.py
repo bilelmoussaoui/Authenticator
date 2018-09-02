@@ -65,7 +65,6 @@ class Settings(Gio.Settings):
         """Set the night mode."""
         self.set_boolean('night-mode', status)
 
-
     @property
     def window_maximized(self):
         """Was the window maximized?."""

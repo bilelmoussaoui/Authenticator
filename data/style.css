@@ -1,0 +1,32 @@
+.application-list-row {
+	padding: 0;
+	border: 1px solid mix(@theme_base_color,@theme_fg_color,0.3);
+	background-color: mix(@theme_base_color,@theme_bg_color,0.3);
+}
+
+
+.application-list-row:selected GtkImage {
+  color: mix(@theme_base_color,@theme_fg_color,0.3);
+}
+
+.provider-lbl {
+  font-size: 16px;
+  font-weight: bold;
+}
+.application-name {
+  font-size: 14px;
+  color: @theme_fg_color;
+  font-style: italic;
+}
+
+.account-name {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.token-label{
+  font-size: 14px;
+}
+.counter-label {
+  font-size: 12px;
+}

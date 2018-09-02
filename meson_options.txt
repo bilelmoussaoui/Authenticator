@@ -1,0 +1,1 @@
+option('enable-zbar', type : 'boolean', value : true, description : 'enable QR Scanner using zbar')

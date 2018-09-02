@@ -31,11 +31,13 @@ flatpak install flathub com.github.bilelmoussaoui.Authenticator
 - `meson 0.38+`
 - `ninja`
 - `pyotp`
+- `libsecret`
+
+Those dependencies are only used if you build the application with QRCode scanner support
 - `Pillow`
 - `pyzbar` depends on `zbar`
   - `libzbar-dev` on Ubuntu
   - `zbar` on Arch
-- `libsecret`
 
 1 - Clone the repository
 
@@ -65,15 +67,8 @@ authenticator
 
 ## Flags
 
-- `--debug`
-  Open the application with debug flags
-
 - `--version`
   Shows the version number of the application
-
-- `--about`
-  Shows the about dialog
-
 
 
 ## Credits

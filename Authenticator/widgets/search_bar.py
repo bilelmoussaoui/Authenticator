@@ -64,8 +64,8 @@ class SearchBar(Gtk.Revealer):
         self.search_entry.connect("search-changed",
                                   self.set_filter_func,
                                   self.filter_func)
-
-        box.pack_start(self.search_entry, True, False, 12)
+        box.props.margin = 6
+        box.pack_start(self.search_entry, True, True, 12)
 
         self.add(box)
         self.set_reveal_child(False)

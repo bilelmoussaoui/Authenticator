@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-13 00:20+0100\n"
+"POT-Creation-Date: 2018-09-02 15:05+0200\n"
 "PO-Revision-Date: 2018-08-19 05:40+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
@@ -19,222 +19,302 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 3.2-dev\n"
 
-#: ../TwoFactorAuth/application.py:46
-msgid "TwoFactorAuth"
+#: Authenticator/application.py:37 Authenticator/widgets/about.py:40
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:6
+#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:3
+#, fuzzy
+msgid "Authenticator"
 msgstr "To-faktorbekreftelse"
 
-#: ../TwoFactorAuth/application.py:82 ../TwoFactorAuth/widgets/headerbar.py:117
-#: ../TwoFactorAuth/widgets/settings.py:42
-msgid "Settings"
-msgstr "Innstillinger"
+#. Night mode action
+#: Authenticator/application.py:80
+msgid "Night Mode"
+msgstr ""
 
-#: ../TwoFactorAuth/application.py:90
-msgid "Shortcuts"
-msgstr "Snarveier"
-
-#: ../TwoFactorAuth/application.py:92
+#: Authenticator/application.py:83
 msgid "About"
 msgstr "Om"
 
-#: ../TwoFactorAuth/application.py:93
+#: Authenticator/application.py:84
 msgid "Quit"
 msgstr "Avslutt"
 
-#: ../TwoFactorAuth/widgets/account_row.py:157
-#, python-format
-msgid "Code \"%s\" copied to clipboard"
-msgstr "Koden \"%s\" ble kopiert til utklippstavlen"
-
-#: ../TwoFactorAuth/widgets/account_row.py:222
-msgid "Remove the account"
-msgstr "Fjern kontoen"
-
-#: ../TwoFactorAuth/widgets/account_row.py:232
-msgid "Copy the generated code"
-msgstr "Kopier den genererte koden"
-
-#: ../TwoFactorAuth/widgets/account_row.py:242
-msgid "Edit the account"
-msgstr "Rediger kontoen"
-
-#: ../TwoFactorAuth/widgets/account_row.py:252
-msgid "Save the new account name"
-msgstr "Lagre det nye kontonavnet"
-
-#: ../TwoFactorAuth/widgets/account_row.py:260
-#: ../TwoFactorAuth/widgets/account_row.py:386
-#, python-format
-msgid "Expires in %s seconds"
-msgstr "Utløper om %s sekunder"
-
-#: ../TwoFactorAuth/widgets/account_row.py:266
-msgid "Error during the generation of code"
-msgstr "Feil under generering av kode"
-
-#: ../TwoFactorAuth/widgets/account_row.py:311
-msgid "Couldn't generate the secret code"
-msgstr "Kunne ikke generere hemmelig kode"
-
-#: ../TwoFactorAuth/widgets/account_row.py:373
-#, python-format
-msgid "Do you really want to remove \"%s\"?"
-msgstr "Ønsker du virkelig å fjerne \"%s\"?"
-
-#: ../TwoFactorAuth/widgets/account_row.py:377
-#, python-format
-msgid "\"%s\" was removed"
-msgstr "\"%s\" ble fjernet"
-
-#: ../TwoFactorAuth/widgets/add_account.py:50
-#: ../TwoFactorAuth/widgets/add_account.py:67
-#: ../TwoFactorAuth/widgets/headerbar.py:71
+#: Authenticator/widgets/accounts/add.py:50
+#: Authenticator/widgets/headerbar.py:98
 msgid "Add a new account"
 msgstr "Legg til ny konto"
 
-#: ../TwoFactorAuth/widgets/add_account.py:72
-#: ../TwoFactorAuth/widgets/applications_list.py:115
-#: ../TwoFactorAuth/widgets/change_password.py:162
-#: ../TwoFactorAuth/widgets/headerbar.py:105
-msgid "Cancel"
-msgstr "Avbryt"
-
-#: ../TwoFactorAuth/widgets/add_account.py:77
-msgid "Add"
-msgstr "Legg til"
-
-#: ../TwoFactorAuth/widgets/add_account.py:85
-msgid "Scan a QR code"
-msgstr "Skann QR-kode"
-
-#: ../TwoFactorAuth/widgets/add_account.py:107
-msgid "Account Name"
-msgstr "Kontonavn"
-
-#: ../TwoFactorAuth/widgets/add_account.py:115
-msgid "Secret Code"
-msgstr "Hemmelig kode"
-
-#: ../TwoFactorAuth/widgets/add_account.py:145
-msgid "Selected area is not a valid QR code"
-msgstr "Valgt område er ikke en gyldig QR-kode"
-
-#: ../TwoFactorAuth/widgets/applications_list.py:110
-msgid "Select an application"
-msgstr "Velg et program"
-
-#: ../TwoFactorAuth/widgets/applications_list.py:122
-#: ../TwoFactorAuth/widgets/headerbar.py:101
+#: Authenticator/widgets/accounts/add.py:59
+#: Authenticator/widgets/headerbar.py:96
 msgid "Search"
 msgstr "Søk"
 
-#: ../TwoFactorAuth/widgets/applications_list.py:125
+#: Authenticator/widgets/accounts/add.py:64
+#, fuzzy
+msgid "Scan QR code"
+msgstr "Skann QR-kode"
+
+#: Authenticator/widgets/accounts/add.py:100
 msgid "Next"
 msgstr "Neste"
 
-#: ../TwoFactorAuth/widgets/change_password.py:36
-msgid "Apply"
+#: Authenticator/widgets/accounts/add.py:101
+msgid "Close"
+msgstr ""
+
+#: Authenticator/widgets/accounts/add.py:109
+msgid "Add"
 msgstr "Legg til"
 
-#: ../TwoFactorAuth/widgets/change_password.py:46
-msgid "Change password"
-msgstr "Endre passord"
+#: Authenticator/widgets/accounts/add.py:110
+msgid "Back"
+msgstr ""
 
-#: ../TwoFactorAuth/widgets/change_password.py:78
-msgid "Old password"
-msgstr "Gammelt passord"
+#: Authenticator/widgets/accounts/add.py:259
+#, fuzzy
+msgid "Account name"
+msgstr "Kontonavn"
 
-#: ../TwoFactorAuth/widgets/change_password.py:88
-msgid "New password"
-msgstr "Nytt passord"
+#: Authenticator/widgets/accounts/add.py:261
+#, fuzzy
+msgid "Secret Token"
+msgstr "Hemmelig kode"
 
-#: ../TwoFactorAuth/widgets/change_password.py:98
-msgid "Repeat new password"
-msgstr "Gjenta nytt passord"
+#: Authenticator/widgets/accounts/add.py:309
+#, fuzzy
+msgid "Invalid QR code"
+msgstr "Skann QR-kode"
 
-#: ../TwoFactorAuth/widgets/headerbar.py:64
-msgid "Remove selected accounts"
-msgstr "Fjern valgte kontoer"
+#. Label
+#: Authenticator/widgets/accounts/list.py:134
+#, fuzzy
+msgid "There's no account yet..."
+msgstr "Det finnes ingen konto for øyeblikket"
 
-#: ../TwoFactorAuth/widgets/headerbar.py:78
-msgid "Lock the Application"
-msgstr "Lås programmet"
+#: Authenticator/widgets/accounts/row.py:55
+msgid "Copy"
+msgstr ""
 
-#: ../TwoFactorAuth/widgets/headerbar.py:94
+#: Authenticator/widgets/accounts/row.py:151
+msgid "Couldn't generate the secret code"
+msgstr "Kunne ikke generere hemmelig kode"
+
+#: Authenticator/widgets/about.py:41
+msgid "translator-credits"
+msgstr ""
+
+#: Authenticator/widgets/about.py:43
+#, fuzzy
+msgid "Two factor authentication codes generator."
+msgstr "Kodegenerator for to-faktorbekreftelse"
+
+#: Authenticator/widgets/actions_bar.py:47
+msgid "Delete"
+msgstr ""
+
+#: Authenticator/widgets/headerbar.py:100
+msgid "Settings"
+msgstr "Innstillinger"
+
+#: Authenticator/widgets/headerbar.py:102
 msgid "Selection mode"
 msgstr "Utvelgelsesmodus"
 
-#: ../TwoFactorAuth/widgets/inapp_notification.py:28
+#: Authenticator/widgets/headerbar.py:104
+msgid "Cancel"
+msgstr "Avbryt"
+
+#: Authenticator/widgets/headerbar.py:179
+msgid "Click on items to select them"
+msgstr ""
+
+#: Authenticator/widgets/inapp_notification.py:51
+#: Authenticator/widgets/inapp_notification.py:79
 msgid "Undo"
 msgstr "Angre"
 
-#: ../TwoFactorAuth/widgets/inapp_notification.py:39
-msgid "Hide notification"
-msgstr "Skjul merknad"
-
-#: ../TwoFactorAuth/widgets/login_window.py:45
-msgid "Enter your password"
-msgstr "Skriv inn passordet ditt"
-
-#: ../TwoFactorAuth/widgets/login_window.py:48
-msgid "Unlock"
-msgstr "Lås opp"
-
-#: ../TwoFactorAuth/widgets/no_account_window.py:39
-msgid "There's no account at the moment"
-msgstr "Det finnes ingen konto for øyeblikket"
-
-#: ../TwoFactorAuth/widgets/settings.py:70
-msgid "Behavior"
-msgstr "Oppførsel"
-
-#: ../TwoFactorAuth/widgets/settings.py:75
-msgid "Account"
-msgstr "Konto"
-
-#: ../TwoFactorAuth/widgets/settings.py:89
-msgid "Password protection"
-msgstr "Passordbeskyttelse"
-
-#: ../TwoFactorAuth/widgets/settings.py:113
-msgid "Auto-lock the application (m):"
-msgstr "Automatisk låsning av programmet (m):"
-
-#: ../data/gnome-twofactorauth.appdata.xml.in.h:1
-#: ../data/gnome-twofactorauth.desktop.in.h:1
-msgid "Gnome TwoFactorAuth"
-msgstr "Gnome to-faktorbekreftelse"
-
-#: ../data/gnome-twofactorauth.appdata.xml.in.h:2
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:7
 msgid "Two Factor Authentication code generator"
 msgstr "Kodegenerator for to-faktorbekreftelse"
 
-#: ../data/gnome-twofactorauth.appdata.xml.in.h:3
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:9
+#, fuzzy
 msgid ""
-"Simple application that generates two-factor authentication code, created "
-"for Gnome"
+"Simple application that generates 2 factor authentication code, created for "
+"GNOME."
 msgstr ""
 "Enkelt program som genererer to-faktorbekreftelseskoder, laget for Gnome"
 
-#: ../data/gnome-twofactorauth.desktop.in.h:2
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:10
+msgid "Features:"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:12
+msgid "QR code scanner"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:13
+msgid "Beautiful UI"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:14
+msgid "Huge database of (290+) websites/applications"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:43
+msgid "Fix the QRScanner on GNOME Shell"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:44
+msgid "Add a new entry for the account's username"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:45
+msgid "Updated database of supported accounts"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:52
+msgid "HOTFIX: App not running in DE other than GNOME"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:59
+#, fuzzy
+msgid "Rename project to Authenticator"
+msgstr "To-faktorbekreftelse"
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:60
+msgid "Cleaner code base"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:61
+msgid "Faster startup"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:62
+#, fuzzy
+msgid "Remove unneeded features"
+msgstr "Fjern valgte kontoer"
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:63
+msgid "Switch to pyzbar instead of zbarlight"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:64
+msgid "Flatpak pacakge"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:71
+msgid "Bilal Elmoussaoui"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:4
 msgid "Two Factor Authentication"
 msgstr "To-faktorbekreftelse"
 
-#: ../data/gnome-twofactorauth.desktop.in.h:3
+#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:5
 msgid "Two-Factor Authentication code generator"
 msgstr "Kodegenerator for to-faktorbekreftelse"
 
-#: ../data/gnome-twofactorauth.desktop.in.h:4
-msgid "About Gnome TwoFactorAuth"
-msgstr "Om Gnome to-faktorbekreftelse"
+#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:10
+msgid "Gnome;GTK;Verification;"
+msgstr ""
 
-#: ../gnome-twofactorauth.in:50
+#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:11
+msgid "com.github.bilelmoussaoui.Authenticator"
+msgstr ""
+
+#: authenticator.py.in:45
 msgid "Start in debug mode"
 msgstr "Start i feilrettingsmodus"
 
-#: ../gnome-twofactorauth.in:52
-msgid "Gnome-TwoFactorAuth version number"
+#: authenticator.py.in:47
+#, fuzzy
+msgid "Authenticator version number"
 msgstr "Versjonsnummer for Gnome to-faktorbekreftelse"
 
-#: ../gnome-twofactorauth.in:54
-msgid "Show about dialog"
-msgstr "Vis \"Om\"-dialogvindu"
+#~ msgid "TwoFactorAuth"
+#~ msgstr "To-faktorbekreftelse"
+
+#~ msgid "Shortcuts"
+#~ msgstr "Snarveier"
+
+#~ msgid "Code \"%s\" copied to clipboard"
+#~ msgstr "Koden \"%s\" ble kopiert til utklippstavlen"
+
+#~ msgid "Remove the account"
+#~ msgstr "Fjern kontoen"
+
+#~ msgid "Copy the generated code"
+#~ msgstr "Kopier den genererte koden"
+
+#~ msgid "Edit the account"
+#~ msgstr "Rediger kontoen"
+
+#~ msgid "Save the new account name"
+#~ msgstr "Lagre det nye kontonavnet"
+
+#~ msgid "Expires in %s seconds"
+#~ msgstr "Utløper om %s sekunder"
+
+#~ msgid "Error during the generation of code"
+#~ msgstr "Feil under generering av kode"
+
+#~ msgid "Do you really want to remove \"%s\"?"
+#~ msgstr "Ønsker du virkelig å fjerne \"%s\"?"
+
+#~ msgid "\"%s\" was removed"
+#~ msgstr "\"%s\" ble fjernet"
+
+#~ msgid "Selected area is not a valid QR code"
+#~ msgstr "Valgt område er ikke en gyldig QR-kode"
+
+#~ msgid "Select an application"
+#~ msgstr "Velg et program"
+
+#~ msgid "Apply"
+#~ msgstr "Legg til"
+
+#~ msgid "Change password"
+#~ msgstr "Endre passord"
+
+#~ msgid "Old password"
+#~ msgstr "Gammelt passord"
+
+#~ msgid "New password"
+#~ msgstr "Nytt passord"
+
+#~ msgid "Repeat new password"
+#~ msgstr "Gjenta nytt passord"
+
+#~ msgid "Lock the Application"
+#~ msgstr "Lås programmet"
+
+#~ msgid "Hide notification"
+#~ msgstr "Skjul merknad"
+
+#~ msgid "Enter your password"
+#~ msgstr "Skriv inn passordet ditt"
+
+#~ msgid "Unlock"
+#~ msgstr "Lås opp"
+
+#~ msgid "Behavior"
+#~ msgstr "Oppførsel"
+
+#~ msgid "Account"
+#~ msgstr "Konto"
+
+#~ msgid "Password protection"
+#~ msgstr "Passordbeskyttelse"
+
+#~ msgid "Auto-lock the application (m):"
+#~ msgstr "Automatisk låsning av programmet (m):"
+
+#~ msgid "Gnome TwoFactorAuth"
+#~ msgstr "Gnome to-faktorbekreftelse"
+
+#~ msgid "About Gnome TwoFactorAuth"
+#~ msgstr "Om Gnome to-faktorbekreftelse"
+
+#~ msgid "Show about dialog"
+#~ msgstr "Vis \"Om\"-dialogvindu"

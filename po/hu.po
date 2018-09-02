@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-16 04:03+0100\n"
+"POT-Creation-Date: 2018-09-02 15:05+0200\n"
 "PO-Revision-Date: 2018-03-22 19:06+0000\n"
 "Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
 "Language-Team: Hungarian <https://hosted.weblate.org/projects/authenticator/"
@@ -19,32 +19,32 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 2.20-dev\n"
 
-#: Authenticator/application.py:36 Authenticator/widgets/about.py:40
-#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:5
+#: Authenticator/application.py:37 Authenticator/widgets/about.py:40
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:6
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:3
 msgid "Authenticator"
 msgstr "Hitelesítő"
 
 #. Night mode action
-#: Authenticator/application.py:79
+#: Authenticator/application.py:80
 msgid "Night Mode"
 msgstr "Éjszakai mód"
 
-#: Authenticator/application.py:82
+#: Authenticator/application.py:83
 msgid "About"
 msgstr "Névjegy"
 
-#: Authenticator/application.py:83
+#: Authenticator/application.py:84
 msgid "Quit"
 msgstr "Kilépés"
 
-#: Authenticator/widgets/accounts/add.py:51
-#: Authenticator/widgets/headerbar.py:101
+#: Authenticator/widgets/accounts/add.py:50
+#: Authenticator/widgets/headerbar.py:98
 msgid "Add a new account"
 msgstr "Új fiók hozzáadása"
 
-#: Authenticator/widgets/accounts/add.py:60
-#: Authenticator/widgets/headerbar.py:99
+#: Authenticator/widgets/accounts/add.py:59
+#: Authenticator/widgets/headerbar.py:96
 msgid "Search"
 msgstr "Keresés"
 
@@ -52,44 +52,44 @@ msgstr "Keresés"
 msgid "Scan QR code"
 msgstr "QR-kód beolvasása"
 
-#: Authenticator/widgets/accounts/add.py:99
+#: Authenticator/widgets/accounts/add.py:100
 msgid "Next"
 msgstr "Következő"
 
-#: Authenticator/widgets/accounts/add.py:100
+#: Authenticator/widgets/accounts/add.py:101
 msgid "Close"
 msgstr "Bezárás"
 
-#: Authenticator/widgets/accounts/add.py:108
+#: Authenticator/widgets/accounts/add.py:109
 msgid "Add"
 msgstr "Hozzáadás"
 
-#: Authenticator/widgets/accounts/add.py:109
+#: Authenticator/widgets/accounts/add.py:110
 msgid "Back"
 msgstr "Vissza"
 
-#: Authenticator/widgets/accounts/add.py:245
+#: Authenticator/widgets/accounts/add.py:259
 msgid "Account name"
 msgstr "Fiók neve"
 
-#: Authenticator/widgets/accounts/add.py:247
+#: Authenticator/widgets/accounts/add.py:261
 msgid "Secret Token"
 msgstr "Titkos jelsor"
 
-#: Authenticator/widgets/accounts/add.py:293
+#: Authenticator/widgets/accounts/add.py:309
 msgid "Invalid QR code"
 msgstr "Érvénytelen QR-kód"
 
 #. Label
-#: Authenticator/widgets/accounts/list.py:121
+#: Authenticator/widgets/accounts/list.py:134
 msgid "There's no account yet..."
 msgstr "Még nincsenek fiókok…"
 
-#: Authenticator/widgets/accounts/row.py:53
+#: Authenticator/widgets/accounts/row.py:55
 msgid "Copy"
 msgstr "Másolás"
 
-#: Authenticator/widgets/accounts/row.py:118
+#: Authenticator/widgets/accounts/row.py:151
 msgid "Couldn't generate the secret code"
 msgstr "Nem sikerült előállítani a titkos kódot"
 
@@ -101,23 +101,23 @@ msgstr "Úr Balázs <urbalazs@gmail.com>, 2018."
 msgid "Two factor authentication codes generator."
 msgstr "Kétlépcsős hitelesítő kódok előállítója."
 
-#: Authenticator/widgets/actions_bar.py:45
+#: Authenticator/widgets/actions_bar.py:47
 msgid "Delete"
 msgstr "Törlés"
 
-#: Authenticator/widgets/headerbar.py:103
+#: Authenticator/widgets/headerbar.py:100
 msgid "Settings"
 msgstr "Beállítások"
 
-#: Authenticator/widgets/headerbar.py:105
+#: Authenticator/widgets/headerbar.py:102
 msgid "Selection mode"
 msgstr "Kijelölés mód"
 
-#: Authenticator/widgets/headerbar.py:107
+#: Authenticator/widgets/headerbar.py:104
 msgid "Cancel"
 msgstr "Mégse"
 
-#: Authenticator/widgets/headerbar.py:187
+#: Authenticator/widgets/headerbar.py:179
 msgid "Click on items to select them"
 msgstr "Kattintson az elemekre a kijelölésükhöz"
 
@@ -126,17 +126,80 @@ msgstr "Kattintson az elemekre a kijelölésükhöz"
 msgid "Undo"
 msgstr "Visszavonás"
 
-#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:6
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:7
 msgid "Two Factor Authentication code generator"
 msgstr "Kétlépcsős hitelesítő kód előállító"
 
-#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:8
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:9
+#, fuzzy
 msgid ""
 "Simple application that generates 2 factor authentication code, created for "
-"Gnome"
+"GNOME."
 msgstr ""
 "Egyszerű alkalmazása a GNOME asztali környezethez, amely kétlépcsős "
 "hitelesítő kódot állít elő"
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:10
+msgid "Features:"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:12
+msgid "QR code scanner"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:13
+msgid "Beautiful UI"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:14
+msgid "Huge database of (290+) websites/applications"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:43
+msgid "Fix the QRScanner on GNOME Shell"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:44
+msgid "Add a new entry for the account's username"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:45
+msgid "Updated database of supported accounts"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:52
+msgid "HOTFIX: App not running in DE other than GNOME"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:59
+#, fuzzy
+msgid "Rename project to Authenticator"
+msgstr "A Hitelesítő névjegye"
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:60
+msgid "Cleaner code base"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:61
+msgid "Faster startup"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:62
+#, fuzzy
+msgid "Remove unneeded features"
+msgstr "Kijelölt fiókok eltávolítása"
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:63
+msgid "Switch to pyzbar instead of zbarlight"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:64
+msgid "Flatpak pacakge"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:71
+msgid "Bilal Elmoussaoui"
+msgstr ""
 
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:4
 msgid "Two Factor Authentication"
@@ -153,10 +216,6 @@ msgstr "GNOME;GTK;Ellenőrzés;"
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:11
 msgid "com.github.bilelmoussaoui.Authenticator"
 msgstr "com.github.bilelmoussaoui.Authenticator"
-
-#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:20
-msgid "About Authenticator"
-msgstr "A Hitelesítő névjegye"
 
 #: authenticator.py.in:45
 msgid "Start in debug mode"
@@ -209,9 +268,6 @@ msgstr "Hitelesítő verziószáma"
 
 #~ msgid "Github"
 #~ msgstr "GitHub"
-
-#~ msgid "Remove selected accounts"
-#~ msgstr "Kijelölt fiókok eltávolítása"
 
 #~ msgid "Lock the Application"
 #~ msgstr "Az alkalmazás zárolása"

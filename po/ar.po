@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Authenticator\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-16 04:03+0100\n"
+"POT-Creation-Date: 2018-09-02 15:05+0200\n"
 "PO-Revision-Date: 2018-08-21 09:34+0000\n"
 "Last-Translator: ButterflyOfFire <ButterflyOfFire@protonmail.com>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/authenticator/"
@@ -20,32 +20,32 @@ msgstr ""
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
 "X-Generator: Weblate 3.2-dev\n"
 
-#: Authenticator/application.py:36 Authenticator/widgets/about.py:40
-#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:5
+#: Authenticator/application.py:37 Authenticator/widgets/about.py:40
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:6
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:3
 msgid "Authenticator"
 msgstr "الموثق"
 
 #. Night mode action
-#: Authenticator/application.py:79
+#: Authenticator/application.py:80
 msgid "Night Mode"
 msgstr "الوضع الليلي"
 
-#: Authenticator/application.py:82
+#: Authenticator/application.py:83
 msgid "About"
 msgstr "عن"
 
-#: Authenticator/application.py:83
+#: Authenticator/application.py:84
 msgid "Quit"
 msgstr "خروج"
 
-#: Authenticator/widgets/accounts/add.py:51
-#: Authenticator/widgets/headerbar.py:101
+#: Authenticator/widgets/accounts/add.py:50
+#: Authenticator/widgets/headerbar.py:98
 msgid "Add a new account"
 msgstr "اضافة حساب جديد"
 
-#: Authenticator/widgets/accounts/add.py:60
-#: Authenticator/widgets/headerbar.py:99
+#: Authenticator/widgets/accounts/add.py:59
+#: Authenticator/widgets/headerbar.py:96
 msgid "Search"
 msgstr "بحث"
 
@@ -53,44 +53,44 @@ msgstr "بحث"
 msgid "Scan QR code"
 msgstr "امسح كود QR"
 
-#: Authenticator/widgets/accounts/add.py:99
+#: Authenticator/widgets/accounts/add.py:100
 msgid "Next"
 msgstr "التالي"
 
-#: Authenticator/widgets/accounts/add.py:100
+#: Authenticator/widgets/accounts/add.py:101
 msgid "Close"
 msgstr "اغلاق"
 
-#: Authenticator/widgets/accounts/add.py:108
+#: Authenticator/widgets/accounts/add.py:109
 msgid "Add"
 msgstr "اضافة"
 
-#: Authenticator/widgets/accounts/add.py:109
+#: Authenticator/widgets/accounts/add.py:110
 msgid "Back"
 msgstr "رجوع"
 
-#: Authenticator/widgets/accounts/add.py:245
+#: Authenticator/widgets/accounts/add.py:259
 msgid "Account name"
 msgstr "اسم الحساب"
 
-#: Authenticator/widgets/accounts/add.py:247
+#: Authenticator/widgets/accounts/add.py:261
 msgid "Secret Token"
 msgstr "الرمز السري"
 
-#: Authenticator/widgets/accounts/add.py:293
+#: Authenticator/widgets/accounts/add.py:309
 msgid "Invalid QR code"
 msgstr "رمز QR خاطئ"
 
 #. Label
-#: Authenticator/widgets/accounts/list.py:121
+#: Authenticator/widgets/accounts/list.py:134
 msgid "There's no account yet..."
 msgstr "ليس هناك حساب بعد …"
 
-#: Authenticator/widgets/accounts/row.py:53
+#: Authenticator/widgets/accounts/row.py:55
 msgid "Copy"
 msgstr "نسخ"
 
-#: Authenticator/widgets/accounts/row.py:118
+#: Authenticator/widgets/accounts/row.py:151
 msgid "Couldn't generate the secret code"
 msgstr "لم يتم توليد المفتاح السري"
 
@@ -102,23 +102,23 @@ msgstr "translator-credits"
 msgid "Two factor authentication codes generator."
 msgstr "كود توليد التوثيق الثنائي."
 
-#: Authenticator/widgets/actions_bar.py:45
+#: Authenticator/widgets/actions_bar.py:47
 msgid "Delete"
 msgstr "حذف"
 
-#: Authenticator/widgets/headerbar.py:103
+#: Authenticator/widgets/headerbar.py:100
 msgid "Settings"
 msgstr "الاعدادات"
 
-#: Authenticator/widgets/headerbar.py:105
+#: Authenticator/widgets/headerbar.py:102
 msgid "Selection mode"
 msgstr "وضع الاختيار"
 
-#: Authenticator/widgets/headerbar.py:107
+#: Authenticator/widgets/headerbar.py:104
 msgid "Cancel"
 msgstr "الغاء"
 
-#: Authenticator/widgets/headerbar.py:187
+#: Authenticator/widgets/headerbar.py:179
 msgid "Click on items to select them"
 msgstr "اضغط على العتاصر ليتم اختيارهم"
 
@@ -127,15 +127,77 @@ msgstr "اضغط على العتاصر ليتم اختيارهم"
 msgid "Undo"
 msgstr "تراجع"
 
-#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:6
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:7
 msgid "Two Factor Authentication code generator"
 msgstr "كود توليد التوثيق الثنائي"
 
-#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:8
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:9
+#, fuzzy
 msgid ""
 "Simple application that generates 2 factor authentication code, created for "
-"Gnome"
+"GNOME."
 msgstr "برنامج بسيط يولد كود توثيق ثنائي، صمم لنظام Gnome"
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:10
+msgid "Features:"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:12
+msgid "QR code scanner"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:13
+msgid "Beautiful UI"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:14
+msgid "Huge database of (290+) websites/applications"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:43
+msgid "Fix the QRScanner on GNOME Shell"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:44
+msgid "Add a new entry for the account's username"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:45
+msgid "Updated database of supported accounts"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:52
+msgid "HOTFIX: App not running in DE other than GNOME"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:59
+#, fuzzy
+msgid "Rename project to Authenticator"
+msgstr "عن الموثق"
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:60
+msgid "Cleaner code base"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:61
+msgid "Faster startup"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:62
+msgid "Remove unneeded features"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:63
+msgid "Switch to pyzbar instead of zbarlight"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:64
+msgid "Flatpak pacakge"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:71
+msgid "Bilal Elmoussaoui"
+msgstr ""
 
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:4
 msgid "Two Factor Authentication"
@@ -152,10 +214,6 @@ msgstr ""
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:11
 msgid "com.github.bilelmoussaoui.Authenticator"
 msgstr "com.github.bilelmoussaoui.Authenticator"
-
-#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:20
-msgid "About Authenticator"
-msgstr "عن الموثق"
 
 #: authenticator.py.in:45
 msgid "Start in debug mode"

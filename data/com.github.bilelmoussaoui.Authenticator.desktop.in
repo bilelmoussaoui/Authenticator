@@ -9,11 +9,4 @@ Categories=GNOME;GTK;Security;Network;
 Keywords=Gnome;GTK;Verification;
 Icon=com.github.bilelmoussaoui.Authenticator
 StartupNotify=true
-X-GNOME-Gettext-Domain=Authenticator
 StartupWMClass=com.github.bilelmoussaoui.Authenticator
-Actions=AboutDialog;
-
-
-[Desktop Action AboutDialog]
-Exec=authenticator --about
-Name=About Authenticator

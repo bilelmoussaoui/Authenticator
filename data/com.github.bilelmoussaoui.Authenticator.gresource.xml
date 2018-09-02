@@ -1,8 +1,7 @@
  <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/com/github/bilelmoussaoui/Authenticator">
-    <file alias="post3.20.css">com.github.bilelmoussaoui.Authenticator-post3.20.css</file>
-    <file alias="pre3.20.css">com.github.bilelmoussaoui.Authenticator-pre3.20.css</file>
+    <file alias="style.css">style.css</file>
     <file>data.json</file>
     <file alias="qrscanner-symbolic.svg">icons/hicolor/symbolic/actions/qrscanner-symbolic.svg</file>
 

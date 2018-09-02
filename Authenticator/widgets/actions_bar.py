@@ -40,6 +40,9 @@ class ActionsBar(Gtk.ActionBar):
             ActionsBar.instance = ActionsBar()
         return ActionsBar.instance
 
+    def set_delete_btn_sensitive(self, state):
+        self.delete_btn.set_sensitive(False)
+
     def _build_widgets(self):
         self.delete_btn = Gtk.Button(label=_("Delete"))
         self.delete_btn.set_sensitive(False)

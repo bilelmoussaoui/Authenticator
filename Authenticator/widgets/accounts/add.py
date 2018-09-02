@@ -26,7 +26,8 @@ from gi.repository import Gio, Gtk, GObject, GLib
 from ..headerbar import HeaderBarButton, HeaderBarToggleButton
 from ..inapp_notification import InAppNotification
 from ..search_bar import SearchBar
-from ...models import Code, QRReader, GNOMEScreenshot
+from ...models import Code
+from ...utils import can_use_qrscanner
 
 
 class AddAcountWindow(Gtk.Window):
@@ -58,10 +59,12 @@ class AddAcountWindow(Gtk.Window):
                                                 _("Search"))
         headerbar.pack_end(self.search_btn)
         # QR code scan btn
+        from ...application import Application
         self.scan_btn = HeaderBarButton("qrscanner-symbolic",
                                         _("Scan QR code"))
-        self.scan_btn.connect("clicked", self._on_scan)
-        headerbar.pack_end(self.scan_btn)
+        if Application.USE_QRSCANNER and can_use_qrscanner():
+            self.scan_btn.connect("clicked", self._on_scan)
+            headerbar.pack_end(self.scan_btn)
 
         # Back btn
         self.back_btn = Gtk.Button()
@@ -158,10 +161,14 @@ class AccountsList(Gtk.Box):
         """
         Create the Accounts List widgets.
         """
+
         self.pack_start(self.search_bar, False, False, 0)
         self.search_bar.search_list = [self._listbox]
         self._listbox.set_selection_mode(Gtk.SelectionMode.SINGLE)
-        self.pack_start(self._listbox, False, False, 0)
+
+        accounts_scrolled = Gtk.ScrolledWindow()
+        accounts_scrolled.add_with_viewport(self._listbox)
+        self.pack_start(accounts_scrolled, True, True, 0)
 
     def get_selected_row(self):
         return self._listbox.get_selected_row()
@@ -293,6 +300,7 @@ class AccountConfig(Gtk.Box, GObject.GObject):
                                              Gtk.IconSize.DIALOG)
 
     def scan_qr(self):
+        from ...models import QRReader, GNOMEScreenshot
         filename = GNOMEScreenshot.area()
         if filename:
             qr_reader = QRReader(filename)

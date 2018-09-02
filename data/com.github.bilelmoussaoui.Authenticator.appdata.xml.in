@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop">
-  <id type="desktop">com.github.bilelmoussaoui.Authenticator.desktop</id>
+  <id>com.github.bilelmoussaoui.Authenticator.desktop</id>
   <metadata_license>CC0</metadata_license>
   <project_license>GPL-3.0+</project_license>
   <name>Authenticator</name>
@@ -15,18 +15,37 @@
     </ul>
   </description>
   <screenshots>
-    <screenshot type="default"><image width="376" height="574">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/screenshots/screenshot1.png</image></screenshot>
-    <screenshot><image width="376" height="574">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/screenshots/screenshot2.png</image></screenshot>
-    <screenshot><image width="376" height="574">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/screenshots/screenshot3.png</image></screenshot>
-    <screenshot><image width="376" height="574">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/screenshots/screenshot4.png</image></screenshot>
+    <screenshot type="default">
+      <image width="376" height="574">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/screenshots/screenshot1.png</image>
+    </screenshot>
+    <screenshot>
+      <image width="376" height="574">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/screenshots/screenshot2.png</image>
+    </screenshot>
+    <screenshot>
+      <image width="376" height="574">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/screenshots/screenshot3.png</image>
+    </screenshot>
+    <screenshot>
+      <image width="376" height="574">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/screenshots/screenshot4.png</image>
+    </screenshot>
   </screenshots>
   <url type="homepage">https://github.com/bilelmoussaoui/Authenticator</url>
   <url type="bugtracker">https://github.com/bilelmoussaoui/Authenticator/issues</url>
   <url type="translate">https://hosted.weblate.org/projects/authenticator/translation/</url>
+  <url type="donation">https://www.paypal.me/BilalELMoussaoui</url>
   <categories>
     <category>Utility</category>
   </categories>
+  <content_rating type="oars-1.0" />
   <releases>
+    <release version="0.2.2" date="2018-09-02">
+      <description>
+        <ul>
+          <li>Fix the QRScanner on GNOME Shell</li>
+          <li>Add a new entry for the account's username</li>
+          <li>Updated database of supported accounts</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.2.1" date="2018-03-22">
       <description>
         <ul>
@@ -48,8 +67,8 @@
     </release>
     <release version="0.1.1" date="2016-06-28" />
     <release version="0.1.0" date="2016-06-22" />
-</releases>
-<developer_name>Bilal Elmoussaoui</developer_name>
-<update_contact>bil.elmoussaoui@gmail.com</update_contact>
- <translation type="gettext">Authenticator</translation>
+  </releases>
+  <developer_name>Bilal Elmoussaoui</developer_name>
+  <update_contact>bil.elmoussaoui@gmail.com</update_contact>
+  <translation type="gettext">Authenticator</translation>
 </component>

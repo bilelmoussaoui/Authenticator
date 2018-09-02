@@ -61,6 +61,7 @@ if __name__ == "__main__":
     else:
         try:
             app = Application.get_default()
+            app.set_use_qrscanner(bool("@ENABLE_QRSCANNER@"))
             exit_status = app.run(None)
             sys.exit(exit_status)
         except KeyboardInterrupt:

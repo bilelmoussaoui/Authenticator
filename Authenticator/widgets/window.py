@@ -41,8 +41,7 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         self.set_wmclass(
             "com.github.bilelmoussaoui.Authenticator", "Authenticator")
         self.set_icon_name("com.github.bilelmoussaoui.Authenticator")
-        self.set_size_request(400, 600)
-        self.resize(400, 600)
+        self.resize(550, 600)
         self.restore_state()
         self._build_widgets()
         self.show_all()
@@ -65,12 +64,11 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         add_window.present()
 
     def _do_update_view(self, *args):
-        # FIXME: Don't use Database object here.
         headerbar = HeaderBar.get_default()
         count = Database.get_default().count
         if count != 0:
             child_name = "accounts-list"
-            headerbar.set_state(HeaderBarState  .NORMAL)
+            headerbar.set_state(HeaderBarState.NORMAL)
         else:
             headerbar.set_state(HeaderBarState.EMPTY)
             child_name = "empty-accounts-list"
@@ -86,6 +84,7 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
             HeaderBar.get_default().set_state(HeaderBarState.SELECT)
             AccountsList.get_default().set_state(AccountsListState.SELECT)
         else:
+            ActionsBar.get_default().set_delete_btn_sensitive(False)
             HeaderBar.get_default().set_state(HeaderBarState.NORMAL)
             AccountsList.get_default().set_state(AccountsListState.NORMAL)
 
@@ -111,7 +110,6 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         if settings.window_maximized:
             self.maximize()
 
-
     def _build_widgets(self):
         """Build main window widgets."""
         # HeaderBar
@@ -136,8 +134,11 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         # Accounts List
         account_list_cntr = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
+        accounts_scrolled = Gtk.ScrolledWindow()
         accounts_list = AccountsList.get_default()
         accounts_list.connect("changed", self._do_update_view)
+        accounts_list.connect("account-deleted", self._on_account_delete)
+        accounts_scrolled.add_with_viewport(accounts_list)
 
         search_bar = SearchBar()
         search_bar.search_button = headerbar.search_btn
@@ -150,7 +151,7 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
                               actions_bar.on_selected_rows_changed)
 
         account_list_cntr.pack_start(search_bar, False, False, 0)
-        account_list_cntr.pack_start(accounts_list, True, True, 0)
+        account_list_cntr.pack_start(accounts_scrolled, True, True, 0)
         account_list_cntr.pack_start(actions_bar, False, False, 0)
 
         self.main_stack.add_named(account_list_cntr,
@@ -170,3 +171,8 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         actions_bar.bind_property("no_show_all", headerbar.cancel_btn,
                                   "no_show_all",
                                   GObject.BindingFlags.BIDIRECTIONAL)
+
+
+    def _on_account_delete(self, *args):
+        self.toggle_select()
+        self._do_update_view()

@@ -23,7 +23,6 @@ from gi.repository import Gtk, Gio
 from gettext import gettext as _
 
 from ..models import Logger, Settings, Database
-from ..utils import is_gnome
 
 
 class HeaderBarState:
@@ -134,10 +133,10 @@ class HeaderBar(Gtk.HeaderBar):
 
         left_box.add(self.add_btn)
 
-        right_box.add(self.search_btn)
-        right_box.add(self.select_btn)
-        right_box.add(self.cancel_btn)
-        right_box.add(self.settings_btn)
+        right_box.pack_start(self.search_btn, False, False, 0)
+        right_box.pack_start(self.select_btn, False, False, 0)
+        right_box.pack_start(self.cancel_btn, False, False, 0)
+        right_box.pack_end(self.settings_btn, False, False, 3)
 
         self.pack_start(left_box)
         self.pack_end(right_box)
@@ -156,9 +155,8 @@ class HeaderBar(Gtk.HeaderBar):
                 self.popover.show_all()
 
     def toggle_settings_button(self, visible):
-        if not is_gnome():
-            self.settings_button.set_visible(visible)
-            self.settings_button.set_no_show_all(not visible)
+        self.settings_button.set_visible(visible)
+        self.settings_button.set_no_show_all(not visible)
 
     def set_state(self, state):
         if state != HeaderBarState.SELECT:
@@ -168,6 +166,7 @@ class HeaderBar(Gtk.HeaderBar):
             self.add_btn.show_()
             self.search_btn.hide_()
             self.select_btn.hide_()
+            self.settings_btn.show_()
         elif state == HeaderBarState.SELECT:
             self.search_btn.show_()
             self.add_btn.hide_()

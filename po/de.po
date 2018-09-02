@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-13 00:20+0100\n"
+"POT-Creation-Date: 2018-09-02 15:05+0200\n"
 "PO-Revision-Date: 2018-02-09 20:54+0000\n"
 "Last-Translator: jschwender <joachim.schwender@web.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/gnome-"
@@ -19,223 +19,303 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 2.19-dev\n"
 
-#: ../TwoFactorAuth/application.py:46
-msgid "TwoFactorAuth"
-msgstr "ZweiFaktorAuth"
+#: Authenticator/application.py:37 Authenticator/widgets/about.py:40
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:6
+#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:3
+#, fuzzy
+msgid "Authenticator"
+msgstr "Zweifaktor-Authentifizierung"
 
-#: ../TwoFactorAuth/application.py:82 ../TwoFactorAuth/widgets/headerbar.py:117
-#: ../TwoFactorAuth/widgets/settings.py:42
-msgid "Settings"
-msgstr "Einstellungen"
+#. Night mode action
+#: Authenticator/application.py:80
+msgid "Night Mode"
+msgstr ""
 
-#: ../TwoFactorAuth/application.py:90
-msgid "Shortcuts"
-msgstr "Tastenkürzel"
-
-#: ../TwoFactorAuth/application.py:92
+#: Authenticator/application.py:83
 msgid "About"
 msgstr "Über"
 
-#: ../TwoFactorAuth/application.py:93
+#: Authenticator/application.py:84
 msgid "Quit"
 msgstr "Beenden"
 
-#: ../TwoFactorAuth/widgets/account_row.py:157
-#, python-format
-msgid "Code \"%s\" copied to clipboard"
-msgstr "Code '%s' ist in die Zwischenablage kopiert"
-
-#: ../TwoFactorAuth/widgets/account_row.py:222
-msgid "Remove the account"
-msgstr "Konto löschen"
-
-#: ../TwoFactorAuth/widgets/account_row.py:232
-msgid "Copy the generated code"
-msgstr "Kopiere den erzeugten Code"
-
-#: ../TwoFactorAuth/widgets/account_row.py:242
-msgid "Edit the account"
-msgstr "Bearbeite das Konto"
-
-#: ../TwoFactorAuth/widgets/account_row.py:252
-msgid "Save the new account name"
-msgstr "Speichere den neuen Kontonamen"
-
-#: ../TwoFactorAuth/widgets/account_row.py:260
-#: ../TwoFactorAuth/widgets/account_row.py:386
-#, python-format
-msgid "Expires in %s seconds"
-msgstr "Verfällt in '%s' Sekunden"
-
-#: ../TwoFactorAuth/widgets/account_row.py:266
-msgid "Error during the generation of code"
-msgstr "Fehler beim erzeugen des Codes"
-
-#: ../TwoFactorAuth/widgets/account_row.py:311
-msgid "Couldn't generate the secret code"
-msgstr "Der geheime Code konnte nicht erzeugt werden"
-
-#: ../TwoFactorAuth/widgets/account_row.py:373
-#, python-format
-msgid "Do you really want to remove \"%s\"?"
-msgstr "Soll \"%s\" wirklich gelöscht werden ?"
-
-#: ../TwoFactorAuth/widgets/account_row.py:377
-#, python-format
-msgid "\"%s\" was removed"
-msgstr "\"%s\" wurde gelöscht"
-
-#: ../TwoFactorAuth/widgets/add_account.py:50
-#: ../TwoFactorAuth/widgets/add_account.py:67
-#: ../TwoFactorAuth/widgets/headerbar.py:71
+#: Authenticator/widgets/accounts/add.py:50
+#: Authenticator/widgets/headerbar.py:98
 msgid "Add a new account"
 msgstr "Neues Konto anlegen"
 
-#: ../TwoFactorAuth/widgets/add_account.py:72
-#: ../TwoFactorAuth/widgets/applications_list.py:115
-#: ../TwoFactorAuth/widgets/change_password.py:162
-#: ../TwoFactorAuth/widgets/headerbar.py:105
-msgid "Cancel"
-msgstr "Abbruch"
-
-#: ../TwoFactorAuth/widgets/add_account.py:77
-msgid "Add"
-msgstr "Hinzufügen"
-
-#: ../TwoFactorAuth/widgets/add_account.py:85
-msgid "Scan a QR code"
-msgstr "Scanne einen QR Code"
-
-#: ../TwoFactorAuth/widgets/add_account.py:107
-msgid "Account Name"
-msgstr "Kontoname"
-
-#: ../TwoFactorAuth/widgets/add_account.py:115
-msgid "Secret Code"
-msgstr "Geheimer Code"
-
-#: ../TwoFactorAuth/widgets/add_account.py:145
-msgid "Selected area is not a valid QR code"
-msgstr "Die gewählte Fläche ist kein gültiger QR Code"
-
-#: ../TwoFactorAuth/widgets/applications_list.py:110
-msgid "Select an application"
-msgstr "Wähle eine Anwendung"
-
-#: ../TwoFactorAuth/widgets/applications_list.py:122
-#: ../TwoFactorAuth/widgets/headerbar.py:101
+#: Authenticator/widgets/accounts/add.py:59
+#: Authenticator/widgets/headerbar.py:96
 msgid "Search"
 msgstr "Suche"
 
-#: ../TwoFactorAuth/widgets/applications_list.py:125
+#: Authenticator/widgets/accounts/add.py:64
+#, fuzzy
+msgid "Scan QR code"
+msgstr "Scanne einen QR Code"
+
+#: Authenticator/widgets/accounts/add.py:100
 msgid "Next"
 msgstr "weiter"
 
-#: ../TwoFactorAuth/widgets/change_password.py:36
-msgid "Apply"
-msgstr "Anwenden"
+#: Authenticator/widgets/accounts/add.py:101
+msgid "Close"
+msgstr ""
 
-#: ../TwoFactorAuth/widgets/change_password.py:46
-msgid "Change password"
-msgstr "Passwort ändern"
+#: Authenticator/widgets/accounts/add.py:109
+msgid "Add"
+msgstr "Hinzufügen"
 
-#: ../TwoFactorAuth/widgets/change_password.py:78
-msgid "Old password"
-msgstr "Altes Passwort"
+#: Authenticator/widgets/accounts/add.py:110
+msgid "Back"
+msgstr ""
 
-#: ../TwoFactorAuth/widgets/change_password.py:88
-msgid "New password"
-msgstr "Neues Passwort"
+#: Authenticator/widgets/accounts/add.py:259
+#, fuzzy
+msgid "Account name"
+msgstr "Kontoname"
 
-#: ../TwoFactorAuth/widgets/change_password.py:98
-msgid "Repeat new password"
-msgstr "Neues Passwort wiederholen"
+#: Authenticator/widgets/accounts/add.py:261
+#, fuzzy
+msgid "Secret Token"
+msgstr "Geheimer Code"
 
-#: ../TwoFactorAuth/widgets/headerbar.py:64
-msgid "Remove selected accounts"
-msgstr "gewählte Konten löschen"
+#: Authenticator/widgets/accounts/add.py:309
+#, fuzzy
+msgid "Invalid QR code"
+msgstr "Scanne einen QR Code"
 
-#: ../TwoFactorAuth/widgets/headerbar.py:78
-msgid "Lock the Application"
-msgstr "Anwendung sperren"
+#. Label
+#: Authenticator/widgets/accounts/list.py:134
+#, fuzzy
+msgid "There's no account yet..."
+msgstr "Derzeit gibt es kein Konto"
 
-#: ../TwoFactorAuth/widgets/headerbar.py:94
+#: Authenticator/widgets/accounts/row.py:55
+msgid "Copy"
+msgstr ""
+
+#: Authenticator/widgets/accounts/row.py:151
+msgid "Couldn't generate the secret code"
+msgstr "Der geheime Code konnte nicht erzeugt werden"
+
+#: Authenticator/widgets/about.py:41
+msgid "translator-credits"
+msgstr ""
+
+#: Authenticator/widgets/about.py:43
+#, fuzzy
+msgid "Two factor authentication codes generator."
+msgstr "Codegenerator für Zweifaktor-Authentifizierung"
+
+#: Authenticator/widgets/actions_bar.py:47
+msgid "Delete"
+msgstr ""
+
+#: Authenticator/widgets/headerbar.py:100
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: Authenticator/widgets/headerbar.py:102
 msgid "Selection mode"
 msgstr "Auswahlmodus"
 
-#: ../TwoFactorAuth/widgets/inapp_notification.py:28
+#: Authenticator/widgets/headerbar.py:104
+msgid "Cancel"
+msgstr "Abbruch"
+
+#: Authenticator/widgets/headerbar.py:179
+msgid "Click on items to select them"
+msgstr ""
+
+#: Authenticator/widgets/inapp_notification.py:51
+#: Authenticator/widgets/inapp_notification.py:79
 msgid "Undo"
 msgstr "rückgängig machen"
 
-#: ../TwoFactorAuth/widgets/inapp_notification.py:39
-msgid "Hide notification"
-msgstr "Mitteilung verstecken"
-
-#: ../TwoFactorAuth/widgets/login_window.py:45
-msgid "Enter your password"
-msgstr "gebe dein Passwort ein"
-
-#: ../TwoFactorAuth/widgets/login_window.py:48
-msgid "Unlock"
-msgstr "Entsperren"
-
-#: ../TwoFactorAuth/widgets/no_account_window.py:39
-msgid "There's no account at the moment"
-msgstr "Derzeit gibt es kein Konto"
-
-#: ../TwoFactorAuth/widgets/settings.py:70
-msgid "Behavior"
-msgstr "Verhalten"
-
-#: ../TwoFactorAuth/widgets/settings.py:75
-msgid "Account"
-msgstr "Konto"
-
-#: ../TwoFactorAuth/widgets/settings.py:89
-msgid "Password protection"
-msgstr "Passwortschutz"
-
-#: ../TwoFactorAuth/widgets/settings.py:113
-msgid "Auto-lock the application (m):"
-msgstr "Auto-Sperren der Anwendung (m):"
-
-#: ../data/gnome-twofactorauth.appdata.xml.in.h:1
-#: ../data/gnome-twofactorauth.desktop.in.h:1
-msgid "Gnome TwoFactorAuth"
-msgstr "Gnome ZweiFaktorAuth"
-
-#: ../data/gnome-twofactorauth.appdata.xml.in.h:2
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:7
 msgid "Two Factor Authentication code generator"
 msgstr "Codegenerator für Zweifaktor-Authentifizierung"
 
-#: ../data/gnome-twofactorauth.appdata.xml.in.h:3
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:9
+#, fuzzy
 msgid ""
-"Simple application that generates two-factor authentication code, created "
-"for Gnome"
+"Simple application that generates 2 factor authentication code, created for "
+"GNOME."
 msgstr ""
 "Einfache Anwendung die Zweifaktor-Authentifizierungscode erzeugt, erstellt "
 "für Gnome"
 
-#: ../data/gnome-twofactorauth.desktop.in.h:2
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:10
+msgid "Features:"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:12
+msgid "QR code scanner"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:13
+msgid "Beautiful UI"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:14
+msgid "Huge database of (290+) websites/applications"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:43
+msgid "Fix the QRScanner on GNOME Shell"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:44
+msgid "Add a new entry for the account's username"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:45
+msgid "Updated database of supported accounts"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:52
+msgid "HOTFIX: App not running in DE other than GNOME"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:59
+#, fuzzy
+msgid "Rename project to Authenticator"
+msgstr "Zweifaktor-Authentifizierung"
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:60
+msgid "Cleaner code base"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:61
+msgid "Faster startup"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:62
+#, fuzzy
+msgid "Remove unneeded features"
+msgstr "gewählte Konten löschen"
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:63
+msgid "Switch to pyzbar instead of zbarlight"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:64
+msgid "Flatpak pacakge"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:71
+msgid "Bilal Elmoussaoui"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:4
 msgid "Two Factor Authentication"
 msgstr "Zweifaktor-Authentifizierung"
 
-#: ../data/gnome-twofactorauth.desktop.in.h:3
+#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:5
 msgid "Two-Factor Authentication code generator"
 msgstr "Zweifaktor-Authentifizierungcodegenerator"
 
-#: ../data/gnome-twofactorauth.desktop.in.h:4
-msgid "About Gnome TwoFactorAuth"
-msgstr "Über Gnome ZweiFaktorAuth"
+#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:10
+msgid "Gnome;GTK;Verification;"
+msgstr ""
 
-#: ../gnome-twofactorauth.in:50
+#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:11
+msgid "com.github.bilelmoussaoui.Authenticator"
+msgstr ""
+
+#: authenticator.py.in:45
 msgid "Start in debug mode"
 msgstr "Starte im Fehlersuch-Modus"
 
-#: ../gnome-twofactorauth.in:52
-msgid "Gnome-TwoFactorAuth version number"
+#: authenticator.py.in:47
+#, fuzzy
+msgid "Authenticator version number"
 msgstr "Gnome ZweiFaktorAuth Version Nummer"
 
-#: ../gnome-twofactorauth.in:54
-msgid "Show about dialog"
-msgstr "Zeige den Über-Dialog"
+#~ msgid "TwoFactorAuth"
+#~ msgstr "ZweiFaktorAuth"
+
+#~ msgid "Shortcuts"
+#~ msgstr "Tastenkürzel"
+
+#~ msgid "Code \"%s\" copied to clipboard"
+#~ msgstr "Code '%s' ist in die Zwischenablage kopiert"
+
+#~ msgid "Remove the account"
+#~ msgstr "Konto löschen"
+
+#~ msgid "Copy the generated code"
+#~ msgstr "Kopiere den erzeugten Code"
+
+#~ msgid "Edit the account"
+#~ msgstr "Bearbeite das Konto"
+
+#~ msgid "Save the new account name"
+#~ msgstr "Speichere den neuen Kontonamen"
+
+#~ msgid "Expires in %s seconds"
+#~ msgstr "Verfällt in '%s' Sekunden"
+
+#~ msgid "Error during the generation of code"
+#~ msgstr "Fehler beim erzeugen des Codes"
+
+#~ msgid "Do you really want to remove \"%s\"?"
+#~ msgstr "Soll \"%s\" wirklich gelöscht werden ?"
+
+#~ msgid "\"%s\" was removed"
+#~ msgstr "\"%s\" wurde gelöscht"
+
+#~ msgid "Selected area is not a valid QR code"
+#~ msgstr "Die gewählte Fläche ist kein gültiger QR Code"
+
+#~ msgid "Select an application"
+#~ msgstr "Wähle eine Anwendung"
+
+#~ msgid "Apply"
+#~ msgstr "Anwenden"
+
+#~ msgid "Change password"
+#~ msgstr "Passwort ändern"
+
+#~ msgid "Old password"
+#~ msgstr "Altes Passwort"
+
+#~ msgid "New password"
+#~ msgstr "Neues Passwort"
+
+#~ msgid "Repeat new password"
+#~ msgstr "Neues Passwort wiederholen"
+
+#~ msgid "Lock the Application"
+#~ msgstr "Anwendung sperren"
+
+#~ msgid "Hide notification"
+#~ msgstr "Mitteilung verstecken"
+
+#~ msgid "Enter your password"
+#~ msgstr "gebe dein Passwort ein"
+
+#~ msgid "Unlock"
+#~ msgstr "Entsperren"
+
+#~ msgid "Behavior"
+#~ msgstr "Verhalten"
+
+#~ msgid "Account"
+#~ msgstr "Konto"
+
+#~ msgid "Password protection"
+#~ msgstr "Passwortschutz"
+
+#~ msgid "Auto-lock the application (m):"
+#~ msgstr "Auto-Sperren der Anwendung (m):"
+
+#~ msgid "Gnome TwoFactorAuth"
+#~ msgstr "Gnome ZweiFaktorAuth"
+
+#~ msgid "About Gnome TwoFactorAuth"
+#~ msgstr "Über Gnome ZweiFaktorAuth"
+
+#~ msgid "Show about dialog"
+#~ msgstr "Zeige den Über-Dialog"

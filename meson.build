@@ -15,6 +15,12 @@ dependency('gobject-introspection-1.0')
 dependency('gtk+-3.0', version : '>=3.16')
 
 
+use_zbar = false
+if get_option('enable-zbar')
+  use_zebar = true
+endif
+
+
 
 PYTHON_DIR = join_paths(get_option('prefix'), python.sysconfig_path('purelib'))
 DATA_DIR = join_paths(get_option('prefix'), get_option('datadir'), meson.project_name())
@@ -27,6 +33,7 @@ conf.set('DATA_DIR', DATA_DIR)
 conf.set('LOCALE_DIR', LOCALE_DIR)
 conf.set('PYTHON_DIR', PYTHON_DIR)
 conf.set('VERSION', meson.project_version())
+conf.set('ENABLE_QRSCANNER', use_zbar)
 
 subdir('data')
 subdir('po')

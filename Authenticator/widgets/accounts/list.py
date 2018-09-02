@@ -37,6 +37,7 @@ class AccountsList(Gtk.ListBox, GObject.GObject):
     __gsignals__ = {
         'changed': (GObject.SignalFlags.RUN_LAST, None, (bool,)),
         'selected-count-rows-changed': (GObject.SignalFlags.RUN_LAST, None, (int, )),
+        'account-deleted': (GObject.SignalFlags.RUN_LAST, None, ()),
     }
     # Default instance of accounts list
     instance = None
@@ -45,7 +46,6 @@ class AccountsList(Gtk.ListBox, GObject.GObject):
         GObject.GObject.__init__(self)
         Gtk.ListBox.__init__(self)
         self.set_selection_mode(Gtk.SelectionMode.NONE)
-        self.connect("row-activated", self._on_row_activated)
         self.get_style_context().add_class("applications-list")
         self.state = AccountsListState.NORMAL
         self.__fill_data()
@@ -72,7 +72,9 @@ class AccountsList(Gtk.ListBox, GObject.GObject):
 
     def append(self, name, provider, secret_id, logo):
         account = Account.create(name, provider, secret_id, logo)
-        self.add(AccountRow(account))
+        row = AccountRow(account)
+        row.connect("on_selected", self.on_row_checked)
+        self.add(row)
         self.emit("changed", True)
 
     def delete(self, row):
@@ -82,13 +84,9 @@ class AccountsList(Gtk.ListBox, GObject.GObject):
     def on_row_checked(self, row):
         count_selected_rows = 0
         for _row in self.get_children():
-            if _row.checked:
+            if _row.check_btn.props.active:
                 count_selected_rows += 1
         self.emit("selected-count-rows-changed", count_selected_rows)
-
-    def _on_row_activated(self, accounts_list, account_row):
-        """On row activated signal override."""
-        account_row.toggle_secret_code()
 
     def set_state(self, state):
         show_check_btn = (state == AccountsListState.SELECT)
@@ -102,7 +100,7 @@ class AccountsList(Gtk.ListBox, GObject.GObject):
             if check_btn.props.active:
                 child.account.remove()
                 self.remove(child)
-        self.emit("changed", True)
+        self.emit("account-deleted")
         self.set_state(AccountsListState.NORMAL)
 
 

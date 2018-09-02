@@ -60,7 +60,8 @@ class Account(GObject.GObject, Thread):
     @staticmethod
     def create(name, provider, secret_id, logo):
         encrypted_secret = sha256(secret_id.encode('utf-8')).hexdigest()
-        _id = Database.get_default().insert(name, provider, encrypted_secret, logo)["id"]
+        _id = Database.get_default().insert(
+            name, provider, encrypted_secret, logo)["id"]
         Keyring.insert(encrypted_secret, secret_id)
         return Account(_id, name, provider, encrypted_secret, logo)
 
