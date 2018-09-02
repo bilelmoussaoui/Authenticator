@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Authenticator\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-02 15:05+0200\n"
+"POT-Creation-Date: 2018-09-02 15:33+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -71,7 +71,7 @@ msgid "Account name"
 msgstr ""
 
 #: Authenticator/widgets/accounts/add.py:261
-msgid "Secret Token"
+msgid "Secret token"
 msgstr ""
 
 #: Authenticator/widgets/accounts/add.py:309
@@ -80,7 +80,7 @@ msgstr ""
 
 #. Label
 #: Authenticator/widgets/accounts/list.py:134
-msgid "There's no account yet..."
+msgid "There's no account yet…"
 msgstr ""
 
 #: Authenticator/widgets/accounts/row.py:55
@@ -96,7 +96,7 @@ msgid "translator-credits"
 msgstr ""
 
 #: Authenticator/widgets/about.py:43
-msgid "Two factor authentication codes generator."
+msgid "Two-factor authentication code generator."
 msgstr ""
 
 #: Authenticator/widgets/actions_bar.py:47
@@ -125,12 +125,12 @@ msgid "Undo"
 msgstr ""
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:7
-msgid "Two Factor Authentication code generator"
+msgid "Two-factor authentication code generator"
 msgstr ""
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:9
 msgid ""
-"Simple application that generates 2 factor authentication code, created for "
+"Simple application that generates a two-factor authentication code, created for "
 "GNOME."
 msgstr ""
 
@@ -187,7 +187,7 @@ msgid "Switch to pyzbar instead of zbarlight"
 msgstr ""
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:64
-msgid "Flatpak pacakge"
+msgid "Flatpak package"
 msgstr ""
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:71
@@ -195,11 +195,11 @@ msgid "Bilal Elmoussaoui"
 msgstr ""
 
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:4
-msgid "Two Factor Authentication"
+msgid "Two-factor authentication"
 msgstr ""
 
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:5
-msgid "Two-Factor Authentication code generator"
+msgid "Two-factor authentication code generator"
 msgstr ""
 
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:10
