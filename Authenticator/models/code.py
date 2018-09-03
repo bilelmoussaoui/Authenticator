@@ -37,7 +37,7 @@ class Code:
         try:
             TOTP(token).now()
             return True
-        except (binascii.Error, ValueError):
+        except (binascii.Error, ValueError, TypeError):
             return False
 
     def create(self):
