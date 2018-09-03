@@ -1,5 +1,5 @@
 from os import path
-from tempfile import NamedTemporaryFile, gettempdir
+from tempfile import NamedTemporaryFile
 from gi.repository import Gio, GLib
 
 
@@ -10,7 +10,8 @@ class GNOMEScreenshot:
     @staticmethod
     def area(filename=None):
         if not filename:
-            filename = path.join(GLib.get_user_cache_dir(), NamedTemporaryFile().name)
+            filename = path.join(GLib.get_user_cache_dir(),
+                                path.basename(NamedTemporaryFile().name))
         bus = Gio.bus_get_sync(Gio.BusType.SESSION, None)
         screen_proxy = Gio.DBusProxy.new_sync(bus,
                                               Gio.DBusProxyFlags.NONE,

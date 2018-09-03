@@ -133,7 +133,7 @@
       "buildsystem": "meson",
       "sources": [{
         "type": "git",
-        "url": "git@github.com:bilelmoussaoui/Authenticator.git",
+        "url": "https://github.com/bilelmoussaoui/Authenticator",
         "branch": "master"
       }]
     }

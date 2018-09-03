@@ -37,6 +37,13 @@
   </categories>
   <content_rating type="oars-1.0" />
   <releases>
+    <release version="0.2.2.1" date="2018-09-03">
+      <description>
+        <ul>
+          <li>Fix python-dbus by using GDbus instead</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.2.2" date="2018-09-02">
       <description>
         <ul>

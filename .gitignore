@@ -9,6 +9,8 @@ tags
 *.so
 *.po~
 test/
+.auth/
+auth/
 
 # Distribution / packaging
 builddir/

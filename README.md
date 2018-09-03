@@ -1,4 +1,4 @@
-[![Translation status](https://hosted.weblate.org/widgets/authenticator/-/svg-badge.svg)](https://hosted.weblate.org/engage/authenticator/?utm_source=widget) [![Version](https://img.shields.io/badge/version-0.2.2-green.svg)](https://github.com/bilelmoussaoui/Authenticator/releases)
+[![Translation status](https://hosted.weblate.org/widgets/authenticator/-/svg-badge.svg)](https://hosted.weblate.org/engage/authenticator/?utm_source=widget) [![Version](https://img.shields.io/badge/version-0.2.2.1-green.svg)](https://github.com/bilelmoussaoui/Authenticator/releases)
 
 # Authenticator
 <img src="https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/icons/hicolor/256x256/apps/com.github.bilelmoussaoui.Authenticator.png" width="128" height="128" />
