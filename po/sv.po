@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-02 15:05+0200\n"
-"PO-Revision-Date: 2018-09-02 14:49+0000\n"
+"PO-Revision-Date: 2018-09-03 09:40+0000\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <https://hosted.weblate.org/projects/authenticator/"
 "translation/sv/>\n"
@@ -140,15 +140,15 @@ msgstr ""
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:10
 msgid "Features:"
-msgstr ""
+msgstr "Funktioner:"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:12
 msgid "QR code scanner"
-msgstr ""
+msgstr "QR-kodläsare"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:13
 msgid "Beautiful UI"
-msgstr ""
+msgstr "Vackert användargränssnitt"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:14
 msgid "Huge database of (290+) websites/applications"
@@ -156,11 +156,11 @@ msgstr "Enorm databas med (290+) webbplatser/program"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:43
 msgid "Fix the QRScanner on GNOME Shell"
-msgstr ""
+msgstr "Fixa QR-läsaren i GNOME Shell"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:44
 msgid "Add a new entry for the account's username"
-msgstr ""
+msgstr "Lägg till en ny post för kontots användarnamn"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:45
 msgid "Updated database of supported accounts"
@@ -168,16 +168,15 @@ msgstr "Uppdaterad databas över konton som stöds"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:52
 msgid "HOTFIX: App not running in DE other than GNOME"
-msgstr ""
+msgstr "SNABBFIX: Programmet gick inte köra annat än i GNOME"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:59
-#, fuzzy
 msgid "Rename project to Authenticator"
-msgstr "Om Authenticator"
+msgstr "Byt namn på projektet till Authenticator"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:60
 msgid "Cleaner code base"
-msgstr ""
+msgstr "Renare kodbas"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:61
 msgid "Faster startup"
