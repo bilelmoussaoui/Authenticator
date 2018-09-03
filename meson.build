@@ -1,5 +1,5 @@
 project('com.github.bilelmoussaoui.Authenticator',
-	version: '0.2.1',
+	version: '0.2.2',
   meson_version: '>= 0.40',
   license: 'GPL+-3.0',
   default_options: ['prefix=/usr']

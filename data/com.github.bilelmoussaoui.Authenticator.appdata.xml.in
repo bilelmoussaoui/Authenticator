@@ -4,9 +4,9 @@
   <metadata_license>CC0</metadata_license>
   <project_license>GPL-3.0+</project_license>
   <name>Authenticator</name>
-  <summary>Two Factor Authentication code generator</summary>
+  <summary>Two-factor authentication code generator</summary>
   <description>
-    <p>Simple application that generates 2 factor authentication code, created for GNOME.</p>
+    <p>Simple application that generates a two-factor authentication code, created for GNOME.</p>
     <p>Features:</p>
     <ul>
       <li>QR code scanner</li>
@@ -61,7 +61,7 @@
           <li>Faster startup</li>
           <li>Remove unneeded features</li>
           <li>Switch to pyzbar instead of zbarlight</li>
-          <li>Flatpak pacakge</li>
+          <li>Flatpak package</li>
         </ul>
       </description>
     </release>

@@ -258,7 +258,7 @@ class AccountConfig(Gtk.Box, GObject.GObject):
 
         self.name_entry.set_placeholder_text(_("Account name"))
         self.name_entry.connect("changed", self._validate)
-        self.secret_entry.set_placeholder_text(_("Secret Token"))
+        self.secret_entry.set_placeholder_text(_("Secret token"))
         self.secret_entry.connect("changed", self._validate)
 
         container.pack_start(self.logo_img, False, False, 6)

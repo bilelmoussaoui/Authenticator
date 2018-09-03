@@ -1,8 +1,8 @@
-[![Translation status](https://hosted.weblate.org/widgets/authenticator/-/svg-badge.svg)](https://hosted.weblate.org/engage/authenticator/?utm_source=widget) [![Version](https://img.shields.io/badge/version-0.2.1-green.svg)](https://github.com/bilelmoussaoui/Authenticator/releases)
+[![Translation status](https://hosted.weblate.org/widgets/authenticator/-/svg-badge.svg)](https://hosted.weblate.org/engage/authenticator/?utm_source=widget) [![Version](https://img.shields.io/badge/version-0.2.2-green.svg)](https://github.com/bilelmoussaoui/Authenticator/releases)
 
 # Authenticator
 <img src="https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/icons/hicolor/256x256/apps/com.github.bilelmoussaoui.Authenticator.png" width="128" height="128" />
-<p>Two-factor authentication code generator for GNOME. Created with love using Python and Gtk.</p>
+<p>Two-factor authentication code generator for GNOME. Created with love using Python and GTK+.</p>
 
 ## Screenshots
 
@@ -17,11 +17,16 @@
 ## Installation
 
 ### Flatpak
-You can install the flatpak package of the application from flathub using
+You can install the `flatpak` package of the application from Flathub using
 ```
 flatpak install flathub com.github.bilelmoussaoui.Authenticator
 ```
 
+### Gentoo
+Installing Authenticator in Gentoo Linux is as easy as follows:
+```
+emerge sys-auth/authenticator
+```
 
 ### Building from source code
 #### Dependecies
@@ -33,7 +38,7 @@ flatpak install flathub com.github.bilelmoussaoui.Authenticator
 - `pyotp`
 - `libsecret`
 
-Those dependencies are only used if you build the application with QRCode scanner support
+Those dependencies are only used if you build the application with QR code scanner support
 - `Pillow`
 - `pyzbar` depends on `zbar`
   - `libzbar-dev` on Ubuntu
@@ -51,16 +56,26 @@ git clone https://github.com/bilelmoussaoui/Authenticator && cd ./Authenticator
 sudo pip install pyotp pyzbar Pillow meson ninja
 ```
 
-<sub>PS : In some distributions you will need to use `pip3` instead of `pip` to install the compatible version of the package with Python 3.</sub> <br>
+<sub>PS: In some distributions you will need to use `pip3` instead of `pip` to install the compatible version of the package with Python 3.</sub> <br>
 
-3 - Afterwards
+3 - Install system dependencies
+
+The following packages must be installed to build Authenticator.
+
+- Debian / Ubuntu
+
+```bash
+sudo apt install gobject-introspection libgirepository1.0-dev libgtk-3-dev
+```
+
+4 - Afterwards
 
 ```bash
 meson builddir
 sudo ninja -C builddir install
 ```
 
-4 - You can run the application from the desktop file or from terminal using
+5 - You can run the application from the desktop file or from the terminal using
 ```bash
 authenticator
 ```
@@ -73,4 +88,4 @@ authenticator
 
 ## Credits
 
-- Applications/Websites database are from [twofactorauth](https://github.com/2factorauth/twofactorauth), by 2factorauth team
+- Database for applications/websites from [twofactorauth](https://github.com/2factorauth/twofactorauth), by the 2factorauth team

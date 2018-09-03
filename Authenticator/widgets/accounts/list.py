@@ -131,7 +131,7 @@ class EmptyAccountsList(Gtk.Box):
         img = Gtk.Image.new_from_gicon(gicon, Gtk.IconSize.DIALOG)
 
         # Label
-        label = Gtk.Label(label=_("There's no account yet..."))
+        label = Gtk.Label(label=_("There's no account yet…"))
 
         self.pack_start(img, False, False, 6)
         self.pack_start(label, False, False, 6)
