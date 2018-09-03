@@ -1,6 +1,6 @@
-import dbus
 from os import path
 from tempfile import NamedTemporaryFile, gettempdir
+from gi.repository import Gio, GLib
 
 
 class GNOMEScreenshot:
@@ -11,21 +11,28 @@ class GNOMEScreenshot:
     def area(filename=None):
         if not filename:
             filename = path.join(gettempdir(), NamedTemporaryFile().name)
-        bus = dbus.SessionBus()
-        shell_obj = bus.get_object(GNOMEScreenshot.interface,
-                                   "/org/gnome/Shell/Screenshot")
-        screen_intf = dbus.Interface(shell_obj, GNOMEScreenshot.interface)
+        bus = Gio.bus_get_sync(Gio.BusType.SESSION, None)
+        screen_proxy = Gio.DBusProxy.new_sync(bus,
+                                              Gio.DBusProxyFlags.NONE,
+                                              None,
+                                              "org.gnome.Shell.Screenshot",
+                                              "/org/gnome/Shell/Screenshot",
+                                              "org.gnome.Shell.Screenshot",
+                                              None)
+        area = screen_proxy.call_sync('SelectArea', None, Gio.DBusCallFlags.NONE,
+                                      -1, None).unpack()
 
-        area = screen_intf.SelectArea()
-        x = dbus.Int64(area[0])
-        y = dbus.Int64(area[1])
-        width = dbus.Int64(area[2])
-        height = dbus.Int64(area[3])
-
-        screenshot = screen_intf.ScreenshotArea(x, y, width, height,
-                                                False, filename)
-        success = dbus.Boolean(screenshot[0])
-        if success:
-            filename = dbus.String(screenshot[1])
-            return filename
+        args = GLib.Variant('(iiiibs)', (
+            area[0],
+            area[1],
+            area[2],
+            area[3],
+            False, filename
+        )
+        )
+        screenshot = screen_proxy.call_sync('ScreenshotArea', args,
+                                            Gio.DBusCallFlags.NONE, -1, None)
+        results = screenshot.unpack()
+        if results[0]:
+            return results[1]
         return None
