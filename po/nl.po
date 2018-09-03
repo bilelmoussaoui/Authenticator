@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-02 15:05+0200\n"
-"PO-Revision-Date: 2018-03-21 11:43+0000\n"
-"Last-Translator: Nathan Follens <nathan@email.is>\n"
+"PO-Revision-Date: 2018-09-03 09:40+0000\n"
+"Last-Translator: Heimen Stoffels <vistausss@outlook.com>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/authenticator/"
 "translation/nl/>\n"
 "Language: nl\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.20-dev\n"
+"X-Generator: Weblate 3.2-dev\n"
 
 #: Authenticator/application.py:37 Authenticator/widgets/about.py:40
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:6
@@ -41,7 +41,7 @@ msgstr "Afsluiten"
 #: Authenticator/widgets/accounts/add.py:50
 #: Authenticator/widgets/headerbar.py:98
 msgid "Add a new account"
-msgstr "Nieuwe account toevoegen"
+msgstr "Nieuw account toevoegen"
 
 #: Authenticator/widgets/accounts/add.py:59
 #: Authenticator/widgets/headerbar.py:96
@@ -74,7 +74,7 @@ msgstr "Accountnaam"
 
 #: Authenticator/widgets/accounts/add.py:261
 msgid "Secret Token"
-msgstr "Geheim token"
+msgstr "Geheime sleutel"
 
 #: Authenticator/widgets/accounts/add.py:309
 msgid "Invalid QR code"
@@ -83,7 +83,7 @@ msgstr "Ongeldige QR-code"
 #. Label
 #: Authenticator/widgets/accounts/list.py:134
 msgid "There's no account yet..."
-msgstr "Er zijn nog geen accounts…"
+msgstr "Je hebt nog geen accounts toegevoegd..."
 
 #: Authenticator/widgets/accounts/row.py:55
 msgid "Copy"
@@ -95,11 +95,11 @@ msgstr "Aanmaken van geheime code mislukt"
 
 #: Authenticator/widgets/about.py:41
 msgid "translator-credits"
-msgstr "Nathan Follens"
+msgstr "Nathan Follens, Heimen Stoffels"
 
 #: Authenticator/widgets/about.py:43
 msgid "Two factor authentication codes generator."
-msgstr "Generator voor tweefactorauthenticatiecodes."
+msgstr "Code-generator voor authenticatie in twee stappen."
 
 #: Authenticator/widgets/actions_bar.py:47
 msgid "Delete"
@@ -128,78 +128,75 @@ msgstr "Ongedaan maken"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:7
 msgid "Two Factor Authentication code generator"
-msgstr "Generator voor tweefactorauthenticatiecodes"
+msgstr "Code-generator voor authenticatie in twee stappen"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:9
-#, fuzzy
 msgid ""
 "Simple application that generates 2 factor authentication code, created for "
 "GNOME."
 msgstr ""
-"Eenvoudige toepassing voor het genereren van tweefactorauthenticatiecodes, "
-"gemaakt voor GNOME"
+"Eenvoudige applicatie voor het genereren van codes voor authenticatie in "
+"twee stappen, gemaakt voor GNOME."
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:10
 msgid "Features:"
-msgstr ""
+msgstr "Functies:"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:12
 msgid "QR code scanner"
-msgstr ""
+msgstr "QR-codescanner"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:13
 msgid "Beautiful UI"
-msgstr ""
+msgstr "Prachtige vormgeving"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:14
 msgid "Huge database of (290+) websites/applications"
-msgstr ""
+msgstr "Enorme databank met (meer dan 290) websites/applicaties"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:43
 msgid "Fix the QRScanner on GNOME Shell"
-msgstr ""
+msgstr "QR-codescanner gerepareerd bij gebruik in GNOME Shell"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:44
 msgid "Add a new entry for the account's username"
-msgstr ""
+msgstr "Voeg een nieuw item toe voor de gebruikersnaam"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:45
 msgid "Updated database of supported accounts"
-msgstr ""
+msgstr "Databank met ondersteunde accounts bijgewerkt"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:52
 msgid "HOTFIX: App not running in DE other than GNOME"
-msgstr ""
+msgstr "BELANGRIJK: de app draait nu ook in andere werkomgevingen dan GNOME"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:59
-#, fuzzy
 msgid "Rename project to Authenticator"
-msgstr "Over Authenticator"
+msgstr "Projectnaam gewijzigd in Authenticator"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:60
 msgid "Cleaner code base"
-msgstr ""
+msgstr "Eenvoudigere broncode"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:61
 msgid "Faster startup"
-msgstr ""
+msgstr "Snellere opstart"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:62
-#, fuzzy
 msgid "Remove unneeded features"
-msgstr "Geselecteerde accounts verwijderen"
+msgstr "Onnodige functies verwijderd"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:63
 msgid "Switch to pyzbar instead of zbarlight"
-msgstr ""
+msgstr "Overgeschakeld van zbarlight naar pyzbar"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:64
 msgid "Flatpak pacakge"
-msgstr ""
+msgstr "Flatpak-pakket"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:71
 msgid "Bilal Elmoussaoui"
-msgstr ""
+msgstr "Bilal Elmoussaoui"
 
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:4
 msgid "Two Factor Authentication"
