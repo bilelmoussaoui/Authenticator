@@ -10,7 +10,7 @@ class GNOMEScreenshot:
     @staticmethod
     def area(filename=None):
         if not filename:
-            filename = path.join(gettempdir(), NamedTemporaryFile().name)
+            filename = path.join(GLib.get_user_cache_dir(), NamedTemporaryFile().name)
         bus = Gio.bus_get_sync(Gio.BusType.SESSION, None)
         screen_proxy = Gio.DBusProxy.new_sync(bus,
                                               Gio.DBusProxyFlags.NONE,
