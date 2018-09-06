@@ -8,16 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-02 15:05+0200\n"
-"PO-Revision-Date: 2018-02-09 20:54+0000\n"
-"Last-Translator: jschwender <joachim.schwender@web.de>\n"
-"Language-Team: German <https://hosted.weblate.org/projects/gnome-"
-"twofactorauth/translation/de/>\n"
+"PO-Revision-Date: 2018-09-06 19:12+0000\n"
+"Last-Translator: Christian <christian.masur@gmail.com>\n"
+"Language-Team: German <https://hosted.weblate.org/projects/authenticator/"
+"translation/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.19-dev\n"
+"X-Generator: Weblate 3.2-dev\n"
 
 #: Authenticator/application.py:37 Authenticator/widgets/about.py:40
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:6
@@ -60,7 +60,7 @@ msgstr "weiter"
 
 #: Authenticator/widgets/accounts/add.py:101
 msgid "Close"
-msgstr ""
+msgstr "schließen"
 
 #: Authenticator/widgets/accounts/add.py:109
 msgid "Add"
@@ -68,7 +68,7 @@ msgstr "Hinzufügen"
 
 #: Authenticator/widgets/accounts/add.py:110
 msgid "Back"
-msgstr ""
+msgstr "zurück"
 
 #: Authenticator/widgets/accounts/add.py:259
 #, fuzzy
@@ -81,9 +81,8 @@ msgid "Secret Token"
 msgstr "Geheimer Code"
 
 #: Authenticator/widgets/accounts/add.py:309
-#, fuzzy
 msgid "Invalid QR code"
-msgstr "Scanne einen QR Code"
+msgstr "Ungültiger QR Code"
 
 #. Label
 #: Authenticator/widgets/accounts/list.py:134
@@ -93,7 +92,7 @@ msgstr "Derzeit gibt es kein Konto"
 
 #: Authenticator/widgets/accounts/row.py:55
 msgid "Copy"
-msgstr ""
+msgstr "kopieren"
 
 #: Authenticator/widgets/accounts/row.py:151
 msgid "Couldn't generate the secret code"
