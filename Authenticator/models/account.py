@@ -16,11 +16,12 @@
  You should have received a copy of the GNU General Public License
  along with Authenticator. If not, see <http://www.gnu.org/licenses/>.
 """
+from hashlib import sha256
 from threading import Thread
 from time import sleep
-from hashlib import sha256
 
 from gi.repository import GObject
+
 from .clipboard import Clipboard
 from .code import Code
 from .database import Database
@@ -60,10 +61,10 @@ class Account(GObject.GObject, Thread):
     @staticmethod
     def create(name, provider, secret_id, logo):
         encrypted_secret = sha256(secret_id.encode('utf-8')).hexdigest()
-        _id = Database.get_default().insert(
-            name, provider, encrypted_secret, logo)["id"]
-        Keyring.insert(encrypted_secret, secret_id)
-        return Account(_id, name, provider, encrypted_secret, logo)
+        obj = Database.get_default().insert(name, provider, encrypted_secret, logo)
+
+        Keyring.insert(encrypted_secret, provider, name, secret_id)
+        return Account(obj['id'], name, provider, encrypted_secret, logo)
 
     @property
     def secret_code(self):

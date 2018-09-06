@@ -17,6 +17,7 @@
  along with Authenticator. If not, see <http://www.gnu.org/licenses/>.
 """
 from gi import require_version
+
 require_version('Secret', '1')
 from gi.repository import Secret
 
@@ -29,7 +30,8 @@ class Keyring:
         self.schema = Secret.Schema.new(Keyring.ID,
                                         Secret.SchemaFlags.NONE,
                                         {
-                                            "id": Secret.SchemaAttributeType.STRING
+                                            "id": Secret.SchemaAttributeType.STRING,
+                                            "name": Secret.SchemaAttributeType.STRING,
                                         })
 
     @staticmethod
@@ -46,16 +48,28 @@ class Keyring:
         return password
 
     @staticmethod
-    def insert(id_, secret_code):
+    def insert(id_, provider, name, secret_code):
         """
         Insert a secret code to Keyring database
         :param id_: the encrypted id
+        :param provider: the provider's name
+        :param name: the identity/username
         :param secret_code: the secret code
         """
         schema = Keyring.get_default().schema
-        Secret.password_store_sync(schema, {
+
+        data = {
             "id": str(id_),
-        }, Secret.COLLECTION_DEFAULT, "", secret_code, None)
+            "name": str(name),
+        }
+        Secret.password_store_sync(
+            schema,
+            data,
+            Secret.COLLECTION_DEFAULT,
+            "{provider} OTP ({name})".format(provider=provider, name=name),
+            secret_code,
+            None
+        )
 
     @staticmethod
     def remove(id_):
