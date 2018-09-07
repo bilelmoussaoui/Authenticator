@@ -21,7 +21,7 @@ import json
 
 from gi import require_version
 require_version("Gtk", "3.0")
-from gi.repository import Gio, Gtk, GObject, GLib
+from gi.repository import Gio, Gtk, GObject, GLib, GdkPixbuf, Gdk
 
 from ..headerbar import HeaderBarButton, HeaderBarToggleButton
 from ..inapp_notification import InAppNotification
@@ -32,15 +32,15 @@ from ...utils import can_use_qrscanner
 
 class AddAcountWindow(Gtk.Window):
     """Add Account Window."""
-    STEP = 1
 
     def __init__(self):
         Gtk.Window.__init__(self)
         self.set_position(Gtk.WindowPosition.CENTER_ON_PARENT)
         self.set_size_request(400, 600)
         self.resize(400, 600)
-        self._signals = {}
         self._build_widgets()
+        self.connect('key_press_event', self._on_key_press)
+
 
     def _build_widgets(self):
         """Create the Add Account widgets."""
@@ -50,14 +50,14 @@ class AddAcountWindow(Gtk.Window):
         headerbar.set_title(_("Add a new account"))
         self.set_titlebar(headerbar)
         # Next btn
-        self.next_btn = Gtk.Button()
-        self.next_btn.get_style_context().add_class("suggested-action")
-        headerbar.pack_end(self.next_btn)
+        self.add_btn = Gtk.Button()
+        self.add_btn.set_label(_("Add"))
+        self.add_btn.connect("clicked", self._on_add)
+        self.add_btn.get_style_context().add_class("suggested-action")
+        self.add_btn.set_sensitive(False)
+        headerbar.pack_end(self.add_btn)
 
-        # Search btn
-        self.search_btn = HeaderBarToggleButton("system-search-symbolic",
-                                                _("Search"))
-        headerbar.pack_end(self.search_btn)
+
         # QR code scan btn
         from ...application import Application
         self.scan_btn = HeaderBarButton("qrscanner-symbolic",
@@ -67,68 +67,19 @@ class AddAcountWindow(Gtk.Window):
             headerbar.pack_end(self.scan_btn)
 
         # Back btn
-        self.back_btn = Gtk.Button()
+        self.close_btn = Gtk.Button()
+        self.close_btn.set_label(_("Close"))
+        self.close_btn.connect("clicked", self._on_quit)
 
-        headerbar.pack_start(self.back_btn)
+        headerbar.pack_start(self.close_btn)
 
-        # Main stack
-        self.main = Gtk.Stack()
-        self.accounts_list = AccountsList()
-        self.accounts_list.search_bar.search_button = self.search_btn
-        # Create a scrollted window for the accounts list
-        scrolled = Gtk.ScrolledWindow()
-        scrolled.set_policy(Gtk.PolicyType.NEVER,
-                            Gtk.PolicyType.AUTOMATIC)
-        scrolled.add(self.accounts_list)
-        self.main.add_named(scrolled, "1")
+
         self.account_config = AccountConfig()
         self.account_config.connect("changed", self._on_account_config_changed)
-        self.main.add_named(self.account_config, "2")
 
-        self.add(self.main)
-        # The first step!
-        self._set_step(1)
+        self.add(self.account_config)
 
-    def _set_step(self, step):
-        AddAcountWindow.STEP = step
-        search_btn_visible = False
-        scan_btn_visible = False
-        if self._signals:
-            self.back_btn.disconnect(self._signals["back"])
-            self.next_btn.disconnect(self._signals["next"])
-        if step == 1:
-            next_lbl = _("Next")
-            back_lbl = _("Close")
-            search_btn_visible = True
-            self.next_btn.set_sensitive(True)
-            self._signals["back"] = self.back_btn.connect("clicked",
-                                                          self._on_quit)
-            self._signals["next"] = self.next_btn.connect("clicked",
-                                                          lambda x: self._set_step(2))
-        elif step == 2:
-            next_lbl = _("Add")
-            back_lbl = _("Back")
-            scan_btn_visible = True
-            account = self.accounts_list.get_selected_row()
-            self.account_config.set_account(account)
-            self.account_config.name_entry.emit("changed")
-            self.next_btn.set_sensitive(False)
-            self._signals["back"] = self.back_btn.connect("clicked",
-                                                          lambda x: self._set_step(1))
-            self._signals["next"] = self.next_btn.connect("clicked",
-                                                          self._on_add)
-        self.next_btn.set_label(next_lbl)
-        self.back_btn.set_label(back_lbl)
-
-        self.scan_btn.set_visible(scan_btn_visible)
-        self.scan_btn.set_no_show_all(not scan_btn_visible)
-
-        self.search_btn.set_visible(search_btn_visible)
-        self.search_btn.set_no_show_all(not search_btn_visible)
-
-        self.main.set_visible_child_name(str(step))
-
-    def _on_scan(self, widget):
+    def _on_scan(self, *args):
         """
             QR Scan button clicked signal handler.
         """
@@ -136,7 +87,8 @@ class AddAcountWindow(Gtk.Window):
             self.account_config.scan_qr()
 
     def _on_account_config_changed(self, widget, state):
-        self.next_btn.set_sensitive(state)
+        """Set the sensitivity of the AddButton depends on the AccountConfig."""
+        self.add_btn.set_sensitive(state)
 
     def _on_quit(self, *args):
         self.destroy()
@@ -145,76 +97,21 @@ class AddAcountWindow(Gtk.Window):
         from .list import AccountsList
         name, provider, secret, logo = self.account_config.account.values()
         AccountsList.get_default().append(name, provider, secret, logo)
-        self.destroy()
+        self._on_quit()
 
 
-class AccountsList(Gtk.Box):
+    def _on_key_press(self, widget, event):
+        _, keyval = event.get_keyval()
+        modifiers = event.get_state()
 
-    def __init__(self):
-        Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL)
-        self._listbox = Gtk.ListBox()
-        self.search_bar = SearchBar()
-        self._build_widgets()
-        self._fill_data()
+        if keyval == Gdk.KEY_Escape:
+            self._on_quit()
 
-    def _build_widgets(self):
-        """
-        Create the Accounts List widgets.
-        """
+        # CTRL + Q
+        if modifiers == Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.MOD2_MASK:
+            if keyval == Gdk.KEY_q:
+                self._on_scan()
 
-        self.pack_start(self.search_bar, False, False, 0)
-        self.search_bar.search_list = [self._listbox]
-        self._listbox.set_selection_mode(Gtk.SelectionMode.SINGLE)
-
-        accounts_scrolled = Gtk.ScrolledWindow()
-        accounts_scrolled.add_with_viewport(self._listbox)
-        self.pack_start(accounts_scrolled, True, True, 0)
-
-    def get_selected_row(self):
-        return self._listbox.get_selected_row()
-
-    def _fill_data(self):
-        uri = 'resource:///com/github/bilelmoussaoui/Authenticator/data.json'
-        file = Gio.File.new_for_uri(uri)
-        content = str(file.load_contents(None)[1].decode("utf-8"))
-        data = json.loads(content)
-        data = sorted([(name, logo) for name, logo in data.items()],
-                      key=lambda entry: entry[0].lower())
-        for entry in data:
-            name, logo = entry
-            self._listbox.add(AccountRow(name, logo))
-
-
-class AccountRow(Gtk.ListBoxRow):
-
-    def __init__(self, name, logo):
-        Gtk.ListBoxRow.__init__(self)
-        self.name = name
-        self.logo = logo
-        self._build_widgets()
-
-    def get_name(self):
-        """Used by SearchBar."""
-        return self.name
-
-    def _build_widgets(self):
-        container = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-
-        theme = Gtk.IconTheme.get_default()
-        try:
-            pixbuf = theme.load_icon(self.logo, 48, 0)
-            logo_img = Gtk.Image.new_from_pixbuf(pixbuf)
-        except GLib.Error:
-            logo_img = Gtk.Image.new_from_icon_name(
-                "com.github.bilelmoussaoui.Authenticator", Gtk.IconSize.DIALOG)
-
-        container.pack_start(logo_img, False, False, 6)
-
-        name_lbl = Gtk.Label(label=self.name)
-        name_lbl.get_style_context().add_class("account-name")
-        name_lbl.set_halign(Gtk.Align.START)
-        container.pack_start(name_lbl, False, False, 6)
-        self.add(container)
 
 
 class AccountConfig(Gtk.Box, GObject.GObject):
@@ -226,22 +123,25 @@ class AccountConfig(Gtk.Box, GObject.GObject):
         Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL)
         GObject.GObject.__init__(self)
 
+        self._providers_store = Gtk.ListStore(str, str)
+
         self.notification = InAppNotification()
         self.logo_img = Gtk.Image()
-        self.name_entry = Gtk.Entry()
-        self.provider_entry = Gtk.Entry()
-        self.secret_entry = Gtk.Entry()
+        self.username_entry = Gtk.Entry()
+        self.provider_combo = Gtk.ComboBox.new_with_model_and_entry(self._providers_store)
+        self.token_entry = Gtk.Entry()
         self._logo = None
         self._build_widgets()
+        self._fill_data()
 
     @property
     def account(self):
         """
             Return an instance of Account for the new account.
         """
-        account_name = self.name_entry.get_text()
-        provider = self.provider_entry.get_text()
-        secret = self.secret_entry.get_text()
+        account_name = self.username_entry.get_text()
+        provider = self.provider_combo.get_child().get_text()
+        secret = self.token_entry.get_text()
 
         return {"name": account_name,
                 "provider": provider,
@@ -249,57 +149,106 @@ class AccountConfig(Gtk.Box, GObject.GObject):
                 "logo": self._logo}
 
     def _build_widgets(self):
-        self.pack_start(self.notification, False, False, 0)
 
         container = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         container.set_border_width(18)
 
-        self.provider_entry.set_sensitive(False)
+        self.provider_combo.set_entry_text_column(0)
+        self.provider_combo.connect("changed", self._on_provider_changed)
+        # Set up auto completion
+        provider_entry = self.provider_combo.get_child()
 
-        self.name_entry.set_placeholder_text(_("Account name"))
-        self.name_entry.connect("changed", self._validate)
-        self.secret_entry.set_placeholder_text(_("Secret token"))
-        self.secret_entry.connect("changed", self._validate)
+        completion = Gtk.EntryCompletion()
+        completion.set_model(self._providers_store)
+        completion.set_text_column(0)
+
+        provider_entry.set_completion(completion)
+
+        self.username_entry.set_placeholder_text(_("Account name"))
+        self.username_entry.connect("changed", self._validate)
+        self.token_entry.set_placeholder_text(_("Secret token"))
+        self.token_entry.set_visibility(False)
+        self.token_entry.connect("changed", self._validate)
+
+        # To set the empty logo
+        self.set_logo("")
 
         container.pack_start(self.logo_img, False, False, 6)
-        container.pack_end(self.secret_entry, False, False, 6)
-        container.pack_end(self.name_entry, False, False, 6)
-        container.pack_end(self.provider_entry, False, False, 6)
+        container.pack_end(self.token_entry, False, False, 6)
+        container.pack_end(self.username_entry, False, False, 6)
+        container.pack_end(self.provider_combo, False, False, 6)
 
+        self.pack_start(self.notification, False, False, 0)
         self.pack_start(container, False, False, 6)
 
-    def _validate(self, *args):
-        name = self.name_entry.get_text()
-        secret_id = self.secret_entry.get_text()
+    def _on_provider_changed(self, combo):
+        tree_iter = combo.get_active_iter()
+        if tree_iter is not None:
+            model = combo.get_model()
+            logo = model[tree_iter][-1]
+        else:
+            entry = combo.get_child()
+            logo = entry.get_text().strip().replace(" ", "-").lower()
+        self._validate()
+        self.set_logo(logo)
 
-        if not name:
-            self.name_entry.get_style_context().add_class("error")
+
+    def _fill_data(self):
+        uri = 'resource:///com/github/bilelmoussaoui/Authenticator/data.json'
+        file = Gio.File.new_for_uri(uri)
+        content = str(file.load_contents(None)[1].decode("utf-8"))
+        data = json.loads(content)
+        data = sorted([(name, logo) for name, logo in data.items()],
+                        key=lambda entry: entry[0].lower())
+        for entry in data:
+            name, logo = entry
+            self._providers_store.append([name, logo])
+
+    def _validate(self, *args):
+        """Validate the username and the token."""
+        provider = self.provider_combo.get_child().get_text()
+        username = self.username_entry.get_text()
+        token = self.token_entry.get_text()
+
+        if not username:
+            self.username_entry.get_style_context().add_class("error")
             valid_name = False
         else:
-            self.name_entry.get_style_context().remove_class("error")
+            self.username_entry.get_style_context().remove_class("error")
             valid_name = True
-        if not Code.is_valid(secret_id):
-            self.secret_entry.get_style_context().add_class("error")
-            valid_secret = False
+
+        if not provider:
+            self.provider_combo.get_style_context().add_class("error")
+            valid_provider = False
         else:
-            self.secret_entry.get_style_context().remove_class("error")
-            valid_secret = True
-        self.emit("changed", valid_secret and valid_name)
+            self.provider_combo.get_style_context().remove_class("error")
+            valid_provider = True
 
-    def set_account(self, account):
-        name = account.name
-        self._logo = account.logo
+        if not Code.is_valid(token):
+            self.token_entry.get_style_context().add_class("error")
+            valid_token = False
+        else:
+            self.token_entry.get_style_context().remove_class("error")
+            valid_token = True
 
-        self.provider_entry.set_text(name)
+        self.emit("changed", all([valid_name, valid_provider, valid_token]))
+
+
+    def set_logo(self, logo):
+        """Set the Account logo on the GtkImage."""
+        self._logo = logo
         theme = Gtk.IconTheme.get_default()
         try:
-            pixbuf = theme.load_icon(self._logo, 48, 0)
+            pixbuf = theme.load_icon(logo, 48, 0)
             self.logo_img.set_from_pixbuf(pixbuf)
         except GLib.Error:
             self.logo_img.set_from_icon_name("com.github.bilelmoussaoui.Authenticator",
                                              Gtk.IconSize.DIALOG)
 
     def scan_qr(self):
+        """
+            Scans a QRCode and fills the entries with the correct data.
+        """
         from ...models import QRReader, GNOMEScreenshot
         filename = GNOMEScreenshot.area()
         if filename:
@@ -310,4 +259,4 @@ class AccountConfig(Gtk.Box, GObject.GObject):
                 self.notification.set_message_type(Gtk.MessageType.ERROR)
                 self.notification.show()
             else:
-                self.secret_entry.set_text(secret)
+                self.token_entry.set_text(secret)
