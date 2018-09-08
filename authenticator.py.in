@@ -20,7 +20,6 @@
 """
 
 import argparse
-import faulthandler
 import gettext
 import locale
 from os import path
@@ -50,8 +49,9 @@ if __name__ == "__main__":
     level = Logger.ERROR
     if args.debug:
         level = Logger.DEBUG
-        Logger.setLevel(level)
+        import faulthandler
         faulthandler.enable()
+    Logger.get_default().setLevel(level)
 
     resource = Gio.resource_load(path.join('@DATA_DIR@',
                                            'com.github.bilelmoussaoui.Authenticator.gresource'))
