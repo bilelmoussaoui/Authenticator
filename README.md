@@ -84,6 +84,8 @@ authenticator
 
 - `--version`
   Shows the version number of the application
+- `--debug`
+  Enable the debug logs
 
 
 ## Credits
