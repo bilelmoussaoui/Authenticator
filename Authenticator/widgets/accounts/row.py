@@ -22,14 +22,13 @@ from gi import require_version
 require_version("Gtk", "3.0")
 from gi.repository import Gio, Gtk, GObject, GLib, Pango
 
-from ..password_label import PasswordLabel
+from .edit import EditAccountWindow
 
 
 class ActionButton(Gtk.Button):
 
     def __init__(self, icon_name, tooltip):
         Gtk.Button.__init__(self)
-        self.get_style_context().add_class("flat")
         self._build_widget(icon_name, tooltip)
 
     def _build_widget(self, icon_name, tooltip):
@@ -53,11 +52,13 @@ class ActionsBox(Gtk.Box):
     def __init__(self):
         Gtk.Box.__init__(self, orientation=Gtk.Orientation.HORIZONTAL)
         self.copy_btn = ActionButton("edit-copy-symbolic", _("Copy"))
+        self.edit_btn = ActionButton("document-edit-symbolic", _("Edit"))
         self._build_widget()
 
     def _build_widget(self):
         """Build ActionsBox widgets."""
-        self.pack_start(self.copy_btn, False, False, 0)
+        self.pack_start(self.copy_btn, False, False, 3)
+        self.pack_start(self.edit_btn, False, False, 3)
 
 
 class AccountRow(Gtk.ListBoxRow, GObject.GObject):
@@ -69,7 +70,7 @@ class AccountRow(Gtk.ListBoxRow, GObject.GObject):
 
     def __init__(self, account):
         Gtk.ListBoxRow.__init__(self)
-        self.get_style_context().add_class("application-list-row")
+        self.get_style_context().add_class("account-row")
         self._account = account
         self.check_btn = Gtk.CheckButton()
         self.counter_lbl = Gtk.Label()
@@ -99,27 +100,12 @@ class AccountRow(Gtk.ListBoxRow, GObject.GObject):
 
         container.pack_start(self.check_btn, False, False, 3)
         self.check_btn.set_visible(False)
+        self.check_btn.get_style_context().add_class("account-row-checkbtn")
         self.check_btn.connect("toggled", self._on_toggled)
         self.check_btn.set_no_show_all(True)
 
-        # Account Image
-        theme = Gtk.IconTheme.get_default()
-        try:
-            pixbuf = theme.load_icon(self.account.logo, 48, 0)
-            image = Gtk.Image.new_from_pixbuf(pixbuf)
-        except GLib.Error:
-            image = Gtk.Image.new_from_icon_name(
-                "com.github.bilelmoussaoui.Authenticator", Gtk.IconSize.DIALOG)
-
-        container.pack_start(image, False, False, 6)
-
         # Account Name & Two factor code:
         info_container = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-
-        # Service Provider
-        self.provider_lbl = Gtk.Label(label=self.account.provider)
-        self.provider_lbl.set_halign(Gtk.Align.START)
-        self.provider_lbl.get_style_context().add_class("provider-lbl")
 
         # Account Name
         self.name_lbl = Gtk.Label(label=self.account.name)
@@ -128,7 +114,6 @@ class AccountRow(Gtk.ListBoxRow, GObject.GObject):
         self.name_lbl.set_halign(Gtk.Align.START)
         self.name_lbl.get_style_context().add_class("application-name")
 
-        info_container.pack_start(self.provider_lbl, False, False, 0)
         info_container.pack_start(self.name_lbl, False, False, 0)
         info_container.set_valign(Gtk.Align.CENTER)
         container.pack_start(info_container, True, True, 6)
@@ -136,44 +121,56 @@ class AccountRow(Gtk.ListBoxRow, GObject.GObject):
         # Actions container
         actions = ActionsBox()
         actions.copy_btn.connect("clicked", self._on_copy)
+        actions.edit_btn.connect("clicked", self._on_edit)
         actions.set_valign(Gtk.Align.CENTER)
         container.pack_end(actions, False, False, 6)
 
         # Secret code
         code_container = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         secret_code = self.account.secret_code
-        self.code_lbl = PasswordLabel()
+        self.code_lbl = Gtk.Label()
         self.code_lbl.set_halign(Gtk.Align.START)
-        self.code_lbl.get_style_context().add_class("flat")
         if secret_code:
-            self.code_lbl.text = secret_code
+            self.code_lbl.set_text(secret_code)
         else:
-            self.code_lbl.text = _("Couldn't generate the secret code")
+            self.code_lbl.set_text("??????")
+            self.code_lbl.set_tooltip_text(
+                _("Couldn't generate the secret code"))
         self.code_lbl.get_style_context().add_class("token-label")
-        self.code_lbl.set_visibility(False)
         # Counter
         if secret_code:
             self.update_counter()
         else:
             self.counter_lbl.set_text("")
+        self.counter_lbl.set_halign(Gtk.Align.START)
         self.counter_lbl.get_style_context().add_class("counter-label")
         self.counter_lbl.set_ellipsize(Pango.EllipsizeMode.END)
 
-        code_container.pack_start(self.code_lbl, True, True, 6)
-        code_container.pack_end(self.counter_lbl, True, True, 6)
+        code_container.pack_start(self.code_lbl, False, False, 6)
+        code_container.pack_end(self.counter_lbl, False, False, 6)
         code_container.set_valign(Gtk.Align.CENTER)
+        code_container.set_halign(Gtk.Align.START)
         container.pack_end(code_container, False, False, 6)
 
         self.add(container)
-
-    def _toggle_secret_code(self, *args):
-        self.code_lbl.set_visibility(not self.code_lbl.get_visibility())
 
     def _on_toggled(self, *args):
         self.emit("on_selected")
 
     def _on_copy(self, *args):
         self._account.copy_token()
+
+    def _on_edit(self, *args):
+        from ..window import Window
+        edit_window = EditAccountWindow(self._account)
+        edit_window.set_transient_for(Window.get_default())
+        edit_window.connect("updated", self._on_update)
+        edit_window.show_all()
+        edit_window.present()
+
+    def _on_update(self, widget, name, provider):
+        self.name_lbl.set_text(name)
+        self.account.update(name=name, provider=provider)
 
     def update_counter(self):
         counter = self.account.counter
@@ -182,7 +179,8 @@ class AccountRow(Gtk.ListBoxRow, GObject.GObject):
         self.counter_lbl.set_tooltip_text(text)
 
     def _on_code_updated(self, account, code):
-        self.code_lbl.text = code
+        if code:
+            self.code_lbl.set_text(code)
 
     def _on_counter_updated(self, *args):
         if self.account.secret_code:

@@ -54,7 +54,10 @@ class Code:
         """
             Update the code
         """
-        self._secret_code = self._totp.now()
+        try:
+            self._secret_code = self._totp.now()
+        except binascii.Error:
+            self._secret_code = None
 
     @property
     def secret_code(self):

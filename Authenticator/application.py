@@ -148,12 +148,5 @@ class Application(Gtk.Application):
         and clear clipboard for safety reasons
         """
         Clipboard.clear()
-        from .widgets.accounts.list import AccountsList
-        accounts = AccountsList.get_default()
-        for account_row in accounts:
-            account_row.account.kill()
-
-        window = Window.get_default()
-        window.save_state()
-        window.destroy()
+        Window.get_default().close()
         self.quit()

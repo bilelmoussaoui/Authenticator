@@ -18,7 +18,40 @@
 """
 from os import environ
 
+from gi import require_version
+require_version('Gtk', '3.0')
+from gi.repository import Gtk, GdkPixbuf, GLib
+
 
 def can_use_qrscanner():
     desktop = environ.get("XDG_CURRENT_DESKTOP", "").lower()
     return desktop == "gnome"
+
+
+def load_pixbuf(icon_name, size):
+    pixbuf = None
+    theme = Gtk.IconTheme.get_default()
+    if icon_name:
+        try:
+            icon_info = theme.lookup_icon(icon_name, size, 0)
+            if icon_info:
+                pixbuf = icon_info.load_icon()
+        except GLib.Error:
+            pass
+    if not pixbuf:
+        pixbuf = theme.load_icon("com.github.bilelmoussaoui.Authenticator",
+                                size, 0)
+
+    if pixbuf and (pixbuf.props.width != size or pixbuf.props.height != size):
+        pixbuf = pixbuf.scale_simple(size, size,
+                                     GdkPixbuf.InterpType.BILINEAR)
+    return pixbuf
+
+
+
+def load_pixbuf_from_provider(provider_name, icon_size=48):
+    if provider_name:
+        provider_name = provider_name.lower().strip().replace(" ", "-")
+        return load_pixbuf(provider_name, icon_size)
+    else:
+        return load_pixbuf(None, icon_size)

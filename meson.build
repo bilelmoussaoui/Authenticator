@@ -1,6 +1,6 @@
 project('com.github.bilelmoussaoui.Authenticator',
 	version: '0.2.2.1',
-  meson_version: '>= 0.40',
+  meson_version: '>= 0.42',
   license: 'GPL+-3.0',
   default_options: ['prefix=/usr']
 )
@@ -38,11 +38,6 @@ conf.set('ENABLE_QRSCANNER', use_zbar)
 subdir('data')
 subdir('po')
 
-install_subdir(
-  'Authenticator',
-  install_dir: PYTHON_DIR
-)
-
 configure_file(
   input: 'authenticator.py.in',
   output: 'authenticator',
@@ -50,5 +45,18 @@ configure_file(
   install_dir: join_paths(get_option('prefix'), get_option('bindir'))
 )
 
+configure_file(
+  input: 'Authenticator/widgets/about.py.in',
+  output: 'about.py',
+  configuration: conf,
+  install_dir : join_paths(PYTHON_DIR, 'Authenticator/widgets')
+)
+
+
+install_subdir(
+  'Authenticator',
+  install_dir: PYTHON_DIR,
+  exclude_files: 'widgets/about.py.in'
+)
 
 meson.add_install_script('tools/build/meson_post_install.py')
