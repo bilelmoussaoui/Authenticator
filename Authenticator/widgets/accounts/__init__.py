@@ -17,5 +17,5 @@
  along with Authenticator. If not, see <http://www.gnu.org/licenses/>.
 """
 from .add import AddAcountWindow
-from .list import AccountsList, EmptyAccountsList, AccountsListState
+from .list import AccountsWidget, AccountsList, EmptyAccountsList, AccountsListState
 from .row import AccountRow

@@ -22,7 +22,7 @@ from gi.repository import Gtk, Gio, Gdk, GObject, GLib
 from ..models import Logger, Settings, Database
 from .headerbar import HeaderBar, HeaderBarState
 from .inapp_notification import InAppNotification
-from .accounts import AccountsList, AccountsListState, AddAcountWindow, EmptyAccountsList
+from .accounts import AccountsWidget, AccountsListState, AddAcountWindow, EmptyAccountsList
 from .search_bar import SearchBar
 from .actions_bar import ActionsBar
 
@@ -38,8 +38,7 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
 
     def __init__(self):
         Gtk.ApplicationWindow.__init__(self, type=Gtk.WindowType.TOPLEVEL)
-        self.set_wmclass(
-            "com.github.bilelmoussaoui.Authenticator", "Authenticator")
+
         self.set_icon_name("com.github.bilelmoussaoui.Authenticator")
         self.resize(550, 600)
         self.restore_state()
@@ -52,6 +51,11 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         if Window.instance is None:
             Window.instance = Window()
         return Window.instance
+
+    def close(self):
+        self.save_state()
+        AccountsWidget.get_default().kill_all()
+        self.destroy()
 
     def set_menu(self, gio_menu):
         """Set Headerbar popover menu."""
@@ -82,11 +86,11 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         """
         if HeaderBar.get_default().state == HeaderBarState.NORMAL:
             HeaderBar.get_default().set_state(HeaderBarState.SELECT)
-            AccountsList.get_default().set_state(AccountsListState.SELECT)
+            AccountsWidget.get_default().set_state(AccountsListState.SELECT)
         else:
             ActionsBar.get_default().set_delete_btn_sensitive(False)
             HeaderBar.get_default().set_state(HeaderBarState.NORMAL)
-            AccountsList.get_default().set_state(AccountsListState.NORMAL)
+            AccountsWidget.get_default().set_state(AccountsListState.NORMAL)
 
     def save_state(self):
         """Save window position & size."""
@@ -114,45 +118,46 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         """Build main window widgets."""
         # HeaderBar
         headerbar = HeaderBar.get_default()
-        # connect signals
         headerbar.select_btn.connect("clicked", self.toggle_select)
         headerbar.add_btn.connect("clicked", self.add_account)
         headerbar.cancel_btn.connect("clicked", self.toggle_select)
-
         self.set_titlebar(headerbar)
 
         # Main Container
         self.main_container = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
         # In App Notifications
-        # TODO: replace this with the gtk4 implementation
         self.notification = InAppNotification()
         self.main_container.pack_start(self.notification, False, False, 0)
 
+        # Main Stack
         self.main_stack = Gtk.Stack()
 
         # Accounts List
         account_list_cntr = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
         accounts_scrolled = Gtk.ScrolledWindow()
-        accounts_list = AccountsList.get_default()
-        accounts_list.connect("changed", self._do_update_view)
-        accounts_list.connect("account-deleted", self._on_account_delete)
-        accounts_scrolled.add_with_viewport(accounts_list)
+        accounts_widget = AccountsWidget.get_default()
+        accounts_widget.connect("changed", self._do_update_view)
+        accounts_scrolled.add_with_viewport(accounts_widget)
 
+        # Search Bar
         search_bar = SearchBar()
+        self.connect("key-press-event", lambda x, y : search_bar.handle_event(y))
         search_bar.search_button = headerbar.search_btn
-        search_bar.search_list = [accounts_list]
+        search_bar.search_list = accounts_widget.accounts_lists
 
+        # Actions Bar
         actions_bar = ActionsBar.get_default()
         actions_bar.delete_btn.connect("clicked",
-                                       accounts_list.delete_selected)
-        accounts_list.connect("selected-count-rows-changed",
-                              actions_bar.on_selected_rows_changed)
+                                       accounts_widget.delete_selected)
+        accounts_widget.connect("selected-rows-changed",
+                                actions_bar.on_selected_rows_changed)
 
         account_list_cntr.pack_start(search_bar, False, False, 0)
         account_list_cntr.pack_start(accounts_scrolled, True, True, 0)
         account_list_cntr.pack_start(actions_bar, False, False, 0)
+
 
         self.main_stack.add_named(account_list_cntr,
                                   "accounts-list")
@@ -171,7 +176,6 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         actions_bar.bind_property("no_show_all", headerbar.cancel_btn,
                                   "no_show_all",
                                   GObject.BindingFlags.BIDIRECTIONAL)
-
 
     def _on_account_delete(self, *args):
         self.toggle_select()

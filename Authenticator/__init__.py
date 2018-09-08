@@ -17,4 +17,4 @@
  along with Authenticator. If not, see <http://www.gnu.org/licenses/>.
 """
 from .application import Application
-from .utils import can_use_qrscanner
+from .utils import can_use_qrscanner, load_pixbuf, load_pixbuf_from_provider

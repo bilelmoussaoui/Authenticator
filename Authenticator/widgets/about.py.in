@@ -39,7 +39,6 @@ class AboutDialog(Gtk.AboutDialog):
         self.set_license_type(Gtk.License.GPL_3_0)
         self.set_program_name(_("Authenticator"))
         self.set_translator_credits(_("translator-credits"))
-        self.set_version("0.2.2.1")
+        self.set_version("@VERSION@")
         self.set_comments(_("Two-factor authentication code generator."))
-        self.set_website(
-            "https://github.com/bilelmoussaoui/Gnome-Authenticator")
+        self.set_website("https://github.com/bilelmoussaoui/Authenticator")

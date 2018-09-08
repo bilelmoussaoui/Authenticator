@@ -23,4 +23,3 @@ from .headerbar import HeaderBar
 from .about import AboutDialog
 from .accounts import AccountsList, AccountRow, AccountsListState
 from .actions_bar import ActionsBar
-from .password_label import PasswordLabel

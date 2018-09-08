@@ -29,7 +29,7 @@ class Database:
 
     # Default instance
     instance = None
-    db_version = 2
+    db_version = 3
 
     def __init__(self):
         db_dir = path.join(GLib.get_user_config_dir(), 'Authenticator/')
@@ -52,25 +52,23 @@ class Database:
             Database.instance = Database()
         return Database.instance
 
-    def insert(self, name, provider, secret, image):
+    def insert(self, name, provider, secret):
         """
         Insert a new account to the database
         :param name: Account name
         :param provider: Service provider
         :param secret: the secret code
-        :param image: the image name/url
-        :return: a dict with id, name, image & encrypted_secret
+        :return: a dict with id, name and encrypted_secret
         """
-        query = "INSERT INTO accounts (name, provider, secret_code, image) VALUES (?, ?, ?, ?)"
+        query = "INSERT INTO accounts (name, provider, secret_code) VALUES (?, ?, ?)"
         try:
-            self.conn.execute(query, [name, provider, secret, image])
+            self.conn.execute(query, [name, provider, secret])
             self.conn.commit()
             return OrderedDict([
                 ("id", self.latest_id),
                 ("name", name),
                 ("provider", provider),
-                ("secret_id", secret),
-                ("image", image)
+                ("secret_id", secret)
             ])
         except Exception as error:
             Logger.error("[SQL] Couldn't add a new account")
@@ -104,16 +102,24 @@ class Database:
             Logger.error("[SQL] Couldn't remove account by uid")
             Logger.error(str(error))
 
-    def update(self, id_, name, image):
+    def update(self, kwargs, id):
         """
         Update an account by id
-        :param id_: the account id
-        :param name: the new account name
-        :param image: the new account image
         """
-        query = "UPDATE accounts SET name=?, image=? WHERE uid=?"
+        query = "UPDATE accounts SET "
+        values = []
+        i = 0
+        for key, value in kwargs.items():
+            query += " {} = ?".format(key)
+            if i != len(kwargs.keys()) - 1:
+                query += ", "
+            i+=1
+            values.append(value)
+
+        query += " WHERE uid=?"
+        values.append(id)
         try:
-            self.conn.execute(query, (name, image, id_, ))
+            self.conn.execute(query, values)
             self.conn.commit()
         except Exception as error:
             Logger.error("[SQL] Couldn't update account name by id")
@@ -140,7 +146,7 @@ class Database:
             Fetch list of accounts
             :return: (tuple) list of accounts
         """
-        query = "SELECT * FROM accounts"
+        query = "SELECT * FROM accounts ORDER BY provider ASC, name DESC"
         try:
             data = self.conn.cursor().execute(query)
             accounts = data.fetchall()
@@ -148,8 +154,7 @@ class Database:
                     ("id", account[0]),
                     ("name", account[1]),
                     ("provider", account[2]),
-                    ("secret_id", account[3]),
-                    ("logo", account[4])
+                    ("secret_id", account[3])
                     ]) for account in accounts]
         except Exception as error:
             Logger.error("[SQL] Couldn't fetch accounts list")
@@ -177,8 +182,7 @@ class Database:
             "uid" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE ,
             "name" VARCHAR NOT NULL ,
             "provider" VARCHAR NOT NULL,
-            "secret_code" VARCHAR NOT NULL UNIQUE,
-            "image" TEXT NOT NULL
+            "secret_code" VARCHAR NOT NULL UNIQUE
         )'''
         try:
             self.conn.execute(query)

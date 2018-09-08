@@ -36,17 +36,17 @@ class Account(GObject.GObject, Thread):
         'removed': (GObject.SignalFlags.RUN_LAST, None, ()),
     }
 
-    def __init__(self, _id, name, provider, secret_id, logo):
+    def __init__(self, _id, name, provider, secret_id):
         Thread.__init__(self)
         GObject.GObject.__init__(self)
         self.counter_max = 30
         self._alive = True
         self.counter = self.counter_max
-        self._id = _id
+        self.id = _id
         self.name = name
         self.provider = provider
-        self._secret_id = secret_id
-        _secret = Keyring.get_by_id(self._secret_id)
+        self.secret_id = secret_id
+        _secret = Keyring.get_by_id(self.secret_id)
         if _secret:
             self._code = Code(_secret)
             self._code_generated = True
@@ -55,16 +55,20 @@ class Account(GObject.GObject, Thread):
             self._code_generated = False
             Logger.error("Could not read the secret code,"
                          "the keyring keys were reset manually")
-        self.logo = logo
         self.start()
 
     @staticmethod
-    def create(name, provider, secret_id, logo):
+    def create(name, provider, secret_id):
         encrypted_secret = sha256(secret_id.encode('utf-8')).hexdigest()
-        obj = Database.get_default().insert(name, provider, encrypted_secret, logo)
+        obj = Database.get_default().insert(name, provider, encrypted_secret)
 
         Keyring.insert(encrypted_secret, provider, name, secret_id)
-        return Account(obj['id'], name, provider, encrypted_secret, logo)
+        return Account(obj['id'], name, provider, encrypted_secret)
+
+    def update(self, **kwargs):
+        self.name = kwargs.get("name", self.name)
+        self.provider = kwargs.get("provider", self.provider)
+        Database.get_default().update(kwargs, self.id)
 
     @property
     def secret_code(self):
@@ -90,11 +94,11 @@ class Account(GObject.GObject, Thread):
 
     def remove(self):
         self.kill()
-        Database.get_default().remove(self._id)
-        Keyring.remove(self._secret_id)
+        Database.get_default().remove(self.id)
+        Keyring.remove(self.secret_id)
         self.emit("removed")
         Logger.debug("Account '{}' with id {} was removed".format(self.name,
-                                                                  self._id))
+                                                                  self.id))
 
     def copy_token(self):
         """Copy the secret token to the clipboard."""
