@@ -6,7 +6,9 @@
 
 ## Screenshots
 
-<img src="data/screenshots/screenshot1.png" width="280" /> <img src="data/screenshots/screenshot2.png" width="280" /> <img src="data/screenshots/screenshot3.png" width="280" />
+<p align="center">
+<img align="center" src="data/screenshots/screenshot1.png" /> 
+</p>
 
 ## Features
 
@@ -33,7 +35,7 @@ emerge sys-auth/authenticator
 
 - `Python 3.3+`
 - `Gtk 3.16+`
-- `meson 0.38+`
+- `meson 0.42+`
 - `ninja`
 - `pyotp`
 - `libsecret`
