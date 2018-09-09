@@ -18,12 +18,13 @@
 """
 from gettext import gettext as _
 
-
 from gi import require_version
+
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gdk, GObject
 
 from .add import AccountConfig
+
 
 class EditAccountWindow(Gtk.Window, GObject.GObject):
     __gsignals__ = {
@@ -40,51 +41,65 @@ class EditAccountWindow(Gtk.Window, GObject.GObject):
         self.connect('key_press_event', self._on_key_press)
         self._build_widgets()
 
-
     def _build_widgets(self):
-        headerbar = Gtk.HeaderBar()
-        headerbar.set_show_close_button(False)
-        headerbar.set_title(_("Edit {} - {}".format(self._account.name,
-                                                    self._account.provider)))
-        self.set_titlebar(headerbar)
+        header_bar = Gtk.HeaderBar()
+        header_bar.set_show_close_button(False)
+        header_bar.set_title(_("Edit {} - {}".format(self._account.username,
+                                                     self._account.provider)))
+        self.set_titlebar(header_bar)
         # Save btn
         self.save_btn = Gtk.Button()
         self.save_btn.set_label(_("Save"))
         self.save_btn.connect("clicked", self._on_save)
         self.save_btn.get_style_context().add_class("suggested-action")
-        headerbar.pack_end(self.save_btn)
+        header_bar.pack_end(self.save_btn)
 
         self.close_btn = Gtk.Button()
         self.close_btn.set_label(_("Close"))
         self.close_btn.connect("clicked", self._on_quit)
 
-        headerbar.pack_start(self.close_btn)
+        header_bar.pack_start(self.close_btn)
 
         self.account_config = AccountConfig(edit=True, account=self._account)
         self.account_config.connect("changed", self._on_account_config_changed)
 
         self.add(self.account_config)
 
+    def _on_account_config_changed(self, _, state):
+        """
+        Set the sensitivity of the AddButton
+            depends on the AccountConfig.
 
-    def _on_account_config_changed(self, widget, state):
-        """Set the sensitivity of the AddButton depends on the AccountConfig."""
+        :param state: the state of the save button
+        :type state: bool
+        """
         self.save_btn.set_sensitive(state)
 
-
-    def _on_save(self, *args):
-        name, provider, _ = self.account_config.account.values()
+    def _on_save(self, *_):
+        """
+            Save Button clicked signal handler.
+        """
+        username, provider = self.account_config.account.values()
         old_provider = self._account.provider
-        self.emit("updated", name, provider)
+        # Update the AccountRow widget
+        self.emit("updated", username, provider)
+        # Update the providers list
         if provider != old_provider:
             from .list import AccountsWidget
             ac_widget = AccountsWidget.get_default()
             ac_widget.update_provider(self._account, provider)
         self._on_quit()
 
-    def _on_quit(self, *args):
+    def _on_quit(self, *_):
+        """
+            Close the window.
+        """
         self.destroy()
 
-    def _on_key_press(self, widget, event):
-        _, keyval = event.get_keyval()
-        if keyval == Gdk.KEY_Escape:
+    def _on_key_press(self, _, event):
+        """
+            KeyPress event handler.
+        """
+        _, key_val = event.get_keyval()
+        if key_val == Gdk.KEY_Escape:
             self._on_quit()

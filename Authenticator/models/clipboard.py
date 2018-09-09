@@ -18,6 +18,7 @@
 """
 
 from gi import require_version
+
 require_version("Gtk", "3.0")
 from gi.repository import Gdk, Gtk
 
@@ -25,17 +26,22 @@ from gi.repository import Gdk, Gtk
 class Clipboard:
     """Clipboard handler."""
 
+    def __init__(self):
+        pass
+
     @staticmethod
     def clear():
-        """Clear the clipboard"""
+        """Clear the clipboard."""
         clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
         clipboard.clear()
 
     @staticmethod
-    def set(value):
+    def set(string):
         """
-        Set a new value on the clipboard
-        :param value: string; the value to set
+        Copy a string to the clipboard.
+
+        :param string: the string to copy.
+        :type string: str
         """
         clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
-        clipboard.set_text(value, -1)
+        clipboard.set_text(string, -1)

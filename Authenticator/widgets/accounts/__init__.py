@@ -16,6 +16,6 @@
  You should have received a copy of the GNU General Public License
  along with Authenticator. If not, see <http://www.gnu.org/licenses/>.
 """
-from .add import AddAcountWindow
+from .add import AddAccountWindow
 from .list import AccountsWidget, AccountsList, EmptyAccountsList, AccountsListState
 from .row import AccountRow

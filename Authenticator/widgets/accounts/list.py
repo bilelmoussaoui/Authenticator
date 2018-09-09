@@ -19,17 +19,19 @@
 from gettext import gettext as _
 
 from gi import require_version
+
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, GObject, Gio
 
 from .row import AccountRow
-from ...models import Database, Account, Keyring
+from ...models import Database, Account
 from ...utils import load_pixbuf_from_provider
+
 
 class AccountsWidget(Gtk.Box, GObject.GObject):
     __gsignals__ = {
         'changed': (GObject.SignalFlags.RUN_LAST, None, ()),
-        'selected-rows-changed':  (GObject.SignalFlags.RUN_LAST, None, (int,)),
+        'selected-rows-changed': (GObject.SignalFlags.RUN_LAST, None, (int,)),
     }
     instance = None
 
@@ -48,7 +50,7 @@ class AccountsWidget(Gtk.Box, GObject.GObject):
             AccountsWidget.instance = AccountsWidget()
         return AccountsWidget.instance
 
-    def append(self, name, provider, secret_id, _id=None):
+    def append(self, username, provider, token, _id=None):
         accounts_list = self._providers.get(provider)
         if not accounts_list:
             accounts_list = AccountsList()
@@ -58,10 +60,10 @@ class AccountsWidget(Gtk.Box, GObject.GObject):
             self._providers[provider] = accounts_list
             provider_widget = ProviderWidget(accounts_list, provider)
             self.pack_start(provider_widget, False, False, 0)
-            if not _id:
-                self.emit("changed")
-
-        accounts_list.append(name, provider, secret_id, _id)
+        if not _id:
+            accounts_list.append_new(username, provider, token)
+        else:
+            accounts_list.append(_id, username, provider, token)
         self.emit("changed")
 
     @property
@@ -78,14 +80,14 @@ class AccountsWidget(Gtk.Box, GObject.GObject):
         for account_list in self._providers.values():
             account_list.set_state(state)
 
-    def delete_selected(self, *args):
+    def delete_selected(self, *_):
         for account_list in self._providers.values():
             account_list.delete_selected()
         self._clean_unneeded_providers_widgets()
 
     def update_provider(self, account, new_provider):
-
         current_account_list = None
+        account_row = None
         for account_list in self._providers.values():
             for account_row in account_list:
                 if account_row.account == account:
@@ -95,12 +97,14 @@ class AccountsWidget(Gtk.Box, GObject.GObject):
 
             if current_account_list:
                 break
-        current_account_list.remove(account_row)
-        self.append(account_row.account.name,
-                    account_row.account.provider,
-                    account_row.account.secret_id,
-                    account_row.account.id)
+        if account_row:
+            current_account_list.remove(account_row)
+            self.append(account_row.account.username,
+                        new_provider,
+                        account_row.account.secret_id,
+                        account_row.account.id)
         self._on_account_deleted(current_account_list)
+        self._reorder()
         self._clean_unneeded_providers_widgets()
 
     def __fill_data(self):
@@ -108,13 +112,13 @@ class AccountsWidget(Gtk.Box, GObject.GObject):
         accounts = Database.get_default().accounts
         for account in accounts:
             _id = account["id"]
-            name = account["name"]
+            username = account["username"]
             provider = account["provider"]
             secret_id = account["secret_id"]
 
-            self.append(name, provider, secret_id, _id)
+            self.append(username, provider, secret_id, _id)
 
-    def _on_selected_count_changed(self, widget, selected_rows_count):
+    def _on_selected_count_changed(self, *_):
         total_selected_rows = 0
         for account_list in self._providers.values():
             total_selected_rows += account_list.selected_rows_count
@@ -130,8 +134,16 @@ class AccountsWidget(Gtk.Box, GObject.GObject):
             self.remove(provider_widget)
             del self._providers[provider_widget.provider]
         self._to_delete = []
-        self.emit("changed")
 
+    def _reorder(self):
+        """
+            Re-order the ProviderWidget on AccountsWidget.
+        """
+        childes = self.get_children()
+        ordered_childes = sorted(childes, key=lambda children: children.provider.lower())
+        for i in range(len(ordered_childes)):
+            self.reorder_child(ordered_childes[i], i)
+        self.show_all()
 
 class ProviderWidget(Gtk.Box):
 
@@ -141,8 +153,6 @@ class ProviderWidget(Gtk.Box):
         self._build_widgets(accounts_list, provider)
 
     def _build_widgets(self, accounts_list, provider):
-
-
         provider_container = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
 
         provider_lbl = Gtk.Label()
@@ -170,7 +180,7 @@ class AccountsList(Gtk.ListBox, GObject.GObject):
     """Accounts List."""
 
     __gsignals__ = {
-        'selected-count-rows-changed': (GObject.SignalFlags.RUN_LAST, None, (int, )),
+        'selected-count-rows-changed': (GObject.SignalFlags.RUN_LAST, None, (int,)),
         'account-deleted': (GObject.SignalFlags.RUN_LAST, None, ()),
     }
     # Default instance of accounts list
@@ -184,26 +194,17 @@ class AccountsList(Gtk.ListBox, GObject.GObject):
         self.state = AccountsListState.NORMAL
         self.selected_rows_count = 0
 
-    def append(self, name, provider, secret_id, _id):
+    def append_new(self, name, provider, token):
+        account = Account.create(name, provider, token)
+        self._add_row(account)
 
-        if not _id:
-            account = Account.create(name, provider, secret_id)
-        else:
-            account = Account(_id, name, provider, secret_id)
-        row = AccountRow(account)
-        row.connect("on_selected", self.on_row_checked)
-        self.add(row)
+    def append(self, _id, name, provider, secret_id):
+        account = Account(_id, name, provider, secret_id)
+        self._add_row(account)
 
-    def delete(self, row):
+    def delete(self, _):
         # Remove an account from the list
         self.emit("changed", False)
-
-    def on_row_checked(self, row):
-        self.selected_rows_count = 0
-        for _row in self.get_children():
-            if _row.check_btn.props.active:
-                self.selected_rows_count += 1
-        self.emit("selected-count-rows-changed", self.selected_rows_count)
 
     def set_state(self, state):
         show_check_btn = (state == AccountsListState.SELECT)
@@ -211,7 +212,7 @@ class AccountsList(Gtk.ListBox, GObject.GObject):
             child.check_btn.set_visible(show_check_btn)
             child.check_btn.set_no_show_all(not show_check_btn)
 
-    def delete_selected(self, *args):
+    def delete_selected(self, *_):
         for child in self.get_children():
             check_btn = child.check_btn
             if check_btn.props.active:
@@ -220,11 +221,24 @@ class AccountsList(Gtk.ListBox, GObject.GObject):
         self.emit("account-deleted")
         self.set_state(AccountsListState.NORMAL)
 
+    def _add_row(self, account):
+        row = AccountRow(account)
+        row.connect("on_selected", self._on_row_checked)
+        self.add(row)
+
+    def _on_row_checked(self, _):
+        self.selected_rows_count = 0
+        for _row in self.get_children():
+            if _row.check_btn.props.active:
+                self.selected_rows_count += 1
+        self.emit("selected-count-rows-changed", self.selected_rows_count)
+
 
 class EmptyAccountsList(Gtk.Box):
     """
-        Empty accounts list.
+        Empty accounts list widget.
     """
+    # Default instance
     instance = None
 
     def __init__(self):
@@ -238,17 +252,19 @@ class EmptyAccountsList(Gtk.Box):
         return EmptyAccountsList.instance
 
     def _build_widgets(self):
-        """Build widgets."""
-        self.set_border_width(18)
+        """
+            Build EmptyAccountList widget.
+        """
+        self.set_border_width(36)
         self.set_valign(Gtk.Align.CENTER)
         self.set_halign(Gtk.Align.CENTER)
 
         # Image
-        gicon = Gio.ThemedIcon(name="dialog-information-symbolic")
-        img = Gtk.Image.new_from_gicon(gicon, Gtk.IconSize.DIALOG)
+        g_icon = Gio.ThemedIcon(name="dialog-information-symbolic.symbolic")
+        img = Gtk.Image.new_from_gicon(g_icon, Gtk.IconSize.DIALOG)
 
         # Label
-        label = Gtk.Label(label=_("There's no account yet…"))
+        label = Gtk.Label(label=_("There are no accounts yet…"))
 
         self.pack_start(img, False, False, 6)
         self.pack_start(label, False, False, 6)

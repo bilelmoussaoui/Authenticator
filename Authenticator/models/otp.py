@@ -16,51 +16,50 @@
  You should have received a copy of the GNU General Public License
  along with Authenticator. If not, see <http://www.gnu.org/licenses/>.
 """
-from .logger import Logger
 import binascii
+
+from .logger import Logger
+
 try:
     from pyotp import TOTP
 except ImportError:
     Logger.error("Impossible to import TOTP, please install PyOTP first")
 
 
-class Code:
+class OTP(TOTP):
+    """
+        OTP (One-time password) handler using PyOTP.
+    """
 
     def __init__(self, token):
-        self._token = token
-        self._secret_code = None
-        self.create()
+        """
+        :param token: the OTP token.
+        """
+        TOTP.__init__(self, token)
+        self.pin = None
+        self.update()
 
     @staticmethod
     def is_valid(token):
-        """Validate a token."""
+        """
+        Validate a OTP token.
+
+        :param token: OTP token
+        :type token: str
+
+        :return: bool
+        """
         try:
             TOTP(token).now()
             return True
         except (binascii.Error, ValueError, TypeError):
             return False
 
-    def create(self):
-        """
-            Create a tfa code
-        """
-        try:
-            self._totp = TOTP(self._token)
-            self._secret_code = self._totp.now()
-        except Exception as e:
-            Logger.error("Couldn't generate two factor code : %s" % str(e))
-
     def update(self):
         """
-            Update the code
+            Generate a new OTP based on the same token.
         """
         try:
-            self._secret_code = self._totp.now()
+            self.pin = self.now()
         except binascii.Error:
-            self._secret_code = None
-
-    @property
-    def secret_code(self):
-        if self._secret_code:
-            return self._secret_code
-        return None
+            self.pin = None

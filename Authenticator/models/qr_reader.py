@@ -16,15 +16,14 @@
  You should have received a copy of the GNU General Public License
  along with Authenticator. If not, see <http://www.gnu.org/licenses/>.
 """
-import logging
 from os import remove, path
-from urllib.parse import urlparse, parse_qsl
 
 from PIL import Image
 from pyzbar.pyzbar import decode
+from urllib.parse import urlparse, parse_qsl
 
-from .code import Code
 from .logger import Logger
+from .otp import OTP
 
 
 class QRReader:
@@ -51,5 +50,5 @@ class QRReader:
             Validate if the QR code is a valid tfa
         """
         if isinstance(self._codes, dict):
-            return Code.is_valid(self._codes.get("secret"))
+            return OTP.is_valid(self._codes.get("secret"))
         return False

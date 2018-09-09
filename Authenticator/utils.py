@@ -19,6 +19,7 @@
 from os import environ
 
 from gi import require_version
+
 require_version('Gtk', '3.0')
 from gi.repository import Gtk, GdkPixbuf, GLib
 
@@ -40,13 +41,12 @@ def load_pixbuf(icon_name, size):
             pass
     if not pixbuf:
         pixbuf = theme.load_icon("com.github.bilelmoussaoui.Authenticator",
-                                size, 0)
+                                 size, 0)
 
     if pixbuf and (pixbuf.props.width != size or pixbuf.props.height != size):
         pixbuf = pixbuf.scale_simple(size, size,
                                      GdkPixbuf.InterpType.BILINEAR)
     return pixbuf
-
 
 
 def load_pixbuf_from_provider(provider_name, icon_size=48):

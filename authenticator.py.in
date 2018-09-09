@@ -22,13 +22,15 @@
 import argparse
 import gettext
 import locale
-from os import path
 import sys
-from gi.repository import Gio
+from os import path
+
+from gi import require_version
+
+require_version('GIRepository', '2.0')
+from gi.repository import Gio, GIRepository
 
 sys.path.insert(1, '@PYTHON_DIR@')
-from Authenticator import Application
-from Authenticator.models import Logger
 
 _ = gettext.gettext
 
@@ -38,6 +40,8 @@ if __name__ == "__main__":
     gettext.bindtextdomain('Authenticator', '@LOCALE_DIR@')
     gettext.textdomain('Authenticator')
     VERSION = "@VERSION@"
+    GIRepository.Repository.prepend_search_path(path.join('@LIB_DIR@', 'girepository-1.0'))
+    GIRepository.Repository.prepend_library_path('@LIB_DIR@')
 
     parser = argparse.ArgumentParser(prog="Authenticator")
     parser.add_argument("--debug", "-d", action="store_true",
@@ -46,20 +50,26 @@ if __name__ == "__main__":
                         help=_("Authenticator version number"))
     args = parser.parse_args()
 
+    resource = Gio.resource_load(path.join('@DATA_DIR@',
+                                           'com.github.bilelmoussaoui.Authenticator.gresource'))
+    Gio.Resource._register(resource)
+
+
+
+    from Authenticator.models import Logger
     level = Logger.ERROR
     if args.debug:
         level = Logger.DEBUG
         import faulthandler
-        faulthandler.enable()
-    Logger.get_default().setLevel(level)
 
-    resource = Gio.resource_load(path.join('@DATA_DIR@',
-                                           'com.github.bilelmoussaoui.Authenticator.gresource'))
-    Gio.Resource._register(resource)
+        faulthandler.enable()
+    Logger.set_level(level)
     if args.version:
         sys.exit("Version : " + str(VERSION))
     else:
         try:
+
+            from Authenticator import Application
             app = Application.get_default()
             app.set_use_qrscanner(bool("@ENABLE_QRSCANNER@"))
             exit_status = app.run(None)

@@ -16,10 +16,9 @@
  You should have received a copy of the GNU General Public License
  along with Authenticator. If not, see <http://www.gnu.org/licenses/>.
 """
-from .window import Window
-from .search_bar import SearchBar
-from .inapp_notification import InAppNotification
-from .headerbar import HeaderBar
 from .about import AboutDialog
 from .accounts import AccountsList, AccountRow, AccountsListState
 from .actions_bar import ActionsBar
+from .headerbar import HeaderBar
+from .search_bar import SearchBar
+from .window import Window

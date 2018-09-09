@@ -19,8 +19,9 @@
 from gettext import gettext as _
 
 from gi import require_version
+
 require_version("Gtk", "3.0")
-from gi.repository import Gio, Gtk, GObject, GLib, Pango
+from gi.repository import Gio, Gtk, GObject, Pango
 
 from .edit import EditAccountWindow
 
@@ -48,6 +49,9 @@ class ActionButton(Gtk.Button):
 
 
 class ActionsBox(Gtk.Box):
+    """
+        AccountRow's Actions Box
+    """
 
     def __init__(self):
         Gtk.Box.__init__(self, orientation=Gtk.Orientation.HORIZONTAL)
@@ -62,36 +66,44 @@ class ActionsBox(Gtk.Box):
 
 
 class AccountRow(Gtk.ListBoxRow, GObject.GObject):
-    """Accounts List."""
+    """
+        AccountRow widget.
+    """
 
     __gsignals__ = {
         'on_selected': (GObject.SignalFlags.RUN_LAST, None, ()),
     }
 
     def __init__(self, account):
+        """
+        :param account: Account
+        """
         Gtk.ListBoxRow.__init__(self)
         self.get_style_context().add_class("account-row")
         self._account = account
         self.check_btn = Gtk.CheckButton()
         self.counter_lbl = Gtk.Label()
-        self._account.connect("code_updated", self._on_code_updated)
+        self._account.connect("otp_updated", self._on_pin_updated)
         self._account.connect("counter_updated", self._on_counter_updated)
         self._build_widget()
         self.show_all()
 
     @property
     def account(self):
+        """
+            The account related to the AccountRow
+
+            :return: Account Object
+        """
         return self._account
 
     @property
     def checked(self):
+        """
+            Whether the CheckButton is active or not.
+            :return: bool
+        """
         return self.check_btn.get_active()
-
-    def get_name(self):
-        """
-            Required by SearchBar
-        """
-        return self._account.name
 
     def _build_widget(self):
         """Build the Account Row widget."""
@@ -101,20 +113,20 @@ class AccountRow(Gtk.ListBoxRow, GObject.GObject):
         container.pack_start(self.check_btn, False, False, 3)
         self.check_btn.set_visible(False)
         self.check_btn.get_style_context().add_class("account-row-checkbtn")
-        self.check_btn.connect("toggled", self._on_toggled)
+        self.check_btn.connect("toggled", self._check_btn_toggled)
         self.check_btn.set_no_show_all(True)
 
         # Account Name & Two factor code:
         info_container = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
         # Account Name
-        self.name_lbl = Gtk.Label(label=self.account.name)
-        self.name_lbl.set_tooltip_text(self.account.name)
-        self.name_lbl.set_ellipsize(Pango.EllipsizeMode.END)
-        self.name_lbl.set_halign(Gtk.Align.START)
-        self.name_lbl.get_style_context().add_class("application-name")
+        self.username_lbl = Gtk.Label(label=self.account.username)
+        self.username_lbl.set_tooltip_text(self.account.username)
+        self.username_lbl.set_ellipsize(Pango.EllipsizeMode.END)
+        self.username_lbl.set_halign(Gtk.Align.START)
+        self.username_lbl.get_style_context().add_class("username")
 
-        info_container.pack_start(self.name_lbl, False, False, 0)
+        info_container.pack_start(self.username_lbl, False, False, 0)
         info_container.set_valign(Gtk.Align.CENTER)
         container.pack_start(info_container, True, True, 6)
 
@@ -126,41 +138,52 @@ class AccountRow(Gtk.ListBoxRow, GObject.GObject):
         container.pack_end(actions, False, False, 6)
 
         # Secret code
-        code_container = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        secret_code = self.account.secret_code
-        self.code_lbl = Gtk.Label()
-        self.code_lbl.set_halign(Gtk.Align.START)
-        if secret_code:
-            self.code_lbl.set_text(secret_code)
+        otp_container = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        pin = self.account.otp.pin
+        self.pin_label = Gtk.Label()
+        self.pin_label.set_halign(Gtk.Align.START)
+        if pin:
+            self.pin_label.set_text(pin)
         else:
-            self.code_lbl.set_text("??????")
-            self.code_lbl.set_tooltip_text(
+            self.pin_label.set_text("??????")
+            self.pin_label.set_tooltip_text(
                 _("Couldn't generate the secret code"))
-        self.code_lbl.get_style_context().add_class("token-label")
+        self.pin_label.get_style_context().add_class("token-label")
         # Counter
-        if secret_code:
-            self.update_counter()
+        if pin:
+            self.__update_counter()
         else:
             self.counter_lbl.set_text("")
         self.counter_lbl.set_halign(Gtk.Align.START)
         self.counter_lbl.get_style_context().add_class("counter-label")
         self.counter_lbl.set_ellipsize(Pango.EllipsizeMode.END)
 
-        code_container.pack_start(self.code_lbl, False, False, 6)
-        code_container.pack_end(self.counter_lbl, False, False, 6)
-        code_container.set_valign(Gtk.Align.CENTER)
-        code_container.set_halign(Gtk.Align.START)
-        container.pack_end(code_container, False, False, 6)
+        otp_container.pack_start(self.pin_label, False, False, 6)
+        otp_container.pack_end(self.counter_lbl, False, False, 6)
+        otp_container.set_valign(Gtk.Align.CENTER)
+        otp_container.set_halign(Gtk.Align.START)
+        container.pack_end(otp_container, False, False, 6)
 
         self.add(container)
 
-    def _on_toggled(self, *args):
+    def _check_btn_toggled(self, *_):
+        """
+            CheckButton signal Handler.
+        """
         self.emit("on_selected")
 
-    def _on_copy(self, *args):
-        self._account.copy_token()
+    def _on_copy(self, *_):
+        """
+            Copy button clicked signal handler.
+            Copies the OTP pin to the clipboard
+        """
+        self._account.copy_pin()
 
-    def _on_edit(self, *args):
+    def _on_edit(self, *_):
+        """
+            Edit Button clicked signal handler.
+            Opens a new Window to edit the current account.
+        """
         from ..window import Window
         edit_window = EditAccountWindow(self._account)
         edit_window.set_transient_for(Window.get_default())
@@ -168,20 +191,45 @@ class AccountRow(Gtk.ListBoxRow, GObject.GObject):
         edit_window.show_all()
         edit_window.present()
 
-    def _on_update(self, widget, name, provider):
-        self.name_lbl.set_text(name)
-        self.account.update(name=name, provider=provider)
+    def _on_update(self, _, username, provider):
+        """
+            On account update signal handler.
+            Updates the account username and provider
 
-    def update_counter(self):
+            :param username: the new account's username
+            :type username: str
+
+            :param provider: the new account's provider
+            :type provider: str
+        """
+        self.username_lbl.set_text(username)
+        self.account.update(username, provider)
+
+    def __update_counter(self):
+        """
+            Update the counter label.
+        """
         counter = self.account.counter
         text = "Expires in {} seconds".format(counter)
         self.counter_lbl.set_text(text)
         self.counter_lbl.set_tooltip_text(text)
 
-    def _on_code_updated(self, account, code):
-        if code:
-            self.code_lbl.set_text(code)
+    def _on_pin_updated(self, _, pin):
+        """
+            Updates the pin label each time a new OTP is generated.
+            otp_updated signal handler.
 
-    def _on_counter_updated(self, *args):
-        if self.account.secret_code:
-            self.update_counter()
+            :param pin: the new OTP
+            :type pin: str
+        """
+        if pin:
+            self.pin_label.set_text(pin)
+
+    def _on_counter_updated(self, *_):
+        """
+            Updates the counter label each second.
+            counter_updated signal handler.
+
+        """
+        if self.account.otp:
+            self.__update_counter()

@@ -24,7 +24,9 @@ from gi.repository import Gtk
 
 
 class AboutDialog(Gtk.AboutDialog):
-    """AboutDialog Widget."""
+    """
+        AboutDialog Widget.
+    """
 
     def __init__(self):
         Gtk.AboutDialog.__init__(self)
@@ -32,7 +34,9 @@ class AboutDialog(Gtk.AboutDialog):
         self._build_widgets()
 
     def _build_widgets(self):
-        """Build the AboutDialog widget."""
+        """
+            Build the AboutDialog widget.
+        """
         self.set_authors(["Bilal Elmoussaoui"])
         self.set_artists(["Alexandros Felekidis"])
         self.set_logo_icon_name("com.github.bilelmoussaoui.Authenticator")

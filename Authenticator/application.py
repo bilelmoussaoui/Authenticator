@@ -19,10 +19,11 @@
 from gettext import gettext as _
 
 from gi import require_version
+
 require_version("Gtk", "3.0")
-from gi.repository import Gtk, GLib, Gio, Gdk, GObject
+from gi.repository import Gtk, GLib, Gio, Gdk
 from .widgets import Window, AboutDialog
-from .models import Settings, Keyring, Clipboard, Logger
+from .models import Settings, Clipboard, Logger
 
 
 class Application(Gtk.Application):
@@ -45,7 +46,21 @@ class Application(Gtk.Application):
             Application.instance = Application()
         return Application.instance
 
-    def setup_css(self):
+    def do_startup(self):
+        """Startup the application."""
+        Gtk.Application.do_startup(self)
+        # Unlock the keyring
+        self.__generate_menu()
+        Application.__setup_css()
+
+        # Set the default night mode
+        is_night_mode = Settings.get_default().is_night_mode
+        gtk_settings = Gtk.Settings.get_default()
+        gtk_settings.set_property("gtk-application-prefer-dark-theme",
+                                  is_night_mode)
+
+    @staticmethod
+    def __setup_css():
         """Setup the CSS and load it."""
         uri = 'resource:///com/github/bilelmoussaoui/Authenticator/style.css'
         provider_file = Gio.File.new_for_uri(uri)
@@ -57,65 +72,52 @@ class Application(Gtk.Application):
                                         Gtk.STYLE_PROVIDER_PRIORITY_USER)
         Logger.debug("Loading CSS")
 
-    def do_startup(self):
-        """Startup the application."""
-        Gtk.Application.do_startup(self)
-        # Unlock the keyring
-        self.generate_menu()
-        self.setup_css()
-
-        # Set the default night mode
-        is_night_mode = Settings.get_default().is_night_mode
-        gtk_settings = Gtk.Settings.get_default()
-        gtk_settings.set_property("gtk-application-prefer-dark-theme",
-                                  is_night_mode)
-
-    def generate_menu(self):
+    def __generate_menu(self):
         """Generate application menu."""
         settings = Settings.get_default()
-
-        # Help section
-        help_content = Gio.Menu.new()
+        # Main section
+        main_content = Gio.Menu.new()
         # Night mode action
-        help_content.append_item(Gio.MenuItem.new(_("Night Mode"),
+        main_content.append_item(Gio.MenuItem.new(_("Night Mode"),
                                                   "app.night_mode"))
 
-        help_content.append_item(Gio.MenuItem.new(_("About"), "app.about"))
-        help_content.append_item(Gio.MenuItem.new(_("Quit"), "app.quit"))
-        help_section = Gio.MenuItem.new_section(None, help_content)
+        main_content.append_item(Gio.MenuItem.new(_("About"), "app.about"))
+        main_content.append_item(Gio.MenuItem.new(_("Quit"), "app.quit"))
+        help_section = Gio.MenuItem.new_section(None, main_content)
         self._menu.append_item(help_section)
 
         is_night_mode = settings.is_night_mode
         gv_is_night_mode = GLib.Variant.new_boolean(is_night_mode)
         action = Gio.SimpleAction.new_stateful("night_mode", None,
                                                gv_is_night_mode)
-        action.connect("change-state", self.on_night_mode)
+        action.connect("change-state", self.__on_night_mode)
         self.add_action(action)
 
         action = Gio.SimpleAction.new("about", None)
-        action.connect("activate", self.on_about)
+        action.connect("activate", self.__on_about)
         self.add_action(action)
 
         action = Gio.SimpleAction.new("quit", None)
-        action.connect("activate", self.on_quit)
+        action.connect("activate", self.__on_quit)
         self.add_action(action)
 
-    def do_activate(self, *args):
+    def do_activate(self, *_):
         """On activate signal override."""
         resources_path = "/com/github/bilelmoussaoui/Authenticator/"
         Gtk.IconTheme.get_default().add_resource_path(resources_path)
         window = Window.get_default()
         window.set_application(self)
         window.set_menu(self._menu)
-        window.connect("delete-event", lambda x, y: self.on_quit())
+        window.connect("delete-event", lambda x, y: self.__on_quit())
         self.add_window(window)
         window.show_all()
         window.present()
 
-    def set_use_qrscanner(self, state):
+    @staticmethod
+    def set_use_qrscanner(state):
         Application.USE_QRSCANNER = state
 
-    def on_night_mode(self, action, *args):
+    def __on_night_mode(self, action, *_):
         """Switch night mode."""
         settings = Settings.get_default()
         is_night_mode = not settings.is_night_mode
@@ -125,7 +127,8 @@ class Application(Gtk.Application):
         gtk_settings.set_property("gtk-application-prefer-dark-theme",
                                   is_night_mode)
 
-    def on_about(self, *args):
+    @staticmethod
+    def __on_about(*_):
         """
             Shows about dialog
         """
@@ -134,15 +137,7 @@ class Application(Gtk.Application):
         dialog.run()
         dialog.destroy()
 
-    def on_settings(self, *args):
-        """
-            Shows settings window
-        """
-        settings_window = SettingsWindow()
-        settings_window.set_attached_to(Window.get_default())
-        settings_window.show_window()
-
-    def on_quit(self, *args):
+    def __on_quit(self, *_):
         """
         Close the application, stops all threads
         and clear clipboard for safety reasons

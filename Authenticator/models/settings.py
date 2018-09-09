@@ -18,13 +18,17 @@
 """
 from gi.repository import Gio, GLib
 
-from .logger import Logger
-
 
 class Settings(Gio.Settings):
-    """Settings handler."""
+    """
+        Gio.Settings handler.
+        Implements the basic dconf-settings as properties
+    """
+
     # Default Settings instance
     instance = None
+    # Settings schema
+    SCHEMA = "com.github.bilelmoussaoui.Authenticator"
 
     def __init__(self):
         Gio.Settings.__init__(self)
@@ -32,8 +36,7 @@ class Settings(Gio.Settings):
     @staticmethod
     def new():
         """Create a new Settings object"""
-        g_settings = Gio.Settings.new(
-            "com.github.bilelmoussaoui.Authenticator")
+        g_settings = Gio.Settings.new(Settings.SCHEMA)
         g_settings.__class__ = Settings
         return g_settings
 
@@ -51,7 +54,12 @@ class Settings(Gio.Settings):
 
     @window_position.setter
     def window_position(self, position):
-        """Set the window position."""
+        """
+        Set the window position.
+
+        :param position: [x, y] window's position
+        :type position: list
+        """
         position = GLib.Variant('ai', list(position))
         self.set_value('window-position', position)
 
@@ -61,9 +69,14 @@ class Settings(Gio.Settings):
         return self.get_boolean('night-mode')
 
     @is_night_mode.setter
-    def is_night_mode(self, status):
-        """Set the night mode."""
-        self.set_boolean('night-mode', status)
+    def is_night_mode(self, state):
+        """
+        Set the night mode.
+
+        :param state: Night mode state
+        :type state: bool
+        """
+        self.set_boolean('night-mode', state)
 
     @property
     def window_maximized(self):
@@ -72,4 +85,10 @@ class Settings(Gio.Settings):
 
     @window_maximized.setter
     def window_maximized(self, is_maximized):
+        """
+            Set the window as maximized or not.
+
+            :param is_maximized: the current state of the window
+            :type is_maximized: bool
+        """
         self.set_boolean("is-maximized", is_maximized)

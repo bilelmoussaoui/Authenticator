@@ -1,5 +1,5 @@
 project('com.github.bilelmoussaoui.Authenticator',
-	version: '0.2.2.1',
+	version: '0.2.3',
   meson_version: '>= 0.42',
   license: 'GPL+-3.0',
   default_options: ['prefix=/usr']
@@ -25,6 +25,18 @@ endif
 PYTHON_DIR = join_paths(get_option('prefix'), python.sysconfig_path('purelib'))
 DATA_DIR = join_paths(get_option('prefix'), get_option('datadir'), meson.project_name())
 LOCALE_DIR = join_paths(get_option('prefix'), get_option('localedir'))
+LIB_DIR = join_paths(get_option('prefix'), get_option('libdir'), meson.project_name())
+
+subproject('libgd',
+  default_options: [
+    'with-introspection=true',
+    'with-notification=true',
+    'static=false',
+    'pkgdatadir=' + DATA_DIR,
+    'pkglibdir=' + LIB_DIR
+  ]
+)
+
 
 
 # Configuration params
@@ -34,6 +46,7 @@ conf.set('LOCALE_DIR', LOCALE_DIR)
 conf.set('PYTHON_DIR', PYTHON_DIR)
 conf.set('VERSION', meson.project_version())
 conf.set('ENABLE_QRSCANNER', use_zbar)
+conf.set('LIB_DIR', LIB_DIR)
 
 subdir('data')
 subdir('po')

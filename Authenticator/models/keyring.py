@@ -41,43 +41,53 @@ class Keyring:
         return Keyring.instance
 
     @staticmethod
-    def get_by_id(id_):
-        """Return the secret code"""
+    def get_by_id(secret_id):
+        """
+        Return the OTP token based on a secret ID.
+
+        :param secret_id: the secret ID associated to an OTP token
+        :type secret_id: str
+        :return: the secret OTP token.
+        """
         schema = Keyring.get_default().schema
-        password = Secret.password_lookup_sync(schema, {"id": str(id_)}, None)
+        password = Secret.password_lookup_sync(schema, {"id": str(secret_id)}, None)
         return password
 
     @staticmethod
-    def insert(id_, provider, name, secret_code):
+    def insert(secret_id, provider, username, token):
         """
-        Insert a secret code to Keyring database
-        :param id_: the encrypted id
-        :param provider: the provider's name
-        :param name: the identity/username
-        :param secret_code: the secret code
+        Save a secret OTP token.
+
+        :param secret_id: The secret ID associated to the OTP token
+        :param provider: the provider name
+        :param username: the username
+        :param token: the secret OTP token.
+
+
         """
         schema = Keyring.get_default().schema
 
         data = {
-            "id": str(id_),
-            "name": str(name),
+            "id": str(secret_id),
+            "name": str(username),
         }
         Secret.password_store_sync(
             schema,
             data,
             Secret.COLLECTION_DEFAULT,
-            "{provider} OTP ({name})".format(provider=provider, name=name),
-            secret_code,
+            "{provider} OTP ({username})".format(provider=provider, username=username),
+            token,
             None
         )
 
     @staticmethod
-    def remove(id_):
+    def remove(secret_id):
         """
-        Remove an account from Gnome Keyring by secret id
-        :param id_: the encrypted secret code.
-        :return: bool
+        Remove a specific secret OTP token.
+
+        :param secret_id: the secret ID associated to the OTP token
+        :return bool: Either the token was removed successfully or not
         """
         schema = Keyring.get_default().schema
-        removed = Secret.password_clear_sync(schema, {"id": str(id_)}, None)
-        return removed
+        success = Secret.password_clear_sync(schema, {"id": str(secret_id)}, None)
+        return success

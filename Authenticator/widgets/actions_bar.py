@@ -19,12 +19,17 @@ along with Authenticator. If not, see <http://www.gnu.org/licenses/>.
 from gettext import gettext as _
 
 from gi import require_version
+
 require_version("Gtk", "3.0")
 from gi.repository import Gtk
 
 
 class ActionsBar(Gtk.ActionBar):
+    """
+        ActionsBar Widget
+    """
 
+    # Default instance of ActionsBar
     instance = None
 
     def __init__(self):
@@ -40,13 +45,20 @@ class ActionsBar(Gtk.ActionBar):
             ActionsBar.instance = ActionsBar()
         return ActionsBar.instance
 
-    def set_delete_btn_sensitive(self, state):
-        self.delete_btn.set_sensitive(False)
-
     def _build_widgets(self):
+        """
+            Build the ActionsBar widgets.
+        """
         self.delete_btn = Gtk.Button(label=_("Delete"))
         self.delete_btn.set_sensitive(False)
         self.pack_end(self.delete_btn)
 
-    def on_selected_rows_changed(self, accounts_list, selected_rows):
+    def on_selected_rows_changed(self, _, selected_rows):
+        """
+            Set the sensitivity of the delete button depending
+            on the total selected rows
+
+            :param selected_rows: the total number of selected rows
+            :type selected_rows: int
+        """
         self.delete_btn.set_sensitive(selected_rows > 0)

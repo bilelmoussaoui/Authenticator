@@ -23,66 +23,72 @@ from time import sleep
 from gi.repository import GObject
 
 from .clipboard import Clipboard
-from .code import Code
 from .database import Database
 from .keyring import Keyring
 from .logger import Logger
+from .otp import OTP
 
 
 class Account(GObject.GObject, Thread):
     __gsignals__ = {
-        'code_updated': (GObject.SignalFlags.RUN_LAST, None, (str,)),
+        'otp_updated': (GObject.SignalFlags.RUN_LAST, None, (str,)),
         'counter_updated': (GObject.SignalFlags.RUN_LAST, None, (str,)),
         'removed': (GObject.SignalFlags.RUN_LAST, None, ()),
     }
 
-    def __init__(self, _id, name, provider, secret_id):
+    def __init__(self, _id, username, provider, secret_id):
         Thread.__init__(self)
         GObject.GObject.__init__(self)
         self.counter_max = 30
         self._alive = True
         self.counter = self.counter_max
         self.id = _id
-        self.name = name
+        self.username = username
         self.provider = provider
         self.secret_id = secret_id
-        _secret = Keyring.get_by_id(self.secret_id)
-        if _secret:
-            self._code = Code(_secret)
+        token = Keyring.get_by_id(self.secret_id)
+        if token:
+            self.otp = OTP(token)
             self._code_generated = True
         else:
-            self._code = None
+            self.otp = None
             self._code_generated = False
             Logger.error("Could not read the secret code,"
                          "the keyring keys were reset manually")
         self.start()
 
     @staticmethod
-    def create(name, provider, secret_id):
-        encrypted_secret = sha256(secret_id.encode('utf-8')).hexdigest()
-        obj = Database.get_default().insert(name, provider, encrypted_secret)
+    def create(username, provider, token):
+        """
+        Create a new Account.
+        :param username: the account's username
+        :param provider: the account's provider
+        :param token: the OTP secret token
+        :return: Account object
+        """
+        # Encrypt the token to create a secret_id
+        secret_id = sha256(token.encode('utf-8')).hexdigest()
+        # Save the account
+        obj = Database.get_default().insert(username, provider, secret_id)
+        Keyring.insert(secret_id, provider, username, token)
 
-        Keyring.insert(encrypted_secret, provider, name, secret_id)
-        return Account(obj['id'], name, provider, encrypted_secret)
+        return Account(obj['id'], username, provider, secret_id)
 
-    def update(self, **kwargs):
-        self.name = kwargs.get("name", self.name)
-        self.provider = kwargs.get("provider", self.provider)
-        Database.get_default().update(kwargs, self.id)
-
-    @property
-    def secret_code(self):
-        if self._code_generated:
-            return self._code.secret_code
-        return None
+    def update(self, username, provider):
+        """
+        Update the account name and/or provider.
+        :param username: the account's username
+        :param provider: the account's provider
+        """
+        Database.get_default().update(username, provider, self.id)
 
     def run(self):
         while self._code_generated and self._alive:
             self.counter -= 1
             if self.counter == 0:
                 self.counter = self.counter_max
-                self._code.update()
-                self.emit("code_updated", self.secret_code)
+                self.otp.update()
+                self.emit("otp_updated", self.otp.pin)
             self.emit("counter_updated", self.counter)
             sleep(1)
 
@@ -93,6 +99,9 @@ class Account(GObject.GObject, Thread):
         self._alive = False
 
     def remove(self):
+        """
+        Remove the account.
+        """
         self.kill()
         Database.get_default().remove(self.id)
         Keyring.remove(self.secret_id)
@@ -100,6 +109,6 @@ class Account(GObject.GObject, Thread):
         Logger.debug("Account '{}' with id {} was removed".format(self.name,
                                                                   self.id))
 
-    def copy_token(self):
-        """Copy the secret token to the clipboard."""
-        Clipboard.set(self._code.secret_code)
+    def copy_pin(self):
+        """Copy the OTP to the clipboard."""
+        Clipboard.set(self.otp.pin)

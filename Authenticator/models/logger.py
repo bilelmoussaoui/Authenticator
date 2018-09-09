@@ -30,13 +30,16 @@ class Logger:
     # Date format
     DATE = "%Y-%m-%d %H:%M:%S"
 
+    def __init__(self):
+        pass
+
     @staticmethod
     def new():
         """Create a new instance of Logger."""
         logger = logging.getLogger('authenticator')
         handler = logging.StreamHandler()
-        formater = logging.Formatter(Logger.FORMAT, Logger.DATE)
-        handler.setFormatter(formater)
+        formatter = logging.Formatter(Logger.FORMAT, Logger.DATE)
+        handler.setFormatter(formatter)
         logger.setLevel(logging.DEBUG)
         logger.addHandler(handler)
         return logger
@@ -50,7 +53,7 @@ class Logger:
         return Logger.instance
 
     @staticmethod
-    def setLevel(level):
+    def set_level(level):
         """Set the logging level."""
         Logger.get_default().setLevel(level)
 

@@ -16,11 +16,12 @@
  You  ould have received a copy of the GNU General Public License
  along with Authenticator. If not, see <http://www.gnu.org/licenses/>.
 """
-from collections import OrderedDict
 import sqlite3
+from collections import OrderedDict
 from os import path, makedirs
 
 from gi.repository import GLib
+
 from .logger import Logger
 
 
@@ -29,21 +30,19 @@ class Database:
 
     # Default instance
     instance = None
+    # Database version number
     db_version = 3
 
+    table_name = "accounts"
+    primary_key = "id"
+
     def __init__(self):
-        db_dir = path.join(GLib.get_user_config_dir(), 'Authenticator/')
-        db_file = path.join(
-            db_dir, 'database-{}.db'.format(str(Database.db_version)))
-        makedirs(path.dirname(db_dir), exist_ok=True)
-        if not path.exists(db_file):
-            with open(db_file, 'w') as file_obj:
-                file_obj.write('')
-        self.conn = sqlite3.connect(db_file)
-        if not self.is_table_exists():
-            Logger.debug("SQL: Table 'accounts' does not exist")
-            self.create_table()
-            Logger.debug("SQL: Table 'accounts' created successfully")
+        self.__create_database_file()
+        self.conn = sqlite3.connect(self.db_file)
+        if not self.__is_table_exists():
+            Logger.debug("[SQL]: Table 'accounts' does not exist")
+            self.__create_table()
+            Logger.debug("[SQL]: Table 'accounts' created successfully")
 
     @staticmethod
     def get_default():
@@ -52,35 +51,41 @@ class Database:
             Database.instance = Database()
         return Database.instance
 
-    def insert(self, name, provider, secret):
+    @property
+    def db_file(self):
+        return path.join(GLib.get_user_config_dir(),
+                         'Authenticator',
+                         'database-{}.db'.format(str(Database.db_version))
+                         )
+
+    def insert(self, username, provider, secret_id):
         """
         Insert a new account to the database
-        :param name: Account name
+        :param username: Account name
         :param provider: Service provider
-        :param secret: the secret code
-        :return: a dict with id, name and encrypted_secret
+        :param secret_id: the secret code
         """
-        query = "INSERT INTO accounts (name, provider, secret_code) VALUES (?, ?, ?)"
+        query = "INSERT INTO {table} (username, provider, secret_id) VALUES (?, ?, ?)".format(table=self.table_name)
         try:
-            self.conn.execute(query, [name, provider, secret])
+            self.conn.execute(query, [username, provider, secret_id])
             self.conn.commit()
             return OrderedDict([
                 ("id", self.latest_id),
-                ("name", name),
+                ("name", username),
                 ("provider", provider),
-                ("secret_id", secret)
+                ("secret_id", secret_id)
             ])
         except Exception as error:
             Logger.error("[SQL] Couldn't add a new account")
             Logger.error(str(error))
 
-    def get_secret_code(self, id_):
+    def get_secret_id(self, id_):
         """
         Get the secret code by id
         :param id_: int the account id
         :return: the secret id
         """
-        query = "SELECT secret_code FROM accounts WHERE uid=?"
+        query = "SELECT secret_id FROM {table} WHERE {key}=?".format(key=self.primary_key, table=self.table_name)
         try:
             data = self.conn.cursor().execute(query, (id_,))
             return data.fetchone()[0]
@@ -91,35 +96,27 @@ class Database:
 
     def remove(self, id_):
         """
-            Remove an account by id
-            :param id_: (int) account uid
+            Remove an account by ID.
+
+            :param id_: the account ID
+            :type id_: int
         """
-        query = "DELETE FROM accounts WHERE uid=?"
+        query = "DELETE FROM {table} WHERE {key}=?".format(key=self.primary_key, table=self.table_name)
         try:
             self.conn.execute(query, (id_,))
             self.conn.commit()
         except Exception as error:
-            Logger.error("[SQL] Couldn't remove account by uid")
+            Logger.error("[SQL] Couldn't remove the account '{}'".format(id_))
             Logger.error(str(error))
 
-    def update(self, kwargs, id):
+    def update(self, username, provider, id_):
         """
         Update an account by id
         """
-        query = "UPDATE accounts SET "
-        values = []
-        i = 0
-        for key, value in kwargs.items():
-            query += " {} = ?".format(key)
-            if i != len(kwargs.keys()) - 1:
-                query += ", "
-            i+=1
-            values.append(value)
-
-        query += " WHERE uid=?"
-        values.append(id)
+        query = "UPDATE {table} SET username=?, provider=? WHERE {key}=?".format(key=self.primary_key,
+                                                                                 table=self.table_name)
         try:
-            self.conn.execute(query, values)
+            self.conn.execute(query, (username, provider, id_))
             self.conn.commit()
         except Exception as error:
             Logger.error("[SQL] Couldn't update account name by id")
@@ -128,10 +125,11 @@ class Database:
     @property
     def count(self):
         """
-            Count number of accounts
-           :return: (int) count
+            Count the total number of existing accounts.
+
+           :return: int
         """
-        query = "SELECT COUNT(uid) AS count FROM accounts"
+        query = "SELECT COUNT({key}) AS count FROM {table}".format(key=self.primary_key, table=self.table_name)
         try:
             data = self.conn.cursor().execute(query)
             return data.fetchone()[0]
@@ -143,19 +141,20 @@ class Database:
     @property
     def accounts(self):
         """
-            Fetch list of accounts
-            :return: (tuple) list of accounts
+            Retrieve the list of accounts.
+
+            :return list
         """
-        query = "SELECT * FROM accounts ORDER BY provider ASC, name DESC"
+        query = "SELECT * FROM {table} ORDER BY provider ASC, username DESC".format(table=self.table_name)
         try:
             data = self.conn.cursor().execute(query)
             accounts = data.fetchall()
             return [OrderedDict([
-                    ("id", account[0]),
-                    ("name", account[1]),
-                    ("provider", account[2]),
-                    ("secret_id", account[3])
-                    ]) for account in accounts]
+                ("id", account[0]),
+                ("username", account[1]),
+                ("provider", account[2]),
+                ("secret_id", account[3])
+            ]) for account in accounts]
         except Exception as error:
             Logger.error("[SQL] Couldn't fetch accounts list")
             Logger.error(str(error))
@@ -164,26 +163,39 @@ class Database:
     @property
     def latest_id(self):
         """
-            Get the latest uid on accounts table
-            :return: (int) latest uid
+            Retrieve the latest added ID from accounts.
+
+            :return: int
         """
-        query = "SELECT uid FROM accounts ORDER BY uid DESC LIMIT 1;"
+        query = "SELECT {key} FROM {table} ORDER BY {key} DESC LIMIT 1;".format(key=self.primary_key,
+                                                                                table=self.table_name)
         try:
             data = self.conn.cursor().execute(query)
             return data.fetchone()[0]
         except Exception as error:
-            Logger.error("[SQL] Couldn't fetch the latest uid")
+            Logger.error("[SQL] Couldn't fetch the latest id")
             Logger.error(str(error))
         return None
 
-    def create_table(self):
-        """Create 'accounts' table."""
-        query = '''CREATE TABLE "accounts" (
-            "uid" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE ,
-            "name" VARCHAR NOT NULL ,
+    def __create_database_file(self):
+        """
+        Create an empty database file for the first start of the application.
+        """
+        makedirs(path.dirname(self.db_file), exist_ok=True)
+        if not path.exists(self.db_file):
+            with open(self.db_file, 'w') as file_obj:
+                file_obj.write('')
+
+    def __create_table(self):
+        """
+        Create the needed tables to run the application.
+        """
+        query = '''CREATE TABLE "{table}" (
+            "{key}" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
+            "username" VARCHAR NOT NULL,
             "provider" VARCHAR NOT NULL,
-            "secret_code" VARCHAR NOT NULL UNIQUE
-        )'''
+            "secret_id" VARCHAR NOT NULL UNIQUE
+        )'''.format(table=self.table_name, key=self.primary_key)
         try:
             self.conn.execute(query)
             self.conn.commit()
@@ -191,12 +203,12 @@ class Database:
             Logger.error("[SQL] Impossible to create table 'accounts'")
             Logger.error(str(error))
 
-    def is_table_exists(self):
+    def __is_table_exists(self):
         """
-            Check if accounts table exists
-            :return: (bool)
+            Check if the used table are created or not.
+            :return bool
         """
-        query = "SELECT uid from accounts LIMIT 1"
+        query = "SELECT {key} from {table} LIMIT 1".format(key=self.primary_key, table=self.table_name)
         try:
             self.conn.cursor().execute(query)
             return True

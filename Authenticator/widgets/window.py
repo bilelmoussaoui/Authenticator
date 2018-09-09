@@ -17,12 +17,12 @@
  along with Authenticator. If not, see <http://www.gnu.org/licenses/>.
 """
 from gi import require_version
+
 require_version("Gtk", "3.0")
-from gi.repository import Gtk, Gio, Gdk, GObject, GLib
+from gi.repository import Gtk, GObject
 from ..models import Logger, Settings, Database
 from .headerbar import HeaderBar, HeaderBarState
-from .inapp_notification import InAppNotification
-from .accounts import AccountsWidget, AccountsListState, AddAcountWindow, EmptyAccountsList
+from .accounts import AccountsWidget, AccountsListState, AddAccountWindow, EmptyAccountsList
 from .search_bar import SearchBar
 from .actions_bar import ActionsBar
 
@@ -61,13 +61,13 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         """Set Headerbar popover menu."""
         HeaderBar.get_default().generate_popover_menu(gio_menu)
 
-    def add_account(self, *args):
-        add_window = AddAcountWindow()
+    def add_account(self, *_):
+        add_window = AddAccountWindow()
         add_window.set_transient_for(self)
         add_window.show_all()
         add_window.present()
 
-    def _do_update_view(self, *args):
+    def _do_update_view(self, *_):
         headerbar = HeaderBar.get_default()
         count = Database.get_default().count
         if count != 0:
@@ -80,7 +80,7 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         child.show_all()
         self.main_stack.set_visible_child(child)
 
-    def toggle_select(self, *args):
+    def toggle_select(self, *_):
         """
             Toggle select mode
         """
@@ -88,7 +88,6 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
             HeaderBar.get_default().set_state(HeaderBarState.SELECT)
             AccountsWidget.get_default().set_state(AccountsListState.SELECT)
         else:
-            ActionsBar.get_default().set_delete_btn_sensitive(False)
             HeaderBar.get_default().set_state(HeaderBarState.NORMAL)
             AccountsWidget.get_default().set_state(AccountsListState.NORMAL)
 
@@ -105,8 +104,8 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         position_x, position_y = settings.window_position
         if position_x != 0 and position_y != 0:
             self.move(position_x, position_y)
-            Logger.debug("[Window] Restore postion x: {}, y: {}".format(position_x,
-                                                                        position_y))
+            Logger.debug("[Window] Restore position x: {}, y: {}".format(position_x,
+                                                                         position_y))
         else:
             # Fallback to the center
             self.set_position(Gtk.WindowPosition.CENTER)
@@ -117,18 +116,14 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
     def _build_widgets(self):
         """Build main window widgets."""
         # HeaderBar
-        headerbar = HeaderBar.get_default()
-        headerbar.select_btn.connect("clicked", self.toggle_select)
-        headerbar.add_btn.connect("clicked", self.add_account)
-        headerbar.cancel_btn.connect("clicked", self.toggle_select)
-        self.set_titlebar(headerbar)
+        header_bar = HeaderBar.get_default()
+        header_bar.select_btn.connect("clicked", self.toggle_select)
+        header_bar.add_btn.connect("clicked", self.add_account)
+        header_bar.cancel_btn.connect("clicked", self.toggle_select)
+        self.set_titlebar(header_bar)
 
         # Main Container
         self.main_container = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-
-        # In App Notifications
-        self.notification = InAppNotification()
-        self.main_container.pack_start(self.notification, False, False, 0)
 
         # Main Stack
         self.main_stack = Gtk.Stack()
@@ -143,8 +138,8 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
 
         # Search Bar
         search_bar = SearchBar()
-        self.connect("key-press-event", lambda x, y : search_bar.handle_event(y))
-        search_bar.search_button = headerbar.search_btn
+        self.connect("key-press-event", lambda x, y: search_bar.handle_event(y))
+        search_bar.search_button = header_bar.search_btn
         search_bar.search_list = accounts_widget.accounts_lists
 
         # Actions Bar
@@ -158,7 +153,6 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         account_list_cntr.pack_start(accounts_scrolled, True, True, 0)
         account_list_cntr.pack_start(actions_bar, False, False, 0)
 
-
         self.main_stack.add_named(account_list_cntr,
                                   "accounts-list")
 
@@ -170,13 +164,13 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         self.add(self.main_container)
         self._do_update_view()
 
-        actions_bar.bind_property("visible", headerbar.cancel_btn,
+        actions_bar.bind_property("visible", header_bar.cancel_btn,
                                   "visible",
                                   GObject.BindingFlags.BIDIRECTIONAL)
-        actions_bar.bind_property("no_show_all", headerbar.cancel_btn,
+        actions_bar.bind_property("no_show_all", header_bar.cancel_btn,
                                   "no_show_all",
                                   GObject.BindingFlags.BIDIRECTIONAL)
 
-    def _on_account_delete(self, *args):
+    def _on_account_delete(self, *_):
         self.toggle_select()
         self._do_update_view()

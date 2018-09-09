@@ -16,21 +16,21 @@
  You should have received a copy of the GNU General Public License
  along with Authenticator. If not, see <http://www.gnu.org/licenses/>.
 """
-from gettext import gettext as _
 import json
+from gettext import gettext as _
 
 from gi import require_version
-require_version("Gtk", "3.0")
-from gi.repository import Gio, Gtk, GObject, GLib, GdkPixbuf, Gdk
 
-from ..headerbar import HeaderBarButton, HeaderBarToggleButton
-from ..inapp_notification import InAppNotification
-from ..search_bar import SearchBar
-from ...models import Code
+require_version("Gtk", "3.0")
+require_version('Gd', '1.0')
+from gi.repository import Gd, Gio, Gtk, GObject, Gdk
+
+from ..headerbar import HeaderBarButton
+from ...models import OTP
 from ...utils import can_use_qrscanner, load_pixbuf_from_provider
 
 
-class AddAcountWindow(Gtk.Window):
+class AddAccountWindow(Gtk.Window):
     """Add Account Window."""
 
     def __init__(self):
@@ -44,17 +44,17 @@ class AddAcountWindow(Gtk.Window):
     def _build_widgets(self):
         """Create the Add Account widgets."""
         # Header Bar
-        headerbar = Gtk.HeaderBar()
-        headerbar.set_show_close_button(False)
-        headerbar.set_title(_("Add a new account"))
-        self.set_titlebar(headerbar)
+        header_bar = Gtk.HeaderBar()
+        header_bar.set_show_close_button(False)
+        header_bar.set_title(_("Add a new account"))
+        self.set_titlebar(header_bar)
         # Next btn
         self.add_btn = Gtk.Button()
         self.add_btn.set_label(_("Add"))
         self.add_btn.connect("clicked", self._on_add)
         self.add_btn.get_style_context().add_class("suggested-action")
         self.add_btn.set_sensitive(False)
-        headerbar.pack_end(self.add_btn)
+        header_bar.pack_end(self.add_btn)
 
         # QR code scan btn
         from ...application import Application
@@ -62,50 +62,50 @@ class AddAcountWindow(Gtk.Window):
                                         _("Scan QR code"))
         if Application.USE_QRSCANNER and can_use_qrscanner():
             self.scan_btn.connect("clicked", self._on_scan)
-            headerbar.pack_end(self.scan_btn)
+            header_bar.pack_end(self.scan_btn)
 
         # Back btn
         self.close_btn = Gtk.Button()
         self.close_btn.set_label(_("Close"))
         self.close_btn.connect("clicked", self._on_quit)
 
-        headerbar.pack_start(self.close_btn)
+        header_bar.pack_start(self.close_btn)
 
         self.account_config = AccountConfig()
         self.account_config.connect("changed", self._on_account_config_changed)
 
         self.add(self.account_config)
 
-    def _on_scan(self, *args):
+    def _on_scan(self, *_):
         """
             QR Scan button clicked signal handler.
         """
         if self.account_config:
             self.account_config.scan_qr()
 
-    def _on_account_config_changed(self, widget, state):
+    def _on_account_config_changed(self, _, state):
         """Set the sensitivity of the AddButton depends on the AccountConfig."""
         self.add_btn.set_sensitive(state)
 
-    def _on_quit(self, *args):
+    def _on_quit(self, *_):
         self.destroy()
 
-    def _on_add(self, *args):
+    def _on_add(self, *_):
         from .list import AccountsWidget
-        name, provider, secret = self.account_config.account.values()
-        AccountsWidget.get_default().append(name, provider, secret)
+        username, provider, token = self.account_config.account.values()
+        AccountsWidget.get_default().append(username, provider, token)
         self._on_quit()
 
-    def _on_key_press(self, widget, event):
-        _, keyval = event.get_keyval()
+    def _on_key_press(self, _, event):
+        _, key_val = event.get_keyval()
         modifiers = event.get_state()
 
-        if keyval == Gdk.KEY_Escape:
+        if key_val == Gdk.KEY_Escape:
             self._on_quit()
 
         # CTRL + Q
         if modifiers == Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.MOD2_MASK:
-            if keyval == Gdk.KEY_q:
+            if key_val == Gdk.KEY_q:
                 self._on_scan()
 
 
@@ -123,7 +123,6 @@ class AccountConfig(Gtk.Box, GObject.GObject):
 
         self._providers_store = Gtk.ListStore(str, str)
 
-        self.notification = InAppNotification()
         self.logo_img = Gtk.Image()
         self.username_entry = Gtk.Entry()
         self.provider_combo = Gtk.ComboBox.new_with_model_and_entry(
@@ -137,13 +136,14 @@ class AccountConfig(Gtk.Box, GObject.GObject):
         """
             Return an instance of Account for the new account.
         """
-        account_name = self.username_entry.get_text()
-        provider = self.provider_combo.get_child().get_text()
-        secret = self.token_entry.get_text()
+        account = {
+            "username": self.username_entry.get_text(),
+            "provider": self.provider_combo.get_child().get_text()
+        }
 
-        return {"name": account_name,
-                "provider": provider,
-                "secret": secret}
+        if not self.is_edit:
+            account["token"] = self.token_entry.get_text()
+        return account
 
     def _build_widgets(self):
 
@@ -167,7 +167,7 @@ class AccountConfig(Gtk.Box, GObject.GObject):
         self.username_entry.set_placeholder_text(_("Account name"))
         self.username_entry.connect("changed", self._validate)
         if self._account:
-            self.username_entry.set_text(self._account.name)
+            self.username_entry.set_text(self._account.username)
 
         if not self.is_edit:
             self.token_entry.set_placeholder_text(_("Secret token"))
@@ -188,8 +188,7 @@ class AccountConfig(Gtk.Box, GObject.GObject):
             container.pack_end(self.token_entry, False, False, 6)
         container.pack_end(self.username_entry, False, False, 6)
         container.pack_end(self.provider_combo, False, False, 6)
-        if not self.is_edit:
-            self.pack_start(self.notification, False, False, 0)
+
         self.pack_start(container, False, False, 6)
 
     def _on_provider_changed(self, combo):
@@ -205,16 +204,16 @@ class AccountConfig(Gtk.Box, GObject.GObject):
 
     def _fill_data(self):
         uri = 'resource:///com/github/bilelmoussaoui/Authenticator/data.json'
-        file = Gio.File.new_for_uri(uri)
-        content = str(file.load_contents(None)[1].decode("utf-8"))
+        g_file = Gio.File.new_for_uri(uri)
+        content = str(g_file.load_contents(None)[1].decode("utf-8"))
         data = json.loads(content)
         data = sorted([(name, logo) for name, logo in data.items()],
-                      key=lambda entry: entry[0].lower())
+                      key=lambda account: account[0].lower())
         for entry in data:
             name, logo = entry
             self._providers_store.append([name, logo])
 
-    def _validate(self, *args):
+    def _validate(self, *_):
         """Validate the username and the token."""
         provider = self.provider_combo.get_child().get_text()
         username = self.username_entry.get_text()
@@ -234,7 +233,7 @@ class AccountConfig(Gtk.Box, GObject.GObject):
             self.provider_combo.get_style_context().remove_class("error")
             valid_provider = True
 
-        if (not token or not Code.is_valid(token)) and not self.is_edit:
+        if (not token or not OTP.is_valid(token)) and not self.is_edit:
             self.token_entry.get_style_context().add_class("error")
             valid_token = False
         else:
@@ -242,7 +241,6 @@ class AccountConfig(Gtk.Box, GObject.GObject):
             valid_token = True
 
         self.emit("changed", all([valid_name, valid_provider, valid_token]))
-
 
     def scan_qr(self):
         """
@@ -254,8 +252,25 @@ class AccountConfig(Gtk.Box, GObject.GObject):
             qr_reader = QRReader(filename)
             secret = qr_reader.read()
             if not qr_reader.is_valid():
-                self.notification.set_message(_("Invalid QR code"))
-                self.notification.set_message_type(Gtk.MessageType.ERROR)
-                self.notification.show()
+                self.__send_notification(_("Invalid QR code"))
             else:
                 self.token_entry.set_text(secret)
+
+    def __send_notification(self, message):
+        """
+            Show a notification using Gd.Notification.
+            :param message: the notification message
+            :type message: str
+        """
+        notification = Gd.Notification()
+        notification.set_show_close_button(True)
+        notification.set_timeout(5)
+
+        notification_lbl = Gtk.Label()
+        notification_lbl.set_text(message)
+
+        notification.add(notification_lbl)
+
+        self.add(notification)
+        self.reorder_child(notification, 0)
+        self.show_all()
