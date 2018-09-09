@@ -79,7 +79,9 @@ class EditAccountWindow(Gtk.Window, GObject.GObject):
         """
             Save Button clicked signal handler.
         """
-        username, provider = self.account_config.account.values()
+        new_account = self.account_config.account
+        username = new_account["username"]
+        provider = new_account["provider"]
         old_provider = self._account.provider
         # Update the AccountRow widget
         self.emit("updated", username, provider)

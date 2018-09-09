@@ -92,7 +92,10 @@ class AddAccountWindow(Gtk.Window):
 
     def _on_add(self, *_):
         from .list import AccountsWidget
-        username, provider, token = self.account_config.account.values()
+        account = self.account_config.account
+        username = account["username"]
+        provider = account["provider"]
+        token = account["token"]
         AccountsWidget.get_default().append(username, provider, token)
         self._on_quit()
 
