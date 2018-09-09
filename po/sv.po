@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-09 19:37+0200\n"
-"PO-Revision-Date: 2018-09-03 09:40+0000\n"
+"PO-Revision-Date: 2018-09-09 22:32+0000\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <https://hosted.weblate.org/projects/authenticator/"
 "translation/sv/>\n"
@@ -79,13 +79,12 @@ msgstr ""
 
 #: Authenticator/widgets/accounts/edit.py:52
 msgid "Save"
-msgstr ""
+msgstr "Spara"
 
 #. Label
 #: Authenticator/widgets/accounts/list.py:269
-#, fuzzy
 msgid "There are no accounts yet…"
-msgstr "Det finns inget konto ännu…"
+msgstr "Det finns inga konton ännu…"
 
 #: Authenticator/widgets/accounts/row.py:58
 msgid "Copy"
@@ -93,7 +92,7 @@ msgstr "Kopiera"
 
 #: Authenticator/widgets/accounts/row.py:59
 msgid "Edit"
-msgstr ""
+msgstr "Redigera"
 
 #: Authenticator/widgets/accounts/row.py:150
 msgid "Couldn't generate the secret code"
@@ -104,7 +103,6 @@ msgid "translator-credits"
 msgstr "Anders Jonsson <anders.jonsson@norsjovallen.se>"
 
 #: Authenticator/widgets/about.py.in:47
-#, fuzzy
 msgid "Two-factor authentication code generator."
 msgstr "Generator för tvåfaktorsautentiseringskoder."
 
@@ -134,17 +132,15 @@ msgstr "Klicka på objekt för att välja dem"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:7
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:5
-#, fuzzy
 msgid "Two-factor authentication code generator"
-msgstr "Generator för tvåfaktorsautentiseringskoder."
+msgstr "Generator för tvåfaktorsautentiseringskoder"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:9
-#, fuzzy
 msgid ""
 "Simple application that generates a two-factor authentication code, created "
 "for GNOME."
 msgstr ""
-"Enkelt program för att generera tvåfaktorsautentiseringskod, skapat för "
+"Enkelt program som genererar en tvåfaktorsautentiseringskod, skapat för "
 "GNOME."
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:10
@@ -226,7 +222,6 @@ msgid "Switch to pyzbar instead of zbarlight"
 msgstr "Växla till pyzbar istället för zbarlight"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:82
-#, fuzzy
 msgid "Flatpak package"
 msgstr "Flatpak-paket"
 
@@ -235,7 +230,6 @@ msgid "Bilal Elmoussaoui"
 msgstr "Bilal Elmoussaoui"
 
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:4
-#, fuzzy
 msgid "Two-factor authentication"
 msgstr "Tvåfaktorsautentisering"
 
