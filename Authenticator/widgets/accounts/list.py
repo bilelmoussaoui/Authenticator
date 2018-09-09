@@ -62,6 +62,7 @@ class AccountsWidget(Gtk.Box, GObject.GObject):
             self.pack_start(provider_widget, False, False, 0)
         if not _id:
             accounts_list.append_new(username, provider, token)
+            self._reorder()
         else:
             accounts_list.append(_id, username, provider, token)
         self.emit("changed")
@@ -84,6 +85,7 @@ class AccountsWidget(Gtk.Box, GObject.GObject):
         for account_list in self._providers.values():
             account_list.delete_selected()
         self._clean_unneeded_providers_widgets()
+        self.emit("changed")
 
     def update_provider(self, account, new_provider):
         current_account_list = None

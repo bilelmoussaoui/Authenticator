@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Authenticator\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-02 15:05+0200\n"
+"POT-Creation-Date: 2018-09-09 19:37+0200\n"
 "PO-Revision-Date: 2018-07-26 19:37+0000\n"
 "Last-Translator: WaldiS <admin@sto.ugu.pl>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/authenticator/"
@@ -20,122 +20,130 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 3.1-dev\n"
 
-#: Authenticator/application.py:37 Authenticator/widgets/about.py:40
+#: Authenticator/application.py:38 Authenticator/widgets/about.py.in:44
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:6
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:3
 msgid "Authenticator"
 msgstr "Wystawca uwierzytelnienia"
 
 #. Night mode action
-#: Authenticator/application.py:80
+#: Authenticator/application.py:81
 msgid "Night Mode"
 msgstr "Tryb nocny"
 
-#: Authenticator/application.py:83
+#: Authenticator/application.py:84
 msgid "About"
 msgstr "Informacje"
 
-#: Authenticator/application.py:84
+#: Authenticator/application.py:85
 msgid "Quit"
 msgstr "Zakończ"
 
-#: Authenticator/widgets/accounts/add.py:50
-#: Authenticator/widgets/headerbar.py:98
+#: Authenticator/widgets/accounts/add.py:49
+#: Authenticator/widgets/headerbar.py:100
 msgid "Add a new account"
 msgstr "Dodaj nowe konto"
 
-#: Authenticator/widgets/accounts/add.py:59
-#: Authenticator/widgets/headerbar.py:96
-msgid "Search"
-msgstr "Szukaj"
-
-#: Authenticator/widgets/accounts/add.py:64
-msgid "Scan QR code"
-msgstr "Skanuj kod QR"
-
-#: Authenticator/widgets/accounts/add.py:100
-msgid "Next"
-msgstr "Następny"
-
-#: Authenticator/widgets/accounts/add.py:101
-msgid "Close"
-msgstr "Zamknij"
-
-#: Authenticator/widgets/accounts/add.py:109
+#: Authenticator/widgets/accounts/add.py:53
 msgid "Add"
 msgstr "Dodaj"
 
-#: Authenticator/widgets/accounts/add.py:110
-msgid "Back"
-msgstr "Wstecz"
+#: Authenticator/widgets/accounts/add.py:62
+msgid "Scan QR code"
+msgstr "Skanuj kod QR"
 
-#: Authenticator/widgets/accounts/add.py:259
+#: Authenticator/widgets/accounts/add.py:69
+#: Authenticator/widgets/accounts/edit.py:58
+msgid "Close"
+msgstr "Zamknij"
+
+#: Authenticator/widgets/accounts/add.py:160
+msgid "Provider"
+msgstr ""
+
+#: Authenticator/widgets/accounts/add.py:170
 msgid "Account name"
 msgstr "Nazwa konta"
 
-#: Authenticator/widgets/accounts/add.py:261
-msgid "Secret Token"
+#: Authenticator/widgets/accounts/add.py:176
+#, fuzzy
+msgid "Secret token"
 msgstr "Sekretny token"
 
-#: Authenticator/widgets/accounts/add.py:309
+#: Authenticator/widgets/accounts/add.py:258
 msgid "Invalid QR code"
 msgstr "Nieprawidłowy kod QR"
 
+#: Authenticator/widgets/accounts/edit.py:47
+msgid "Edit {} - {}"
+msgstr ""
+
+#: Authenticator/widgets/accounts/edit.py:52
+msgid "Save"
+msgstr ""
+
 #. Label
-#: Authenticator/widgets/accounts/list.py:134
-msgid "There's no account yet..."
+#: Authenticator/widgets/accounts/list.py:269
+#, fuzzy
+msgid "There are no accounts yet…"
 msgstr "Nie dodano jeszcze żadnego konta..."
 
-#: Authenticator/widgets/accounts/row.py:55
+#: Authenticator/widgets/accounts/row.py:58
 msgid "Copy"
 msgstr "Kopiuj"
 
-#: Authenticator/widgets/accounts/row.py:151
+#: Authenticator/widgets/accounts/row.py:59
+msgid "Edit"
+msgstr ""
+
+#: Authenticator/widgets/accounts/row.py:150
 msgid "Couldn't generate the secret code"
 msgstr "Nie udało się wygenerować sekretnego kodu"
 
-#: Authenticator/widgets/about.py:41
+#: Authenticator/widgets/about.py.in:45
 msgid "translator-credits"
 msgstr "tłumacz-uznanie"
 
-#: Authenticator/widgets/about.py:43
-msgid "Two factor authentication codes generator."
+#: Authenticator/widgets/about.py.in:47
+#, fuzzy
+msgid "Two-factor authentication code generator."
 msgstr "Generator kodów uwierzytelniania dwuetapowego."
 
-#: Authenticator/widgets/actions_bar.py:47
+#: Authenticator/widgets/actions_bar.py:52
 msgid "Delete"
 msgstr "Usuń"
 
-#: Authenticator/widgets/headerbar.py:100
+#: Authenticator/widgets/headerbar.py:98
+msgid "Search"
+msgstr "Szukaj"
+
+#: Authenticator/widgets/headerbar.py:102
 msgid "Settings"
 msgstr "Ustawienia"
 
-#: Authenticator/widgets/headerbar.py:102
+#: Authenticator/widgets/headerbar.py:104
 msgid "Selection mode"
 msgstr "Tryb zaznaczania"
 
-#: Authenticator/widgets/headerbar.py:104
+#: Authenticator/widgets/headerbar.py:106
 msgid "Cancel"
 msgstr "Anuluj"
 
-#: Authenticator/widgets/headerbar.py:179
+#: Authenticator/widgets/headerbar.py:181
 msgid "Click on items to select them"
 msgstr "Kliknij na elementy aby je wybrać"
 
-#: Authenticator/widgets/inapp_notification.py:51
-#: Authenticator/widgets/inapp_notification.py:79
-msgid "Undo"
-msgstr "Cofnij"
-
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:7
-msgid "Two Factor Authentication code generator"
-msgstr "Generator kodów uwierzytelniania dwuetapowego"
+#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:5
+#, fuzzy
+msgid "Two-factor authentication code generator"
+msgstr "Generator kodów uwierzytelniania dwuetapowego."
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:9
 #, fuzzy
 msgid ""
-"Simple application that generates 2 factor authentication code, created for "
-"GNOME."
+"Simple application that generates a two-factor authentication code, created "
+"for GNOME."
 msgstr ""
 "Prosta aplikacja generująca kody uwierzytelniania dwuetapowego, stworzona "
 "dla Gnome"
@@ -157,57 +165,80 @@ msgid "Huge database of (290+) websites/applications"
 msgstr ""
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:43
-msgid "Fix the QRScanner on GNOME Shell"
+msgid "Revamped main window to follow more the GNOME HIG"
 msgstr ""
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:44
-msgid "Add a new entry for the account's username"
+msgid "Revamped add a new account window to make it easier to use"
 msgstr ""
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:45
+msgid ""
+"Possibility to add an account from a provider not listed in the shiped "
+"database"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:46
+msgid "Possibilty to edit an account"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:47
+msgid "One Time Password is now visible by default"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:54
+msgid "Fix python-dbus by using GDbus instead"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:61
+msgid "Fix the QRScanner on GNOME Shell"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:62
+msgid "Add a new entry for the account's username"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:63
 msgid "Updated database of supported accounts"
 msgstr ""
 
-#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:52
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:70
 msgid "HOTFIX: App not running in DE other than GNOME"
 msgstr ""
 
-#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:59
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:77
 #, fuzzy
 msgid "Rename project to Authenticator"
 msgstr "O Authenticatorze"
 
-#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:60
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:78
 msgid "Cleaner code base"
 msgstr ""
 
-#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:61
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:79
 msgid "Faster startup"
 msgstr ""
 
-#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:62
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:80
 msgid "Remove unneeded features"
 msgstr ""
 
-#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:63
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:81
 msgid "Switch to pyzbar instead of zbarlight"
 msgstr ""
 
-#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:64
-msgid "Flatpak pacakge"
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:82
+msgid "Flatpak package"
 msgstr ""
 
-#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:71
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:89
 msgid "Bilal Elmoussaoui"
 msgstr ""
 
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:4
-msgid "Two Factor Authentication"
+#, fuzzy
+msgid "Two-factor authentication"
 msgstr "Uwierzytelnianie dwuetapowe"
-
-#: data/com.github.bilelmoussaoui.Authenticator.desktop.in:5
-msgid "Two-Factor Authentication code generator"
-msgstr "Generator kodów uwierzytelniania dwuetapowego"
 
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:10
 msgid "Gnome;GTK;Verification;"
@@ -217,10 +248,25 @@ msgstr "Gnome;GTK;Weryfikacja;"
 msgid "com.github.bilelmoussaoui.Authenticator"
 msgstr "com.github.bilelmoussaoui.Authenticator"
 
-#: authenticator.py.in:45
+#: authenticator.py.in:48
 msgid "Start in debug mode"
 msgstr "Uruchom w trybie debugowania"
 
-#: authenticator.py.in:47
+#: authenticator.py.in:50
 msgid "Authenticator version number"
 msgstr "Wersja Authenticatora"
+
+#~ msgid "Next"
+#~ msgstr "Następny"
+
+#~ msgid "Back"
+#~ msgstr "Wstecz"
+
+#~ msgid "Undo"
+#~ msgstr "Cofnij"
+
+#~ msgid "Two Factor Authentication code generator"
+#~ msgstr "Generator kodów uwierzytelniania dwuetapowego"
+
+#~ msgid "Two-Factor Authentication code generator"
+#~ msgstr "Generator kodów uwierzytelniania dwuetapowego"

@@ -16,16 +16,16 @@
   </description>
   <screenshots>
     <screenshot type="default">
-      <image width="376" height="574">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/screenshots/screenshot1.png</image>
+      <image width="552" height="649">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/screenshots/screenshot1.png</image>
     </screenshot>
     <screenshot>
-      <image width="376" height="574">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/screenshots/screenshot2.png</image>
+      <image width="402" height="649">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/screenshots/screenshot2.png</image>
     </screenshot>
     <screenshot>
-      <image width="376" height="574">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/screenshots/screenshot3.png</image>
+      <image width="402" height="649">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/screenshots/screenshot3.png</image>
     </screenshot>
     <screenshot>
-      <image width="376" height="574">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/screenshots/screenshot4.png</image>
+      <image width="552" height="649">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/screenshots/screenshot4.png</image>
     </screenshot>
   </screenshots>
   <url type="homepage">https://github.com/bilelmoussaoui/Authenticator</url>
@@ -37,6 +37,17 @@
   </categories>
   <content_rating type="oars-1.0" />
   <releases>
+    <release version="0.2.3" date="2018-09-09">
+        <description>
+            <ul>
+                <li>Revamped main window to follow more the GNOME HIG</li>
+                <li>Revamped add a new account window to make it easier to use</li>
+                <li>Possibility to add an account from a provider not listed in the shiped database</li>
+                <li>Possibilty to edit an account</li>
+                <li>One Time Password is now visible by default</li>
+            </ul>
+        </description>
+    </release>
     <release version="0.2.2.1" date="2018-09-03">
       <description>
         <ul>

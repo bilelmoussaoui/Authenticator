@@ -1,11 +1,11 @@
 Authenticator/application.py
 Authenticator/widgets/accounts/add.py
+Authenticator/widgets/accounts/edit.py
 Authenticator/widgets/accounts/list.py
 Authenticator/widgets/accounts/row.py
-Authenticator/widgets/about.py
+Authenticator/widgets/about.py.in
 Authenticator/widgets/actions_bar.py
 Authenticator/widgets/headerbar.py
-Authenticator/widgets/inapp_notification.py
 Authenticator/widgets/search_bar.py
 Authenticator/widgets/window.py
 data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in
