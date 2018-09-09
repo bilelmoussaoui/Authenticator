@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-09 19:37+0200\n"
-"PO-Revision-Date: 2018-09-03 09:40+0000\n"
+"PO-Revision-Date: 2018-09-09 22:32+0000\n"
 "Last-Translator: Heimen Stoffels <vistausss@outlook.com>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/authenticator/"
 "translation/nl/>\n"
@@ -58,16 +58,15 @@ msgstr "Sluiten"
 
 #: Authenticator/widgets/accounts/add.py:160
 msgid "Provider"
-msgstr ""
+msgstr "Dienst"
 
 #: Authenticator/widgets/accounts/add.py:170
 msgid "Account name"
 msgstr "Accountnaam"
 
 #: Authenticator/widgets/accounts/add.py:176
-#, fuzzy
 msgid "Secret token"
-msgstr "Geheime sleutel"
+msgstr "Geheime toegangssleutel"
 
 #: Authenticator/widgets/accounts/add.py:258
 msgid "Invalid QR code"
@@ -75,17 +74,16 @@ msgstr "Ongeldige QR-code"
 
 #: Authenticator/widgets/accounts/edit.py:47
 msgid "Edit {} - {}"
-msgstr ""
+msgstr "{} - {} bewerken"
 
 #: Authenticator/widgets/accounts/edit.py:52
 msgid "Save"
-msgstr ""
+msgstr "Opslaan"
 
 #. Label
 #: Authenticator/widgets/accounts/list.py:269
-#, fuzzy
 msgid "There are no accounts yet…"
-msgstr "Je hebt nog geen accounts toegevoegd..."
+msgstr "Je hebt nog geen accounts toegevoegd…"
 
 #: Authenticator/widgets/accounts/row.py:58
 msgid "Copy"
@@ -93,7 +91,7 @@ msgstr "Kopiëren"
 
 #: Authenticator/widgets/accounts/row.py:59
 msgid "Edit"
-msgstr ""
+msgstr "Bewerken"
 
 #: Authenticator/widgets/accounts/row.py:150
 msgid "Couldn't generate the secret code"
@@ -104,7 +102,6 @@ msgid "translator-credits"
 msgstr "Nathan Follens, Heimen Stoffels"
 
 #: Authenticator/widgets/about.py.in:47
-#, fuzzy
 msgid "Two-factor authentication code generator."
 msgstr "Code-generator voor authenticatie in twee stappen."
 
@@ -134,12 +131,10 @@ msgstr "Klik op items om ze te selecteren"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:7
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:5
-#, fuzzy
 msgid "Two-factor authentication code generator"
-msgstr "Code-generator voor authenticatie in twee stappen."
+msgstr "Code-generator voor authenticatie in twee stappen"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:9
-#, fuzzy
 msgid ""
 "Simple application that generates a two-factor authentication code, created "
 "for GNOME."
@@ -165,29 +160,31 @@ msgstr "Enorme databank met (meer dan 290) websites/applicaties"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:43
 msgid "Revamped main window to follow more the GNOME HIG"
-msgstr ""
+msgstr "Hoofdvenster opnieuw ontworpen om meer te voldoen aan de GNOME HIG"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:44
 msgid "Revamped add a new account window to make it easier to use"
-msgstr ""
+msgstr "Nieuw account-venster opnieuw ontworpen zodat het eenvoudig is geworden"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:45
 msgid ""
 "Possibility to add an account from a provider not listed in the shiped "
 "database"
 msgstr ""
+"Mogelijkheid om een account toe te voegen van een dienst die niet in de "
+"databank voorkomt"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:46
 msgid "Possibilty to edit an account"
-msgstr ""
+msgstr "Mogelijkheid om een account te bewerken"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:47
 msgid "One Time Password is now visible by default"
-msgstr ""
+msgstr "Eenmalig wachtwoord is nu standaard zichtbaar"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:54
 msgid "Fix python-dbus by using GDbus instead"
-msgstr ""
+msgstr "python-dbus-probleem opgelost door GDbus te gebruiken"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:61
 msgid "Fix the QRScanner on GNOME Shell"
@@ -226,7 +223,6 @@ msgid "Switch to pyzbar instead of zbarlight"
 msgstr "Overgeschakeld van zbarlight naar pyzbar"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:82
-#, fuzzy
 msgid "Flatpak package"
 msgstr "Flatpak-pakket"
 
@@ -235,9 +231,8 @@ msgid "Bilal Elmoussaoui"
 msgstr "Bilal Elmoussaoui"
 
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:4
-#, fuzzy
 msgid "Two-factor authentication"
-msgstr "Tweefactorauthenticatie"
+msgstr "Authenticatie in twee stappen"
 
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:10
 msgid "Gnome;GTK;Verification;"
