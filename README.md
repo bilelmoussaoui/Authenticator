@@ -30,6 +30,12 @@ Installing Authenticator in Gentoo Linux is as easy as follows:
 emerge sys-auth/authenticator
 ```
 
+### Arch Linux
+Authenticator is in the [AUR](https://aur.archlinux.org/packages/authenticator-git/). Use your favorite AUR client, for example [`yay`](https://github.com/Jguer/yay/)
+```
+yay -S authenticator-git
+```
+
 ### Building from source code
 #### Dependecies
 
