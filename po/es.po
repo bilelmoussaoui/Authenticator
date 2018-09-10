@@ -8,138 +8,143 @@ msgstr ""
 "Project-Id-Version: Authenticator\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-09 19:37+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2018-09-10 10:11+0000\n"
+"Last-Translator: advocatux <advocatux@airpost.net>\n"
+"Language-Team: Spanish <https://hosted.weblate.org/projects/authenticator/"
+"translation/es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 3.2-dev\n"
 
 #: Authenticator/application.py:38 Authenticator/widgets/about.py.in:44
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:6
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:3
 msgid "Authenticator"
-msgstr ""
+msgstr "Authenticator"
 
 #. Night mode action
 #: Authenticator/application.py:81
 msgid "Night Mode"
-msgstr ""
+msgstr "Modo nocturno"
 
 #: Authenticator/application.py:84
 msgid "About"
-msgstr ""
+msgstr "Acerca de"
 
 #: Authenticator/application.py:85
 msgid "Quit"
-msgstr ""
+msgstr "Salir"
 
 #: Authenticator/widgets/accounts/add.py:49
 #: Authenticator/widgets/headerbar.py:100
 msgid "Add a new account"
-msgstr ""
+msgstr "Añadir una cuenta nueva"
 
 #: Authenticator/widgets/accounts/add.py:53
 msgid "Add"
-msgstr ""
+msgstr "Añadir"
 
 #: Authenticator/widgets/accounts/add.py:62
 msgid "Scan QR code"
-msgstr ""
+msgstr "Escanear código QR"
 
 #: Authenticator/widgets/accounts/add.py:69
 #: Authenticator/widgets/accounts/edit.py:58
 msgid "Close"
-msgstr ""
+msgstr "Cerrar"
 
 #: Authenticator/widgets/accounts/add.py:160
 msgid "Provider"
-msgstr ""
+msgstr "Proveedor"
 
 #: Authenticator/widgets/accounts/add.py:170
 msgid "Account name"
-msgstr ""
+msgstr "Nombre de la cuenta"
 
 #: Authenticator/widgets/accounts/add.py:176
 msgid "Secret token"
-msgstr ""
+msgstr "«Token» secreto"
 
 #: Authenticator/widgets/accounts/add.py:258
 msgid "Invalid QR code"
-msgstr ""
+msgstr "Código QR no válido"
 
 #: Authenticator/widgets/accounts/edit.py:47
 msgid "Edit {} - {}"
-msgstr ""
+msgstr "Editar {} - {}"
 
 #: Authenticator/widgets/accounts/edit.py:52
 msgid "Save"
-msgstr ""
+msgstr "Guardar"
 
 #. Label
 #: Authenticator/widgets/accounts/list.py:269
 msgid "There are no accounts yet…"
-msgstr ""
+msgstr "No hay ninguna cuenta aún…"
 
 #: Authenticator/widgets/accounts/row.py:58
 msgid "Copy"
-msgstr ""
+msgstr "Copiar"
 
 #: Authenticator/widgets/accounts/row.py:59
 msgid "Edit"
-msgstr ""
+msgstr "Editar"
 
 #: Authenticator/widgets/accounts/row.py:150
 msgid "Couldn't generate the secret code"
-msgstr ""
+msgstr "No se pudo generar el código secreto"
 
 #: Authenticator/widgets/about.py.in:45
 msgid "translator-credits"
-msgstr ""
+msgstr "Créditos de traducción"
 
 #: Authenticator/widgets/about.py.in:47
 msgid "Two-factor authentication code generator."
-msgstr ""
+msgstr "Generador de código de autenticación de doble factor."
 
 #: Authenticator/widgets/actions_bar.py:52
 msgid "Delete"
-msgstr ""
+msgstr "Borrar"
 
 #: Authenticator/widgets/headerbar.py:98
 msgid "Search"
-msgstr ""
+msgstr "Buscar"
 
 #: Authenticator/widgets/headerbar.py:102
 msgid "Settings"
-msgstr ""
+msgstr "Configuración"
 
 #: Authenticator/widgets/headerbar.py:104
 msgid "Selection mode"
-msgstr ""
+msgstr "Modo de selección"
 
 #: Authenticator/widgets/headerbar.py:106
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: Authenticator/widgets/headerbar.py:181
 msgid "Click on items to select them"
-msgstr ""
+msgstr "Pulse en los elementos para seleccionarlos"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:7
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:5
 msgid "Two-factor authentication code generator"
-msgstr ""
+msgstr "Generador de código de autenticación de doble factor"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:9
 msgid ""
 "Simple application that generates a two-factor authentication code, created "
 "for GNOME."
 msgstr ""
+"Aplicación sencilla para generar código de autenticación de doble factor, "
+"creado para GNOME."
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:10
 msgid "Features:"
-msgstr ""
+msgstr "Características:"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:12
 msgid "QR code scanner"
