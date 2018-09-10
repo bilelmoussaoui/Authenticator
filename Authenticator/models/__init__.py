@@ -16,12 +16,13 @@
  You should have received a copy of the GNU General Public License
  along with Authenticator. If not, see <http://www.gnu.org/licenses/>.
 """
-from .settings import Settings
-from .qr_reader import QRReader
-from .database import Database
-from .otp import OTP
 from .account import Account
-from .logger import Logger
-from .keyring import Keyring
+from .accounts_manager import AccountsManager
 from .clipboard import Clipboard
+from .database import Database
+from .keyring import Keyring
+from .logger import Logger
+from .otp import OTP
+from .qr_reader import QRReader
 from .screenshot import GNOMEScreenshot
+from .settings import Settings

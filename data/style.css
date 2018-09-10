@@ -1,8 +1,9 @@
 .accounts-widget{
-  margin-left: 32px;
-  margin-right: 32px;
-  margin-top: 6px;
-  margin-bottom: 6px;
+  margin-top: 0px;
+}
+.accounts-container {
+    margin-left: 32px;
+    margin-right: 32px;
 }
 
 .accounts-list{

@@ -24,7 +24,7 @@ require_version("Gtk", "3.0")
 from gi.repository import Gtk, GObject, Gio
 
 from .row import AccountRow
-from ...models import Database, Account
+from ...models import Database, Account, AccountsManager
 from ...utils import load_pixbuf_from_provider
 
 
@@ -39,9 +39,22 @@ class AccountsWidget(Gtk.Box, GObject.GObject):
         Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL)
         GObject.GObject.__init__(self)
         self.get_style_context().add_class("accounts-widget")
+
         self._providers = {}
         self._to_delete = []
+        self._build_widgets()
         self.__fill_data()
+
+    def _build_widgets(self):
+        self.otp_progress_bar = Gtk.ProgressBar()
+        self.add(self.otp_progress_bar)
+        AccountsManager.get_default().connect("counter_updated", self._on_counter_updated)
+
+        self.accounts_container = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        self.accounts_container.get_style_context().add_class("accounts-container")
+        accounts_scrolled = Gtk.ScrolledWindow()
+        accounts_scrolled.add_with_viewport(self.accounts_container)
+        self.pack_start(accounts_scrolled, True, True, 0)
 
     @staticmethod
     def get_default():
@@ -59,7 +72,7 @@ class AccountsWidget(Gtk.Box, GObject.GObject):
             accounts_list.connect("account-deleted", self._on_account_deleted)
             self._providers[provider] = accounts_list
             provider_widget = ProviderWidget(accounts_list, provider)
-            self.pack_start(provider_widget, False, False, 0)
+            self.accounts_container.pack_start(provider_widget, False, False, 0)
         if not _id:
             accounts_list.append_new(username, provider, token)
             self._reorder()
@@ -70,12 +83,6 @@ class AccountsWidget(Gtk.Box, GObject.GObject):
     @property
     def accounts_lists(self):
         return self._providers.values()
-
-    def kill_all(self):
-        """Kill all the instances of Account."""
-        for account_list in self._providers.values():
-            for account_row in account_list:
-                account_row.account.kill()
 
     def set_state(self, state):
         for account_list in self._providers.values():
@@ -94,7 +101,6 @@ class AccountsWidget(Gtk.Box, GObject.GObject):
             for account_row in account_list:
                 if account_row.account == account:
                     current_account_list = account_list
-                    account_row.account.kill()
                     break
 
             if current_account_list:
@@ -133,7 +139,7 @@ class AccountsWidget(Gtk.Box, GObject.GObject):
     def _clean_unneeded_providers_widgets(self):
         for account_list in self._to_delete:
             provider_widget = account_list.get_parent()
-            self.remove(provider_widget)
+            self.accounts_container.remove(provider_widget)
             del self._providers[provider_widget.provider]
         self._to_delete = []
 
@@ -141,11 +147,17 @@ class AccountsWidget(Gtk.Box, GObject.GObject):
         """
             Re-order the ProviderWidget on AccountsWidget.
         """
-        childes = self.get_children()
+        childes = self.accounts_container.get_children()
         ordered_childes = sorted(childes, key=lambda children: children.provider.lower())
         for i in range(len(ordered_childes)):
             self.reorder_child(ordered_childes[i], i)
         self.show_all()
+
+    def _on_counter_updated(self, accounts_manager, counter):
+        counter_fraction = int(counter) / accounts_manager.counter_max
+        self.otp_progress_bar.set_fraction(counter_fraction)
+        self.otp_progress_bar.set_tooltip_text(_("The One-Time Passwords expires in {} seconds").format(counter))
+
 
 class ProviderWidget(Gtk.Box):
 
@@ -224,6 +236,7 @@ class AccountsList(Gtk.ListBox, GObject.GObject):
         self.set_state(AccountsListState.NORMAL)
 
     def _add_row(self, account):
+        AccountsManager.get_default().add(account)
         row = AccountRow(account)
         row.connect("on_selected", self._on_row_checked)
         self.add(row)

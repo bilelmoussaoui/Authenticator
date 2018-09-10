@@ -17,8 +17,6 @@
  along with Authenticator. If not, see <http://www.gnu.org/licenses/>.
 """
 from hashlib import sha256
-from threading import Thread
-from time import sleep
 
 from gi.repository import GObject
 
@@ -29,24 +27,21 @@ from .logger import Logger
 from .otp import OTP
 
 
-class Account(GObject.GObject, Thread):
+class Account(GObject.GObject):
     __gsignals__ = {
+        'otp_out_of_date': (GObject.SignalFlags.RUN_LAST, None, ()),
         'otp_updated': (GObject.SignalFlags.RUN_LAST, None, (str,)),
-        'counter_updated': (GObject.SignalFlags.RUN_LAST, None, (str,)),
         'removed': (GObject.SignalFlags.RUN_LAST, None, ()),
     }
 
     def __init__(self, _id, username, provider, secret_id):
-        Thread.__init__(self)
         GObject.GObject.__init__(self)
-        self.counter_max = 30
-        self._alive = True
-        self.counter = self.counter_max
         self.id = _id
         self.username = username
         self.provider = provider
         self.secret_id = secret_id
         token = Keyring.get_by_id(self.secret_id)
+        self.connect("otp_out_of_date", self._on_otp_out_of_date)
         if token:
             self.otp = OTP(token)
             self._code_generated = True
@@ -55,7 +50,6 @@ class Account(GObject.GObject, Thread):
             self._code_generated = False
             Logger.error("Could not read the secret code,"
                          "the keyring keys were reset manually")
-        self.start()
 
     @staticmethod
     def create(username, provider, token):
@@ -82,33 +76,21 @@ class Account(GObject.GObject, Thread):
         """
         Database.get_default().update(username, provider, self.id)
 
-    def run(self):
-        while self._code_generated and self._alive:
-            self.counter -= 1
-            if self.counter == 0:
-                self.counter = self.counter_max
-                self.otp.update()
-                self.emit("otp_updated", self.otp.pin)
-            self.emit("counter_updated", self.counter)
-            sleep(1)
-
-    def kill(self):
-        """
-            Kill the row thread once it's removed
-        """
-        self._alive = False
-
     def remove(self):
         """
         Remove the account.
         """
-        self.kill()
         Database.get_default().remove(self.id)
         Keyring.remove(self.secret_id)
         self.emit("removed")
-        Logger.debug("Account '{}' with id {} was removed".format(self.name,
+        Logger.debug("Account '{}' with id {} was removed".format(self.username,
                                                                   self.id))
 
     def copy_pin(self):
         """Copy the OTP to the clipboard."""
         Clipboard.set(self.otp.pin)
+
+    def _on_otp_out_of_date(self, *_):
+        if self._code_generated:
+            self.otp.update()
+            self.emit("otp_updated", self.otp.pin)

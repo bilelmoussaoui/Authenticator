@@ -82,9 +82,8 @@ class AccountRow(Gtk.ListBoxRow, GObject.GObject):
         self.get_style_context().add_class("account-row")
         self._account = account
         self.check_btn = Gtk.CheckButton()
-        self.counter_lbl = Gtk.Label()
+
         self._account.connect("otp_updated", self._on_pin_updated)
-        self._account.connect("counter_updated", self._on_counter_updated)
         self._build_widget()
         self.show_all()
 
@@ -149,17 +148,9 @@ class AccountRow(Gtk.ListBoxRow, GObject.GObject):
             self.pin_label.set_tooltip_text(
                 _("Couldn't generate the secret code"))
         self.pin_label.get_style_context().add_class("token-label")
-        # Counter
-        if pin:
-            self.__update_counter()
-        else:
-            self.counter_lbl.set_text("")
-        self.counter_lbl.set_halign(Gtk.Align.START)
-        self.counter_lbl.get_style_context().add_class("counter-label")
-        self.counter_lbl.set_ellipsize(Pango.EllipsizeMode.END)
+
 
         otp_container.pack_start(self.pin_label, False, False, 6)
-        otp_container.pack_end(self.counter_lbl, False, False, 6)
         otp_container.set_valign(Gtk.Align.CENTER)
         otp_container.set_halign(Gtk.Align.START)
         container.pack_end(otp_container, False, False, 6)
@@ -205,15 +196,6 @@ class AccountRow(Gtk.ListBoxRow, GObject.GObject):
         self.username_lbl.set_text(username)
         self.account.update(username, provider)
 
-    def __update_counter(self):
-        """
-            Update the counter label.
-        """
-        counter = self.account.counter
-        text = "Expires in {} seconds".format(counter)
-        self.counter_lbl.set_text(text)
-        self.counter_lbl.set_tooltip_text(text)
-
     def _on_pin_updated(self, _, pin):
         """
             Updates the pin label each time a new OTP is generated.
@@ -225,11 +207,3 @@ class AccountRow(Gtk.ListBoxRow, GObject.GObject):
         if pin:
             self.pin_label.set_text(pin)
 
-    def _on_counter_updated(self, *_):
-        """
-            Updates the counter label each second.
-            counter_updated signal handler.
-
-        """
-        if self.account.otp:
-            self.__update_counter()

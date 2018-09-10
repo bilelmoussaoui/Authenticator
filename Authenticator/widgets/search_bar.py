@@ -26,12 +26,11 @@ class SearchBar(Gtk.SearchBar):
     """
         Search Bar widget.
     """
-    _search_list = None
     _search_button = None
 
     def __init__(self, search_button=None, search_list=[]):
         Gtk.SearchBar.__init__(self)
-
+        self.search_list = search_list
         self.search_entry = Gtk.SearchEntry()
         self.search_button = search_button
         self._build_widgets()
@@ -82,6 +81,6 @@ class SearchBar(Gtk.SearchBar):
         :param filter_func: The function to use as filter
         """
         data = entry.get_text().strip()
-        for search_list in self._search_list:
+        for search_list in self.search_list:
             search_list.set_filter_func(filter_func,
                                         data, False)

@@ -20,7 +20,7 @@ from gi import require_version
 
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, GObject
-from ..models import Logger, Settings, Database
+from ..models import Logger, Settings, Database, AccountsManager
 from .headerbar import HeaderBar, HeaderBarState
 from .accounts import AccountsWidget, AccountsListState, AddAccountWindow, EmptyAccountsList
 from .search_bar import SearchBar
@@ -54,7 +54,7 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
 
     def close(self):
         self.save_state()
-        AccountsWidget.get_default().kill_all()
+        AccountsManager.get_default().kill()
         self.destroy()
 
     def set_menu(self, gio_menu):
@@ -68,28 +68,31 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         add_window.present()
 
     def _do_update_view(self, *_):
-        headerbar = HeaderBar.get_default()
+        header_bar = HeaderBar.get_default()
         count = Database.get_default().count
         if count != 0:
             child_name = "accounts-list"
-            headerbar.set_state(HeaderBarState.NORMAL)
+            header_bar.set_state(HeaderBarState.NORMAL)
         else:
-            headerbar.set_state(HeaderBarState.EMPTY)
+            header_bar.set_state(HeaderBarState.EMPTY)
             child_name = "empty-accounts-list"
         child = self.main_stack.get_child_by_name(child_name)
         child.show_all()
         self.main_stack.set_visible_child(child)
 
-    def toggle_select(self, *_):
+    @staticmethod
+    def toggle_select(*_):
         """
             Toggle select mode
         """
-        if HeaderBar.get_default().state == HeaderBarState.NORMAL:
-            HeaderBar.get_default().set_state(HeaderBarState.SELECT)
-            AccountsWidget.get_default().set_state(AccountsListState.SELECT)
+        header_bar = HeaderBar.get_default()
+        accounts_widget = AccountsWidget.get_default()
+        if header_bar.state == HeaderBarState.NORMAL:
+            header_bar.set_state(HeaderBarState.SELECT)
+            accounts_widget.set_state(AccountsListState.SELECT)
         else:
-            HeaderBar.get_default().set_state(HeaderBarState.NORMAL)
-            AccountsWidget.get_default().set_state(AccountsListState.NORMAL)
+            header_bar.set_state(HeaderBarState.NORMAL)
+            accounts_widget.set_state(AccountsListState.NORMAL)
 
     def save_state(self):
         """Save window position & size."""
@@ -117,9 +120,9 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         """Build main window widgets."""
         # HeaderBar
         header_bar = HeaderBar.get_default()
-        header_bar.select_btn.connect("clicked", self.toggle_select)
+        header_bar.select_btn.connect("clicked", Window.toggle_select)
         header_bar.add_btn.connect("clicked", self.add_account)
-        header_bar.cancel_btn.connect("clicked", self.toggle_select)
+        header_bar.cancel_btn.connect("clicked", Window.toggle_select)
         self.set_titlebar(header_bar)
 
         # Main Container
@@ -131,10 +134,8 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         # Accounts List
         account_list_cntr = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
-        accounts_scrolled = Gtk.ScrolledWindow()
         accounts_widget = AccountsWidget.get_default()
         accounts_widget.connect("changed", self._do_update_view)
-        accounts_scrolled.add_with_viewport(accounts_widget)
 
         # Search Bar
         search_bar = SearchBar()
@@ -150,7 +151,7 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
                                 actions_bar.on_selected_rows_changed)
 
         account_list_cntr.pack_start(search_bar, False, False, 0)
-        account_list_cntr.pack_start(accounts_scrolled, True, True, 0)
+        account_list_cntr.pack_start(accounts_widget, True, True, 0)
         account_list_cntr.pack_start(actions_bar, False, False, 0)
 
         self.main_stack.add_named(account_list_cntr,
@@ -172,5 +173,5 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
                                   GObject.BindingFlags.BIDIRECTIONAL)
 
     def _on_account_delete(self, *_):
-        self.toggle_select()
+        Window.toggle_select()
         self._do_update_view()
