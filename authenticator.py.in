@@ -56,6 +56,7 @@ if __name__ == "__main__":
     Gio.Resource._register(resource)
 
     from Authenticator.models import Logger
+
     level = Logger.ERROR
     if args.debug:
         level = Logger.DEBUG
@@ -69,6 +70,7 @@ if __name__ == "__main__":
         try:
 
             from Authenticator import Application
+
             app = Application.get_default()
             app.set_use_qrscanner(bool("@ENABLE_QRSCANNER@"))
             exit_status = app.run(None)
