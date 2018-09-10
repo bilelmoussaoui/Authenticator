@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-09 19:37+0200\n"
+"POT-Creation-Date: 2018-09-10 14:43+0200\n"
 "PO-Revision-Date: 2018-09-10 10:11+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
@@ -80,8 +80,12 @@ msgstr "Rediger {} - {}"
 msgid "Save"
 msgstr "Lagre"
 
+#: Authenticator/widgets/accounts/list.py:159
+msgid "The One-Time Passwords expires in {} seconds"
+msgstr ""
+
 #. Label
-#: Authenticator/widgets/accounts/list.py:269
+#: Authenticator/widgets/accounts/list.py:282
 msgid "There are no accounts yet…"
 msgstr "Ingen kontoer enda…"
 
@@ -93,7 +97,7 @@ msgstr "Kopier"
 msgid "Edit"
 msgstr "Rediger"
 
-#: Authenticator/widgets/accounts/row.py:150
+#: Authenticator/widgets/accounts/row.py:149
 msgid "Couldn't generate the secret code"
 msgstr "Kunne ikke generere hemmelig kode"
 
@@ -158,16 +162,19 @@ msgid "Huge database of (290+) websites/applications"
 msgstr "Stor database med (290+) nettsider/programmer"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:43
-msgid "Revamped main window to follow more the GNOME HIG"
-msgstr "Omorganisering av hovedvinduet for bedre overensstemmelse med GNOME HIG"
+#, fuzzy
+msgid "Revamped main window to more closely follow the GNOME HIG"
+msgstr ""
+"Omorganisering av hovedvinduet for bedre overensstemmelse med GNOME HIG"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:44
 msgid "Revamped add a new account window to make it easier to use"
 msgstr "Omorganisering av vindu for tillegg av konto for enklere bruk"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:45
+#, fuzzy
 msgid ""
-"Possibility to add an account from a provider not listed in the shiped "
+"Possibility to add an account from a provider not listed in the shipped "
 "database"
 msgstr ""
 "Mulighet for å legge til en konto fra en tilbyder som ikke er opplistet i "
@@ -178,7 +185,8 @@ msgid "Possibilty to edit an account"
 msgstr "Mulighet til å redigere en konto"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:47
-msgid "One Time Password is now visible by default"
+#, fuzzy
+msgid "One Time Password now visible by default"
 msgstr "Engangspassord er nå synlige som forvalg"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:54

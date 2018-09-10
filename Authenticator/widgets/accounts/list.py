@@ -150,7 +150,7 @@ class AccountsWidget(Gtk.Box, GObject.GObject):
         childes = self.accounts_container.get_children()
         ordered_childes = sorted(childes, key=lambda children: children.provider.lower())
         for i in range(len(ordered_childes)):
-            self.reorder_child(ordered_childes[i], i)
+            self.accounts_container.reorder_child(ordered_childes[i], i)
         self.show_all()
 
     def _on_counter_updated(self, accounts_manager, counter):

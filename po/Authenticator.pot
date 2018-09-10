@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Authenticator\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-09 19:37+0200\n"
+"POT-Creation-Date: 2018-09-10 14:43+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -78,8 +78,12 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
+#: Authenticator/widgets/accounts/list.py:159
+msgid "The One-Time Passwords expires in {} seconds"
+msgstr ""
+
 #. Label
-#: Authenticator/widgets/accounts/list.py:269
+#: Authenticator/widgets/accounts/list.py:282
 msgid "There are no accounts yet…"
 msgstr ""
 
@@ -91,7 +95,7 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-#: Authenticator/widgets/accounts/row.py:150
+#: Authenticator/widgets/accounts/row.py:149
 msgid "Couldn't generate the secret code"
 msgstr ""
 
@@ -155,7 +159,7 @@ msgid "Huge database of (290+) websites/applications"
 msgstr ""
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:43
-msgid "Revamped main window to follow more the GNOME HIG"
+msgid "Revamped main window to more closely follow the GNOME HIG"
 msgstr ""
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:44
@@ -164,7 +168,7 @@ msgstr ""
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:45
 msgid ""
-"Possibility to add an account from a provider not listed in the shiped "
+"Possibility to add an account from a provider not listed in the shipped "
 "database"
 msgstr ""
 
@@ -173,7 +177,7 @@ msgid "Possibilty to edit an account"
 msgstr ""
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:47
-msgid "One Time Password is now visible by default"
+msgid "One Time Password now visible by default"
 msgstr ""
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:54
