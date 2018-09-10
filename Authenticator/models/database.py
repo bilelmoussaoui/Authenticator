@@ -80,6 +80,28 @@ class Database:
             Logger.error("[SQL] Couldn't add a new account")
             Logger.error(str(error))
 
+    def get_by_id(self, id_):
+        """
+            Get an account by the ID
+            :param id_: int the account id
+            :return: list: The account data
+        """
+        query = "SELECT * FROM {table} WHERE {key}=?".format(
+            key=self.primary_key, table=self.table_name)
+        try:
+            data = self.conn.cursor().execute(query, (id_,))
+            obj = data.fetchone()
+            return OrderedDict([
+                ("id", obj[0]),
+                ("username", obj[1]),
+                ("provider", obj[2]),
+                ("secret_id", obj[3])
+            ])
+        except Exception as error:
+            Logger.error("[SQL] Couldn't get account with ID={}".format(id_))
+            Logger.error(str(error))
+        return None
+
     def get_secret_id(self, id_):
         """
         Get the secret code by id
@@ -124,6 +146,19 @@ class Database:
         except Exception as error:
             Logger.error("[SQL] Couldn't update account name by id")
             Logger.error(error)
+
+    def search(self, terms):
+        filters = " ".join(terms)
+        if filters:
+            filters = "%" + filters + "%"
+        query = "SELECT {key} FROM {table} WHERE username LIKE ?".format(table=self.table_name, key=self.primary_key)
+        try:
+            data = self.conn.cursor().execute(query, (filters, ))
+            return [str(account[0]) for account in data.fetchall()]
+        except Exception as error:
+            Logger.error("[SQL]: Couldn't search for an account")
+            Logger.error(str(error))
+            return []
 
     @property
     def count(self):

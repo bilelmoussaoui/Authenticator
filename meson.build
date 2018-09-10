@@ -20,12 +20,20 @@ if get_option('enable-zbar')
   use_zebar = true
 endif
 
-
+python_bin = python.find_python()
+if not python_bin.found()
+    error('No valid python3 binary found')
+else
+    message('Found python3 binary')
+endif
 
 PYTHON_DIR = join_paths(get_option('prefix'), python.sysconfig_path('purelib'))
 DATA_DIR = join_paths(get_option('prefix'), get_option('datadir'), meson.project_name())
 LOCALE_DIR = join_paths(get_option('prefix'), get_option('localedir'))
 LIB_DIR = join_paths(get_option('prefix'), get_option('libdir'), meson.project_name())
+SERVICES_DIR = join_paths(get_option('datadir'), 'dbus-1', 'services')
+SEARCH_PROVIDER_DIR = join_paths(get_option('datadir'), 'gnome-shell', 'search-providers')
+LIBEXEC_DIR = join_paths(get_option('prefix'), get_option('libexecdir'))
 
 subproject('libgd',
   default_options: [
@@ -44,12 +52,16 @@ conf = configuration_data()
 conf.set('DATA_DIR', DATA_DIR)
 conf.set('LOCALE_DIR', LOCALE_DIR)
 conf.set('PYTHON_DIR', PYTHON_DIR)
+conf.set('PYTHON_EXEC_DIR', join_paths(get_option('prefix'), python.sysconfig_path('stdlib')))
 conf.set('VERSION', meson.project_version())
 conf.set('ENABLE_QRSCANNER', use_zbar)
 conf.set('LIB_DIR', LIB_DIR)
+conf.set('libexecdir', LIBEXEC_DIR)
+conf.set('PYTHON', python_bin.path())
 
 subdir('data')
 subdir('po')
+subdir('search-provider')
 
 configure_file(
   input: 'authenticator.py.in',

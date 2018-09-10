@@ -68,6 +68,11 @@ class Account(GObject.GObject):
 
         return Account(obj['id'], username, provider, secret_id)
 
+    @staticmethod
+    def get_by_id(id_):
+        obj = Database.get_default().get_by_id(id_)
+        return Account(obj['id'], obj['username'], obj['provider'], obj['secret_id'])
+
     def update(self, username, provider):
         """
         Update the account name and/or provider.
