@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Serbian (Authenticator)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-10 14:43+0200\n"
+"POT-Creation-Date: 2018-09-10 17:56+0200\n"
 "PO-Revision-Date: 2018-03-24 20:59+0000\n"
 "Last-Translator: Slobodan Terzić <githzerai06@gmail.com>\n"
 "Language-Team: Serbian (latin) <https://hosted.weblate.org/projects/"
@@ -77,12 +77,12 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: Authenticator/widgets/accounts/list.py:159
+#: Authenticator/widgets/accounts/list.py:163
 msgid "The One-Time Passwords expires in {} seconds"
 msgstr ""
 
 #. Label
-#: Authenticator/widgets/accounts/list.py:282
+#: Authenticator/widgets/accounts/list.py:286
 #, fuzzy
 msgid "There are no accounts yet…"
 msgstr "Još uvek nema naloga..."
@@ -163,74 +163,82 @@ msgstr ""
 msgid "Huge database of (290+) websites/applications"
 msgstr ""
 
-#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:43
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:34
+msgid "GNOME Shell Search provider"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:35
+msgid "Codes expire simultaneously #91"
+msgstr ""
+
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:42
 msgid "Revamped main window to more closely follow the GNOME HIG"
 msgstr ""
 
-#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:44
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:43
 msgid "Revamped add a new account window to make it easier to use"
 msgstr ""
 
-#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:45
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:44
 msgid ""
 "Possibility to add an account from a provider not listed in the shipped "
 "database"
 msgstr ""
 
-#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:46
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:45
 msgid "Possibilty to edit an account"
 msgstr ""
 
-#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:47
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:46
 msgid "One Time Password now visible by default"
 msgstr ""
 
-#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:54
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:53
 msgid "Fix python-dbus by using GDbus instead"
 msgstr ""
 
-#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:61
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:60
 msgid "Fix the QRScanner on GNOME Shell"
 msgstr ""
 
-#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:62
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:61
 msgid "Add a new entry for the account's username"
 msgstr ""
 
-#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:63
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:62
 msgid "Updated database of supported accounts"
 msgstr ""
 
-#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:70
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:69
 msgid "HOTFIX: App not running in DE other than GNOME"
 msgstr ""
 
-#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:77
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:76
 #, fuzzy
 msgid "Rename project to Authenticator"
 msgstr "O Autentifikatoru"
 
-#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:78
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:77
 msgid "Cleaner code base"
 msgstr ""
 
-#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:79
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:78
 msgid "Faster startup"
 msgstr ""
 
-#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:80
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:79
 msgid "Remove unneeded features"
 msgstr ""
 
-#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:81
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:80
 msgid "Switch to pyzbar instead of zbarlight"
 msgstr ""
 
-#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:82
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:81
 msgid "Flatpak package"
 msgstr ""
 
-#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:89
+#: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:88
 msgid "Bilal Elmoussaoui"
 msgstr ""
 
@@ -247,11 +255,11 @@ msgstr "Gnome;GTK;Verification;Overa;"
 msgid "com.github.bilelmoussaoui.Authenticator"
 msgstr "com.github.bilelmoussaoui.Authenticator"
 
-#: authenticator.py.in:48
+#: authenticator.py.in:49
 msgid "Start in debug mode"
 msgstr "Pokreni u režimu za ispravljanje grešaka"
 
-#: authenticator.py.in:50
+#: authenticator.py.in:51
 msgid "Authenticator version number"
 msgstr "Verzija Autentifikatora"
 

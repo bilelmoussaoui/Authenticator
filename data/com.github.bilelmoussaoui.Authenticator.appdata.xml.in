@@ -16,16 +16,7 @@
   </description>
   <screenshots>
     <screenshot type="default">
-      <image width="552" height="649">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/screenshots/screenshot1.png</image>
-    </screenshot>
-    <screenshot>
-      <image width="402" height="649">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/screenshots/screenshot2.png</image>
-    </screenshot>
-    <screenshot>
-      <image width="402" height="649">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/screenshots/screenshot3.png</image>
-    </screenshot>
-    <screenshot>
-      <image width="552" height="649">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/screenshots/screenshot4.png</image>
+      <image width="651" height="699">https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/screenshots/screenshot1.png</image>
     </screenshot>
   </screenshots>
   <url type="homepage">https://github.com/bilelmoussaoui/Authenticator</url>
@@ -37,6 +28,14 @@
   </categories>
   <content_rating type="oars-1.0" />
   <releases>
+    <release version="0.2.4" date="2018-09-10">
+        <description>
+            <ul>
+                <li>GNOME Shell Search provider</li>
+                <li>Codes expire simultaneously #91 </li>
+            </ul>
+        </description>
+    </release>
     <release version="0.2.3" date="2018-09-09">
         <description>
             <ul>
