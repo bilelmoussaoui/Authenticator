@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-10 14:43+0200\n"
-"PO-Revision-Date: 2018-09-09 22:32+0000\n"
+"PO-Revision-Date: 2018-09-10 12:50+0000\n"
 "Last-Translator: Heimen Stoffels <vistausss@outlook.com>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/authenticator/"
 "translation/nl/>\n"
@@ -82,7 +82,7 @@ msgstr "Opslaan"
 
 #: Authenticator/widgets/accounts/list.py:159
 msgid "The One-Time Passwords expires in {} seconds"
-msgstr ""
+msgstr "Het eenmalige wachtwoord vervalt over {} seconden"
 
 #. Label
 #: Authenticator/widgets/accounts/list.py:282
@@ -163,7 +163,6 @@ msgid "Huge database of (290+) websites/applications"
 msgstr "Enorme databank met (meer dan 290) websites/applicaties"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:43
-#, fuzzy
 msgid "Revamped main window to more closely follow the GNOME HIG"
 msgstr "Hoofdvenster opnieuw ontworpen om meer te voldoen aan de GNOME HIG"
 
@@ -173,7 +172,6 @@ msgstr ""
 "Nieuw account-venster opnieuw ontworpen zodat het eenvoudig is geworden"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:45
-#, fuzzy
 msgid ""
 "Possibility to add an account from a provider not listed in the shipped "
 "database"
@@ -186,7 +184,6 @@ msgid "Possibilty to edit an account"
 msgstr "Mogelijkheid om een account te bewerken"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:47
-#, fuzzy
 msgid "One Time Password now visible by default"
 msgstr "Eenmalig wachtwoord is nu standaard zichtbaar"
 
