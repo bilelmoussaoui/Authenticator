@@ -40,7 +40,8 @@ if __name__ == "__main__":
     gettext.bindtextdomain('Authenticator', '@LOCALE_DIR@')
     gettext.textdomain('Authenticator')
     VERSION = "@VERSION@"
-    GIRepository.Repository.prepend_search_path(path.join('@LIB_DIR@', 'girepository-1.0'))
+    GIRepository.Repository.prepend_search_path(
+        path.join('@LIB_DIR@', 'girepository-1.0'))
     GIRepository.Repository.prepend_library_path('@LIB_DIR@')
 
     parser = argparse.ArgumentParser(prog="Authenticator")
@@ -53,8 +54,6 @@ if __name__ == "__main__":
     resource = Gio.resource_load(path.join('@DATA_DIR@',
                                            'com.github.bilelmoussaoui.Authenticator.gresource'))
     Gio.Resource._register(resource)
-
-
 
     from Authenticator.models import Logger
     level = Logger.ERROR

@@ -65,7 +65,8 @@ class Database:
         :param provider: Service provider
         :param secret_id: the secret code
         """
-        query = "INSERT INTO {table} (username, provider, secret_id) VALUES (?, ?, ?)".format(table=self.table_name)
+        query = "INSERT INTO {table} (username, provider, secret_id) VALUES (?, ?, ?)".format(
+            table=self.table_name)
         try:
             self.conn.execute(query, [username, provider, secret_id])
             self.conn.commit()
@@ -85,7 +86,8 @@ class Database:
         :param id_: int the account id
         :return: the secret id
         """
-        query = "SELECT secret_id FROM {table} WHERE {key}=?".format(key=self.primary_key, table=self.table_name)
+        query = "SELECT secret_id FROM {table} WHERE {key}=?".format(
+            key=self.primary_key, table=self.table_name)
         try:
             data = self.conn.cursor().execute(query, (id_,))
             return data.fetchone()[0]
@@ -101,7 +103,8 @@ class Database:
             :param id_: the account ID
             :type id_: int
         """
-        query = "DELETE FROM {table} WHERE {key}=?".format(key=self.primary_key, table=self.table_name)
+        query = "DELETE FROM {table} WHERE {key}=?".format(
+            key=self.primary_key, table=self.table_name)
         try:
             self.conn.execute(query, (id_,))
             self.conn.commit()
@@ -129,7 +132,8 @@ class Database:
 
            :return: int
         """
-        query = "SELECT COUNT({key}) AS count FROM {table}".format(key=self.primary_key, table=self.table_name)
+        query = "SELECT COUNT({key}) AS count FROM {table}".format(
+            key=self.primary_key, table=self.table_name)
         try:
             data = self.conn.cursor().execute(query)
             return data.fetchone()[0]
@@ -145,7 +149,8 @@ class Database:
 
             :return list
         """
-        query = "SELECT * FROM {table} ORDER BY provider ASC, username DESC".format(table=self.table_name)
+        query = "SELECT * FROM {table} ORDER BY provider ASC, username DESC".format(
+            table=self.table_name)
         try:
             data = self.conn.cursor().execute(query)
             accounts = data.fetchall()
@@ -208,7 +213,8 @@ class Database:
             Check if the used table are created or not.
             :return bool
         """
-        query = "SELECT {key} from {table} LIMIT 1".format(key=self.primary_key, table=self.table_name)
+        query = "SELECT {key} from {table} LIMIT 1".format(
+            key=self.primary_key, table=self.table_name)
         try:
             self.conn.cursor().execute(query)
             return True

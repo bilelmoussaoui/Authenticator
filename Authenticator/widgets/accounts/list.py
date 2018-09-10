@@ -48,7 +48,8 @@ class AccountsWidget(Gtk.Box, GObject.GObject):
     def _build_widgets(self):
         self.otp_progress_bar = Gtk.ProgressBar()
         self.add(self.otp_progress_bar)
-        AccountsManager.get_default().connect("counter_updated", self._on_counter_updated)
+        AccountsManager.get_default().connect(
+            "counter_updated", self._on_counter_updated)
 
         self.accounts_container = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         self.accounts_container.get_style_context().add_class("accounts-container")
@@ -72,7 +73,8 @@ class AccountsWidget(Gtk.Box, GObject.GObject):
             accounts_list.connect("account-deleted", self._on_account_deleted)
             self._providers[provider] = accounts_list
             provider_widget = ProviderWidget(accounts_list, provider)
-            self.accounts_container.pack_start(provider_widget, False, False, 0)
+            self.accounts_container.pack_start(
+                provider_widget, False, False, 0)
         if not _id:
             accounts_list.append_new(username, provider, token)
             self._reorder()
@@ -148,7 +150,8 @@ class AccountsWidget(Gtk.Box, GObject.GObject):
             Re-order the ProviderWidget on AccountsWidget.
         """
         childes = self.accounts_container.get_children()
-        ordered_childes = sorted(childes, key=lambda children: children.provider.lower())
+        ordered_childes = sorted(
+            childes, key=lambda children: children.provider.lower())
         for i in range(len(ordered_childes)):
             self.accounts_container.reorder_child(ordered_childes[i], i)
         self.show_all()
@@ -156,7 +159,8 @@ class AccountsWidget(Gtk.Box, GObject.GObject):
     def _on_counter_updated(self, accounts_manager, counter):
         counter_fraction = int(counter) / accounts_manager.counter_max
         self.otp_progress_bar.set_fraction(counter_fraction)
-        self.otp_progress_bar.set_tooltip_text(_("The One-Time Passwords expires in {} seconds").format(counter))
+        self.otp_progress_bar.set_tooltip_text(
+            _("The One-Time Passwords expires in {} seconds").format(counter))
 
 
 class ProviderWidget(Gtk.Box):

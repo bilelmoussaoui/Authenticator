@@ -50,7 +50,8 @@ class Keyring:
         :return: the secret OTP token.
         """
         schema = Keyring.get_default().schema
-        password = Secret.password_lookup_sync(schema, {"id": str(secret_id)}, None)
+        password = Secret.password_lookup_sync(
+            schema, {"id": str(secret_id)}, None)
         return password
 
     @staticmethod
@@ -75,7 +76,8 @@ class Keyring:
             schema,
             data,
             Secret.COLLECTION_DEFAULT,
-            "{provider} OTP ({username})".format(provider=provider, username=username),
+            "{provider} OTP ({username})".format(
+                provider=provider, username=username),
             token,
             None
         )
@@ -89,5 +91,6 @@ class Keyring:
         :return bool: Either the token was removed successfully or not
         """
         schema = Keyring.get_default().schema
-        success = Secret.password_clear_sync(schema, {"id": str(secret_id)}, None)
+        success = Secret.password_clear_sync(
+            schema, {"id": str(secret_id)}, None)
         return success

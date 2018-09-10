@@ -2,13 +2,13 @@
 """
 YAML database to JSON converter.
 """
-from subprocess import call
 import json
 import tempfile
-from os import path, remove
-from glob import glob
-from shutil import rmtree
 from collections import OrderedDict
+from glob import glob
+from os import path, remove
+from shutil import rmtree
+from subprocess import call
 
 import yaml
 
@@ -18,11 +18,10 @@ DATA_DIR = path.join(TMP_FOLDER, "_data")
 OUTPUT_DIR = path.join(path.dirname(
     path.realpath(__file__)), "../data/data.json")
 
-
 print("Cloning the repository...")
 if path.exists(TMP_FOLDER):
     rmtree(TMP_FOLDER)
-call(["git", "clone", GIT_CLONE_URI, TMP_FOLDER])
+call(["git", "clone", "--depth=1", GIT_CLONE_URI, TMP_FOLDER])
 
 if path.exists(OUTPUT_DIR):
     remove(OUTPUT_DIR)
@@ -48,7 +47,6 @@ for db_file in glob(DATA_DIR + "/*.yml"):
         except (yaml.YAMLError, TypeError, KeyError) as error:
             pass
 output = OrderedDict(sorted(output.items(), key=lambda x: x[0].lower()))
-
 
 with open(OUTPUT_DIR, 'w') as data:
     json.dump(output, data, indent=4)

@@ -139,7 +139,8 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
 
         # Search Bar
         search_bar = SearchBar()
-        self.connect("key-press-event", lambda x, y: search_bar.handle_event(y))
+        self.connect("key-press-event", lambda x,
+                     y: search_bar.handle_event(y))
         search_bar.search_button = header_bar.search_btn
         search_bar.search_list = accounts_widget.accounts_lists
 
