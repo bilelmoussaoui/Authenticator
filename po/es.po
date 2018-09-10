@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Authenticator\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-09 19:37+0200\n"
-"PO-Revision-Date: 2018-09-10 10:11+0000\n"
+"PO-Revision-Date: 2018-09-10 11:35+0000\n"
 "Last-Translator: advocatux <advocatux@airpost.net>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/authenticator/"
 "translation/es/>\n"
@@ -148,102 +148,109 @@ msgstr "Características:"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:12
 msgid "QR code scanner"
-msgstr ""
+msgstr "Escáner de código QR"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:13
 msgid "Beautiful UI"
-msgstr ""
+msgstr "Excelente interfaz de usuario"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:14
 msgid "Huge database of (290+) websites/applications"
-msgstr ""
+msgstr "Enorme (+290) base de datos de sitios web y aplicaciones"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:43
 msgid "Revamped main window to follow more the GNOME HIG"
 msgstr ""
+"Reformada la ventana principal para seguir las directrices sobre la interfaz "
+"humana («HIG») de GNOME"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:44
 msgid "Revamped add a new account window to make it easier to use"
 msgstr ""
+"Reformada la ventana para añadir una cuenta nueva y hacer su uso más sencillo"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:45
 msgid ""
 "Possibility to add an account from a provider not listed in the shiped "
 "database"
 msgstr ""
+"Posibilidad de añadir una cuenta de un proveedor que no esté incluido en la "
+"base de datos por defecto"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:46
 msgid "Possibilty to edit an account"
-msgstr ""
+msgstr "Posibilidad de editar una cuenta"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:47
 msgid "One Time Password is now visible by default"
-msgstr ""
+msgstr "Las contraseñas de un solo uso son ahora visibles por defecto"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:54
 msgid "Fix python-dbus by using GDbus instead"
-msgstr ""
+msgstr "Arreglado el problema de «python-dbus» al usar «GDbus» ahora"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:61
 msgid "Fix the QRScanner on GNOME Shell"
-msgstr ""
+msgstr "Arreglado QRScanner cuando se usa en la «shell» de GNOME"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:62
 msgid "Add a new entry for the account's username"
-msgstr ""
+msgstr "Añadir una nueva entrada para el nombre de usuario de la cuenta"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:63
 msgid "Updated database of supported accounts"
-msgstr ""
+msgstr "Actualizada la base de datos de cuentas soportadas"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:70
 msgid "HOTFIX: App not running in DE other than GNOME"
 msgstr ""
+"ARREGLO RÁPIDO: la aplicación no funcionaba en otro entorno de escritorio "
+"distinto a GNOME"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:77
 msgid "Rename project to Authenticator"
-msgstr ""
+msgstr "Renombrado el proyecto a «Authenticator»"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:78
 msgid "Cleaner code base"
-msgstr ""
+msgstr "Una base de código más limpio"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:79
 msgid "Faster startup"
-msgstr ""
+msgstr "Arranque más rápido"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:80
 msgid "Remove unneeded features"
-msgstr ""
+msgstr "Eliminadas las características innecesarias"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:81
 msgid "Switch to pyzbar instead of zbarlight"
-msgstr ""
+msgstr "Cambiado a «pyzbar» en vez de «zbarlight»"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:82
 msgid "Flatpak package"
-msgstr ""
+msgstr "Paquete Flatpak"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:89
 msgid "Bilal Elmoussaoui"
-msgstr ""
+msgstr "Bilal Elmoussaoui"
 
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:4
 msgid "Two-factor authentication"
-msgstr ""
+msgstr "Autenticación de doble factor"
 
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:10
 msgid "Gnome;GTK;Verification;"
-msgstr ""
+msgstr "Gnome;GTK;Autenticación;"
 
 #: data/com.github.bilelmoussaoui.Authenticator.desktop.in:11
 msgid "com.github.bilelmoussaoui.Authenticator"
-msgstr ""
+msgstr "com.github.bilelmoussaoui.Authenticator"
 
 #: authenticator.py.in:48
 msgid "Start in debug mode"
-msgstr ""
+msgstr "Iniciar en el modo de depuración"
 
 #: authenticator.py.in:50
 msgid "Authenticator version number"
-msgstr ""
+msgstr "Número de versión de «Authenticator»"
