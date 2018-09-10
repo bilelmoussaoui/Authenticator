@@ -40,11 +40,11 @@
     <release version="0.2.3" date="2018-09-09">
         <description>
             <ul>
-                <li>Revamped main window to follow more the GNOME HIG</li>
+                <li>Revamped main window to more closely follow the GNOME HIG</li>
                 <li>Revamped add a new account window to make it easier to use</li>
-                <li>Possibility to add an account from a provider not listed in the shiped database</li>
+                <li>Possibility to add an account from a provider not listed in the shipped database</li>
                 <li>Possibilty to edit an account</li>
-                <li>One Time Password is now visible by default</li>
+                <li>One Time Password now visible by default</li>
             </ul>
         </description>
     </release>
