@@ -67,8 +67,8 @@ class AccountsWidget(Gtk.Box, GObject.GObject):
         accounts_list = self._providers.get(provider)
         if not accounts_list:
             accounts_list = AccountsList()
-            accounts_list.connect(
-                "selected-count-rows-changed", self._on_selected_count_changed)
+            accounts_list.connect("selected-count-rows-changed",
+                                  self._on_selected_count_changed)
             accounts_list.connect("account-deleted", self._on_account_deleted)
             self._providers[provider] = accounts_list
             provider_widget = ProviderWidget(accounts_list, provider)

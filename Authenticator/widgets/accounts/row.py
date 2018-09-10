@@ -149,7 +149,6 @@ class AccountRow(Gtk.ListBoxRow, GObject.GObject):
                 _("Couldn't generate the secret code"))
         self.pin_label.get_style_context().add_class("token-label")
 
-
         otp_container.pack_start(self.pin_label, False, False, 6)
         otp_container.set_valign(Gtk.Align.CENTER)
         otp_container.set_halign(Gtk.Align.START)
@@ -206,4 +205,3 @@ class AccountRow(Gtk.ListBoxRow, GObject.GObject):
         """
         if pin:
             self.pin_label.set_text(pin)
-
