@@ -21,5 +21,11 @@
       <description>
       </description>
     </key>
+    <key name="gpg-location" type="s">
+      <default>'~/.gnupg/'</default>
+      <summary>GPG keys location</summary>
+      <description>
+      </description>
+    </key>
   </schema>
 </schemalist>

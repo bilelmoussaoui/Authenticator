@@ -92,3 +92,11 @@ class Settings(Gio.Settings):
             :type is_maximized: bool
         """
         self.set_boolean("is-maximized", is_maximized)
+
+    @property
+    def gpg_location(self):
+        return self.get_string('gpg-location')
+
+    @gpg_location.setter
+    def gpg_location(self, new_location):
+        self.set_string("gpg-location", new_location)

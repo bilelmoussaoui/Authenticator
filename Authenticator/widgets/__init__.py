@@ -22,3 +22,6 @@ from .actions_bar import ActionsBar
 from .headerbar import HeaderBar
 from .search_bar import SearchBar
 from .window import Window
+from .settings import SettingsWindow
+from .utils import import_json, export_json, import_pgp_json, export_pgp_json
+from .backup import GPGRestoreWindow

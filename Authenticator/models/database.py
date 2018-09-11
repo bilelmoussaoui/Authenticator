@@ -134,6 +134,14 @@ class Database:
             Logger.error("[SQL] Couldn't remove the account '{}'".format(id_))
             Logger.error(str(error))
 
+    def clear(self):
+        """
+            Remove all the existing accounts.
+        """
+        query = "DELETE FROM {table}".format(table=self.table_name)
+        self.conn.execute(query)
+        self.conn.commit()
+
     def update(self, username, provider, id_):
         """
         Update an account by id
@@ -153,7 +161,7 @@ class Database:
             filters = "%" + filters + "%"
         query = "SELECT {key} FROM {table} WHERE username LIKE ?".format(table=self.table_name, key=self.primary_key)
         try:
-            data = self.conn.cursor().execute(query, (filters, ))
+            data = self.conn.cursor().execute(query, (filters,))
             return [str(account[0]) for account in data.fetchall()]
         except Exception as error:
             Logger.error("[SQL]: Couldn't search for an account")

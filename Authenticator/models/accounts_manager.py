@@ -33,6 +33,7 @@ class AccountsManager(GObject.GObject, Thread):
         Thread.__init__(self)
         self._accounts = []
         self._alive = True
+        self.__fill_accounts()
 
         self.counter_max = 30
         self.counter = self.counter_max
@@ -46,6 +47,13 @@ class AccountsManager(GObject.GObject, Thread):
 
     def add(self, account):
         self._accounts.append(account)
+
+    @property
+    def accounts(self):
+        return self._accounts
+
+    def clear(self):
+        self._accounts = []
 
     def kill(self):
         self._alive = False
@@ -65,3 +73,12 @@ class AccountsManager(GObject.GObject, Thread):
                 self.update_childes("otp_out_of_date")
             self.emit("counter_updated", self.counter)
             sleep(1)
+
+    def __fill_accounts(self):
+        from .database import Database
+        from .account import Account
+        accounts = Database.get_default().accounts
+        for account_obj in accounts:
+            account = Account(account_obj["id"], account_obj["username"], account_obj["provider"],
+                              account_obj["secret_id"])
+            self.add(account)

@@ -64,27 +64,29 @@ class AccountsWidget(Gtk.Box, GObject.GObject):
             AccountsWidget.instance = AccountsWidget()
         return AccountsWidget.instance
 
-    def append(self, username, provider, token, _id=None):
-        accounts_list = self._providers.get(provider)
+    def append(self, account):
+        accounts_list = self._providers.get(account.provider)
         if not accounts_list:
             accounts_list = AccountsList()
             accounts_list.connect("selected-count-rows-changed",
                                   self._on_selected_count_changed)
             accounts_list.connect("account-deleted", self._on_account_deleted)
-            self._providers[provider] = accounts_list
-            provider_widget = ProviderWidget(accounts_list, provider)
-            self.accounts_container.pack_start(
-                provider_widget, False, False, 0)
-        if not _id:
-            accounts_list.append_new(username, provider, token)
-            self._reorder()
-        else:
-            accounts_list.append(_id, username, provider, token)
+            self._providers[account.provider] = accounts_list
+            provider_widget = ProviderWidget(accounts_list, account.provider)
+            self.accounts_container.pack_start(provider_widget, False, False, 0)
+        accounts_list.add_row(account)
+        self._reorder()
         self.emit("changed")
 
     @property
     def accounts_lists(self):
         return self._providers.values()
+
+    def clear(self):
+        for account_list in self._providers.values():
+            self.accounts_container.remove(account_list.get_parent())
+        self._providers = {}
+        self.emit("changed")
 
     def set_state(self, state):
         for account_list in self._providers.values():
@@ -109,24 +111,17 @@ class AccountsWidget(Gtk.Box, GObject.GObject):
                 break
         if account_row:
             current_account_list.remove(account_row)
-            self.append(account_row.account.username,
-                        new_provider,
-                        account_row.account.secret_id,
-                        account_row.account.id)
+            account_row.account.provider = new_provider
+            self.append(account_row.account)
         self._on_account_deleted(current_account_list)
         self._reorder()
         self._clean_unneeded_providers_widgets()
 
     def __fill_data(self):
         """Fill the Accounts List with accounts."""
-        accounts = Database.get_default().accounts
+        accounts = AccountsManager.get_default().accounts
         for account in accounts:
-            _id = account["id"]
-            username = account["username"]
-            provider = account["provider"]
-            secret_id = account["secret_id"]
-
-            self.append(username, provider, secret_id, _id)
+            self.append(account)
 
     def _on_selected_count_changed(self, *_):
         total_selected_rows = 0
@@ -214,11 +209,11 @@ class AccountsList(Gtk.ListBox, GObject.GObject):
 
     def append_new(self, name, provider, token):
         account = Account.create(name, provider, token)
-        self._add_row(account)
+        self.add_row(account)
 
     def append(self, _id, name, provider, secret_id):
         account = Account(_id, name, provider, secret_id)
-        self._add_row(account)
+        self.add_row(account)
 
     def delete(self, _):
         # Remove an account from the list
@@ -239,8 +234,7 @@ class AccountsList(Gtk.ListBox, GObject.GObject):
         self.emit("account-deleted")
         self.set_state(AccountsListState.NORMAL)
 
-    def _add_row(self, account):
-        AccountsManager.get_default().add(account)
+    def add_row(self, account):
         row = AccountRow(account)
         row.connect("on_selected", self._on_row_checked)
         self.add(row)
