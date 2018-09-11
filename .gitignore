@@ -11,6 +11,7 @@ tags
 test/
 .auth/
 auth/
+_build/
 
 # Distribution / packaging
 builddir/

@@ -17,9 +17,6 @@
  along with Authenticator. If not, see <http://www.gnu.org/licenses/>.
 """
 from os import remove, path
-
-from PIL import Image
-from pyzbar.pyzbar import decode
 from urllib.parse import urlparse, parse_qsl
 
 from .logger import Logger
@@ -27,23 +24,30 @@ from .otp import OTP
 
 
 class QRReader:
-
+    ZBAR_FOUND = True
     def __init__(self, filename):
         self.filename = filename
         self._codes = None
 
     def read(self):
-        decoded_data = decode(Image.open(self.filename))
-        if path.isfile(self.filename):
-            remove(self.filename)
         try:
-            url = urlparse(decoded_data[0].data.decode())
-            query_params = parse_qsl(url.query)
-            self._codes = dict(query_params)
-            return self._codes.get("secret")
-        except (KeyError, IndexError):
-            Logger.error("Invalid QR image")
-            return None
+            from PIL import Image
+            from pyzbar.pyzbar import decode
+            decoded_data = decode(Image.open(self.filename))
+            if path.isfile(self.filename):
+                remove(self.filename)
+            try:
+                url = urlparse(decoded_data[0].data.decode())
+                query_params = parse_qsl(url.query)
+                self._codes = dict(query_params)
+                return self._codes.get("secret")
+            except (KeyError, IndexError):
+                Logger.error("Invalid QR image")
+                return None
+        except ImportError:
+            from ..application import Application
+            Application.USE_QRSCANNER = False
+            QRReader.ZBAR_FOUND = False
 
     def is_valid(self):
         """

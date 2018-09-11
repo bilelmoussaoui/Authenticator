@@ -81,4 +81,5 @@ class AccountsManager(GObject.GObject, Thread):
         for account_obj in accounts:
             account = Account(account_obj["id"], account_obj["username"], account_obj["provider"],
                               account_obj["secret_id"])
-            self.add(account)
+            if account.otp:
+                self.add(account)

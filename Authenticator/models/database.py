@@ -31,7 +31,7 @@ class Database:
     # Default instance
     instance = None
     # Database version number
-    db_version = 3
+    db_version = 4
 
     table_name = "accounts"
     primary_key = "id"
