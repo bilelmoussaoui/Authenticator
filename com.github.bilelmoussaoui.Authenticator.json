@@ -35,6 +35,7 @@
         "--without-xv",
         "--without-imagemagick",
         "--disable-video",
+        "--without-python",
         "--enable-codes=qrcode"
       ],
       "sources": [{
@@ -126,8 +127,8 @@
       ],
       "sources": [{
         "type": "archive",
-        "url": "https://github.com/NaturalHistoryMuseum/pyzbar/archive/v0.1.4.tar.gz",
-        "sha256": "7387899656e4e9564b7e507b2c26729c4863b7a79bbaf29c80c956a5654d2ee0"
+        "url": "https://github.com/NaturalHistoryMuseum/pyzbar/archive/v0.1.7.tar.gz",
+        "sha256": "4dbbece533650f2aeb6c8d1f41cf424614d2877d7331c48a9eed35ae9f949626"
       }]
     },
     {
