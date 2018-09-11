@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-10 17:56+0200\n"
-"PO-Revision-Date: 2018-09-10 12:50+0000\n"
+"PO-Revision-Date: 2018-09-11 17:34+0000\n"
 "Last-Translator: Heimen Stoffels <vistausss@outlook.com>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/authenticator/"
 "translation/nl/>\n"
@@ -164,11 +164,11 @@ msgstr "Enorme databank met (meer dan 290) websites/applicaties"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:34
 msgid "GNOME Shell Search provider"
-msgstr ""
+msgstr "GNOME Shell zoekdienst"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:35
 msgid "Codes expire simultaneously #91"
-msgstr ""
+msgstr "Codes vervallen tegelijk #91"
 
 #: data/com.github.bilelmoussaoui.Authenticator.appdata.xml.in:42
 msgid "Revamped main window to more closely follow the GNOME HIG"
