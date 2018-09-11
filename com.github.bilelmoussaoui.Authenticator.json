@@ -9,6 +9,8 @@
     "--share=ipc", "--socket=x11",
     /* Wayland */
     "--socket=wayland",
+    /* Filesystem */
+     "--filesystem=home",
     /* Keyring */
     "--talk-name=org.freedesktop.secrets",
     /* Screenshot (used to scan QR code)*/
@@ -127,6 +129,20 @@
         "url": "https://github.com/NaturalHistoryMuseum/pyzbar/archive/v0.1.4.tar.gz",
         "sha256": "7387899656e4e9564b7e507b2c26729c4863b7a79bbaf29c80c956a5654d2ee0"
       }]
+    },
+    {
+        "name": "python-gnupg",
+        "buildsystem": "simple",
+        "build-commands": [
+            "pip3 install --prefix=/app python_gnupg-0.4.3-py2.py3-none-any.whl"
+        ],
+        "sources": [
+            {
+                "type": "file",
+                "url": "https://files.pythonhosted.org/packages/4a/87/76ead690afc4c7710012ede242537cd9807dde9de6299e65d075925c0b02/python_gnupg-0.4.3-py2.py3-none-any.whl",
+                "sha256": "faa69bab58ed0936f0ccf96c99b92369b7a1819305d37dfe5c927d21a437a09d"
+            }
+        ]
     },
     {
       "name": "Authenticator",
