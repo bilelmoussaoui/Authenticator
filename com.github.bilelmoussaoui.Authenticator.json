@@ -151,7 +151,7 @@
       "sources": [{
         "type": "git",
         "url": "https://gitlab.gnome.org/bilelmoussaoui/Authenticator",
-        "branch": "flatpak"
+        "branch": "master"
       }]
     }
   ]

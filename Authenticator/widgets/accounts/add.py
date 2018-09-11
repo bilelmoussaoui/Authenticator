@@ -255,10 +255,14 @@ class AccountConfig(Gtk.Box, GObject.GObject):
         if filename:
             qr_reader = QRReader(filename)
             secret = qr_reader.read()
-            if not qr_reader.is_valid():
-                self.__send_notification(_("Invalid QR code"))
+            if qr_reader.ZBAR_FOUND:
+                if not qr_reader.is_valid():
+                    self.__send_notification(_("Invalid QR code"))
+                else:
+                    self.token_entry.set_text(secret)
             else:
-                self.token_entry.set_text(secret)
+                self.__send_notification(_("zbar library is not found. "
+                                           "QRCode scanner will be disabled"))
 
     def __send_notification(self, message):
         """
