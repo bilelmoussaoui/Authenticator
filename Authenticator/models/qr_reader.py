@@ -18,8 +18,12 @@
 """
 from os import remove, path
 
-from PIL import Image
-from pyzbar.pyzbar import decode
+try:
+    from PIL import Image
+    from pyzbar.pyzbar import decode
+except ImportError:
+    from ...application import Application
+    Application.USE_QRSCANNER = False
 from urllib.parse import urlparse, parse_qsl
 
 from .logger import Logger
