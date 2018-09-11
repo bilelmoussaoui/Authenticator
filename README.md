@@ -1,7 +1,7 @@
 [![Translation status](https://hosted.weblate.org/widgets/authenticator/-/svg-badge.svg)](https://hosted.weblate.org/engage/authenticator/?utm_source=widget) [![Version](https://img.shields.io/badge/version-0.2.4-green.svg)](https://github.com/bilelmoussaoui/Authenticator/releases)
 
 # Authenticator
-<img src="https://raw.githubusercontent.com/bilelmoussaoui/Authenticator/master/data/icons/hicolor/256x256/apps/com.github.bilelmoussaoui.Authenticator.png" width="128" height="128" />
+<img src="https://gitlab.gnome.org/World/Authenticator/raw/master/data/icons/hicolor/256x256/apps/com.github.bilelmoussaoui.Authenticator.png" width="128" height="128" />
 <p>Two-factor authentication code generator for GNOME. Created with love using Python and GTK+.</p>
 
 ## Screenshots
@@ -24,17 +24,6 @@ You can install the `flatpak` package of the application from Flathub using
 flatpak install flathub com.github.bilelmoussaoui.Authenticator
 ```
 
-### Gentoo
-Installing Authenticator in Gentoo Linux is as easy as follows:
-```
-emerge sys-auth/authenticator
-```
-
-### Arch Linux
-Authenticator is in the [AUR](https://aur.archlinux.org/packages/authenticator-git/). Use your favorite AUR client, for example [`yay`](https://github.com/Jguer/yay/)
-```
-yay -S authenticator-git
-```
 
 ### Building from source code
 #### Dependecies
@@ -45,6 +34,8 @@ yay -S authenticator-git
 - `ninja`
 - `pyotp`
 - `libsecret`
+- `python-gnupg`
+- `gnupg`
 
 Those dependencies are only used if you build the application with QR code scanner support
 - `Pillow`
@@ -58,32 +49,16 @@ Those dependencies are only used if you build the application with QR code scann
 git clone https://github.com/bilelmoussaoui/Authenticator && cd ./Authenticator
 ```
 
-2 - Install Python dependecies
+2 - Install the dependencies
 
-```bash
-sudo pip install pyotp pyzbar Pillow meson ninja
-```
-
-<sub>PS: In some distributions you will need to use `pip3` instead of `pip` to install the compatible version of the package with Python 3.</sub> <br>
-
-3 - Install system dependencies
-
-The following packages must be installed to build Authenticator.
-
-- Debian / Ubuntu
-
-```bash
-sudo apt install gobject-introspection libgirepository1.0-dev libgtk-3-dev
-```
-
-4 - Afterwards
+3 - Afterwards
 
 ```bash
 meson builddir
 sudo ninja -C builddir install
 ```
 
-5 - You can run the application from the desktop file or from the terminal using
+4 - You can run the application from the desktop file or from the terminal using
 ```bash
 authenticator
 ```
