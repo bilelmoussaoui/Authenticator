@@ -94,3 +94,14 @@ class Keyring:
         success = Secret.password_clear_sync(
             schema, {"id": str(secret_id)}, None)
         return success
+
+    @staticmethod
+    def clear():
+        """
+           Clear all existing accounts.
+
+           :return bool: Either the token was removed successfully or not
+       """
+        schema = Keyring.get_default().schema
+        success = Secret.password_clear_sync(schema, {}, None)
+        return success

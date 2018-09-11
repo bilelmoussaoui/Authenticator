@@ -17,7 +17,7 @@
  along with Authenticator. If not, see <http://www.gnu.org/licenses/>.
 """
 from hashlib import sha256
-
+from gettext import  gettext as _
 from gi.repository import GObject
 
 from .clipboard import Clipboard
@@ -65,8 +65,12 @@ class Account(GObject.GObject):
         # Save the account
         obj = Database.get_default().insert(username, provider, secret_id)
         Keyring.insert(secret_id, provider, username, token)
-
         return Account(obj['id'], username, provider, secret_id)
+
+    @staticmethod
+    def create_from_json(json_obj):
+        provider = json_obj.get("tags", [_("Default")])[0].strip()
+        return Account.create(json_obj["label"], provider, json_obj["secret"])
 
     @staticmethod
     def get_by_id(id_):
@@ -99,3 +103,19 @@ class Account(GObject.GObject):
         if self._code_generated:
             self.otp.update()
             self.emit("otp_updated", self.otp.pin)
+
+    def to_json(self):
+        token = Keyring.get_by_id(self.secret_id)
+        if token:
+            return {
+                "secret": token,
+                "label": self.username,
+                "period": 30,
+                "digits": 6,
+                "type": "OTP",
+                "algorithm": "SHA1",
+                "thumbnail": "Default",
+                "last_used": 0,
+                "tags": [self.provider]
+            }
+        return None

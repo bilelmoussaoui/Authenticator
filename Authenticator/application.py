@@ -22,7 +22,7 @@ from gi import require_version
 
 require_version("Gtk", "3.0")
 from gi.repository import Gtk, GLib, Gio, Gdk
-from .widgets import Window, AboutDialog
+from .widgets import Window, AboutDialog, import_json, export_json, import_pgp_json, export_pgp_json
 from .models import Settings, Clipboard, Logger
 
 
@@ -51,6 +51,7 @@ class Application(Gtk.Application):
         Gtk.Application.do_startup(self)
         # Unlock the keyring
         self.__generate_menu()
+        self.__setup_actions()
         Application.__setup_css()
 
         # Set the default night mode
@@ -74,32 +75,47 @@ class Application(Gtk.Application):
 
     def __generate_menu(self):
         """Generate application menu."""
-        settings = Settings.get_default()
+        # Backup
+        backup_content = Gio.Menu.new()
+        import_menu = Gio.Menu.new()
+        export_menu = Gio.Menu.new()
+
+        import_menu.append_item(Gio.MenuItem.new(_("from a plain-text JSON file"), "app.import_json"))
+        import_menu.append_item(Gio.MenuItem.new(_("from an OpenPGP-encrypted JSON file"), "app.import_pgp_json"))
+        export_menu.append_item(Gio.MenuItem.new(_("in a plain-text JSON file"), "app.export_json"))
+        export_menu.append_item(Gio.MenuItem.new(_("in an OpenPGP-encrypted JSON file"), "app.export_pgp_json"))
+
+        backup_content.insert_submenu(0, _("Restore"), import_menu)
+        backup_content.insert_submenu(1, _("Backup"), export_menu)
+
+        backup_section = Gio.MenuItem.new_section(None, backup_content)
+        self._menu.append_item(backup_section)
+
         # Main section
         main_content = Gio.Menu.new()
         # Night mode action
-        main_content.append_item(Gio.MenuItem.new(_("Night Mode"),
-                                                  "app.night_mode"))
-
+        main_content.append_item(Gio.MenuItem.new(_("Settings"), "app.settings"))
         main_content.append_item(Gio.MenuItem.new(_("About"), "app.about"))
         main_content.append_item(Gio.MenuItem.new(_("Quit"), "app.quit"))
         help_section = Gio.MenuItem.new_section(None, main_content)
         self._menu.append_item(help_section)
 
-        is_night_mode = settings.is_night_mode
-        gv_is_night_mode = GLib.Variant.new_boolean(is_night_mode)
-        action = Gio.SimpleAction.new_stateful("night_mode", None,
-                                               gv_is_night_mode)
-        action.connect("change-state", self.__on_night_mode)
-        self.add_action(action)
+    def __setup_actions(self):
+        settings = Settings.get_default()
 
-        action = Gio.SimpleAction.new("about", None)
-        action.connect("activate", self.__on_about)
-        self.add_action(action)
-
-        action = Gio.SimpleAction.new("quit", None)
-        action.connect("activate", self.__on_quit)
-        self.add_action(action)
+        actions = {
+            "about": self.__on_about,
+            "quit": self.__on_quit,
+            "settings": self.__on_settings,
+            "import_json": self.__on_import_json,
+            "import_pgp_json": self.__on_import_pgp_json,
+            "export_json": self.__on_export_json,
+            "export_pgp_json": self.__on_export_pgp_json
+        }
+        for key, value in actions.items():
+            action = Gio.SimpleAction.new(key, None)
+            action.connect("activate", value)
+            self.add_action(action)
 
     def do_activate(self, *_):
         """On activate signal override."""
@@ -117,16 +133,6 @@ class Application(Gtk.Application):
     def set_use_qrscanner(state):
         Application.USE_QRSCANNER = state
 
-    def __on_night_mode(self, action, *_):
-        """Switch night mode."""
-        settings = Settings.get_default()
-        is_night_mode = not settings.is_night_mode
-        action.set_state(GLib.Variant.new_boolean(is_night_mode))
-        settings.is_night_mode = is_night_mode
-        gtk_settings = Gtk.Settings.get_default()
-        gtk_settings.set_property("gtk-application-prefer-dark-theme",
-                                  is_night_mode)
-
     @staticmethod
     def __on_about(*_):
         """
@@ -136,6 +142,51 @@ class Application(Gtk.Application):
         dialog.set_transient_for(Window.get_default())
         dialog.run()
         dialog.destroy()
+
+    @staticmethod
+    def __on_import_json(*_):
+        from .models import BackupJSON
+        filename = import_json(Window.get_default())
+        if filename:
+            BackupJSON.import_file(filename)
+        Window.get_default().update_view()
+
+    @staticmethod
+    def __on_export_json(*_):
+        from .models import BackupJSON
+        filename = export_json(Window.get_default())
+        if filename:
+            BackupJSON.export_file(filename)
+
+    @staticmethod
+    def __on_import_pgp_json(*_):
+        from .widgets import GPGRestoreWindow
+        filename = import_pgp_json(Window.get_default())
+        if filename:
+            gpg_window = GPGRestoreWindow(filename)
+            gpg_window.set_transient_for(Window.get_default())
+            gpg_window.show_all()
+
+    @staticmethod
+    def __on_export_pgp_json(*_):
+        from .models import BackupPGPJSON
+        filename = export_pgp_json(Window.get_default())
+        if filename:
+            def export_pgp(_, fingerprint):
+                BackupPGPJSON.export_file(filename, fingerprint)
+
+            from .widgets.backup import FingprintPGPWindow
+            fingerprint_window = FingprintPGPWindow(filename)
+            fingerprint_window.set_transient_for(Window.get_default())
+            fingerprint_window.connect("selected", export_pgp)
+            fingerprint_window.show_all()
+
+    @staticmethod
+    def __on_settings(*_):
+        from .widgets import SettingsWindow
+        settings_window = SettingsWindow()
+        settings_window.present()
+        settings_window.show_all()
 
     def __on_quit(self, *_):
         """

@@ -23,6 +23,7 @@ from gi import require_version
 
 require_version("Gtk", "3.0")
 require_version('Gd', '1.0')
+
 from gi.repository import Gd, Gio, Gtk, GObject, Gdk
 
 from ..headerbar import HeaderBarButton
@@ -92,11 +93,11 @@ class AddAccountWindow(Gtk.Window):
 
     def _on_add(self, *_):
         from .list import AccountsWidget
-        account = self.account_config.account
-        username = account["username"]
-        provider = account["provider"]
-        token = account["token"]
-        AccountsWidget.get_default().append(username, provider, token)
+        from ...models import AccountsManager, Account
+        account_obj = self.account_config.account
+        account = Account.create(account_obj["username"], account_obj["provider"], account_obj["token"])
+        AccountsManager.get_default().add(account)
+        AccountsWidget.get_default().append(account)
         self._on_quit()
 
     def _on_key_press(self, _, event):

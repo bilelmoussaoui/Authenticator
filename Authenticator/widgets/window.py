@@ -42,6 +42,7 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         self.set_icon_name("com.github.bilelmoussaoui.Authenticator")
         self.resize(550, 600)
         self.restore_state()
+        AccountsManager.get_default()
         self._build_widgets()
         self.show_all()
 
@@ -67,7 +68,7 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         add_window.show_all()
         add_window.present()
 
-    def _do_update_view(self, *_):
+    def update_view(self, *_):
         header_bar = HeaderBar.get_default()
         count = Database.get_default().count
         if count != 0:
@@ -135,7 +136,7 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
         account_list_cntr = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
         accounts_widget = AccountsWidget.get_default()
-        accounts_widget.connect("changed", self._do_update_view)
+        accounts_widget.connect("changed", self.update_view)
 
         # Search Bar
         search_bar = SearchBar()
@@ -164,7 +165,7 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
 
         self.main_container.pack_start(self.main_stack, True, True, 0)
         self.add(self.main_container)
-        self._do_update_view()
+        self.update_view()
 
         actions_bar.bind_property("visible", header_bar.cancel_btn,
                                   "visible",
@@ -175,4 +176,4 @@ class Window(Gtk.ApplicationWindow, GObject.GObject):
 
     def _on_account_delete(self, *_):
         Window.toggle_select()
-        self._do_update_view()
+        self.update_view()
